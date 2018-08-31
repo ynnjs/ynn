@@ -8,7 +8,7 @@ require('max-listeners-exceeded-warning')();
 app.debugging = Console.WARN | Console.ERROR;
 test.debugging = Console.WARN | Console.ERROR;
 
-describe( 'Yolk', () => {
+describe( 'Ynn', () => {
     beforeAll( () => Promise.all( [ app.ready(), test.ready() ] ) );
 
     describe( 'router', () => {

@@ -1,6 +1,6 @@
-const Yolk = require( '../../lib/yolk' );
+const Ynn = require( '../../lib/ynn' );
 
-const app = new Yolk( {
+const app = new Ynn( {
     root : __dirname
 } );
 

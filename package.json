@@ -22,7 +22,7 @@
 		"pre-commit": "^1.2.2",
 		"supertest": "^3.1.0"
 	},
-	"author": "LvChengbin <lvchengbin59@gmail.com>",
+	"author": "LvChengbin <ynnjs.org@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
 		"@lvchengbin/config": "0.0.2",
@@ -49,7 +49,7 @@
 		"debug": "nodemon --exec node test/app/server.js --debugging=true --port=50009",
 		"test-watch": "nodemon --exec npm test",
 		"test": "jasmine --config=test/jasmine.json",
-		"test-yolk": "nodemon --exec jasmine test/yolk.spec.js",
+		"test-ynn": "nodemon --exec jasmine test/ynn.spec.js",
 		"test-error": "nodemon --exec jasmine test/error.spec.js",
 		"test-rsc": "nodemon --exec jasmine test/rsc.spec.js",
 		"lint": "eslint ./ --cache --ignore-path .eslintignore",

@@ -1,6 +1,6 @@
-const Yolk = require( '../../lib/yolk' );
+const Ynn = require( '../../lib/ynn' );
 
-module.exports = new Yolk( {
+module.exports = new Ynn( {
     root : __dirname,
     routers() {
         this.router.get( '/respond-directly', ctx => {

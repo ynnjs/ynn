@@ -1,2 +1,2 @@
-const Yolk = require( '../../lib/yolk' );
-module.exports = new Yolk( { root : __dirname } );
+const Ynn = require( '../../lib/ynn' );
+module.exports = new Ynn( { root : __dirname } );

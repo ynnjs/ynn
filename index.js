@@ -1,4 +1,4 @@
-module.exports = require( './lib/yolk' );
+module.exports = require( './lib/ynn' );
 module.exports.Boot = require( './lib/boot' );
 module.exports.Runtime = require( './lib/runtime' );
 module.exports.Controller = require( './lib/controller' );

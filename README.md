@@ -1,4 +1,4 @@
-# Yolk
+# Ynn 
 
 A simple framework uses to maintain services into separated sub modules based on Koajs. It is not exactly flexible, but it matches the requirements when you want to make your services more portable and maintainable.
 
@@ -7,13 +7,13 @@ A simple framework uses to maintain services into separated sub modules based on
 To install the package with `npm`.
 
 ```js
-$ npm i @lvchengbin/yolk --save
+$ npm i ynn --save
 ```
 Then, you can use it in your code:
 ```js
-const Yolk = require( '@lvchengbin/yolk' );
+const Ynn = require( '@lvchengbin/ynn' );
 
-const app = new Yolk( { root : __dirname } );
+const app = new Ynn( { root : __dirname } );
 
 app.listen( 3000 );
 ```
