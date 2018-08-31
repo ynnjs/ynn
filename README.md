@@ -17,15 +17,3 @@ const app = new Ynn( { root : __dirname } );
 
 app.listen( 3000 );
 ```
-
-## Usage
-
-### config
-
-### router
-
-### module
-
-### controller
-
-### service
