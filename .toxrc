@@ -1,0 +1,3 @@
+# setting ignore files
+point=@yolk
+ignore=node_modules,logs,.*
