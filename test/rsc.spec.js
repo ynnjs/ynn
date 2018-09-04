@@ -6,7 +6,6 @@ require('max-listeners-exceeded-warning')();
 
 app.debugging = Console.WARN | Console.ERROR;
 
-
 describe( 'rsc', () => {
 
     beforeAll( () => app.ready() );
@@ -18,7 +17,8 @@ describe( 'rsc', () => {
                 .expect( { 
                     status : 'RSC',
                     method : 'GET',
-                    token : 'b'
+                    token : 'b',
+                    'rsc-header' : 'ms'
                 } )
                 .end( e => e ? done.fail( e ) : done() );
         } );
@@ -29,7 +29,8 @@ describe( 'rsc', () => {
                 .expect( { 
                     status : 'RSC',
                     method : 'GET',
-                    token : 'c'
+                    token : 'c',
+                    'rsc-header' : 'ms'
                 } )
                 .end( e => e ? done.fail( e ) : done() );
         } );
@@ -40,13 +41,14 @@ describe( 'rsc', () => {
                 .expect( { 
                     status : 'RSC',
                     method : 'POST',
-                    token : 'b'
+                    token : 'b',
+                    'rsc-header' : 'ms'
                 } )
                 .end( e => e ? done.fail( e ) : done() );
-        }, 1000000 );
+        } );
 
-        it( 'api', done => {
-            request( app.listen() ).post( '/rsc/api' )
+        it( '~', done => {
+            request( app.listen() ).post( '/rsc/local' )
                 .expect( 200 )
                 .expect( { 
                     status : 'RSC',
@@ -54,8 +56,36 @@ describe( 'rsc', () => {
                     token : 'b'
                 } )
                 .end( e => e ? done.fail( e ) : done() );
-        }, 1000000 );
+        } );
 
+    } );
+
+    describe( 'api', () => {
+        it( 'post', done => {
+            request( app.listen() ).post( '/rsc/apipost' )
+                .expect( 200 )
+                .expect( { 
+                    method : 'POST',
+                    token : 'b',
+                    headers : {
+                        api : 'test-post'
+                    }
+                } )
+                .end( e => e ? done.fail( e ) : done() );
+        } );
+
+        it( 'get', done => {
+            request( app.listen() ).post( '/rsc/apiget' )
+                .expect( 200 )
+                .expect( { 
+                    method : 'GET',
+                    token : 'b',
+                    headers : {
+                        api : 'test-get'
+                    }
+                } )
+                .end( e => e ? done.fail( e ) : done() );
+        } );
     } );
 
     describe( 'events', () => {
@@ -68,7 +98,7 @@ describe( 'rsc', () => {
                     token : 'b'
                 } )
                 .end( e => e ? done.fail( e ) : done() );
-        }, 1000000 );
+        } );
 
         it( 'failure', done => {
             request( app.listen() ).get( '/rsc/failure' )

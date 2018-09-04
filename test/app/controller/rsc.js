@@ -1,24 +1,34 @@
 module.exports = class extends require( '../../../lib/controller' ) {
     callAction() {
-        return this.rsc.call( 'ms', '/test/ms', {
-            qs : {
-                token : 'b'
-            }
+        return this.rsc.call( 'ms:test/ms', {
+            token : 'b'
         } );
     }
     getAction() {
-        return this.rsc.get( 'ms', '/test/ms', {
+        return this.rsc.get( 'ms:test/ms', {
             token : 'c'
         } );
     }
+
     postAction() {
-        return this.rsc.post( 'ms', '/test/ms', {
+        return this.rsc.post( 'ms:test/ms', {
             token : 'b'
         } );
     }
 
-    apiAction() {
-        return this.rsc.api( 'ms', 'test/ms', {
+    localAction() {
+        return this.rsc.post( 'test/ms', {
+            token : 'b'
+        } );
+    }
+    apipostAction() {
+        return this.rsc.call( 'ms:test/ms/post', {
+            token : 'b'
+        } );
+    }
+
+    apigetAction() {
+        return this.rsc.call( 'ms:test/ms/get', {
             token : 'b'
         } );
     }
@@ -33,10 +43,8 @@ module.exports = class extends require( '../../../lib/controller' ) {
                 } );
             } );
 
-            this.rsc.call( 'ms', '/test/ms', {
-                qs : {
-                    token : 'b'
-                }
+            this.rsc.call( 'ms:test/ms', {
+                token : 'b'
             } );
         } );
     }
@@ -51,7 +59,7 @@ module.exports = class extends require( '../../../lib/controller' ) {
                 } );
             } );
 
-            this.rsc.get( 'ms', '/test/ms/notfound', {
+            this.rsc.get( 'ms:test/ms/notfound', {
                 token : 'b'
             } ).catch( e => {
                 this.console.debug( e );

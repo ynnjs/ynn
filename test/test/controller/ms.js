@@ -4,7 +4,8 @@ module.exports = class extends require( '../../../lib/controller' ) {
         const method = ctx.method;
         const res = {
             status : 'RSC',
-            method
+            method,
+            'rsc-header' : ctx.headers[ 'x-rsc-service' ]
         };
 
         if( method === 'POST' ) {
@@ -13,5 +14,27 @@ module.exports = class extends require( '../../../lib/controller' ) {
             res.token = ctx.query.token;
         }
         return res;
+    }
+
+    postAction() {
+        const ctx = this.ctx;
+        return {
+            method : ctx.method,
+            token : ctx.request.body.token,
+            headers : {
+                api : ctx.headers[ 'x-rsc-service-api' ]
+            }
+        }
+    }
+
+    getAction() {
+        const ctx = this.ctx;
+        return {
+            method : ctx.method,
+            token : ctx.query.token,
+            headers : {
+                api : ctx.headers[ 'x-rsc-service-api' ]
+            }
+        }
     }
 }
