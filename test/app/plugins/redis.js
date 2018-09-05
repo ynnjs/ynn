@@ -1,31 +1,21 @@
-const Redis = require( 'ioredis' );
-
 const REDIS = Symbol( 'redis' );
 
-module.exports = ( app, options = {} ) => {
-    const config = options.redis || app.config( 'redis' );
+function redis( app, options = {} ) {
 
     Object.defineProperty( app, options.name || 'redis', {
-        get redis() {
+        get () {
             if( app[ REDIS ] ) return app[ REDIS ];
-            if( config.cluster === true ) {
-                app[ REDIS ] = new Redis.Cluster( config.nodes, config );
-            } else {
-                app[ REDIS ] = new Redis( config );
-            }
-            app[ REDIS ].on( 'error', e => {
-                app.logger.error( e );
-                throw e;
-            } );
-
-            app[ REDIS ].on( 'connect', () => {
-                app.logger.info( '[plugin redis] connect' );
-            } );
+            app[ REDIS ] = 'redis';
             return app[ REDIS ];
         },
 
-        set redis( r ) {
+        set ( r ) {
             app[ REDIS ] = r;
         }
     } );
+}
+
+module.exports = {
+    plugin : redis,
+    autoexec : true
 };

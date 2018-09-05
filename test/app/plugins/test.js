@@ -1,8 +1,8 @@
-module.exports = ( app, options ) => {
-    Object.defineProperty( app, 'testPlugin', {
-        get() {
-            app.console.debug( options );
-            return options;
-        }
-    } );
+class TestPlugin extends require( '../../../lib/plugin' ) {
+    
+}
+
+module.exports = {
+    plugin : TestPlugin,
+    autoexec : false
 };

@@ -52,7 +52,7 @@ Ynn is built base on `Koa`, therefore, features of `Koa`, such as middlewares, c
 
 ## Controller
 
-It is very easy to create a controller by creating a directory named `controller` under the `root` directory of the application, and then, to create a file such as `index.js` in the `controller` directory with the code bellow.
+It's very easy to create a controller by creating a directory named `controller` under the `root` directory of the application, and then, to create a file such as `index.js` in the `controller` directory with the code bellow.
 
 ```js
 const Controller = require( 'ynn' ).Controller;
@@ -65,6 +65,13 @@ module.export = class extends Controller {
 ```
 
 Then, visit the page from web browser with `http://127.0.0.1:3000`. The `index` controller is the default controller for every `Ynn` application, and the `indexAction` is the default action for every controller.
+
+The directory of controllers can be changed in `config/app` [see more]() .
+
+`Ynn` has created `router` rules for `controller` and `action` by default, therefore, you can simply access your service with path `/controller[/action]`.
+
+```
+
 
 ## Service
 

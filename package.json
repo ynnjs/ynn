@@ -54,8 +54,8 @@
 		"test-watch": "nodemon --exec npm test",
 		"test": "jasmine --config=test/jasmine.json",
 		"test-ynn": "nodemon --exec jasmine test/ynn.spec.js",
-		"test-error": "nodemon --exec jasmine test/error.spec.js",
 		"test-rsc": "nodemon --exec jasmine test/rsc.spec.js",
+		"test-error": "nodemon --exec jasmine test/error.spec.js",
 		"lint": "eslint ./ --cache --ignore-path .eslintignore",
 		"precommit-msg": "echo 'Pre-commit checks...' && exit 0"
 	}
