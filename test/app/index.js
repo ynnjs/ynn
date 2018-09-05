@@ -1,7 +1,10 @@
 const Ynn = require( '../../lib/ynn' );
 
 const app = new Ynn( {
-    root : __dirname
+    root : __dirname,
+    static : {
+        '/static/(.*)' : '.'
+    }
 } );
 
 app.keys = [ 'xxxx' ];

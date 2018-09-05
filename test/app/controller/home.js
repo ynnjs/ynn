@@ -4,6 +4,11 @@ class Home extends require( '../../../lib/controller' ) {
             status : 'OK'
         };
     }
+
+    consoleAction() {
+        this.console.log( this.ctx.query );
+        return 'xxxx';
+    }
 }
 
 module.exports = Home;

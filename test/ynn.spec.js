@@ -11,6 +11,14 @@ test.debugging = Console.WARN | Console.ERROR;
 describe( 'Ynn', () => {
     beforeAll( () => Promise.all( [ app.ready(), test.ready() ] ) );
 
+    describe( 'basic', () => {
+        it( 'static files', done => {
+            request( app.listen() ).get( '/static/js/index.js' )
+                .expect( 200 )
+                .end( err => err ? done.fail( err ) : done() );
+        } ); 
+    } );
+
     describe( 'router', () => {
         describe( 'load rules', () => {
             
@@ -150,5 +158,6 @@ describe( 'Ynn', () => {
         } );
 
     } );
+
 } );
 
