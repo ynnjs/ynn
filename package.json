@@ -5,7 +5,7 @@
 		"type": "git",
 		"url": "https://github.com/ynnjs/ynn.git"
 	},
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"keywords": [
 		"koa",
 		"mvc",
@@ -29,10 +29,10 @@
 		"@lvchengbin/config": "0.0.2",
 		"@lvchengbin/escape": "0.0.3",
 		"@lvchengbin/interactive": "0.0.2",
-		"@lvchengbin/is": "0.0.22",
+		"@lvchengbin/is": "0.0.23",
 		"@lvchengbin/kit": "0.0.2",
 		"@lvchengbin/koa-router": "0.0.9",
-		"@lvchengbin/sequence": "^2.0.0",
+		"@lvchengbin/sequence": "^2.0.1",
 		"chalk": "^2.4.1",
 		"koa": "^2.5.2",
 		"koa-bodyparser": "^4.2.1",
@@ -59,5 +59,8 @@
 		"test-error": "nodemon --exec jasmine test/error.spec.js",
 		"lint": "eslint ./ --cache --ignore-path .eslintignore",
 		"precommit-msg": "echo 'Pre-commit checks...' && exit 0"
+	},
+	"engines": {
+		"node": ">=8.0"
 	}
 }
