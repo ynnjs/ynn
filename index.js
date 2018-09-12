@@ -6,3 +6,4 @@ module.exports.Service = require( './lib/service' );
 module.exports.RSC = require( './lib/rsc' );
 module.exports.Plugin = require( './lib/plugin' );
 module.exports.Console = require( './lib/console' );
+module.exports.Router = require( './lib/router' );
