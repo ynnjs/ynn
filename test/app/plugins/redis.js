@@ -1,6 +1,6 @@
 const REDIS = Symbol( 'redis' );
 
-function redis( app, options = {} ) {
+module.exports = function redis( app, options = {} ) {
 
     Object.defineProperty( app, options.name || 'redis', {
         get () {
@@ -14,8 +14,3 @@ function redis( app, options = {} ) {
         }
     } );
 }
-
-module.exports = {
-    plugin : redis,
-    autoexec : true
-};

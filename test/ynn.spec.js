@@ -166,7 +166,7 @@ describe( 'Ynn', () => {
         expect( app[ 'another-redis' ] ).toEqual( 'redis' );
         const test = new app.ExtendsPlugin( app );
         expect( test instanceof Plugin ).toBeTruthy();
-        expect( is.class( app.OrdinaryClass ) ).toBeTruthy();
+        expect( is.class( app.OrdinaryClass ) ).toBeFalsy();
     } );
 } );
 

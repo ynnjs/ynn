@@ -1,8 +1,1 @@
-class TestPlugin extends require( '../../../lib/plugin' ) {
-    
-}
-
-module.exports = {
-    plugin : TestPlugin,
-    autoexec : false
-};
+module.exports = ( app, options = {} ) => app[ options.name ] = class TestPlugin extends require( '../../../lib/plugin' ) {}
