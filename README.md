@@ -1,8 +1,8 @@
 # Ynn ['in]
 
-Ynn is a framework for building more flexible and portable web applications. It is based on [Koajs](https://koajs.com/) and more powerful.
+Ynn is a framework for building more flexible and portable web applications. It is based on [Koa](https://koajs.com/) but more powerful.
 
-Currently, `Ynn` is still in `Alpha` version until the version `1.0.0` be published.
+Currently, Ynn is still in `Alpha` version until the version `1.0.0` be published.
 
 ## Installation
 
@@ -15,7 +15,7 @@ node.js >= 8.0.0 required.
 
 ## Getting Started
 
-To create a `Ynn` instance and start to listen to a port:
+To create a Ynn instance and start to listen to a port:
 
 ```js
 const Ynn = require( 'ynn' );
@@ -49,7 +49,7 @@ The following information will output after executing the code above with `node`
 [Y] -----------------------------------------------------------------------
 ```
 
-Ynn is built base on `Koa`, therefore, features of `Koa`, such as middlewares, can also be used in Ynn application.
+Ynn is built base on Koa, therefore, features of Koa, such as middlewares, can also be used in Ynn application.
 
 ## Usage
 
@@ -71,20 +71,20 @@ Then, visit the page from web browser with `http://127.0.0.1:3000`, you will get
 
 The directory for controllers can be changed in `config/app` [see more]() .
 
-`Ynn` has created `router` rules for `controller` and `action` by default, therefore, you can simply access your service with path `/controller/action`, and the path `/` will be matched to `/index/index'
+Ynn creates routing rules for `controller` and `action` by default, therefore, you can simply access your service with path `/controller/action`, and the path `/` will be matched to `/index/index'
 
 ### Boot
 
 Except the `index.js`( app creation file ), you can also have a `boot.js` file in the `root` directory. If the `boot.js` exists, it will be loaded while starting the process and be executed per request before excuting `controller` and `action`. It's used for running some common processes at the beginning of every request.
 
-The `boot.js` shoule export a `function` or a `class` which can extend from `Ynn.Boot` or not. For example:
+The `boot.js` shoule export a `Function` or a `Class` which can extend from `Ynn.Boot` or not. For example:
 
 ```js
 module.exports = ctx => {
     ctx.app.logger.info( 'booting' );
 };
 ```
-If the `boot.js` exports a `class` extends from `Ynn.Boot`, it will be more convenient to use methods of `Ynn.Runtime`. For example:
+If the `boot.js` exports a `Class` extends from `Ynn.Boot`, it will be more convenient to use methods of `Ynn.Runtime`. For example:
 
 ```js
 module.exports = class extends require( 'Ynn' ).Boot {
@@ -240,23 +240,3 @@ A Module in Ynn is a special concept. If an Ynn instance is mounted by other Ynn
 ### Logging
 
 ### Interactive Mode
-
-## API Document
-
-### Ynn
-
-### Runtime
-
-### Boot
-
-### Controller
-
-### Service
-
-### Plugin
-
-### Console
-
-### RSC
-
-### Router
