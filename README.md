@@ -24,7 +24,7 @@ const app = new Ynn( {
 } );
 
 app.use( async ctx => {
-    ctx.body = 'Hello Ynn'!;
+    ctx.body = 'Hello Ynn!';
 } );
 
 app.listen( 3000 );
@@ -42,7 +42,7 @@ The following information will output after executing the code above with `node`
 [Y] Controllers: [  ].
 [Y] Services: [  ].
 [Y] Plugins: [  ].
-[Y] Port: 54025 - http://127.0.0.1:3000.
+[Y] Port: 3000 - http://127.0.0.1:3000.
 [Y] Date: Tue Sep 04 2018 17:28:19 GMT+0800 (CST).
 [Y] Time: 432ms.
 [Y] Memory: 19.00MB.
