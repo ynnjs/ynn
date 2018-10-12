@@ -20,7 +20,8 @@
     "max-listeners-exceeded-warning": "0.0.1",
     "nodemon": "^1.18.3",
     "pre-commit": "^1.2.2",
-    "supertest": "^3.1.0"
+    "supertest": "^3.1.0",
+    "ynn-ms-idalloc": "0.0.0"
   },
   "author": "LvChengbin <lvchengbin59@gmail.com>",
   "license": "MIT",
