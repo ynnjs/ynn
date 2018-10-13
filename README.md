@@ -190,7 +190,7 @@ To read the [Module]() part for more about Ynn modules.
 
 **plugins**
 
-To configure plugins which will be loaded to current application:
+To configure plugins which will be loaded to current application, this config can also be maintained in a `plugins.js` in config directory.
 
 ```js
 new Ynn( {
@@ -355,9 +355,11 @@ app.router.mount( '/another-module', ctx => {
 } );
 ```
 
+Ynn uses [lvchengbin/koa-router](https://github.com/LvChengbin/koa-router) in the project, you can get more information about routing rules from that repositry.
+
 ### Config
 
-Ynn instance looks for config files in `{root}/config` directory while initializing the Ynn instance. For example, to create a `mysql.js` in config directory for connecting mysql database:
+Ynn application instance looks for config files in `{root}/config` directory during initialization. For example, to create a `mysql.js` in config directory for connecting mysql database:
 
 ```js
 module.exports = {
@@ -375,11 +377,12 @@ The config items can be get in `Ynn.Controller`, `Ynn.Service`, `Ynn`, `Ynn.Boot
 module.exports = class extends require( 'ynn' ).Controller {
     indexAction() {
         const dbname = this.config( 'mysql.database' );
+        const port = this.config( 'mysql.port', 3306 ); // the second argument is the default if mysql.port is undefined.
     }
 }
 ```
 
-If a config file exports a `Function` instead, the function will be executed while loading by passing an argument which is the Ynn application instance:
+If a config file exports a function instead of a literal object, the function will be executed while loading by passing an argument which is the Ynn application instance:
 
 ```js
 module.exports = app => {
@@ -387,13 +390,151 @@ module.exports = app => {
 };
 ```
 
+#### Priority of configurations
+Ynn applications load config info from the following ways, ordered by the priority:
+
+ - Config items that passed while mounting the application if the application is mounted as a Ynn module, for example:
+    ```js
+    new Ynn( {
+        root : __dirname,
+        modules : {
+            id : {
+                path : 'ynn-ms-idalloc',
+                config : {
+                    worker : 2
+                }
+            }
+        }
+    } );
+    ```
+ - Config files in the `configDir` that specified while mounting the application, for example:
+    ```js
+    new Ynn( {
+        root : __dirname,
+        modules : {
+            id : {
+                path : 'ynn-ms-idalloc',
+                configDir : './config'
+            }
+        }
+    } );
+    ```
+ - Config files in config directories of applications
+ - Config files in config directories of Ynn project as default configurations: [https://github.com/ynnjs/ynn/tree/master/lib/config](https://github.com/ynnjs/ynn/tree/master/lib/config).
+
+To sum up the list above, we can know how to overwrite the original config files while mounting it, and by exporting a function in `config/modules.js` you can get config items from current application. For example, in`config/modules.js`:
+
+```js
+module.exports = app => {
+    return {
+        id : {
+            path : 'ynn-ms-idalloc',
+            config : {
+                // get config item "worker" from configuration of current applciation
+                worker : app.config( 'worker' )
+            }
+        }
+    }
+};
+```
+
 ### Plugin
+
+A Plugin in Ynn is just a file which will be loaded while creating an application, and following some simple rules:
+
+ - If the plugin file exports a class, the class will be initialized with `new` operator automatically, and two arguments, instance of the app and options for the plugin, will be passed to the constructor. For example:
+ - If the plugin file exports a function, then the function will be executed automatically with two arguments, instance of the app and options for the plugin. 
+ - If the plugin file exports with other data type, the data will be bound to current app instance with it's property name as the plugin name.
+
+
+A simple example: [`ynn-plugin-redis`](https://github.com/ynnjs/ynn-plugin-redis/blob/master/src/index.js).
 
 ### Module
 
-A Module in Ynn is a special concept. If an Ynn instance is mounted by other Ynn instances, it becomes a Module. 
+If a Ynn app instance is mounted by other Ynn apps, it becomes a Ynn module. So, a Ynn application is able to be used to start a service or mount to other service. For example, if there is an app named "A":
+
+```js
+new Ynn( {
+    root : __dirname,
+    router() {
+        this.get( '/home', ctx => {
+            ctx.body = 'this is the home of module A';
+        } );
+    }
+} );
+```
+
+And a module "B" mounts the moudule A:
+
+```js
+const app = new Ynn( {
+    root : __dirname,
+    modules : {
+        a : 'the/path/to/module/a'
+    }
+} );
+
+app.listen( 3000 );
+```
+
+With the code above, if we start a server from module "B", and then send a request to `http://127.0.0.1:3000/a/home`, we will get `this is the home of module A` in response. Certainly, a module can be mounted multiple times with different mounting name, and even with different configuration:
+
+```js
+const app = new Ynn( {
+    root : __dirname,
+    modules : {
+        a : 'the/path/to/module/a',
+        'another-a' : {
+            path : 'the/path/to/module/a',
+            config : {
+                mysql : {}
+            }
+        }
+    }
+} );
+
+app.listen( 3000 );
+```
+
+For this example, both `http://127.0.0.1:3000/a/home` and `http://127.0.0.1:3000/another-a/home` will respond the same result.
+
+For the code above, we can also move the `modules` part into `config/modules.js` file, for example:
+
+```js
+// config/modules.js
+module.exports = {
+    a : 'the/path/to/module/a',
+    'another-a' : {
+        path : 'the/path/to/module/a',
+        config : {
+            mysql : {}
+        }
+    }
+}
+```
+
+Generally, the submodule doesn't need to know if it is mounted by other modules or not, you don't need to change any line of code for it. But if you really need to get some mounting information, Ynn provides some properties and methods for that:
+
+ **find( path )**
+
+ ```js
+ const app = new Ynn( {
+    root : __dirname,
+    modules : {
+        a : 'path/to/a',
+        b : 'path/to/b'
+    }
+ } );
+
+ console.log( app.find( 'a' ) );
+
+// if module a has a submodule named x
+console.log( app.find( 'a.x' ) );
+ ```
 
 ### RSC
+
+#### Using `sham` request
 
 ### Debugging
 
