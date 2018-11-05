@@ -13,10 +13,10 @@ cache:
     directories:
         - node_modules
 
-before_script
+before_script:
     - npm prune
 
-script
+script:
     - npm run lint
     - npm run test-cov
 
