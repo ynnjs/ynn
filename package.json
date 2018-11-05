@@ -16,10 +16,9 @@
     "devDependencies": {
         "@lvchengbin/sleep": "0.0.2",
         "eslint": "^5.4.0",
-        "jasmine": "^3.2.0",
         "jest": "^23.6.0",
+        "jest-mock-console": "^0.4.0",
         "max-listeners-exceeded-warning": "0.0.1",
-        "nodemon": "^1.18.3",
         "pre-commit": "^1.2.2",
         "supertest": "^3.1.0",
         "ynn-ms-idalloc": "0.0.0"
@@ -36,7 +35,6 @@
         "@lvchengbin/koa-router": "0.0.9",
         "@lvchengbin/sequence": "^2.0.1",
         "chalk": "^2.4.1",
-        "consolidate": "^0.15.1",
         "koa": "^2.5.2",
         "koa-body": "^4.0.4",
         "koa-compose": "^4.1.0",
@@ -55,8 +53,8 @@
     },
     "scripts": {
         "test": "jest",
-        "test-watch" : "jest --watch",
-        "test-cov" : "jest --coverage --runInBand --forceExit --detectOpenHandles",
+        "test-watch": "jest --watch",
+        "test-cov": "jest --coverage --runInBand --forceExit --detectOpenHandles",
         "lint": "eslint lib --cache --ignore-path .eslintignore",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
     },
@@ -81,7 +79,7 @@
             "text",
             "lcov"
         ],
-        "collectCoverageFrom" : [
+        "collectCoverageFrom": [
             "lib/**/*.js"
         ],
         "testEnvironment": "node"
