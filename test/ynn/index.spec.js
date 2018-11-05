@@ -29,7 +29,7 @@ describe( 'Ynn', () => {
         } );
 
         it( 'services', () => {
-            expect( 'services' in app ).toBeTruthy();
+            expect( app.services ).toBeDefined();
         } );
 
         it( 'not isModule', () => {
@@ -46,7 +46,7 @@ describe( 'Ynn', () => {
         } );
 
         it( 'mounting name', () => {
-            expect( app.find( 'sub' ).name ).toBeTruthy( 'sub' );
+            expect( app.find( 'sub' ).name ).toEqual( 'sub' );
         } );
 
         it( 'parent', () => {

@@ -54,20 +54,10 @@
         "yargs": "^12.0.1"
     },
     "scripts": {
-        "inspect": "nodemon --exec node --inspect-brk test/app/server.js --port=50009",
-        "demo": "nodemon --exec node test/app/server.js --port=50009",
-        "debug": "nodemon --exec node test/app/server.js --debugging=true --port=50009",
-        "test-watch": "nodemon --exec npm test",
+        "tc": "nodemon --exec npm test",
         "test": "jest",
-        "test-ynn": "nodemon --exec jasmine test/ynn/index.spec.js",
-        "test-config": "nodemon --exec jasmine test/config/index.spec.js",
-        "test-uds": "nodemon --exec jasmine test/uds/index.spec.js",
-        "test-boot": "nodemon --exec jasmine test/boot/index.spec.js",
-        "test-error": "nodemon --exec jasmine test/error/index.spec.js",
-        "test-router": "nodemon --exec jasmine test/router/index.spec.js",
-        "test-rsc": "nodemon --exec jasmine test/rsc/index.spec.js",
-        "test-service": "nodemon --exec jasmine test/service/index.spec.js",
-        "lint": "eslint ./ --cache --ignore-path .eslintignore",
+        "test-cov" : "jest --coverage --runInBand --forceExit --detectOpenHandles",
+        "lint": "eslint lib --cache --ignore-path .eslintignore",
         "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
     },
     "engines": {
@@ -87,9 +77,12 @@
         "testMatch": [
             "**/test/**/*.spec.js"
         ],
-        "coverageReports": [
-            "text-summary",
+        "coverageReporters": [
+            "text",
             "lcov"
+        ],
+        "collectCoverageFrom" : [
+            "lib/**/*.js"
         ],
         "testEnvironment": "node"
     }

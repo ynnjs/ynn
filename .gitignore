@@ -32,3 +32,4 @@ logs
 log
 *.log
 .toxrc
+coverage
