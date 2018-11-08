@@ -3,8 +3,8 @@
 const Ynn = require( '../../../lib/ynn' );
 const app = new Ynn( {
     root : __dirname,
-    debugging : false,
-    logging : false,
+    //debugging : false,
+    //logging : false,
     modules : {
         sub : '../sub',
         sub2 : '../sub2'

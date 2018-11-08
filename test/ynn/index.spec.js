@@ -117,12 +117,16 @@ describe( 'Ynn', () => {
 
     } );
 
-    //it( 'plugin', () => {
-        //expect( app.redis ).toEqual( 'redis' );
-        //expect( app[ 'another-redis' ] ).toEqual( 'redis' );
-        //const test = new app.ExtendsPlugin( app );
-        //expect( test instanceof Plugin ).toBeTruthy();
-        //expect( is.class( app.OrdinaryClass ) ).toBeFalsy();
-    //} );
+    describe( 'app config', () => {
+
+        it( 'app.controller.path', () => {
+            expect( app.controllers.index ).toBeDefined(  );     
+        } );
+
+        it( 'app.service.path', () => {
+            expect( app.services.index ).toBeDefined(  );     
+        } );
+        
+    } );
 } );
 

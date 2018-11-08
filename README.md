@@ -4,6 +4,32 @@ Ynn is a framework for building more flexible and portable web applications. It 
 
 Currently, Ynn is still in `Alpha` version until the version `1.0.0` be published.
 
+
+<!-- vim-markdown-toc GFM -->
+
+* [Installation](#installation)
+* [Getting Started](#getting-started)
+* [Usage](#usage)
+    * [Ynn](#ynn)
+    * [Controller](#controller)
+    * [Boot](#boot)
+    * [Service](#service)
+    * [Router](#router)
+    * [Config](#config)
+        * [Priority of configurations](#priority-of-configurations)
+    * [Plugin](#plugin)
+    * [Module](#module)
+    * [View](#view)
+    * [RSC](#rsc)
+        * [Using `sham` request](#using-sham-request)
+    * [Debugging](#debugging)
+        * [Console](#console)
+    * [Logging](#logging)
+    * [Command Line Options](#command-line-options)
+    * [Interactive Mode](#interactive-mode)
+
+<!-- vim-markdown-toc -->
+
 ## Installation
 
 ```bash
@@ -72,7 +98,13 @@ Class Ynn extends from the `Application` class of `Koa`. Like the sample code ab
  - Init the config files.
  - Init the logger.
  - Init the access logger.
- - Init controller files, boot.js, mounted modules, routing rules and service files in parallel.
+ - Init(in parallel) :
+    - controllers,
+    - boot.js
+    - modules
+    - routing rules 
+    - service files
+    - view
  - Register routing rules for static files, modules and controllers (and actions).
  - Init plugins.
 
@@ -273,8 +305,8 @@ module.exports = ctx => {
 ```js
 // article.js
 module.exports = class extends require( 'ynn' ).Service {
-    construct( ctx ) {
-        super( ctx );
+    constructor( ctx, options = {} ) {
+        super( ctx, options );
     }
 
     getById( id ) {
@@ -438,6 +470,10 @@ module.exports = app => {
 };
 ```
 
+#### Configurations for Ynn applications
+
+
+
 ### Plugin
 
 A Plugin in Ynn is just a file which will be loaded while creating an application, and following some simple rules:
@@ -531,6 +567,7 @@ Generally, the submodule doesn't need to know if it is mounted by other modules 
 // if module a has a submodule named x
 console.log( app.find( 'a.x' ) );
  ```
+### View
 
 ### RSC
 
