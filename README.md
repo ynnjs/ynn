@@ -1,5 +1,7 @@
 # Ynn ['in]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ynnjs/ynn.svg)](https://greenkeeper.io/)
+
 Ynn is a framework for building more flexible and portable web applications. It is based on [Koa](https://koajs.com/) but more powerful.
 
 Currently, Ynn is still in `Alpha` version until the version `1.0.0` be published.
