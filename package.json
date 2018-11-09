@@ -21,7 +21,7 @@
         "pre-commit": "^1.2.2",
         "supertest": "^3.1.0",
         "underscore": "^1.9.1",
-        "ynn-ms-idalloc": "0.0.0"
+        "ynn-ms-idalloc": "0.0.1"
     },
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
@@ -29,7 +29,7 @@
         "@lvchengbin/cli-table": "0.0.0",
         "@lvchengbin/config": "0.0.2",
         "@lvchengbin/interactive": "0.0.2",
-        "@lvchengbin/is": "0.0.23",
+        "@lvchengbin/is": "0.0.24",
         "@lvchengbin/koa-router": "0.0.9",
         "@lvchengbin/sequence": "^2.0.1",
         "chalk": "^2.4.1",
