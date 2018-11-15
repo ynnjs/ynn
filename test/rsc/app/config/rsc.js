@@ -1,8 +1,10 @@
 module.exports = {
 	client : {
         name : 'test',
-        key : '',
-        token : ''
+        auth : [ {
+            key : '',
+            token : ''
+        } ]
     },
     service : {
         ms : {  
