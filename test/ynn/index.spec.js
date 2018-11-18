@@ -58,9 +58,9 @@ describe( 'Ynn', () => {
             expect( app.top ).toEqual( app );
         } );
 
-        it( 'logDir', () => {
-            expect( app.logDir ).toEqual( path.join( app.root, 'log' ) );
-            expect( app.find( 'sub' ).logDir ).toEqual( path.join( app.root, 'log', 'sub' ) );
+        it( 'log-path', () => {
+            expect( app[ 'log-path' ] ).toEqual( path.join( app.root, 'log' ) );
+            expect( app.find( 'sub' )[ 'log-path' ] ).toEqual( path.join( app.root, 'log', 'sub' ) );
         } );
 
         it( 'path', () => {
@@ -70,10 +70,6 @@ describe( 'Ynn', () => {
 
         it( 'logging', () => {
             expect( app.logging ).toBeFalsy();
-        } );
-
-        it( 'configDir', () => {
-            expect( app.configDir ).toEqual( path.join( app.root, 'config' ) );
         } );
 
         it( 'logger', () => {
@@ -96,10 +92,6 @@ describe( 'Ynn', () => {
                 return next();
             } );
             app.sham( '/' );
-        } );
-
-        it( 'config', () => {
-            expect( app.config( 'rsc-local' ) ).toEqual( require( '../../lib/config/rsc-local' ) );
         } );
 
         it( 'sham', () => {

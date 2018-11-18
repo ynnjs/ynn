@@ -14,9 +14,7 @@ describe( 'error', () => {
         restoreConsole = mockConsole();
     } );
 
-    afterAll( () => {
-        restoreConsole();
-    } );
+    afterAll( () => restoreConsole() );
 
     for( const item of [ 500, 502, 500, 403, 404 ] ) {
         it( `catch ${item}`, done => {

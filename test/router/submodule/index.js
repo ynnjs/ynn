@@ -1,7 +1,7 @@
-const Ynn = require( '../../../lib/ynn' );
+const Ynn = require( '../../..' );
 
 const app = new Ynn( {
-    debugging : false,
+    debugging : Ynn.DEBUGGING_DANGER,
     logging : false,
     root : __dirname,
     routers() {

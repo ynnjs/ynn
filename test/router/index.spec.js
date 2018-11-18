@@ -1,4 +1,4 @@
-const Ynn = require( '../../lib/ynn' );
+const Ynn = require( '../..' );
 const request = require( 'supertest' );
 const app = require( './app' );
 
@@ -82,7 +82,7 @@ describe( 'Ynn Router', () => {
         describe( 'Simple rules', () => {
             it( 'should have used the correct simple routing rules.', done => {
                 const app = new Ynn( {
-                    debugging : false,
+                    debugging : Ynn.DEBUGGING_DANGER,
                     logging : false,
                     routers() {
                         this.router.get( '/custom', ctx => {
