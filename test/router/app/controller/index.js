@@ -1,4 +1,4 @@
-module.exports = class extends require( 'ynn' ).Controller {
+module.exports = class extends require( '../../../..' ).Controller {
     indexAction() {
         return '/index/index';
     }

@@ -6,8 +6,6 @@ process.argv.splice( 2, process.argv.length, ...[
     '--logging=false',
     '--root=app',
     '--log-path=log',
-    '--allow-interactive=true',
-    '--interactive',
     '--port=3000'
 ] );
 
@@ -28,16 +26,6 @@ describe( 'Ynn.cargs -- arguments', () => {
     // --root
     it( 'should have "root" property', () => {
         expect( cargs.root ).toEqual( path.resolve( __dirname, 'app' ) );
-    } );
-
-    // --allow-interactive
-    it( 'allow-interactive', () => {
-        expect( cargs[ 'allow-interactive' ] ).toEqual( true );
-    } );
-
-    // --interactive
-    it( 'interactive', () => {
-        expect( cargs.interactive ).toEqual( true );
     } );
 
     // --port

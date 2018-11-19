@@ -3,7 +3,7 @@
  *
  * The Ynn.Controller class extends from Ynn.Runtime
  */
-module.exports = class index extends require( 'ynn' ).Controller {
+module.exports = class index extends require( '../../../..' ).Controller {
     /**
      * @constructs
      */
@@ -12,9 +12,7 @@ module.exports = class index extends require( 'ynn' ).Controller {
     //}
     
     indexAction() {
-        
         return 'Hello Ynn!'
-        
     }
     
 }

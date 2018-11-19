@@ -7,9 +7,7 @@ describe( 'Ynn.cargs -- no arguments', () => {
         'logging',
         'root',
         'log-path',
-        'port',
-        'allow-interactive',
-        'interactive'
+        'port'
     ];
 
     for( const item of undefinedProperties ) {
