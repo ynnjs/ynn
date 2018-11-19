@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const Ynn = require( '../../../lib/ynn' );
+const Ynn = require( '../../..' );
 const app = new Ynn( {
     root : __dirname,
-    debugging : false,
+    debugging : Ynn.DEBUGGING_DANGER,
     logging : false,
     modules : {
-        test : '../test'
+        test : '../sub'
     }
 } );
 require.main === module && app.listen( Ynn.cargs.port );

@@ -1,8 +1,7 @@
-const Ynn = require( '../../../lib/ynn' );
-const Constants = require( '../../../lib/constants' );
+const Ynn = require( '../../..' );
 
 const app = new Ynn( {
-    debugging : Constants.DEBUGGING_ERROR,
+    debugging : Ynn.DEBUGGING_DANGER,
     logging : false,
     root : __dirname,
     static : {

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const Ynn = require( '../../../lib/ynn' );
+const Ynn = require( '../../..' );
 const app = new Ynn( {
     root : __dirname,
-    //debugging : false,
-    //logging : false,
+    debugging : Ynn.DEBUGGING_DANGER,
+    logging : false,
     modules : {
         sub : '../sub',
         sub2 : '../sub2'

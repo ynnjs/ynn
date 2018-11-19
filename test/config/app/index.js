@@ -1,16 +1,15 @@
-const Ynn = require( '../../../lib/ynn' );
+const Ynn = require( '../../..' );
 
 const app = new Ynn( {
     root : __dirname,
-    debugging : true,
-    //logging : false,
+    debugging : Ynn.DEBUGGING_DANGER,
+    logging : false,
     modules : {
         sub : {
             path : '../sub'
         },
         sub2 : {
             path : '../sub2',
-            configDir : '../config',
             config : {
                 app : {
                     controller : {
