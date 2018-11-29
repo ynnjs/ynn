@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.0.13",
+    "version": "0.0.15",
     "keywords": [
         "koa",
         "mvc",
@@ -20,7 +20,7 @@
         "max-listeners-exceeded-warning": "0.0.1",
         "pre-commit": "^1.2.2",
         "supertest": "^3.1.0",
-        "ynn-ms-idalloc": "0.0.1"
+        "ynn-ms-idalloc": "0.0.2"
     },
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
@@ -65,9 +65,17 @@
         "test": "test"
     },
     "jest": {
-        "testMatch": [ "**/test/**/*.spec.js" ],
-        "coverageReporters": [ "text-summary", "text", "lcov" ],
-        "collectCoverageFrom": [ "lib/**/*.js" ],
+        "testMatch": [
+            "**/test/**/*.spec.js"
+        ],
+        "coverageReporters": [
+            "text-summary",
+            "text",
+            "lcov"
+        ],
+        "collectCoverageFrom": [
+            "lib/**/*.js"
+        ],
         "testEnvironment": "node"
     }
 }
