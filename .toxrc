@@ -1,3 +1,4 @@
 # setting ignore files
-point=@yolk
+point=@ynn
 ignore=node_modules,logs,.*
+editor=vim
