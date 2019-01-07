@@ -97,6 +97,28 @@ describe( 'Ynn Router', () => {
                         .end( err => err ? done.fail( err ) : done() );
                 } );
             } );
+
+            it( 'should pass a runtime instance to the middleware', done => {
+                const app = new Ynn( {
+                    debugging : Ynn.DEBUGGING_DANGER,
+                    logging : false,
+                    routers() {
+                        this.router.get( '/runtime', ( ctx, next, rt ) => {
+                            rt.response( {
+                                runtime : rt instanceof Ynn.Runtime
+                            } );
+                        } );
+                    }
+                } );
+                app.ready().then( () => {
+                    request( app.listen() ).get( '/runtime' )
+                        .expect( 200 )
+                        .expect( {
+                            runtime : true
+                        } ) 
+                        .end( err => err ? done.fail( err ) : done() );
+                } );
+            } );
         } );
 
         describe( 'Rules to another action', () => {
