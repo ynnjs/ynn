@@ -1,4 +1,15 @@
 const Ynn = require( '../' );
-const app = new Ynn();
+const app = new Ynn( {
+    root : __dirname,
+    debugging : true,
+    logging : false,
+    modules : {
+        id : 'ynn-ms-idalloc'
+    }
+} );
 
-app.listen();
+app.use( async ctx => {
+    ctx.body = 'Hello Ynn!';
+} );
+
+app.listen( 3000 );

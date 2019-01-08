@@ -1,4 +1,4 @@
-const Ynn = require( '../../lib/ynn' );
+const Ynn = require( '../..' );
 const request = require( 'supertest' );
 const app = require( './app' );
 
@@ -82,7 +82,7 @@ describe( 'Ynn Router', () => {
         describe( 'Simple rules', () => {
             it( 'should have used the correct simple routing rules.', done => {
                 const app = new Ynn( {
-                    debugging : false,
+                    debugging : Ynn.DEBUGGING_DANGER,
                     logging : false,
                     routers() {
                         this.router.get( '/custom', ctx => {
@@ -94,6 +94,28 @@ describe( 'Ynn Router', () => {
                     request( app.listen() ).get( '/custom' )
                         .expect( 200 )
                         .expect( 'custom' ) 
+                        .end( err => err ? done.fail( err ) : done() );
+                } );
+            } );
+
+            it( 'should pass a runtime instance to the middleware', done => {
+                const app = new Ynn( {
+                    debugging : Ynn.DEBUGGING_DANGER,
+                    logging : false,
+                    routers() {
+                        this.router.get( '/runtime', ( ctx, next, rt ) => {
+                            rt.response( {
+                                runtime : rt instanceof Ynn.Runtime
+                            } );
+                        } );
+                    }
+                } );
+                app.ready().then( () => {
+                    request( app.listen() ).get( '/runtime' )
+                        .expect( 200 )
+                        .expect( {
+                            runtime : true
+                        } ) 
                         .end( err => err ? done.fail( err ) : done() );
                 } );
             } );

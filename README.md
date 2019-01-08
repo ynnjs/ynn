@@ -47,6 +47,8 @@ To create a Ynn instance and listening to a port:
 const Ynn = require( 'ynn' );
 const app = new Ynn( {
     root : __dirname,
+    debugging : true,
+    logging : false,
     modules : {
         id : 'ynn-ms-idalloc'
     }
@@ -66,17 +68,16 @@ The following information will output after executing the code above with `node`
 ```bash
 [Y] -----------------------------------------------------------------------
 [Y] Application is ready.
-[Y] Logs: /Users/ynn/workspace/ynn/examples/log
-[Y] Boot File: null
+[Y] Logs: /home/lvchengbin/workspace/ynn/ynn/example/log
+[Y] Configs: [ app, log, rsc, view ].
 [Y] Modules: [ id ].
-[Y] Configs: [ log, rsc-local ].
 [Y] Controllers: [  ].
 [Y] Services: [  ].
 [Y] Plugins: [  ].
 [Y] Port: 3000 - http://127.0.0.1:3000.
-[Y] Date: Tue Sep 04 2018 17:28:19 GMT+0800 (CST).
-[Y] Time: 432ms.
-[Y] Memory: 19.00MB.
+[Y] Date: Mon Jan 07 2019 18:53:47 GMT+0800 (China Standard Time).
+[Y] Time: 579ms.
+[Y] Memory: 14.93MB.
 [Y] -----------------------------------------------------------------------
 ```
 
