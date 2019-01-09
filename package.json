@@ -28,7 +28,7 @@
     "dependencies": {
         "@lvchengbin/config": "0.0.2",
         "@lvchengbin/is": "0.0.24",
-        "@lvchengbin/koa-router": "0.1.0",
+        "@lvchengbin/koa-router": "0.1.1",
         "@lvchengbin/sequence": "^2.0.1",
         "chalk": "^2.4.2",
         "koa": "^2.6.2",

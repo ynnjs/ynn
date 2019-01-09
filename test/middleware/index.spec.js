@@ -108,4 +108,30 @@ describe( 'middleware', () => {
                 .end( err => err ? done.fail( err ) : done() );
         } );
     } );
+
+    it( 'To use Ynn function middlewares with app.use', done => {
+        const app = new Ynn( {
+            debugging : Ynn.DEBUGGING_DANGER,
+            logging : false
+        } );
+        app.use( ( ctx, next, rt ) => {
+            expect( rt instanceof Ynn.Runtime ).toBeTruthy();
+            done();
+        } );
+        app.sham( '/' ).catch( () => {} );
+    } );
+
+    it( 'To use Ynn function middlewares with app.use', done => {
+        const app = new Ynn( {
+            debugging : Ynn.DEBUGGING_DANGER,
+            logging : false
+        } );
+        app.use(  class extends Ynn.Middleware {
+            execute() {
+                done();
+                return Promise.resolve( 'x' );
+            }
+        } );
+        app.sham( '/' ).catch( () => {} );
+    } );
 } );
