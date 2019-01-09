@@ -12,7 +12,6 @@ Currently, Ynn is still in `Alpha` version until the version `1.0.0` be publishe
 * [Usage](#usage)
     * [Ynn](#ynn)
     * [Controller](#controller)
-    * [Boot](#boot)
     * [Service](#service)
     * [Router](#router)
     * [Config](#config)
@@ -101,7 +100,6 @@ Class Ynn extends from the `Application` class of `Koa`. Like the sample code ab
  - Init the access logger.
  - Init(in parallel) :
     - controllers,
-    - boot.js
     - modules
     - routing rules 
     - service files
@@ -261,44 +259,14 @@ The directory for controllers can be changed in `config/app` [see more]() .
 
 Ynn creates routing rules for `controller` and `action` by default, therefore, you can simply access your service with path `/controller/action`, and the path `/` will be matched to `/index/index'
 
-### Boot
-
-Except the `index.js`( app creation file ), you can also have a `boot.js` file in the `root` directory. If the `boot.js` exists, it will be loaded while starting the process and executed per request before excuting `controller` and `action`. It's used for running some common processes at the beginning of every request.
-
-The `boot.js` shoule export a `Function` or a `Class` which can extend from `Ynn.Boot` or not. For example:
-
-```js
-module.exports = ctx => {
-    ctx.app.logger.info( 'booting' );
-};
-```
-If the `boot.js` exports a `Class` extends from `Ynn.Boot`, it will be more convenient to use methods of `Ynn.Runtime`. For example:
-
-```js
-module.exports = class extends require( 'Ynn' ).Boot {
-    constructor( ctx ) {
-        super( ctx );
-        this.logger.info( 'booting' );
-    }
-
-    async _initAccountValidate() {
-        try {
-            this.ctx.state.account = await this.service( 'account' ).info();
-        } catch( e ) {
-            this.throw( 403 );
-        }
-    }
-}
-```
-
 ### Service
 
-An Ynn Service layer is used for encapsulating logics which are complicated or need to be used cross controllers. Service files will be loaded while initializing the Ynn application, and will be initialized while getting the Service with [Runtime.service]() method. Beware of that every time of getting a Service with `Runtime.service` method, a new instance will be created if the Service file exports a class.
+An Ynn Service layer is used for encapsulating logics which are complicated or need to be used cross controllers. Service files will be loaded while initializing the Ynn application, and will be initialized while getting the Service with [app.service]() method. Beware of that every time of getting a Service with `app.service` method, a new instance will be created if the Service file exports a class.
 
-A Service script file shoule exprots a `Function` or a `Class` extends from `Ynn.Service` or not. For example:
+A Service script file shoule exports a `Function` or a `Class` extends from `Ynn.Service` or not. For example:
 
 ```js
-module.exports = ctx => {
+module.exports = app => {
     // this fucntion will be executed every time while getting this service with Runtime.service.
 };
 ```
@@ -306,22 +274,12 @@ module.exports = ctx => {
 ```js
 // article.js
 module.exports = class extends require( 'ynn' ).Service {
-    constructor( ctx, options = {} ) {
-        super( ctx, options );
+    constructor( app, options = {} ) {
+        super( app, options );
     }
 
     getById( id ) {
         // get data by id
-    }
-}
-```
-
-The Services can be used in `Ynn.Boot`, `Ynn.Controller`, `Ynn.Service` and all other classes extend from `Ynn.Runtime`. For example:
-
-```js
-module.exports = class extends require( 'ynn' ).Controller {
-    indexAction() {
-        return this.service( 'article' ).getById( id );
     }
 }
 ```
@@ -402,17 +360,6 @@ module.exports = {
     port : 3306,
     database : 'ynn',
 };
-```
-
-The config items can be get in `Ynn.Controller`, `Ynn.Service`, `Ynn`, `Ynn.Boot` and all other classes extends from `Ynn.Runtime`. For example:
-
-```js
-module.exports = class extends require( 'ynn' ).Controller {
-    indexAction() {
-        const dbname = this.config( 'mysql.database' );
-        const port = this.config( 'mysql.port', 3306 ); // the second argument is the default if mysql.port is undefined.
-    }
-}
 ```
 
 If a config file exports a function instead of a literal object, the function will be executed while loading by passing an argument which is the Ynn application instance:
