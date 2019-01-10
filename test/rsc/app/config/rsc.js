@@ -27,6 +27,53 @@ module.exports = {
                     }
                 }
             }
+        },
+        'a' : {
+            protocol : 'http',
+            host : 'www.zuoshouyisheng.com',
+            timeout : 10000,
+            headers : {
+                'x-default-header-1' : 's-header-1',
+                'x-default-header-2' : 's-header-2'
+            },
+            api : {
+                'api-1' : {
+                    method : 'GET',
+                    headers : {
+                        'x-default-header-2' : 'a-header-2'
+                    },
+                    params : {
+                        x : 1,
+                        y : 2,
+                        z : 3
+                    }
+                },
+                'api-2' : {
+                    method : 'POST',
+                    headers : {
+                        'x-default-header-2' : 'a-header-2'
+                    },
+                    params : {
+                        x : 1,
+                        y : 2,
+                        z : 3
+                    }
+                },
+
+                'api-3' : {
+                    method : 'POST',
+                    timeout : 3000,
+                    headers : {
+                        'x-default-header-2' : 'a-header-2'
+                    },
+                    params : {
+                        x : 1,
+                        y : 2,
+                        z : 3
+                    },
+                    'content-type' : 'application/json'
+                }
+            }
         }
     }
 };
