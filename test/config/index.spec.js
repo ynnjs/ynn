@@ -1,5 +1,4 @@
 const app = require( './app' );
-const Ynn = require( '../..' );
 
 require('max-listeners-exceeded-warning')();
 
@@ -27,5 +26,12 @@ describe( 'config', () => {
         expect( app.find( 'sub2' ).config( 'common.data.x' ) ).toEqual( undefined ); 
         expect( app.find( 'sub2' ).config( 'common.data', 'x' ) ).toEqual( null ); 
         expect( app.find( 'sub2' ).config( 'common.data.x', 'x' ) ).toEqual( 'x' ); 
+    } );
+
+    it( 'should load function configuration item after plain objects', () => {
+        expect( app.config( 'get.host' ) ).toEqual( app.config( 'db.host' ) );
+        expect( app.config( 'get.user' ) ).toEqual( app.config( 'db.user' ) );
+        expect( app.config( 'get.password' ) ).toEqual( app.config( 'db.password' ) );
+        expect( app.config( 'get.database' ) ).toEqual( app.config( 'db.database' ) );
     } );
 } );
