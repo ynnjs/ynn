@@ -14,5 +14,10 @@ module.exports = class index extends require( '../../../..' ).Controller {
     indexAction() {
         return 'Hello Ynn!'
     }
+
+    cAction() {
+        this.console.error( 'xxxxxxx' );
+        return 'Hello Ynn!';
+    }
     
 }
