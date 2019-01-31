@@ -1,4 +1,5 @@
-module.exports = require( './lib/ynn' );
+module.exports = require( './lib/core' );
+module.exports.Base = require( './lib/base' );
 module.exports.Runtime = require( './lib/runtime' );
 module.exports.Controller = require( './lib/controller' );
 module.exports.Service = require( './lib/service' );
