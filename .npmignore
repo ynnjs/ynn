@@ -19,3 +19,7 @@ rollup.conf.js
 node_modules
 logs
 *.log
+coverage
+.toxrc
+.travis.yml
+example
