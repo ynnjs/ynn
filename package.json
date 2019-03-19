@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.0.40",
+    "version": "0.0.42",
     "keywords": [
         "koa",
         "mvc",
@@ -15,13 +15,13 @@
     ],
     "devDependencies": {
         "@lvchengbin/sleep": "0.0.2",
-        "eslint": "^5.14.1",
-        "jest": "^24.1.0",
+        "eslint": "^5.15.3",
+        "jest": "^24.5.0",
         "jest-mock-console": "^0.4.2",
         "max-listeners-exceeded-warning": "0.0.1",
         "pre-commit": "^1.2.2",
-        "supertest": "^3.4.2",
-        "ynn-ms-idalloc": "0.0.3"
+        "supertest": "^4.0.2",
+        "ynn-ms-idalloc": "0.0.4"
     },
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
@@ -32,7 +32,7 @@
         "@lvchengbin/sequence": "^2.0.1",
         "chalk": "^2.4.2",
         "koa": "^2.7.0",
-        "koa-body": "^4.0.8",
+        "koa-body": "^4.1.0",
         "koa-compose": "^4.1.0",
         "koa-preuse": "0.0.0",
         "koa-sham": "0.0.5",
@@ -43,7 +43,7 @@
         "winston": "^3.2.1",
         "winston-daily-rotate-file": "^3.8.0",
         "winston-transport": "^4.3.0",
-        "yargs": "^13.2.1",
+        "yargs": "^13.2.2",
         "ynn-http-assert": "0.0.3"
     },
     "scripts": {
