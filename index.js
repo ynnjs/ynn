@@ -1,14 +1,17 @@
 const YNN_GLOBAL_MOUNTING_DATA = Symbol.for( 'ynn#global#mounting#data' );
-global[ YNN_GLOBAL_MOUNTING_DATA ] = {
-    status : 0,
-    set( obj ) {
-        Object.assign( this, obj );
-        this.status = 1;
-    },
-    reset() {
-        this.status = 0;
-    }
-};
+
+if( !global[ YNN_GLOBAL_MOUNTING_DATA ] ) {
+    global[ YNN_GLOBAL_MOUNTING_DATA ] = {
+        status : 0,
+        set( obj ) {
+            Object.assign( this, obj );
+            this.status = 1;
+        },
+        reset() {
+            this.status = 0;
+        }
+    };
+}
 
 module.exports = require( './lib/core' );
 module.exports.Base = require( './lib/base' );
