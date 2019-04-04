@@ -23,4 +23,10 @@ describe( 'error', () => {
                 .end( e => e ? done.fail( e ) : done() );
         } );
     }
+
+    it( 'error in action', done => {
+        request( app.listen() ).get( '/index/error' )
+            .expect( 401 )
+            .end( e => e ? done.fail( e ) : done() );
+    } );
 } );

@@ -18,4 +18,8 @@ module.exports = class extends require( '../../../../lib/controller' ) {
     e403Action() {
         this.throw( 403 );
     }
+
+    errorAction() {
+        throw 401;
+    }
 }
