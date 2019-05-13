@@ -28,6 +28,7 @@ node_modules
 .tmp
 
 .audit.json
+.*-audit.json
 logs
 log
 *.log
