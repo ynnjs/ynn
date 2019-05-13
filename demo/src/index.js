@@ -1,4 +1,6 @@
-const Ynn = require( '../' );
+#! /usr/bin/env node
+
+const Ynn = require( '../../' );
 const app = new Ynn( {
     root : __dirname,
     debugging : true,
@@ -6,10 +8,6 @@ const app = new Ynn( {
     modules : {
         id : 'ynn-ms-idalloc'
     }
-} );
-
-app.use( async ctx => {
-    ctx.body = 'Hello Ynn!';
 } );
 
 app.listen( 3000 );

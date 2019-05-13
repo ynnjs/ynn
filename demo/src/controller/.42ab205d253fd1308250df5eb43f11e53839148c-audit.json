@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/home/lvchengbin/workspace/ynn/ynn/demo/src/controller/.42ab205d253fd1308250df5eb43f11e53839148c-audit.json",
+    "files": [
+        {
+            "date": 1557475035348,
+            "name": "/home/lvchengbin/workspace/ynn/ynn/demo/src/controller/warning-2019-05-10.log",
+            "hash": "4210bddd0a6bbdb223e7d14a258dfe93"
+        }
+    ]
+}

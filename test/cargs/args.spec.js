@@ -5,7 +5,7 @@ process.argv.splice( 2, process.argv.length, ...[
     '--debugging=true',
     '--logging=false',
     '--root=app',
-    '--log-path=log',
+    '--log-path=/log',
     '--port=3000'
 ] );
 
@@ -31,5 +31,10 @@ describe( 'Ynn.cargs -- arguments', () => {
     // --port
     it( 'port', () => {
         expect( cargs.port ).toEqual( 3000 );
+    } );
+
+    // --log-path
+    it( 'log-path', () => {
+        expect( cargs[ 'log-path' ] ).toEqual( '/log' );
     } );
 } );
