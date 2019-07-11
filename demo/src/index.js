@@ -6,8 +6,7 @@ const app = new Ynn( {
     debugging : true,
     logging : false,
     modules : {
-        id : 'ynn-ms-idalloc'
     }
 } );
 
-app.listen( 3000 );
+app.listen( );

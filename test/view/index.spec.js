@@ -1,3 +1,4 @@
+const path = require( 'path' );
 const request = require( 'supertest' );
 const Ynn = require( '../../' );
 const app = require( './app' );
@@ -16,16 +17,21 @@ describe( 'Ynn view', () => {
             request( app.listen() ).get( '/index' )
                 .expect( 200 )
                 .expect( 'Content-Type', 'text/html; charset=utf-8' )
-                .expect( '&lt;Hello Ynn!&gt;\n' )
+                .expect( 'Rendered HTML' )
                 .end( e => e ? done.fail( e ) : done() ); 
         } );
 
-        it( '', async () => {
+        it( 'the render function declared in config should get corrent arguments', async () => {
             const runtime = new Ynn.Runtime( ctx );
             await runtime.ready();
-            return expect( runtime.render( 'index.html', {
+            return expect( runtime.render( 'index.tpl', {
                 title : '<Hello Ynn!>'
-            } ) ).resolves.toBe( '&lt;Hello Ynn!&gt;\n' );
+            } ) ).resolves.toEqual( {
+                data : {
+                    title : '<Hello Ynn!>'
+                },
+                file : path.resolve( app.root, app.config( 'view.path' ), 'index.tpl' ),
+            } );
         } );
     } );
     

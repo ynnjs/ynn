@@ -129,7 +129,7 @@ describe( 'rsc', () => {
     describe( 'Symbol(get#request#options)', () => {
         it( 'basic', () => {
             const fn = sp( app.rsc, 'get#request#options' );
-            const opts = fn.call( app.rsc, 'http://localhost', {} );
+            const opts = fn.call( app.rsc, 'http://localhost', {}, {}, true );
             expect( opts ).toHaveProperty( 'uri', 'http://localhost' );
             expect( opts ).toHaveProperty( 'method', 'GET' );
             expect( opts ).toHaveProperty( 'json', true );
@@ -198,7 +198,8 @@ describe( 'rsc', () => {
             expect( opts ).toHaveProperty( 'timeout', 3000 );
             expect( opts.headers ).toEqual( {
                 'x-default-header-1' : 's-header-1',
-                'x-default-header-2' : 'a-header-2'
+                'x-default-header-2' : 'a-header-2',
+                'content-type' : 'application/json; charset=utf-8'
             } );
             expect( opts ).toHaveProperty( 'body.x', 1 );
             expect( opts ).toHaveProperty( 'body.y', 2 );

@@ -4,7 +4,7 @@ const Ynn = require( '../../..' );
 const app = new Ynn( {
     root : __dirname,
     debugging : Ynn.DEBUGGING_DANGER,
-    logging : false,
+    logging : true, //false,
     modules : {
         test : '../sub'
     }

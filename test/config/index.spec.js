@@ -5,8 +5,8 @@ require('max-listeners-exceeded-warning')();
 describe( 'config', () => {
     beforeAll( () => app.ready() );
 
-    it( 'should use the config data from Ynn', () => {
-        expect( app.config( 'app.service.path' ) ).toEqual( 'service' );
+    it( 'app.service.path should be undefined as default', () => {
+        expect( app.config( 'app.service.path' ) ).toBeUndefined();
     } );
 
     it( 'should overwrite the config item defined in Ynn', () => {

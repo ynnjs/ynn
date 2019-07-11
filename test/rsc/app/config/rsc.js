@@ -7,6 +7,7 @@ module.exports = {
         } ]
     },
     service : {
+        '' : {},
         ms : {  
             protocol : 'http',
             timeout : 5000,
@@ -34,7 +35,8 @@ module.exports = {
             timeout : 10000,
             headers : {
                 'x-default-header-1' : 's-header-1',
-                'x-default-header-2' : 's-header-2'
+                'x-default-header-2' : 's-header-2',
+                //get 'request-no'() { return new Date }
             },
             api : {
                 'api-1' : {
@@ -64,14 +66,14 @@ module.exports = {
                     method : 'POST',
                     timeout : 3000,
                     headers : {
-                        'x-default-header-2' : 'a-header-2'
+                        'x-default-header-2' : 'a-header-2',
+                        'content-type' : 'application/json; charset=utf-8'
                     },
                     params : {
                         x : 1,
                         y : 2,
                         z : 3
-                    },
-                    'content-type' : 'application/json'
+                    }
                 }
             }
         }
