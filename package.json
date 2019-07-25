@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.0.55",
+    "version": "0.0.56",
     "keywords": [
         "koa",
         "mvc",
@@ -15,7 +15,7 @@
     ],
     "devDependencies": {
         "@lvchengbin/sleep": "0.0.2",
-        "eslint": "^6.0.1",
+        "eslint": "^6.1.0",
         "jest": "^24.8.0",
         "jest-mock-console": "^1.0.0",
         "max-listeners-exceeded-warning": "0.0.1",
@@ -40,7 +40,7 @@
         "stack-trace": "0.0.10",
         "type-is": "^1.6.18",
         "winston": "^3.2.1",
-        "winston-daily-rotate-file": "^3.9.0",
+        "winston-daily-rotate-file": "^3.10.0",
         "winston-transport": "^4.3.0",
         "yargs": "^13.3.0",
         "ynn-http-assert": "0.0.5"
