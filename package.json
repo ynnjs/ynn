@@ -13,6 +13,8 @@
         "modules",
         "ynn"
     ],
+    "private" : true,
+    "workspaces" : [ "packages/*" ],
     "devDependencies": {
         "@lvchengbin/sleep": "0.0.2",
         "eslint": "^6.7.1",
