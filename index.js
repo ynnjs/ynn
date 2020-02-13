@@ -23,3 +23,4 @@ module.exports.Plugin = require( './lib/plugin' );
 module.exports.Console = require( './lib/console' );
 module.exports.Router = require( './lib/router' );
 module.exports.Middleware = require( './lib/middleware' );
+module.exports.Extension = require( './lib/extension' );

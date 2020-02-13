@@ -1,3 +1,12 @@
+/******************************************************************
+ * Copyright (C) 2020 LvChengbin
+ * 
+ * File：index.spec.js
+ * Author ：LvChengbin<lvchengbin59@gmail.com>
+ * Time ：02/13/2020
+ * Description ：
+ ******************************************************************/
+
 const is = require( '@lvchengbin/is' );
 const Plugin = require( '../../lib/plugin' );
 const app = require( './app' );
