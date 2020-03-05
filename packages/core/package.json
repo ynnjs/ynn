@@ -1,0 +1,11 @@
+{
+  "name": "@ynn/core",
+  "version": "0.0.0",
+  "description": "Ynn core",
+  "main": "src/index.js",
+  "author": "LvChengbin <lvchengbin59@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/koa": "^2.11.2"
+  }
+}

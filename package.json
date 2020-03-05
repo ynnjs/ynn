@@ -13,40 +13,19 @@
         "modules",
         "ynn"
     ],
-    "private" : true,
-    "workspaces" : [ "packages/*" ],
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
     "devDependencies": {
-        "@lvchengbin/sleep": "0.0.2",
-        "eslint": "^6.7.1",
-        "jest": "^25.0.0",
-        "jest-mock-console": "^1.0.0",
-        "max-listeners-exceeded-warning": "0.0.1",
-        "pre-commit": "^1.2.2",
-        "supertest": "^5.0.0-0"
+        "@typescript-eslint/eslint-plugin": "^2.22.0",
+        "@typescript-eslint/parser": "^2.22.0",
+        "eslint": "^6.8.0",
+        "typescript": "^3.8.3"
     },
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
-    "dependencies": {
-        "@lvchengbin/config": "0.0.2",
-        "@lvchengbin/is": "0.0.27",
-        "@lvchengbin/koa-router": "0.1.1",
-        "@lvchengbin/sequence": "^2.0.1",
-        "chalk": "^3.0.0",
-        "koa": "^2.11.0",
-        "koa-body": "^4.1.1",
-        "koa-compose": "^4.1.0",
-        "koa-preuse": "0.0.0",
-        "koa-sham": "0.0.11",
-        "koa-static": "^5.0.0",
-        "request": "^2.88.0",
-        "stack-trace": "0.0.10",
-        "type-is": "^1.6.18",
-        "winston": "^3.2.1",
-        "winston-daily-rotate-file": "^4.3.0",
-        "winston-transport": "^4.3.0",
-        "yargs": "^14.2.2",
-        "ynn-http-assert": "0.0.5"
-    },
+    "dependencies": {},
     "scripts": {
         "test": "jest --forceExit",
         "tw": "jest --watch",
