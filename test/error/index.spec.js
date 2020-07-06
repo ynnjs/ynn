@@ -1,5 +1,5 @@
 const request = require( 'supertest' );
-const mockConsole = require( 'jest-mock-console' ).default;
+const mockConsole = require( 'jest-mock-console' );
 const app = require( './app' );
 
 require('max-listeners-exceeded-warning')();

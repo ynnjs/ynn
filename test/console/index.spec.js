@@ -1,4 +1,13 @@
-const mockConsole = require( 'jest-mock-console' ).default;
+/******************************************************************
+ * Copyright (C) 2020 LvChengbin
+ * 
+ * File: console/index.spec.js
+ * Author: LvChengbin<lvchengbin59@gmail.com>
+ * Time: 07/07/2020
+ * Description: 
+ ******************************************************************/
+
+const mockConsole = require( 'jest-mock-console' );
 const C = require( '../../lib/constants' );
 const Console = require( '../../lib/console' );
 

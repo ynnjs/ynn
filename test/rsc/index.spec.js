@@ -133,11 +133,6 @@ describe( 'rsc', () => {
             expect( opts ).toHaveProperty( 'uri', 'http://localhost' );
             expect( opts ).toHaveProperty( 'method', 'GET' );
             expect( opts ).toHaveProperty( 'json', true );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__client' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__key' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__rsc', 1 );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__time' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__token' );
             expect( opts ).toHaveProperty( 'timeout', 5000 );
             expect( opts ).toHaveProperty( 'headers', {} );
         } );
@@ -148,11 +143,6 @@ describe( 'rsc', () => {
             expect( opts ).toHaveProperty( 'uri', 'http://www.zuoshouyisheng.com/api-1' );
             expect( opts ).toHaveProperty( 'method', 'GET' );
             expect( opts ).toHaveProperty( 'json', true );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__client' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__key' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__rsc', 1 );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__time' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__token' );
             expect( opts ).toHaveProperty( 'timeout', 10000 );
             expect( opts.headers ).toEqual( {
                 'x-default-header-1' : 's-header-1',
@@ -169,11 +159,6 @@ describe( 'rsc', () => {
             expect( opts ).toHaveProperty( 'uri', 'http://www.zuoshouyisheng.com/api-2' );
             expect( opts ).toHaveProperty( 'method', 'POST' );
             expect( opts ).toHaveProperty( 'json', true );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__client' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__key' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__rsc', 1 );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__time' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__token' );
             expect( opts ).toHaveProperty( 'timeout', 10000 );
             expect( opts.headers ).toEqual( {
                 'x-default-header-1' : 's-header-1',
@@ -190,11 +175,6 @@ describe( 'rsc', () => {
             expect( opts ).toHaveProperty( 'uri', 'http://www.zuoshouyisheng.com/api-3' );
             expect( opts ).toHaveProperty( 'method', 'POST' );
             expect( opts ).toHaveProperty( 'json', true );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__client' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__key' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__rsc', 1 );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__time' );
-            expect( opts ).toHaveProperty( 'qs.$ynn_rsc__token' );
             expect( opts ).toHaveProperty( 'timeout', 3000 );
             expect( opts.headers ).toEqual( {
                 'x-default-header-1' : 's-header-1',
