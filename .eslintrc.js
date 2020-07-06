@@ -1,10 +1,10 @@
 module.exports = {
     parser : '@typescript-eslint/parser',
     plugins : [
-        '@typescript-eslint/eslint-plugin'
+        '@typescript-eslint'
     ],
     env : {
-        'node' : true
+        node : true
     },
     globals : {
         define : true,
@@ -18,8 +18,8 @@ module.exports = {
         afterAll : true,
         expect : true
     },
-    extends: [
-        'plugin:@typescript-eslint/eslint-recommended',
+    extends : [
+        'eslint:recommended',
         'plugin:@typescript-eslint/recommended'
     ],
     root : true,

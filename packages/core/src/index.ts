@@ -7,12 +7,12 @@
  * Description: 
  ******************************************************************/
 
-import Koa from 'koa';
+import * as Koa from 'koa';
 
 class Ynn extends Koa {
-    constructor( options = {} ) {
-        super( options() );
+    constructor() {
+        super();
     }
 }
 
-module.exports = Ynn;
+export default Ynn;
