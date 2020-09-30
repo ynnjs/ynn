@@ -15,19 +15,15 @@ module.exports = {
         'plugin:@typescript-eslint/recommended'
     ],
     globals : {
+        Buffer : true,
         process : true
-    },
-    settings : {
-        ecmascript : 6
     },
     parserOptions : {
         sourceType : 'module',
-        ecmaVersion : 2018
+        ecmaVersion : 2020
     },
     root : true,
     env : {
-        browser : true,
-        es6 : true,
         jest : true
     },
     rules : {
