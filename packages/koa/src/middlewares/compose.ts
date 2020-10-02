@@ -7,4 +7,26 @@
  * Description: 
  ******************************************************************/
 
+export type Next = () => Promise<any>;
+export type Middleware<T> = ( context: T, next: Next ) => any;
+export type ComposedMiddleware<T> = ( context: T, next?: Next ) => Promise<void>;
 
+export default function compose<T>( middleware: Middleware<T>[] ): ComposedMiddleware<T>  { 
+
+    return ( ctx, next ) => {
+        // last called middleware
+        let index = -1;
+
+        function dispatch( i: number ): Promise<any> {
+            if( i <= index ) return Promise.reject( new Error( 'next() called multiple times' ) );
+            index = i;
+            const fn = i === middleware.length ? next : middleware[ i ];
+            if( !fn ) return Promise.resolve();
+            try {
+                return Promise.resolve( fn( ctx, dispatch.bind( null, i + 1 ) ) );
+            } catch( e ) { return Promise.reject( e ) }
+        }
+
+        return dispatch( 0 );
+    }
+}

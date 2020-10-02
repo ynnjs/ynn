@@ -9,14 +9,17 @@
 
 import http from 'http';
 import util from 'util';
-import Events from 'events';
+import { EventEmitter } from 'events';
 import Stream from 'stream';
-import compose from './middlewares/compose';
 import onFinished from 'on-finished';
 import statuses from 'statuses';
+import context from './context';
+import request from './request';
+import response from './response';
+import compose from './middlewares/compose';
 export { HttpError } from 'http-errors';
 
-const debug = util.debug( 'ynn:koa:application' );
+const debug = util.debuglog( 'ynn:koa:application' );
 
 export type ApplicationOptions = {
     proxy: boolean;
@@ -24,8 +27,11 @@ export type ApplicationOptions = {
 
 export type Middleware = ( ...args: any[] ) => any;
 
-export default class Application extends Events {
+export default class Application extends EventEmitter {
     public proxy = false;
+    public context = Object.create( context );
+    public request = Object.create( request );
+    public response = Object.create( response );
     public middleware: Middleware[] = [];
     public subdomainOffset = 2;
     public maxIpsCount = 0;

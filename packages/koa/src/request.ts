@@ -36,7 +36,7 @@ export default {
     /**
      * Set request header.
      */
-    set header( val: Record<string, any> ): void {
+    set header( val: Record<string, any> ) {
         this.req.headers = val;
     },
 
@@ -64,7 +64,7 @@ export default {
     /**
      * Set request URL
      */
-    set url( val ): void {
+    set url( val ) {
         this.req.url = val;
     },
 
@@ -95,7 +95,7 @@ export default {
     /**
      * Set request method.
      */
-    set method( val: string ): void {
+    set method( val: string ) {
         this.req.method = val;
     },
 
@@ -342,7 +342,7 @@ export default {
     /**
      * Set accept object
      */
-    set accept( obj: Record<string, any> ): void {
+    set accept( obj: Record<string, any> ) {
         this[ ACCEPT ] = obj;
     },
 

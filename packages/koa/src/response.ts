@@ -55,7 +55,7 @@ export default {
     /**
      * Set response status code
      */
-    set status( code: number ): void {
+    set status( code: number ) {
         if( this.headerSent ) return;
         assert( code >= 100 && code <= 999, `invalid status code: ${code}` );
         this._explicitStatus = true;
@@ -73,7 +73,7 @@ export default {
     /**
      * Set response status message
      */
-    set message( msg: string ): void {
+    set message( msg: string ) {
         this.res.statusMessage = msg;
     },
 
@@ -87,7 +87,7 @@ export default {
     /**
      * Set response body
      */
-    set body( val: ResponseBody ): void {
+    set body( val: ResponseBody ) {
         const original = this._body;
         this._body = val;
 
@@ -141,7 +141,7 @@ export default {
     /**
      * Set Content-Length field to `n`.
      */
-    set length( n: number ): void {
+    set length( n: number ) {
         this.et( 'Content-Length', n );
     },
 
@@ -229,7 +229,7 @@ export default {
      *      this.type = 'application/json';
      *      this.type = 'png';
      */
-    set type( type: string ): void {
+    set type( type: string ) {
         type = getType( type );
         if( type ) {
             this.set( 'Content-Type', type );
@@ -244,7 +244,7 @@ export default {
      *      this.response.lastModified = new Date();
      *      this.response.lastModified = '2013-09-13';
      */
-    set lastModified( val: string | Date ): void {
+    set lastModified( val: string | Date ) {
         if( 'string' === typeof val ) val = new Date( val );
         this.set( 'Last-Modified', val.toUTCString() );
     },
@@ -264,7 +264,7 @@ export default {
      *      this.response.etag = '"md5hashsum"';
      *      this.response.etag = 'W//"123456789"';
      */
-    set etag( val: string ): void {
+    set etag( val: string ) {
         if( !/^(W\/)?"/.test( val ) ) val = `"${val}"`;
         this.set( 'ETag', val );
     },
@@ -325,7 +325,7 @@ export default {
      *      this.set( 'Accept', 'application/json' );
      *      this.set( { Accept: 'text/plain', 'X-API-Key' : 'tobi' } );
      */
-    set( field: string | Record<string, string | string[]>, val?: string | string[] ): void {
+    set( field: string | Record<string, string | string[]>, val?: string | string[] ) {
         if( this.headerSent ) return;
 
         if( 2 === arguments.length ) {

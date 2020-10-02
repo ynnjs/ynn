@@ -24,7 +24,8 @@ module.exports = {
     },
     root : true,
     env : {
-        jest : true
+        jest : true,
+        node : true
     },
     rules : {
         '@typescript-eslint/explicit-module-boundary-types' : 'off',

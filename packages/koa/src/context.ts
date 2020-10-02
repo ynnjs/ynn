@@ -10,9 +10,9 @@
 import util from 'util';
 import Cookies from 'cookies';
 import statuses from 'statuses';
-import delegates from 'delegates';
 import httpErrors from 'http-errors';
 import httpAssert from 'http-assert';
+import Delegates from './delegates';
 
 const COOKIES = Symbol( 'cookies' );
 
@@ -144,57 +144,17 @@ const proto = {
 /**
  * Response delegation.
  */
-delegates( proto, 'response' )
-    .method( 'attachment' )
-    .method( 'redirect' )
-    .method( 'remove' )
-    .method( 'vary' )
-    .method( 'has' )
-    .method( 'set' )
-    .method( 'append' )
-    .method( 'flushHeaders' )
-    .access( 'status' )
-    .access( 'message' )
-    .access( 'body' )
-    .access( 'length' )
-    .access( 'type' )
-    .access( 'lastModified' )
-    .access( 'etag' )
-    .getter( 'headerSent' )
-    .getter( 'writable' );
+new Delegates( proto, 'response' )
+    .methods( 'attachment', 'redirect', 'remove', 'vary', 'has', 'set', 'append', 'flushHeaders' )
+    .accesses( 'status', 'message', 'body', 'length', 'type', 'lastModified', 'etag' )
+    .getters( 'headerSent', 'writable' );
 
 /**
  * Request delegation.
  */
-delegates( proto, 'request' )
-    .method( 'acceptsLanguages' )
-    .method( 'acceptsEncodings' )
-    .method( 'acceptsCharsets' )
-    .method( 'accepts' )
-    .method( 'get' )
-    .method( 'is' )
-    .access( 'querystring' )
-    .access( 'idempotent' )
-    .access( 'socket' )
-    .access( 'search' )
-    .access( 'method' )
-    .access( 'query' )
-    .access( 'path' )
-    .access( 'url' )
-    .access( 'accept' )
-    .getter( 'origin' )
-    .getter( 'href' )
-    .getter( 'subdomains' )
-    .getter( 'protocol' )
-    .getter( 'host' )
-    .getter( 'hostname' )
-    .getter( 'URL' )
-    .getter( 'header' )
-    .getter( 'headers' )
-    .getter( 'secure' )
-    .getter( 'stale' )
-    .getter( 'fresh' )
-    .getter( 'ips' )
-    .getter( 'ip' );
+new Delegates( proto, 'request' )
+    .method( 'acceptsLanguages', 'acceptsEncodings', 'acceptsCharsets', 'accepts', 'get', 'is' )
+    .access( 'querystring', 'idempotent', 'socket', 'search', 'method', 'query', 'path', 'url', 'accept' )
+    .getter( 'origin', 'href', 'subdomains', 'protocol', 'host', 'hostname', 'URL', 'header', 'headers', 'secure', 'stale', 'fresh', 'ips', 'ip' );
 
 export default proto;
