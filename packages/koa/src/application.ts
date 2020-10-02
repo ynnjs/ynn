@@ -22,22 +22,23 @@ export { HttpError } from 'http-errors';
 const debug = util.debuglog( 'ynn:koa:application' );
 
 export type ApplicationOptions = {
-    proxy: boolean;
+    proxy?: boolean;
 }
 
 export type Middleware = ( ...args: any[] ) => any;
 
 export default class Application extends EventEmitter {
-    public proxy = false;
+    public proxy: boolean;
+    public proxyIpHeader: string;
     public context = Object.create( context );
     public request = Object.create( request );
     public response = Object.create( response );
     public middleware: Middleware[] = [];
     public subdomainOffset = 2;
-    public maxIpsCount = 0;
+    public maxIpsCount: number;
     public env = 'development';
 
-    constructor( options = {} ) {
+    constructor( options: ApplicationOptions = {} ) {
         super();
         this.proxy = options.proxy || false;
         this.subdomainOffset = options.subdomainOffset || 2;
