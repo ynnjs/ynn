@@ -9,6 +9,9 @@
 
 import util from 'util';
 import net, { Socket } from 'net';
+import { TLSSocket } from 'tls';
+import { IncomingMessage, IncomingHttpHeaders } from 'http';
+import { Http2ServerRequest } from 'http2';
 import { URL } from 'url';
 import accepts from 'accepts';
 import contentType from 'content-type';
@@ -16,62 +19,104 @@ import qs from 'querystring';
 import parseurl from 'parseurl';
 import fresh from 'fresh';
 import typeis from 'type-is';
+import Koa from './application';
+import { KoaContext } from './context';
+import { KoaResponse } from './response';
 
 const IP = Symbol( 'ip' );
 const ACCEPT = Symbol( 'accept' );
+const QUERY_CACHE = Symbol( 'query#cache' );
+const MOMIZED_URL = Symbol( 'momized#url' );
+
+export type KoaRequestQuery = Record<string, any>;
+
+export interface KoaRequest {
+    URL: URL | Record<any, any>;
+    [ MOMIZED_URL ]?: URL | Record<any, any>;
+    [ QUERY_CACHE ]?: Record<string, KoaRequestQuery>;
+    [ util.inspect.custom ]: () => Record<string, any> | void;
+    accept: Record<string, any>;
+    accepts: ( ...args: Array<string | string[]> ) => boolean | string | string[];
+    acceptsCharsets: ( ...args: Array<string | string[]> ) => string | string[];
+    acceptsEncodings: ( ...args: Array<string | string[]> ) => string | string[];
+    acceptsLanguages: ( ...args: Array<string | string[]> ) => string | string[];
+    app?: Koa;
+    charset: string;
+    ctx?: KoaContext;
+    fresh: boolean;
+    get: ( field: string ) => string;
+    header: IncomingHttpHeaders;
+    headers: IncomingHttpHeaders;
+    host: string;
+    hostname: string;
+    href: string;
+    idempotent: boolean;
+    inspect: () => Record<string, any> | void;
+    ip: string;
+    ips: string[];
+    is: ( ( ...types: Array<string | string[]> ) => string | false | null )
+        | ( ( types: string[] ) => string | false | null );
+    length: number | void;
+    method: string;
+    origin: string;
+    originalUrl?: string;
+    path: string;
+    protocol: string;    
+    query: KoaRequestQuery;
+    querystring: string;
+    req?: IncomingMessage | Http2ServerRequest;
+    response?: KoaResponse;
+    search: string;
+    secure: boolean;
+    socket: Socket | TLSSocket;
+    stale: boolean;
+    subdomains: string[];
+    toJSON: () => Record<string, any>;
+    type: string;
+    url?: string;
+}
 
 /**
  * Prototype
  */
-export default {
-    /**
-     * Return request header.
-     *
-     * @return {Object}
-     */
-    get header(): Record<string, any> {
-        return this.req.headers;
-    },
-    
-    /**
-     * Set request header.
-     */
-    set header( val: Record<string, any> ) {
-        this.req.headers = val;
-    },
+const Request: KoaRequest = {
 
     /**
-     * Return request header, alias as request.header
+     * Return request headers
+     * Request headers is a read-only property in Http2ServerRequest.
      */
-    get headers(): Record<string, any> {
-        return this.req.headers;
+    get header() {
+        return this.headers;
     },
 
-    /**
-     * Set request header, alias as request.header
-     */
-    set headers( val: Record<string, any> ) {
-        this.req.headers = val;
+    set header( header ) {
+        this.headers = header;
+    },
+
+    get headers() {
+        return this.req!.headers;
+    },
+
+    set headers( headers ) {
+        ( this.req! as IncomingMessage ).headers = headers;
     },
 
     /**
      * Get request URL
+     * Property url is readonly in Http2ServerRequest
      */
-    get url(): string {
-        return this.req.url;
+    get url() {
+        return this.req!.url;
     },
 
-    /**
-     * Set request URL
-     */
     set url( val ) {
-        this.req.url = val;
+        ( this.req! as IncomingMessage ).url = val;
     },
 
     /**
      * Get origin of URL
      */
-    get origin(): string {
+    get origin() {
         return `${this.protocol}://${this.host}`;
     },
 
@@ -80,36 +125,35 @@ export default {
      *
      * @return {String}
      */
-    get href(): string {
-        if( /^https?:\/\//i.test( this.originalUrl ) ) return this.originalUrl;
-        return this.origin + this.originalUrl;
+    get href() {
+        if( /^https?:\/\//i.test( this.originalUrl! ) ) return this.originalUrl!;
+        return this.origin + this.originalUrl!;
     },
 
     /**
      * Get request method
+     *
+     * Property method is readonly in Http2ServerRequest
      */
-    get method(): string {
-        return this.req.method;
+    get method() {
+        return this.req!.method || '';
     },
 
-    /**
-     * Set request method.
-     */
-    set method( val: string ) {
-        this.req.method = val;
+    set method( val ) {
+        ( this.req! as IncomingMessage ).method = val;
     },
 
     /**
      * Get request pathname
      */
-    get path(): string {
+    get path() {
         return parseurl( this.req ).pathname;
     },
 
     /**
      * Set pathname, retaining the query string when present.
      */
-    set path( path: string ) {
+    set path( path ) {
         const url = parseurl( this.req );
         if( url.pathname === path ) return;
         url.pathname = path;
@@ -120,23 +164,23 @@ export default {
     /**
      * Get parsed query string
      */
-    get query(): string {
+    get query() {
         const str = this.querystring;
-        const c = this._querycache = this._querycache || {};
+        const c = ( this[ QUERY_CACHE ] ||= {} );
         return c[ str ] || ( c[str] = qs.parse( str ) );
     },
 
     /**
      * Set query string as an object.
      */
-    set query( obj: Record<string, any> ) {
+    set query( obj ) {
         this.querystring = qs.stringify( obj );
     },
 
     /**
      * Get query string
      */
-    get querystring(): string {
+    get querystring() {
         if( !this.req ) return '';
         return parseurl( this.req ).query || '';
     },
@@ -144,7 +188,7 @@ export default {
     /**
      * Set query string.
      */
-    set querystring( str: string ) {
+    set querystring( str ) {
         const url = parseurl( this.req );
         if( url.search === `?${str}` ) return;
         url.search = str;
@@ -156,7 +200,7 @@ export default {
      * Get the search string. Same as the query string.
      * except it includes the leading ?.
      */
-    get search(): string {
+    get search() {
         if( !this.querystring ) return '';
         return `?${this.querystring}`;
     },
@@ -164,17 +208,17 @@ export default {
     /**
      * Set the search string. Same as request.querystring= but included for ubiquity
      */
-    set search( str: string ) {
+    set search( str ) {
         this.querystring = str;
     },
 
     /**
      * Parse the "Host" header field host and support X-Forwarded-Host when a proxy is enabled.
      */
-    get host(): string {
-        let host = this.app.proxy && this.get( 'X-Forwarded-Host' );
+    get host() {
+        let host = this.app!.proxy && this.get( 'X-Forwarded-Host' );
         if( !host ) {
-            if( this.req.httpVersionMajor >= 2 ) host = this.get( ':authority' );
+            if( this.req!.httpVersionMajor >= 2 ) host = this.get( ':authority' );
             if( !host ) host = this.get( 'Host' );
         }
         if( !host ) return '';
@@ -184,7 +228,7 @@ export default {
     /**
      * Parse the "Host" header field hostname and support X-Forwarded-Host when a proxy is enabled.
      */
-    get hostname(): string {
+    get hostname() {
         const { host } = this;
         if( !host ) return '';
         if( '[' === host[ 0 ] ) return this.URL.hostname || ''; // IPv6
@@ -194,30 +238,30 @@ export default {
     /**
      * Get WHATWG parsed URL. Lazily memoized
      */
-    get URL(): URL | Record<any, any> {
-        if( !this.momizedURL ) {
+    get URL() {
+        if( !this[ MOMIZED_URL ] ) {
             try {
-                this.momizedURL = new URL( `${this.origin}${this.originalUrl || ''}` );
+                this[ MOMIZED_URL ] = new URL( `${this.origin}${this.originalUrl! || ''}` );
             } catch( e ) {
-                this.momizedURL = Object.create( null );
+                this[ MOMIZED_URL ] = Object.create( null );
             }
         }
-        return this.momizedURL;
+        return this[ MOMIZED_URL ]!;
     },
 
     /**
      * Check if the request is fresh, aka "Last-Modified" and/or the "ETag" still match
      */
-    get fresh(): boolean {
+    get fresh() {
         const { method } = this;
-        const { status } = this.ctx;
+        const { status } = this.ctx!;
 
         // Get or HEAD for weak freshness validation only
         if( 'GET' !== method && 'HEAD' !== method ) return false;
 
         // 2xx or 304 as per rfc2616 14.26
-        if( ( status > 200 && status < 300 ) || 304 === status ) {
-            return fresh( this.header, this.response.header ); 
+        if( ( status >= 200 && status < 300 ) || 304 === status ) {
+            return fresh( this.headers, this.response!.headers ); 
         }
         return false;
     },
@@ -225,35 +269,39 @@ export default {
     /**
      * Check if the request is stale, aka "Last-Modified" and/or the "ETag" for the resource has changed.
      */
-    get stale(): boolean {
+    get stale() {
         return !this.fresh;
     },
 
     /**
      * Check if the request is idempotent
      */
-    get idempotent(): boolean {
+    get idempotent() {
         return [ 'GET', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'TRACE' ].includes( this.method );
     },
 
     /**
      * Return the request socket
      */
-    get socket(): Socket {
-        return this.req.socket;
+    get socket() {
+        return this.req!.socket;
     },
 
     /**
      * Get the charset when present or undefined
      */
-    get charset(): string {
-        return contentType.parse( this.req )?.parameters?.charset || '';
+    get charset() {
+        try {
+            return contentType.parse( this.req! ).parameters.charset || '';
+        } catch( e ) {
+            return '';
+        }
     },
 
     /**
      * Return parsed Content-Length when present
      */
-    get length(): void | number {
+    get length() {
         const len = this.get( 'Content-Length' );
         if( len === '' ) return;
         return ~~len;
@@ -264,9 +312,9 @@ export default {
      * When the proxy setting is enabled the "X-Forwarded-Proto" header field will be trusted.
      * If you're running behind a reverse proxy that supplies https for you this may be enabled.
      */
-    get protocol(): string {
-        if( this.socket.encrypted ) return 'https';
-        if( !this.app.proxy ) return 'http';
+    get protocol() {
+        if( ( this.socket as TLSSocket ).encrypted ) return 'https';
+        if( !this.app!.proxy ) return 'http';
         return this.get( 'X-Forwarded-Proto' )?.split( /\s*,\s*/, 1 )[ 0 ] || 'http';
     },
 
@@ -284,12 +332,12 @@ export default {
      * you would receive the array `[ "client", "proxy1", "proxy2" ]`
      * where "proxy2" is the furthest down-stream.
      */
-    get ips(): string[] {
-        const { proxy } = this.app;
-        const val = this.get( this.app.proxyIpHeader );
+    get ips() {
+        const { proxy } = this.app!;
+        const val = this.get( this.app!.proxyIpHeader );
         let ips = proxy && val ? val.split( /\s*,\s*/ ) : [];
-        if( this.app.maxIpsCount > 0 ) {
-            ips = ips.slice( -this.app.maxIpsCount );
+        if( this.app!.maxIpsCount > 0 ) {
+            ips = ips.slice( -this.app!.maxIpsCount );
         }
         return ips;
     },
@@ -299,12 +347,14 @@ export default {
      * When `app.trustXRealIp` is `true`, try getting the "X-Real-IP" first.
      * When `app.proxy` is `true`, parse the "X-Forwarded-For" ip address list and return the first one
      */
-    get ip(): string {
+    get ip() {
         if( !this[ IP ] ) {
-            if( this.app.trustXRealIp ) {
+            if( this.app!.trustXRealIp ) {
                 if( !( this[ IP ] = this.get( 'X-Real-IP' ) ) ) {
                     this[ IP ] = this.ips[ 0 ] || this.socket.remoteAddress || '';
                 }
+            } else {
+                this[ IP ] = this.ips[ 0 ] || this.socket.remoteAddress || '';
             }
         }
         return this[ IP ];
@@ -325,9 +375,9 @@ export default {
      * If `app.subdomainOffset` is not set, the subdomains is `[ "ferrets", "tobi" ]`.
      * If `app.subdomainOffset` is 3, the subdomains is `[ "tobi" ]`.
      */
-    get subdomains(): string[] {
-        const offset = this.app.subdomainOffset;
-        const { hostname } = this.hostname;
+    get subdomains() {
+        const offset = this.app!.subdomainOffset;
+        const { hostname } = this;
         if( net.isIP( hostname ) ) return [];
         return hostname.split( '.' ).reverse().slice( offset );
     },
@@ -336,7 +386,10 @@ export default {
      * Get accept object. Lazily memoized.
      */
     get accept() {
-        return this[ ACCEPT ] ||= accepts( this.req );
+        /**
+         * accepts does't support Http2ServerRequest in it's delcaration file
+         */
+        return this[ ACCEPT ] ||= accepts( this.req! as IncomingMessage );
     },
 
     /**
@@ -379,7 +432,7 @@ export default {
      *      this.accepts( 'html', 'json' );
      *      // => "json"
      */
-    accepts( ...args: Array<string | string[]> ): boolean | string | string[] {
+    accepts( ...args ) {
         return this.accept.types( ...args );
     },
 
@@ -389,7 +442,7 @@ export default {
      * Given `Accept-Encoding: gzip, deflate`
      * an array sorted by quality is returned: [ 'gzip', 'deflate' ]
      */
-    acceptsEncodings( ...args: Array<string | string[]> ): string | string[] {
+    acceptsEncodings( ...args ) {
         return this.accept.encodings( ...args );
     },
 
@@ -399,7 +452,7 @@ export default {
      * Given `Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5`
      * an array sorted by quality is required: [ 'utf-8', 'utf-7', 'iso-8859-1' ]
      */
-    acceptsCharsets( ...args: Array<string | string[]> ): string | string[] {
+    acceptsCharsets( ...args ) {
         return this.accept.charsets( ...args );
     },
 
@@ -409,7 +462,7 @@ export default {
      * Given `Accept-Language: en;q=0.8, es, pt`
      * an array sorted by quality is returned: [ 'es', 'pt', 'en' ]
      */
-    acceptsLanguages( ...args: Array<string | string[]> ): string | string[] {
+    acceptsLanguages( ...args ) {
         return this.accept.languages( ...args );
     },
     
@@ -432,8 +485,11 @@ export default {
      *
      *      this.is( 'html' ); // => false
      */
-    is( type: string | string[], ...types: Array<string | string[]> ): string | false | null {
-        return typeis( this.req, type, ...types );
+    is( ...types ) {
+        /**
+         * typeis doesn't support Http2ServerRequest in it's declaration file.
+         */
+        return typeis( this.req! as IncomingMessage, ...types );
     },
 
     /**
@@ -454,24 +510,29 @@ export default {
      *      this.get( 'Something' ); // => ""
      */
     get( field: string ): string {
-        switch( field = field.toLowerCalse() ) {
+        switch( field = field.toLowerCase() ) {
             case 'referer':
             case 'referrer':
-                return this.req.headers.referrer || this.req.headers.referer || '';
+                /**
+                 * referrer is not defined in IncomingHttpHeaders
+                 * it is able to be string[]
+                 * see: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/node/http.d.ts
+                 */
+                return this.req!.headers.referrer as string || this.req!.headers.referer || '';
             default:
-                return this.req.headers[ field ] || '';
+                return this.req!.headers[ field ] as string || '';
         }
     },
 
     /**
      * Inspact implementation.
      */
-    inspect(): Record<string, any> | void {
+    inspect() {
         if( !this.req ) return;
         return this.toJSON();
     },
 
-    [ util.inspect.custom ](): Record<string, any> | void {
+    [ util.inspect.custom ]() {
         return this.inspect();
     },
 
@@ -482,7 +543,9 @@ export default {
         return {
             method : this.method,
             url : this.url,
-            header : this.header
+            headers : this.headers
         }
     }
 }
+
+export default Request;

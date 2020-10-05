@@ -1016,6 +1016,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/escape-html", [
+        ["npm:1.0.0", {
+          "packageLocation": "./.yarn/cache/@types-escape-html-npm-1.0.0-aacd6ae8d9-ff1e94aff8.zip/node_modules/@types/escape-html/",
+          "packageDependencies": [
+            ["@types/escape-html", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/express", [
         ["npm:4.17.3", {
           "packageLocation": "./.yarn/cache/@types-express-npm-4.17.3-ac3232298a-aeb57af48f.zip/node_modules/@types/express/",
@@ -1481,6 +1490,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/content-type", "npm:1.1.3"],
             ["@types/cookies", "npm:0.7.4"],
             ["@types/encodeurl", "npm:1.0.0"],
+            ["@types/escape-html", "npm:1.0.0"],
             ["@types/http-assert", "npm:1.5.1"],
             ["@types/http-errors", "npm:1.8.0"],
             ["@types/jest", "npm:26.0.14"],
@@ -1502,11 +1512,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["delegates", "npm:1.0.0"],
             ["depd", "npm:2.0.0"],
             ["encodeurl", "npm:1.0.2"],
+            ["escape-html", "npm:1.0.3"],
             ["eslint", "npm:7.10.0"],
             ["fresh", "npm:0.5.2"],
             ["http-assert", "npm:1.4.1"],
             ["http-errors", "npm:1.8.0"],
             ["jest", "npm:26.4.2"],
+            ["keygrip", "npm:1.1.0"],
             ["on-finished", "npm:2.3.0"],
             ["parseurl", "npm:1.3.3"],
             ["statuses", "npm:2.0.0"],
@@ -2822,6 +2834,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["error-ex", "npm:1.3.2"],
             ["is-arrayish", "npm:0.2.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["escape-html", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/escape-html-npm-1.0.3-376c22ee74-900a7f2b80.zip/node_modules/escape-html/",
+          "packageDependencies": [
+            ["escape-html", "npm:1.0.3"]
           ],
           "linkType": "HARD",
         }]

@@ -11,24 +11,34 @@ import http from 'http';
 import util from 'util';
 import { EventEmitter } from 'events';
 import Stream from 'stream';
+import Keygrip from 'keygrip';
 import onFinished from 'on-finished';
 import statuses from 'statuses';
+import { HttpError } from 'http-errors';
 import context from './context';
 import request from './request';
 import response from './response';
 import compose from './middlewares/compose';
-export { HttpError } from 'http-errors';
 
 const debug = util.debuglog( 'ynn:koa:application' );
 
+export type Keys = Keygrip | string[];
+
 export type ApplicationOptions = {
+    keys?: Keys;
+    env?: string;
     proxy?: boolean;
+    maxIpsCount?: number;
+    proxyIpHeader?: string;
+    subdomainOffset?: number;
 }
 
 export type Middleware = ( ...args: any[] ) => any;
 
 export default class Application extends EventEmitter {
+    public silent = false;
     public proxy: boolean;
+    public trustXRealIp = false;
     public proxyIpHeader: string;
     public context = Object.create( context );
     public request = Object.create( request );
@@ -37,12 +47,14 @@ export default class Application extends EventEmitter {
     public subdomainOffset = 2;
     public maxIpsCount: number;
     public env = 'development';
+    public keys: Keys;
+    static public HttpError = HttpError;
 
     constructor( options: ApplicationOptions = {} ) {
         super();
         this.proxy = options.proxy || false;
         this.subdomainOffset = options.subdomainOffset || 2;
-        this.proxyIpHeaer = options.proxyIpHeader || 'X-Forward-For';
+        this.proxyIpHeader = options.proxyIpHeader || 'X-Forwarded-For';
         this.maxIpsCount = options.maxIpsCount || 0;
         this.env = options.env || process.env.NODE_ENV || 'development';
         options.keys && ( this.keys = options.keys );
@@ -95,7 +107,7 @@ export default class Application extends EventEmitter {
      */
     use( fn: Middleware ): this {
         if( typeof fn !== 'function' ) throw new TypeError( 'middleware must be a function!' );
-        debug( 'use %s', fn._name || fn.name || '-' );
+        debug( 'use %s', fn.name || '-' );
         this.middleware.push( fn );
         return this;
     }
@@ -122,7 +134,7 @@ export default class Application extends EventEmitter {
         return middleware( ctx ).then( (): any => {
             if( false === ctx.respond ) return;
             if( !ctx.writable ) return;
-            const { body, status } = ctx;
+            let { body, status } = ctx;
 
             if( statuses.empty[ status ] ) {
                 ctx.body = null;
@@ -186,5 +198,22 @@ export default class Application extends EventEmitter {
         context.originalUrl = request.originalUrl = req.url;
         context.state = {};
         return context;
+    }
+
+    /**
+     * Default error handler.
+     */
+    onerror( e ): void {
+        // When dealing with cross-globals a normal `instanceof` check doesn't work properly
+        // See https://github.com/koajs/koa/issues/1466
+        // We can probably remove it onec jest fixes https://github.com/facekbook/jest/issues/2549.
+        if( ({}).toString.call( e ) !== '[object Error]' && !( e instanceof Error ) ) {
+            throw new TypeError( util.format( 'non-error thrown: %j', e ) );
+        }
+
+        if( 404 === e.status || e.expose ) return;
+        if( this.silent ) return;
+
+        console.error( `\n${(e.stack || e.toString()).replace(/^/gm, '    ' )}\n` );
     }
 }

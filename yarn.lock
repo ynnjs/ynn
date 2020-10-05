@@ -843,6 +843,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/escape-html@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/escape-html@npm:1.0.0"
+  checksum: ff1e94aff8148cb544a561963c3dfc3454b5c64813b8203ac39517957fc3df08520e94bfd8272c53361822f0db802b0a069271fb520a4951383ed33a50572db1
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:*":
   version: 4.17.2
   resolution: "@types/express-serve-static-core@npm:4.17.2"
@@ -1221,6 +1228,7 @@ __metadata:
     "@types/content-type": ^1.1.3
     "@types/cookies": ^0.7.4
     "@types/encodeurl": ^1.0.0
+    "@types/escape-html": ^1.0.0
     "@types/http-assert": ^1.5.1
     "@types/http-errors": ^1.8.0
     "@types/jest": ^26.0.14
@@ -1242,11 +1250,13 @@ __metadata:
     delegates: ^1.0.0
     depd: ^2.0.0
     encodeurl: ^1.0.2
+    escape-html: ^1.0.3
     eslint: ^7.10.0
     fresh: ^0.5.2
     http-assert: ^1.4.1
     http-errors: ^1.8.0
     jest: ^26.4.2
+    keygrip: ^1.1.0
     on-finished: ^2.3.0
     parseurl: ^1.3.3
     statuses: ^2.0.0
@@ -2387,6 +2397,13 @@ __metadata:
   dependencies:
     is-arrayish: ^0.2.1
   checksum: 6c6c9187429ae867d145bc64c682c7c137b1f8373a406dc3b605c0d92f15b85bfcea02b461dc55ae11b10d013377e1eaf3d469d2861b2f94703c743620a9c08c
+  languageName: node
+  linkType: hard
+
+"escape-html@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "escape-html@npm:1.0.3"
+  checksum: 900a7f2b80b9f89c85b7a303d1b7a4d354b93e328871414f165f13c5c209a80eab787e3a63429e596877def69fe4dcb3d1b55af655207a901a9ec99f7f148743
   languageName: node
   linkType: hard
 
@@ -4224,7 +4241,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"keygrip@npm:~1.1.0":
+"keygrip@npm:^1.1.0, keygrip@npm:~1.1.0":
   version: 1.1.0
   resolution: "keygrip@npm:1.1.0"
   dependencies:

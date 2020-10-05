@@ -10,23 +10,32 @@
 import util from 'util';
 import Cookies from 'cookies';
 import statuses from 'statuses';
-import httpErrors from 'http-errors';
+import httpErrors, { HttpError } from 'http-errors';
 import httpAssert from 'http-assert';
 import Delegates from './delegates';
+import { KoaRequest } from './request';
+import { KoaResponse } from './response';
 
 const COOKIES = Symbol( 'cookies' );
 
-const proto = {
+export interface KoaContext {
+    request?: KoaRequest;
+    response?: KoaResponse;
+    [ COOKIES ]?: Cookies;
+    [ key: string ]: any;
+}
+
+const context: KoaContext = {
 
     /**
      * util.inspect() implementation which just returns the JSON output.
      */
-    inspect(): this | Record<string, any> {
-        if( this === proto ) return this;
+    inspect(): any {
+        if( this === context ) return this;
         return this.toJSON();
     },
 
-    [ util.inspect.custom ](): this | Record<string, any> {
+    [ util.inspect.custom ](): any {
         return this.inspect();
     },
 
@@ -38,8 +47,8 @@ const proto = {
      */
     toJSON(): Record<string, any> {
         return {
-            request : this.request.toJSON(),
-            response : this.response.toJSON(),
+            request : this.request!.toJSON(),
+            response : this.response!.toJSON(),
             app : this.app.toJSON(),
             originalUrl : this.originalUrl,
             req : '<original node req>',
@@ -93,7 +102,7 @@ const proto = {
 
         let headerSent = false;
         if( this.headerSent || !this.writable ) {
-            headerSent = e.haderSent = true;
+            headerSent = ( e as HttpError ).headerSent = true;
         }
 
         // delegate
@@ -108,31 +117,31 @@ const proto = {
         res.getHeaderNames().forEach( name => res.removeHeader( name ) );
 
         // then set those specified
-        this.set( e.headers );
+        this.set( ( e as HttpError ).headers );
 
         // force text/plain
         this.type = 'text';
 
-        let statusCode = e.status || e.statusCode;
+        let statusCode = ( e as HttpError ).status || ( e as HttpError ).statusCode;
 
         // ENOENT support
-        if( 'ENOENT' === e.code ) statusCode = 404;
+        if( 'ENOENT' === ( e as HttpError ).code ) statusCode = 404;
 
         // default to 500
-        if( 'number' !== typeof statusCode || !statuses[ statusCode ] ) statusCode = 500;
+        if( 'number' !== typeof statusCode || !statuses.message[ statusCode ] ) statusCode = 500;
 
         // respond
-        const code = statuses[ statusCode ];
-        const msg = e.expose ? e.message : code;
-        this.status = e.status = statusCode;
-        this.length = Buffer.byteLength( msg );
+        const code = statuses.message[ statusCode ];
+        const msg = ( e as HttpError ).expose ? e.message : code;
+        this.status = ( e as any ).status = statusCode;
+        this.length = Buffer.byteLength( msg as string );
         res.end( msg );
     },
 
     get cookies(): Cookies {
         return this[ COOKIES ] ||= new Cookies( this.req, this.res, {
             keys : this.app.keys,
-            secure : this.request.secure
+            secure : this.request!.secure
         } );
     },
 
@@ -144,7 +153,7 @@ const proto = {
 /**
  * Response delegation.
  */
-new Delegates( proto, 'response' )
+new Delegates( context, 'response' )
     .methods( 'attachment', 'redirect', 'remove', 'vary', 'has', 'set', 'append', 'flushHeaders' )
     .accesses( 'status', 'message', 'body', 'length', 'type', 'lastModified', 'etag' )
     .getters( 'headerSent', 'writable' );
@@ -152,9 +161,9 @@ new Delegates( proto, 'response' )
 /**
  * Request delegation.
  */
-new Delegates( proto, 'request' )
-    .method( 'acceptsLanguages', 'acceptsEncodings', 'acceptsCharsets', 'accepts', 'get', 'is' )
-    .access( 'querystring', 'idempotent', 'socket', 'search', 'method', 'query', 'path', 'url', 'accept' )
-    .getter( 'origin', 'href', 'subdomains', 'protocol', 'host', 'hostname', 'URL', 'header', 'headers', 'secure', 'stale', 'fresh', 'ips', 'ip' );
+new Delegates( context, 'request' )
+    .methods( 'acceptsLanguages', 'acceptsEncodings', 'acceptsCharsets', 'accepts', 'get', 'is' )
+    .accesses( 'querystring', 'idempotent', 'socket', 'search', 'method', 'query', 'path', 'url', 'accept' )
+    .getters( 'origin', 'href', 'subdomains', 'protocol', 'host', 'hostname', 'URL', 'header', 'headers', 'secure', 'stale', 'fresh', 'ips', 'ip' );
 
-export default proto;
+export default context;

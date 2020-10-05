@@ -33,6 +33,7 @@ module.exports = {
         '@typescript-eslint/adjacent-overload-signatures' : 'off',
         '@typescript-eslint/type-annotation-spacing' : 'off',
         '@typescript-eslint/triple-slash-reference' : 'off',
+        '@typescript-eslint/no-non-null-assertion' : 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-array-constructor' : 'off',
         '@typescript-eslint/class-name-casing' : 'off',

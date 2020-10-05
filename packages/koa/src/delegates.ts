@@ -16,22 +16,33 @@ export default class Delegates {
     method( name: string ): this {
         const { target } = this;
         this.#methods.push( name );
-        this.proto[ name ] = function() {
+        ( this.proto as any )[ name ] = function( this: any ) {
             return this[ target ][ name ].apply( this[ target ], arguments );
         }
         return this;
     }
 
     access( name: string ): this {
-        return this.getter( name ).setter( name );
+        const { target } = this;
+        this.#getters.push( name );
+        this.#setters.push( name );
+        Object.defineProperty( this.proto as any, name, {
+            get(): any {
+                return this[ target ][ name ];
+            },
+            set( val: unknown ) {
+                return this[ target ][ name ] = val;
+            }
+        } );
+        return this;
     }
 
     getter( name: string ): this {
         const { target } = this;
         this.#getters.push( name );
-        Object.defineProperty( this.proto, name, {
-            get function() {
-                return this[ target ][ name ];
+        Object.defineProperty( this.proto as any, name, {
+            get(): any {
+                return this?.[ target ]?.[ name ];
             }
         } );
         return this;
@@ -41,7 +52,7 @@ export default class Delegates {
         const { target } = this;
         this.#setters.push( name );
         Object.defineProperty( this.proto, name, {
-            set function( val: unknown ) {
+            set( val: unknown ) {
                 return this[ target ][ name ] = val;
             }
         } );

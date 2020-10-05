@@ -7,7 +7,7 @@
  * Description: 
  ******************************************************************/
 
-export type Next = () => any;
+export type Next = ( ...args: any[] ) => any;
 export type Middleware<T> = ( context: T, next: Next ) => any;
 export type ComposedMiddleware<T> = ( context: T, next?: Next ) => Promise<void>;
 
