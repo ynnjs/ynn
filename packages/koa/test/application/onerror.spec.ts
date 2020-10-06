@@ -9,7 +9,6 @@
 
 import vm from 'vm';
 import assert from 'assert';
-// import jest from 'jest';
 import Koa from '../../src/application';
 
 describe( 'app.onerror( err )', () => {
@@ -38,11 +37,11 @@ describe( 'app.onerror( err )', () => {
         const app = new Koa();
         const err = new Error();
 
-        err.status = 404;
+        ( err as any ).status = 404;
 
         const spy = jest.spyOn( console, 'error' ).mockImplementation();
         app.onerror( err );
-        expect( spy ).toHaveBeenCalled();
+        expect( spy ).not.toHaveBeenCalled();
         spy.mockRestore();
     } );
 
@@ -53,7 +52,7 @@ describe( 'app.onerror( err )', () => {
 
         const spy = jest.spyOn( console, 'error' ).mockImplementation();
         app.onerror( err );
-        expect( spy ).toHaveBeenCalled();
+        expect( spy ).not.toHaveBeenCalled();
         spy.mockRestore();
     } );
 
@@ -75,15 +74,13 @@ describe( 'app.onerror( err )', () => {
         app.env = 'dev';
 
         const err = new Error( 'mock stack null' );
-        err.stack = null;
+        ( err as any ).stack = null;
 
         app.onerror( err );
 
-        let msg = '';
-        mm( console, 'error', input => {
-            if ( input ) msg = input;
-        } );
+        const spy = jest.spyOn( console, 'error' ).mockImplementation();
         app.onerror( err );
-        assert( msg === '\n  Error: mock stack null\n' );
+        expect( spy ).toHaveBeenCalledWith( '\n  Error: mock stack null\n' );
+        spy.mockRestore();
     } );
 } );

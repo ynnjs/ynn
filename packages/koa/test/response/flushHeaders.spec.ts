@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import http from 'http';
-import { Server } from 'net';
+import { Server, AddressInfo } from 'net';
 import assert from 'assert';
 import Stream from 'stream';
 import request from 'supertest';
@@ -106,11 +106,9 @@ describe( 'ctx.flushHeaders()', () => {
         app.listen( function( this: Server, err ){
             if ( err ) return done( err );
 
-            const port = this.address().port;
+            const port = ( this.address() as AddressInfo )?.port;
 
-            http.request({
-                port
-            } )
+            http.request({ port } )
                 .on( 'response', res => {
                     const onData = () => done( new Error( 'boom' ) );
                     res.on( 'data', onData );

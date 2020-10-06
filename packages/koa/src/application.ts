@@ -21,6 +21,7 @@ import response from './response';
 import compose from './middlewares/compose';
 
 const debug = util.debuglog( 'ynn:koa:application' );
+const RESPOND_EXPLICIT_NULL_BODY = Symbol.for( 'respond#explicit#null#body' );
 
 export type Keys = Keygrip | string[];
 
@@ -48,7 +49,7 @@ export default class Application extends EventEmitter {
     public maxIpsCount: number;
     public env = 'development';
     public keys: Keys;
-    static public HttpError = HttpError;
+    public static HttpError = HttpError;
 
     constructor( options: ApplicationOptions = {} ) {
         super();
@@ -150,7 +151,7 @@ export default class Application extends EventEmitter {
             }
 
             if( null == body ) {
-                if( ctx.response._explicitNullBody ) {
+                if( ctx.response[ RESPOND_EXPLICIT_NULL_BODY ] ) {
                     ctx.response.remove( 'Content-Type' );
                     ctx.response.remove( 'Transfer-Encoding' );
                     return res.end();
@@ -210,10 +211,10 @@ export default class Application extends EventEmitter {
         if( ({}).toString.call( e ) !== '[object Error]' && !( e instanceof Error ) ) {
             throw new TypeError( util.format( 'non-error thrown: %j', e ) );
         }
-
+        
         if( 404 === e.status || e.expose ) return;
         if( this.silent ) return;
 
-        console.error( `\n${(e.stack || e.toString()).replace(/^/gm, '    ' )}\n` );
+        console.error( `\n${(e.stack || e.toString()).replace(/^/gm, '  ' )}\n` );
     }
 }

@@ -18,10 +18,10 @@ function sleep( time ){
 describe( 'res.writable', () => {
     describe( 'when continuous requests in one persistent connection', () => {
         function requestTwice( server, done ){
-            const port = server.address().port;
+            const port = server.address()?.port;
             const buf = Buffer.from( 'GET / HTTP/1.1\r\nHost: localhost:' + port + '\r\nConnection: keep-alive\r\n\r\n' );
             const client = net.connect( port );
-            const datas = [];
+            const datas: any[] = [];
             client.on( 'error', done )
                 .on( 'data', data => datas.push( data ) )
                 .on( 'end', () => done( null, datas ) );

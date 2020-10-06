@@ -27,6 +27,7 @@ import { KoaContext } from './context';
 
 const BODY = Symbol( 'body' );
 const EXPLICIT_STATUS = Symbol( 'explicit#status' );
+const RESPOND_EXPLICIT_NULL_BODY = Symbol.for( 'respond#explicit#null#body' );
 
 export type KoaResponseHeaderValue = OutgoingHttpHeaders[ keyof OutgoingHttpHeaders ];
 
@@ -134,7 +135,7 @@ const Response: KoaResponse = {
         // no content
         if( null == val ) {
             if( !statuses.empty[ this.status ] ) this.status = 204;
-            if( val === null ) this[ EXPLICIT_STATUS ] = true;
+            if( val === null ) this[ RESPOND_EXPLICIT_NULL_BODY ] = true;
             this.remove( 'Content-Type' );
             this.remove( 'Content-Length' );
             this.remove( 'Transfer-Encoding' );

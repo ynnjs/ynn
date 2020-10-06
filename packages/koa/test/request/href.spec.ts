@@ -42,7 +42,7 @@ describe( 'ctx.href', () => {
             http.get( {
                 host: 'localhost',
                 path: 'http://example.com/foo',
-                port: address?.port
+                port: ( address as any )?.port
             }, res => {
                 assert.equal( res.statusCode, 200 );
                 let buf = '';

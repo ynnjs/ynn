@@ -16,7 +16,9 @@ const context = ( req?: any, res?: any, app?: any ) => {
     res = { _headers : {}, socket, ...Stream.Writable.prototype, ...res };
     req.socket.removeAddress = req.socket.remoteAddress || '127.0.0.1';
     app = app || new Koa();
+    app.on( 'error', () => {} );
     res.getHeaders = () => res._headers;
+    res.getHeaderNames = () => Object.keys( res._headers );
     res.hasHeader = k => Object.prototype.hasOwnProperty.call( res._headers, k.toLowerCase() );
     res.getHeader = ( k: string ) => res._headers[ k.toLowerCase() ];
     res.setHeader = ( k: string, v: string ) => res._headers[ k.toLowerCase() ] = v;

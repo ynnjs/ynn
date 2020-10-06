@@ -91,7 +91,7 @@ const context: KoaContext = {
     onerror( e: Error ): void {
         // don't do anything if there is no error.
         // this allows you to pass `this.onerror` to node-style callbacks.
-        if( null == e ) return;
+        if( null === e ) return;
 
         // When dealing with cross-globals a normal `instanceof` check doesn't work properly
         // See https://github.com/koajs/koa/issues/1466

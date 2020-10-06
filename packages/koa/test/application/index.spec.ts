@@ -88,6 +88,6 @@ describe( 'app', () => {
     it( 'should have a static property exporting `HttpError` from http-errors library', () => {
         assert.notEqual( Koa.HttpError, undefined );
         assert.deepStrictEqual( Koa.HttpError, HttpErrors.HttpError );
-        assert.throws(() => { throw new HttpErrors( 500, 'test error' ); }, Koa.HttpError );
+        assert.throws(() => { throw HttpErrors( 500, 'test error' ); }, Koa.HttpError );
     } );
 } );
