@@ -688,6 +688,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lvchengbin/is@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@lvchengbin/is@npm:1.0.5"
+  checksum: 91977ac2ab334cf94077da389e89bc3b57252ef56d1621f49e37821810bdf45ba1faaa6e6461372fd07b5c0f7af0549ee9810f6c010a10395da010b35e3af00f
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.3":
   version: 2.1.3
   resolution: "@nodelib/fs.scandir@npm:2.1.3"
@@ -1101,7 +1108,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^15.0.0":
+"@types/yargs@npm:^15.0.0, @types/yargs@npm:^15.0.7":
   version: 15.0.7
   resolution: "@types/yargs@npm:15.0.7"
   dependencies:
@@ -1214,7 +1221,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ynn/core@workspace:packages/core"
   dependencies:
+    "@lvchengbin/is": ^1.0.5
+    "@types/jest": ^26.0.14
     "@types/koa": ^2.11.2
+    "@types/node": ^14.11.5
+    "@types/supertest": ^2.0.10
+    "@types/yargs": ^15.0.7
+    "@typescript-eslint/eslint-plugin": ^4.4.0
+    "@typescript-eslint/parser": ^4.4.0
+    "@ynn/koa": ^0.0.0
+    benny: ^3.6.14
+    eslint: ^7.10.0
+    jest: ^26.5.2
+    supertest: ^5.0.0
+    ts-jest: ^26.4.1
+    ts-node: ^9.0.0
+    typescript: ^4.0.3
+    yargs: ^16.0.3
   languageName: unknown
   linkType: soft
 
@@ -1224,7 +1247,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ynn/koa@workspace:packages/koa":
+"@ynn/koa@^0.0.0, @ynn/koa@workspace:packages/koa":
   version: 0.0.0-use.local
   resolution: "@ynn/koa@workspace:packages/koa"
   dependencies:
@@ -1917,6 +1940,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cliui@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "cliui@npm:7.0.1"
+  dependencies:
+    string-width: ^4.2.0
+    strip-ansi: ^6.0.0
+    wrap-ansi: ^7.0.0
+  checksum: 9c1433067a5860f9b8df76e5e0186a86992a180b8f8dd316357e19aa65b68d46964d448d18991fb598ab638a6c24218ce1331344fa4eec6767fcab40232b19fa
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -2387,6 +2421,13 @@ __metadata:
   dependencies:
     is-arrayish: ^0.2.1
   checksum: 6c6c9187429ae867d145bc64c682c7c137b1f8373a406dc3b605c0d92f15b85bfcea02b461dc55ae11b10d013377e1eaf3d469d2861b2f94703c743620a9c08c
+  languageName: node
+  linkType: hard
+
+"escalade@npm:^3.0.2":
+  version: 3.1.0
+  resolution: "escalade@npm:3.1.0"
+  checksum: 437c5b2619a412c0b075fb33e590e3516f187f7da8b20035685e08f346e27842722e5740a3398535d7d590ae4fb70068374ed59190d4eb4f9bb06d052e2fc92f
   languageName: node
   linkType: hard
 
@@ -2953,7 +2994,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"get-caller-file@npm:^2.0.1":
+"get-caller-file@npm:^2.0.1, get-caller-file@npm:^2.0.5":
   version: 2.0.5
   resolution: "get-caller-file@npm:2.0.5"
   checksum: 9dd9e1e2591039ee4c38c897365b904f66f1e650a8c1cb7b7db8ce667fa63e88cc8b13282b74df9d93de481114b3304a0487880d31cd926dfda6efe71455855d
@@ -6611,6 +6652,17 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
+"wrap-ansi@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "wrap-ansi@npm:7.0.0"
+  dependencies:
+    ansi-styles: ^4.0.0
+    string-width: ^4.1.0
+    strip-ansi: ^6.0.0
+  checksum: 09939dd775ae565bb99a25a6c072fe3775a95fa71751b5533c94265fe986ba3e3ab071a027ab76cf26876bd9afd10ac3c2d06d7c4bcce148bf7d2d9514e3a0df
+  languageName: node
+  linkType: hard
+
 "wrappy@npm:1":
   version: 1.0.2
   resolution: "wrappy@npm:1.0.2"
@@ -6675,6 +6727,13 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
+"y18n@npm:^5.0.1":
+  version: 5.0.2
+  resolution: "y18n@npm:5.0.2"
+  checksum: ba6106061c8ef612d888fa3fca61d094027200c4792275886eca2f82e92b1f24120011cc878d808a38be98c2ed1e3f831117691bf4d526a084e339cbd7c9f587
+  languageName: node
+  linkType: hard
+
 "yallist@npm:^4.0.0":
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
@@ -6682,7 +6741,7 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:20.x":
+"yargs-parser@npm:20.x, yargs-parser@npm:^20.0.0":
   version: 20.2.1
   resolution: "yargs-parser@npm:20.2.1"
   checksum: c4945ade7d792bde00e3f68930f56f1fdd531e501c4ecf944c524c1541c5fe2468c27b4f76b0b459009ef09e338750d01810732f99f0a1fa061af4126cf5f53e
@@ -6715,6 +6774,21 @@ typescript@^4.0.3:
     y18n: ^4.0.0
     yargs-parser: ^18.1.2
   checksum: dbf687d6b938f01bbf11e158dde6df906282b70cd9295af0217ee8cefbd83ad09d49fa9458d0d5325b0e66f03df954a38986db96f91e5b46ccdbbaf9a0157b23
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^16.0.3":
+  version: 16.0.3
+  resolution: "yargs@npm:16.0.3"
+  dependencies:
+    cliui: ^7.0.0
+    escalade: ^3.0.2
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.0
+    y18n: ^5.0.1
+    yargs-parser: ^20.0.0
+  checksum: 39490963e02bceb73ffff285cd9b241e5b019acbedef456586c97027cc18d0cadb743ad1340ccdc9340d0a21e18176c63b9f8bd90eee64c7e1f512c147aab1c2
   languageName: node
   linkType: hard
 

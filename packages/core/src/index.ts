@@ -7,9 +7,12 @@
  * Description: 
  ******************************************************************/
 
-import * as Koa from 'koa';
+import Koa from '@ynn/koa';
+import cargs from 'cargs';
 
 class Ynn extends Koa {
+    public static cargs = cargs;
+
     constructor() {
         super();
     }

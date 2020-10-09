@@ -10,7 +10,7 @@
         "test": "jest",
         "test:watch": "jest --watch",
         "prepublish": "yarn build",
-        "lint": "eslint src/**/*.ts --cache --ignore-path .eslintignore"
+        "lint": "eslint src/**/*.ts --cache"
     },
     "devDependencies": {
         "@types/accepts": "^1.3.5",
@@ -40,7 +40,7 @@
         "typescript": "^4.0.3"
     },
     "engines": {
-        "node": ">=14.0.0"
+        "node": ">=14.13.0"
     },
     "main": "dist/application.js",
     "files": [

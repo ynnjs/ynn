@@ -1,11 +1,41 @@
 {
-  "name": "@ynn/core",
-  "version": "0.0.0",
-  "description": "Ynn core",
-  "main": "src/index.js",
-  "author": "LvChengbin <lvchengbin59@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/koa": "^2.11.2"
-  }
+    "name": "@ynn/core",
+    "version": "0.0.0",
+    "description": "Ynn core",
+    "main": "dist/index.js",
+    "author": "LvChengbin <lvchengbin59@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "yarn clean && tsc --declaration",
+        "build:watch": "tsc --watch",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "prepublish": "yarn build",
+        "lint": "eslint src/**/*.ts --cache"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.14",
+        "@types/koa": "^2.11.2",
+        "@types/node": "^14.11.5",
+        "@types/supertest": "^2.0.10",
+        "@types/yargs": "^15.0.7",
+        "@typescript-eslint/eslint-plugin": "^4.4.0",
+        "@typescript-eslint/parser": "^4.4.0",
+        "benny": "^3.6.14",
+        "eslint": "^7.10.0",
+        "jest": "^26.5.2",
+        "supertest": "^5.0.0",
+        "ts-jest": "^26.4.1",
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.3"
+    },
+    "dependencies": {
+        "@lvchengbin/is": "^1.0.5",
+        "@ynn/koa": "^0.0.0",
+        "yargs": "^16.0.3"
+    },
+    "engines": {
+        "node": ">=14.13.0"
+    }
 }
