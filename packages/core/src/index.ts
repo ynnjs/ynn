@@ -15,6 +15,7 @@ export type YnnOptions = {
     logging?: boolean;
     'config-dir'?: string;
     'log-path'?: string;
+    logger?: string | boolean;
 }
 
 export default class Ynn extends Koa {
