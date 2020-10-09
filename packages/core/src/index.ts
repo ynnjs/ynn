@@ -10,10 +10,17 @@
 import Koa from '@ynn/koa';
 import cargs from 'cargs';
 
-class Ynn extends Koa {
+export type YnnOptions = {
+    debugging?: boolean;
+    logging?: boolean;
+    'config-dir'?: string;
+    'log-path'?: string;
+}
+
+export default class Ynn extends Koa {
     public static cargs = cargs;
 
-    constructor() {
+    constructor( options: YnnOptions ) {
         super();
     }
 }
