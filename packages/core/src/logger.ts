@@ -63,15 +63,19 @@ export class DefaultLogger implements Logger {
     }
 
     static error( ...messages ) {
+        this.print( ...messages );
     }
 
     static warn( ...messages ) {
+        this.print( ...messages );
     }
 
     static debug( ...messages ) {
+        this.print( ...messages );
     }
 
     static verbose( ...messages ) {
+        this.print( ...messages );
     }
 
     private static print() {
