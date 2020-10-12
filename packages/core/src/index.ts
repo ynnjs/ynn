@@ -13,9 +13,10 @@ import cargs from 'cargs';
 export type YnnOptions = {
     debugging?: boolean;
     logging?: boolean;
-    'config-dir'?: string;
-    'log-path'?: string;
+    configDir?: string;
+    logPath?: string;
     logger?: string | boolean;
+    logLevel? : string | string[];
 }
 
 export default class Ynn extends Koa {
