@@ -41,7 +41,13 @@ export class DefaultLogger implements Logger {
     }
 
     #levels: string[] | boolean = true;
-    #styles: Record<keyof Logger, StyleOptions>;
+    #styles: Record<keyof Logger, StyleOptions> = {
+        log : { color : 'grey' },
+        error : { color : 'red' },
+        warn : { color : 'orange' },
+        debug : { color : 'cyan' },
+        verbose : { color : 'blue' }
+    };
 
     constructor( options: DefaultLoggerOptions = {} ) {
         options.levels && ( this.#levels = options.levels );
