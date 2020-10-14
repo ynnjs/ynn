@@ -7,16 +7,24 @@
  * Description: 
  ******************************************************************/
 
+import { StyleOptions } from 'cli-style';
+
+/**
+ * Simple function for logging which has arguments just matches util.format method in nodejs.
+ */
+export type LogFunction = ( msg: any, ...args ) => any;
+
 export interface Logger {
-    log( ...messages: any[] ): any;
-    error( ...messages: any[] ): any;
-    warn( ...messages: any[] ): any;
-    debug?( ...messages: any[] ): any;
-    verbose?( ...messages: any[] ): any;
+    log: LogFunction;
+    error: LogFunction;
+    warn: LogFunction;
+    debug?: LogFunction;
+    verbose?: LogFunction;
 }
 
 export type DefaultLoggerOptions = {
     levels?: Array<keyof Logger>;
+    styles?: Record<keyof Logger, StyleOptions>;
 };
 
 export class DefaultLogger implements Logger {
@@ -33,52 +41,54 @@ export class DefaultLogger implements Logger {
     }
 
     #levels: string[] | boolean = true;
+    #styles: Record<keyof Logger, StyleOptions>;
 
     constructor( options: DefaultLoggerOptions = {} ) {
         options.levels && ( this.#levels = options.levels );
+        options.styles && ( this.#styles = options.styles );
     }
 
-    log( ...messages ) {
-        this.#call( 'log', ...messages );
+    log( msg, ...args ) {
+        this.#call( 'log', msg, ...args );
     }
 
-    error( ...messages ) {
-        this.#call( 'error', ...messages );
+    error( msg, ...args ) {
+        this.#call( 'error', msg, ...args );
     }
 
-    warn( ...messages ) {
-        this.#call( 'warn', ...messages );
+    warn( msg, ...args ) {
+        this.#call( 'warn', msg, ...args );
     }
 
-    debug( ...messages ) {
-        this.#call( 'debug', ...messages );
+    debug( msg, ...args ) {
+        this.#call( 'debug', msg, ...args );
     }
 
-    verbose( ...messages ) {
-        this.#call( 'verbose', ...messages );
+    verbose( msg, ...args ) {
+        this.#call( 'verbose', msg, ...args );
     }
 
-    static log( ...messages ) {
+    static log( msg, ...args ) {
         this.print( ...messages );
     }
 
-    static error( ...messages ) {
+    static error( msg, ...args ) {
         this.print( ...messages );
     }
 
-    static warn( ...messages ) {
+    static warn( msg, ...args ) {
         this.print( ...messages );
     }
 
-    static debug( ...messages ) {
+    static debug( msg, ...args ) {
         this.print( ...messages );
     }
 
-    static verbose( ...messages ) {
+    static verbose( msg, ...args ): void {
         this.print( ...messages );
     }
 
-    private static print() {
+    private static print( message, {} ): void {
         process.stdout.write();
     }
 }
