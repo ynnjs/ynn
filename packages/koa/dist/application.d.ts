@@ -11,8 +11,11 @@
 import http from 'http';
 import { EventEmitter } from 'events';
 import Keygrip from 'keygrip';
+import { KoaContext } from './context';
+import { KoaRequest } from './request';
+import { KoaResponse } from './response';
 export declare type Keys = Keygrip | string[];
-export declare type ApplicationOptions = {
+export declare type KoaOptions = {
     keys?: Keys;
     env?: string;
     proxy?: boolean;
@@ -20,8 +23,9 @@ export declare type ApplicationOptions = {
     proxyIpHeader?: string;
     subdomainOffset?: number;
 };
+export { KoaContext, KoaRequest, KoaResponse };
 export declare type Middleware = (...args: any[]) => any;
-export default class Application extends EventEmitter {
+export default class Koa extends EventEmitter {
     silent: boolean;
     proxy: boolean;
     trustXRealIp: boolean;
@@ -35,7 +39,7 @@ export default class Application extends EventEmitter {
     env: string;
     keys: Keys;
     static HttpError: import("http-errors").HttpErrorConstructor;
-    constructor(options?: ApplicationOptions);
+    constructor(options?: KoaOptions);
     /**
      * Shorthand for:
      *

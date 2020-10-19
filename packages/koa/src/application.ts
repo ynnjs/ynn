@@ -15,9 +15,9 @@ import Keygrip from 'keygrip';
 import onFinished from 'on-finished';
 import statuses from 'statuses';
 import { HttpError } from 'http-errors';
-import context from './context';
-import request from './request';
-import response from './response';
+import context, { KoaContext } from './context';
+import request, { KoaRequest } from './request';
+import response, { KoaResponse } from './response';
 import compose from './middlewares/compose';
 
 const debug = util.debuglog( 'ynn:koa:application' );
@@ -25,7 +25,7 @@ const RESPOND_EXPLICIT_NULL_BODY = Symbol.for( 'respond#explicit#null#body' );
 
 export type Keys = Keygrip | string[];
 
-export type ApplicationOptions = {
+export type KoaOptions = {
     keys?: Keys;
     env?: string;
     proxy?: boolean;
@@ -34,9 +34,11 @@ export type ApplicationOptions = {
     subdomainOffset?: number;
 }
 
+export { KoaContext, KoaRequest, KoaResponse }
+
 export type Middleware = ( ...args: any[] ) => any;
 
-export default class Application extends EventEmitter {
+export default class Koa extends EventEmitter {
     public silent = false;
     public proxy: boolean;
     public trustXRealIp = false;
@@ -51,7 +53,7 @@ export default class Application extends EventEmitter {
     public keys: Keys;
     public static HttpError = HttpError;
 
-    constructor( options: ApplicationOptions = {} ) {
+    constructor( options: KoaOptions = {} ) {
         super();
         this.proxy = options.proxy || false;
         this.subdomainOffset = options.subdomainOffset || 2;

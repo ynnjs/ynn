@@ -422,7 +422,7 @@ const Request = {
         return this.get('Content-Type')?.split(';')[0] || '';
     },
     /**
-     * Return request header..
+     * Return request header.
      *
      * The `Referrer` header field is special-cased, both `Referrer` and `Referer` are interchangeable.
      *

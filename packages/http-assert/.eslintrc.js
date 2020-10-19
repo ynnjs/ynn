@@ -20,11 +20,10 @@ module.exports = {
     },
     parserOptions : {
         sourceType : 'module',
-        ecmaVersion : 2021
+        ecmaVersion : 2020
     },
     root : true,
     env : {
-        es6 : true,
         jest : true,
         node : true
     },

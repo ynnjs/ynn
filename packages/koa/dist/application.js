@@ -24,7 +24,7 @@ const response_1 = __importDefault(require("./response"));
 const compose_1 = __importDefault(require("./middlewares/compose"));
 const debug = util_1.default.debuglog('ynn:koa:application');
 const RESPOND_EXPLICIT_NULL_BODY = Symbol.for('respond#explicit#null#body');
-class Application extends events_1.EventEmitter {
+class Koa extends events_1.EventEmitter {
     constructor(options = {}) {
         super();
         this.silent = false;
@@ -191,5 +191,5 @@ class Application extends events_1.EventEmitter {
         console.error(`\n${(e.stack || e.toString()).replace(/^/gm, '  ')}\n`);
     }
 }
-exports.default = Application;
-Application.HttpError = http_errors_1.HttpError;
+exports.default = Koa;
+Koa.HttpError = http_errors_1.HttpError;
