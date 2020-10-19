@@ -67,7 +67,7 @@ export class Assertion {
     #value: any;
     #opts: Opts = {};
     #skip = false;
-    #promises: Array<Promise<any>> = [];
+    #promises: Promise<any>[] = [];
     #async = false;
     #required = false;
     #setDefault = false;
@@ -143,10 +143,15 @@ export class Assertion {
     date() {
     }
 
+    /**
+     * YYYY-MM-DD HH:mm:ss
+     */
     time() {
     }
 
-    dateTime() {
+    dateTime( ...args: HttpErrorArgs ): this {
+        const date = new Date( this.#value );
+        return this.assert( date.toString() !== 'Invalid Date', ...args );
     }
 
     timestamp() {
@@ -299,7 +304,10 @@ export class Assertion {
             opts = this.#opts
         } = settleHttpErrorArgs( ...args );
 
-        throw createError( status, message, opts );
+        if( message ) {
+            throw createError( status, message, opts );
+        }
+        throw createError( status, opts );
     }
 }
 

@@ -48,19 +48,19 @@ describe( 'Methods', () => {
     } );
 
     it( 'length', () => {
-        expect( assert( 'abc' ).length( [ 0, 3 ] ) ).toBeTruthy();
+        expect( assert( 'abc' ).length( [ 0, 3 ] ).value() ).toEqual( 'abc' );
         expect( () => assert( 'abc', 400 ).length( [ 0, 1 ] ) ).toThrow();
-        expect( assert( 'abc' ).length( 3 ) ).toBeTruthy();
+        expect( assert( 'abc' ).length( 3 ).value() ).toEqual( 'abc' );
         expect( () => assert( 'abc' ).length( 4 ) ).toThrow();
     } );
 
     it( 'regex', () => {
-        expect( assert( '122' ).regex( /^\d+$/ ) ).toBeTruthy();
+        expect( assert( '122' ).regex( /^\d+$/ ).value() ).toEqual( '122' );
         expect( () => assert( '12a', 400 ).regex( /^\d+$/ ) ).toThrow();
     } );
 
     it( 'deepEqual', () => {
-        expect( assert( { a : 1 } ).deepEqual( { a : 1 } ) ).toBeTruthy();
+        expect( assert( { a : 1 } ).deepEqual( { a : 1 } ).value() ).toEqual( { a : 1 } );
         expect( () => assert( { a : 1 }, 400 ).deepEqual( { a : 1, b : 2 } ) ).toThrow();
     } );
 
@@ -112,7 +112,7 @@ describe( 'Methods', () => {
     } );
 
     it( 'custom sync', () => {
-        expect( assert( 'a' ).custom( () => true ) ).toBeTruthy();
+        expect( assert( 'a' ).custom( () => true ).value() ).toEqual( 'a' );
         expect( () => assert( 'a' ).custom( () => false, 401, 'e' ) ).toThrow( createError( 401, 'e' ) );
     } );
 
@@ -128,7 +128,7 @@ describe( 'Methods', () => {
     } );
 
     it( 'between', () => {
-        expect( assert( '2', 400 ).between( 0, 4 ) ).toBeTruthy();
+        expect( assert( '2', 400 ).between( 0, 4 ).value() ).toEqual( '2' );
         expect( () => assert( '10', 400 ).between( 0, 4 ) ).toThrow();
     } );
 
@@ -147,7 +147,7 @@ describe( 'Methods', () => {
     } );
 
     it( 'Assertion.integer()', () => {
-        expect( assert( '100', 400 ).integer() ).toBeTruthy();
+        expect( assert( '100', 400 ).integer().value() ).toEqual( 100 );
         expect( () => assert( '1.1', 400 ).integer() ).toThrow();
     } );
 
@@ -170,18 +170,18 @@ describe( 'Methods', () => {
         } );
 
         it( 'should ha alias Assertion.int()', () => {
-            expect( assert( '100', 400 ).int() ).toBeTruthy();
+            expect( assert( '100', 400 ).int().value() ).toEqual( 100 );
             expect( () => assert( '1.1', 400 ).int() ).toThrow();
         } );
     } );
 
     it( 'is number', () => {
-        expect( assert( '100.001', 400 ).number() ).toBeTruthy();
+        expect( assert( '100.001', 400 ).number().value() ).toEqual( '100.001' );
         expect( () => assert( '1.x', 400 ).number() ).toThrow();
     } );
 
     it( 'url', () => {
-        expect( assert( 'http://www.baidu.com', 400 ).url() ).toBeTruthy();
+        expect( assert( 'http://www.baidu.com', 400 ).url().value() ).toEqual( 'http://www.baidu.com' );
         expect( () => assert( '127.0.0.1', 400 ).url() ).toThrow();
     } );
 

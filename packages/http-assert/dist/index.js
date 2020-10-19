@@ -7,27 +7,14 @@
  * Time: 10/16/2020
  * Description:
  ******************************************************************/
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _value, _opts, _skip, _promises, _async, _required, _setDefault, _defaultValue;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Assertion = void 0;
 const url_1 = require("url");
 const type_is_1 = __importDefault(require("type-is"));
+const statuses_1 = __importDefault(require("statuses"));
 const deep_equal_1 = __importDefault(require("deep-equal"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const is_1 = __importDefault(require("@lvchengbin/is"));
@@ -57,57 +44,74 @@ function settleHttpErrorArgs(...args) {
 }
 class Assertion {
     constructor(value, ...args) {
-        this.status = 500;
-        this.message = 'Unknown Error';
-        _value.set(this, void 0);
-        _opts.set(this, {});
-        _skip.set(this, false);
-        _promises.set(this, []);
-        _async.set(this, false);
-        _required.set(this, false);
-        _setDefault.set(this, false);
-        _defaultValue.set(this, void 0);
+        this.#status = 500;
+        this.#opts = {};
+        this.#skip = false;
+        this.#promises = [];
+        this.#async = false;
+        this.#required = false;
+        this.#setDefault = false;
         this.set(value);
         const { status, message, opts } = settleHttpErrorArgs(...args);
-        status && (this.status = status);
-        message && (this.message = message);
-        opts && (__classPrivateFieldSet(this, _opts, opts));
+        status && (this.#status = status);
+        message && (this.#message = message);
+        opts && (this.#opts = opts);
     }
+    #status;
+    #message;
+    #value;
+    #opts;
+    #skip;
+    #promises;
+    #async;
+    #required;
+    #setDefault;
+    #defaultValue;
     default(value) {
-        __classPrivateFieldSet(this, _defaultValue, value);
-        __classPrivateFieldSet(this, _setDefault, true);
-        if (!__classPrivateFieldGet(this, _value)) {
+        if (!arguments.length)
+            value = undefined;
+        this.#defaultValue = value;
+        this.#setDefault = true;
+        if (!this.#value) {
             this.set(value);
             this.skip();
         }
         return this;
     }
     set(value) {
-        __classPrivateFieldSet(this, _value, value);
+        this.#value = value;
         return this;
     }
     value() {
-        return __classPrivateFieldGet(this, _value);
+        if (!this.#async)
+            return this.#value;
+        return Promise.all(this.#promises).then(() => this.#value).catch(() => {
+            this.assert(false);
+        });
     }
-    required(code = 400, message = 'Bad Request') {
-        __classPrivateFieldSet(this, _required, true);
-        return this.assert(typeof __classPrivateFieldGet(this, _value) !== 'undefined', code, message);
+    required(status = 400, message = statuses_1.default.message[400]) {
+        this.#required = true;
+        return this.assert(typeof this.#value !== 'undefined', status, message);
     }
     /**
      * alias for integer
      */
-    int(...args) {
-        return this.integer(...args);
+    int(transform = true, ...args) {
+        return this.integer(transform, ...args);
     }
-    integer(...args) {
-        return this.assert(is_1.default.integer(__classPrivateFieldGet(this, _value)), ...args);
+    integer(transform = true, ...args) {
+        if (is_1.default.integer(this.#value)) {
+            transform && (this.#value = parseInt(this.#value));
+            return this.assert(true, ...args);
+        }
+        return this.assert(false, ...args);
     }
     number(...args) {
-        return this.assert(is_1.default.number(__classPrivateFieldGet(this, _value)), ...args);
+        return this.assert(is_1.default.number(this.#value), ...args);
     }
     url(...args) {
         try {
-            new url_1.URL(__classPrivateFieldGet(this, _value));
+            new url_1.URL(this.#value);
             return this.assert(true, ...args);
         }
         catch (e) {
@@ -116,72 +120,77 @@ class Assertion {
     }
     date() {
     }
+    /**
+     * YYYY-MM-DD HH:mm:ss
+     */
     time() {
     }
-    dateTime() {
+    dateTime(...args) {
+        const date = new Date(this.#value);
+        return this.assert(date.toString() !== 'Invalid Date', ...args);
     }
     timestamp() {
     }
     gt(n, ...args) {
-        return this.assert(__classPrivateFieldGet(this, _value) > n, ...args);
+        return this.assert(this.#value > n, ...args);
     }
     gte(n, ...args) {
-        return this.assert(__classPrivateFieldGet(this, _value) >= n, ...args);
+        return this.assert(this.#value >= n, ...args);
     }
     lt(n, ...args) {
-        return this.assert(__classPrivateFieldGet(this, _value) < n, ...args);
+        return this.assert(this.#value < n, ...args);
     }
     lte(n, ...args) {
-        return this.assert(__classPrivateFieldGet(this, _value) <= n, ...args);
+        return this.assert(this.#value <= n, ...args);
     }
     between(lower, upper, ...args) {
-        return this.assert(__classPrivateFieldGet(this, _value) >= lower && __classPrivateFieldGet(this, _value) <= upper, ...args);
+        return this.assert(this.#value >= lower && this.#value <= upper, ...args);
     }
     in(list, ...args) {
-        return this.assert(contains(list, __classPrivateFieldGet(this, _value)), ...args);
+        return this.assert(contains(list, this.#value), ...args);
     }
     strictIn(list, ...args) {
-        return this.assert(list.includes(__classPrivateFieldGet(this, _value)), ...args);
+        return this.assert(list.includes(this.#value), ...args);
     }
     notIn(list, ...args) {
-        return this.assert(!contains(list, __classPrivateFieldGet(this, _value)), ...args);
+        return this.assert(!contains(list, this.#value), ...args);
     }
     strictNotIn(list, ...args) {
-        return this.assert(!list.includes(__classPrivateFieldGet(this, _value)), ...args);
+        return this.assert(!list.includes(this.#value), ...args);
     }
     length(range, ...args) {
-        const l = __classPrivateFieldGet(this, _value) ? String(__classPrivateFieldGet(this, _value)).length : 0;
+        const l = this.#value ? String(this.#value).length : 0;
         if (Array.isArray(range)) {
             return this.assert(l >= range[0] && l <= range[1], ...args);
         }
         return this.assert(l === range, ...args);
     }
     regex(reg, ...args) {
-        return this.assert(reg.test(__classPrivateFieldGet(this, _value)), ...args);
+        return this.assert(reg.test(this.#value), ...args);
     }
     equal(x, ...args) {
-        return this.assert(x == __classPrivateFieldGet(this, _value), ...args);
+        return this.assert(x == this.#value, ...args);
     }
     notEqual(x, ...args) {
-        return this.assert(x != __classPrivateFieldGet(this, _value), ...args);
+        return this.assert(x != this.#value, ...args);
     }
     strictEqual(x, ...args) {
-        return this.assert(x === __classPrivateFieldGet(this, _value), ...args);
+        return this.assert(x === this.#value, ...args);
     }
     notStrictEqual(x, ...args) {
-        return this.assert(x !== __classPrivateFieldGet(this, _value), ...args);
+        return this.assert(x !== this.#value, ...args);
     }
     deepEqual(x, ...args) {
-        return this.assert(deep_equal_1.default(__classPrivateFieldGet(this, _value), x), ...args);
+        return this.assert(deep_equal_1.default(this.#value, x), ...args);
     }
     notDeepEqual(x, ...args) {
-        return this.assert(!deep_equal_1.default(__classPrivateFieldGet(this, _value), x), ...args);
+        return this.assert(!deep_equal_1.default(this.#value, x), ...args);
     }
     jsonstring(mutate = true, ...args) {
-        if (typeof __classPrivateFieldGet(this, _value) !== 'string')
+        if (typeof this.#value !== 'string')
             return this.assert(false, ...args);
         try {
-            const json = JSON.parse(__classPrivateFieldGet(this, _value));
+            const json = JSON.parse(this.#value);
             mutate && this.set(json);
             return this.assert(true, ...args);
         }
@@ -189,14 +198,14 @@ class Assertion {
             return this.assert(false, ...args);
         }
     }
-    json(type, mutate = true, ...args) {
+    json(type = 'application/x-www-form-urlencoded', mutate = true, ...args) {
         if (type_is_1.default.is(type, 'json')) {
-            return this.assert(typeof __classPrivateFieldGet(this, _value) !== 'undefined', ...args);
+            return this.assert(typeof this.#value !== 'undefined', ...args);
         }
-        if (typeof __classPrivateFieldGet(this, _value) !== 'string')
+        if (typeof this.#value !== 'string')
             return this.assert(false, ...args);
         try {
-            const json = JSON.parse(__classPrivateFieldGet(this, _value));
+            const json = JSON.parse(this.#value);
             mutate && this.set(json);
             return this.assert(true, ...args);
         }
@@ -205,45 +214,48 @@ class Assertion {
         }
     }
     object(...args) {
-        return this.assert(__classPrivateFieldGet(this, _value) && typeof __classPrivateFieldGet(this, _value) === 'object', ...args);
+        const v = this.#value;
+        return this.assert(v && !Array.isArray(v) && typeof v === 'object', ...args);
+    }
+    array(...args) {
+        return this.assert(this.#value && Array.isArray(this.#value), ...args);
     }
     custom(fn, ...args) {
-        const res = fn.call(this, __classPrivateFieldGet(this, _value), this);
+        const res = fn.call(this, this.#value, this);
         if (typeof res.then !== 'function') {
             return this.assert(res, ...args);
         }
-        __classPrivateFieldSet(this, _async, true);
-        __classPrivateFieldGet(this, _promises).push(res.then((x) => { this.assert(x, ...args); }, () => { this.assert(false, ...args); }));
+        this.#async = true;
+        this.#promises.push(res.then((x) => { this.assert(x, ...args); }, () => { this.assert(false, ...args); }));
         return this;
     }
     skip() {
-        __classPrivateFieldSet(this, _skip, true);
+        this.#skip = true;
         return this;
     }
     assert(x, ...args) {
-        if (__classPrivateFieldGet(this, _skip) || x)
+        if (x || this.#skip)
             return this;
-        if (__classPrivateFieldGet(this, _setDefault)) {
-            this.set(__classPrivateFieldGet(this, _defaultValue));
+        if (this.#setDefault) {
+            this.set(this.#defaultValue);
             this.skip();
             return this;
         }
-        if (!__classPrivateFieldGet(this, _required) && typeof __classPrivateFieldGet(this, _value) === 'undefined')
+        if (!this.#required && typeof this.#value === 'undefined')
             return this;
         this.throw(...args);
         return this;
     }
     throw(...args) {
-        const { status = this.status, message = this.message, opts = __classPrivateFieldGet(this, _opts) } = settleHttpErrorArgs(...args);
-        throw http_errors_1.default(status, message, opts);
+        const { status = this.#status, message = this.#message, opts = this.#opts } = settleHttpErrorArgs(...args);
+        if (message) {
+            throw http_errors_1.default(status, message, opts);
+        }
+        throw http_errors_1.default(status, opts);
     }
 }
 exports.Assertion = Assertion;
-_value = new WeakMap(), _opts = new WeakMap(), _skip = new WeakMap(), _promises = new WeakMap(), _async = new WeakMap(), _required = new WeakMap(), _setDefault = new WeakMap(), _defaultValue = new WeakMap();
 function assert(value, ...args) {
-    if (arguments.length === 1 || value) {
-        return new Assertion(value, ...args);
-    }
-    return http_errors_1.default(...args);
+    return new Assertion(value, ...args);
 }
 exports.default = assert;
