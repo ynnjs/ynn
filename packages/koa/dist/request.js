@@ -103,7 +103,7 @@ const Request = {
      */
     get query() {
         const str = this.querystring;
-        const c = (this[QUERY_CACHE] || (this[QUERY_CACHE] = {}));
+        const c = (this[QUERY_CACHE] ||= {});
         return c[str] || (c[str] = querystring_1.default.parse(str));
     },
     /**
@@ -319,7 +319,7 @@ const Request = {
         /**
          * accepts does't support Http2ServerRequest in it's delcaration file
          */
-        return this[ACCEPT] || (this[ACCEPT] = accepts_1.default(this.req));
+        return this[ACCEPT] ||= accepts_1.default(this.req);
     },
     /**
      * Set accept object

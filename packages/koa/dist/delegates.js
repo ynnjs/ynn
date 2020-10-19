@@ -7,25 +7,21 @@
  * Time: 10/03/2020
  * Description:
  ******************************************************************/
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
-};
-var _methods, _getters, _setters;
 Object.defineProperty(exports, "__esModule", { value: true });
 class Delegates {
     constructor(proto, target) {
         this.proto = proto;
         this.target = target;
-        _methods.set(this, []);
-        _getters.set(this, []);
-        _setters.set(this, []);
+        this.#methods = [];
+        this.#getters = [];
+        this.#setters = [];
     }
+    #methods;
+    #getters;
+    #setters;
     method(name) {
         const { target } = this;
-        __classPrivateFieldGet(this, _methods).push(name);
+        this.#methods.push(name);
         this.proto[name] = function () {
             return this[target][name].apply(this[target], arguments);
         };
@@ -33,8 +29,8 @@ class Delegates {
     }
     access(name) {
         const { target } = this;
-        __classPrivateFieldGet(this, _getters).push(name);
-        __classPrivateFieldGet(this, _setters).push(name);
+        this.#getters.push(name);
+        this.#setters.push(name);
         Object.defineProperty(this.proto, name, {
             get() {
                 return this[target][name];
@@ -47,7 +43,7 @@ class Delegates {
     }
     getter(name) {
         const { target } = this;
-        __classPrivateFieldGet(this, _getters).push(name);
+        this.#getters.push(name);
         Object.defineProperty(this.proto, name, {
             get() {
                 return this?.[target]?.[name];
@@ -57,7 +53,7 @@ class Delegates {
     }
     setter(name) {
         const { target } = this;
-        __classPrivateFieldGet(this, _setters).push(name);
+        this.#setters.push(name);
         Object.defineProperty(this.proto, name, {
             set(val) {
                 return this[target][name] = val;
@@ -83,4 +79,3 @@ class Delegates {
     }
 }
 exports.default = Delegates;
-_methods = new WeakMap(), _getters = new WeakMap(), _setters = new WeakMap();

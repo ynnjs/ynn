@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import Koa, { KoaContext } from '@ynn/koa';
+import assert, { Assertion } from '@ynn/http-assert';
 
 export type ControllerOptions = {
 };
@@ -32,6 +33,7 @@ export default class Controller {
         return this.app.config( ...arguments );
     }
 
-    assert() {
+    assert( value: any, ...args ): Assertion {
+        return assert( value, ...args );
     }
 }

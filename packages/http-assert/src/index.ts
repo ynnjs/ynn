@@ -30,7 +30,6 @@ export type HttpErrorArgs<S = Status, M = Message, O = Opts> = []
     | [ S | M, O ] | [ S, M | O ]
     | [ S, M, O ];
 
-
 type HttpErrorArgsObject = {
     status?: Status;
     message?: Message;
@@ -61,7 +60,6 @@ function settleHttpErrorArgs( ...args: HttpErrorArgs ): HttpErrorArgsObject {
 }
 
 export class Assertion {
-
     #status: Status = 500;
     #message?: Message;
     #value: any;
@@ -304,9 +302,7 @@ export class Assertion {
             opts = this.#opts
         } = settleHttpErrorArgs( ...args );
 
-        if( message ) {
-            throw createError( status, message, opts );
-        }
+        if( message ) throw createError( status, message, opts );
         throw createError( status, opts );
     }
 }

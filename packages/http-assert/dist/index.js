@@ -248,9 +248,8 @@ class Assertion {
     }
     throw(...args) {
         const { status = this.#status, message = this.#message, opts = this.#opts } = settleHttpErrorArgs(...args);
-        if (message) {
+        if (message)
             throw http_errors_1.default(status, message, opts);
-        }
         throw http_errors_1.default(status, opts);
     }
 }

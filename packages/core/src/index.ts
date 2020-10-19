@@ -19,6 +19,7 @@ export type YnnOptions = KoaOptions & {
     configDir?: string;
     logPath?: string;
     logger?: string | boolean | Logger;
+    port?: number;
     [ key: string ]: any;
 }
 
@@ -28,17 +29,32 @@ export default class Ynn extends Koa {
     public debug: DebugLogger;
 
     #logger = ( options: YnnOptions ): void => {
-        const app = this; /* eslint-disable-line @typescript-eslint/no-this-alias */
         const { logger, logging, debugging } = options;
+        const { debug } = this;
 
         this.logger = new Proxy( {}, {
-            get( o: Record<any, any>, x: any ): ( ...args: any[] ) => any {
-                if( !debugging && ( !logging || ( logging && !logger ) ) ) return () => {};
-                const lfn = typeof logger[ x ] === 'function' ? logger[ x ].bind( logger ) : ( () => {} );
-                if( !debugging ) return lfn;
+            get( o: Record<any, any>, method: any ): ( ...args: any[] ) => any {
+                /**
+                 * if 
+                 */
+                if( !debugging && ( !logging || ( logging && !logger ) ) ) {
+                    return () => {};
+                }
+
+                let fn;
+
+                if( typeof logger[ method ] === 'function' ) {
+                    fn = logger[ method ].bind( logger );
+                } else {
+                    debug.error( `Function "${method}" not exists in logger.` );
+                    fn = () => {};
+                }
+
+                if( !debugging ) return fn;
+
                 return ( ...args: any[] ): void => {
-                    lfn( ...args );
-                    typeof app.debug[ x ] === 'function' ? app.debug[ x ]( ...args ) : app.debug.log( ...args );
+                    fn( ...args );
+                    debug[ typeof debug[ method ] === 'function' ? method : 'log' ]( ...args );
                 }
             }
         } );
@@ -55,6 +71,12 @@ export default class Ynn extends Koa {
         super();
         this.debug = new DebugLogger( options.debugOptions || {} );
         options = this.#setup( options );
+    }
+
+    listen() {
+    }
+
+    config() {
     }
 }
 
