@@ -73,7 +73,23 @@ export default class Ynn extends Koa {
         options = this.#setup( options );
     }
 
-    listen() {
+    listen( ...args ) {
+        if( this.#options.port ) {
+            if( Number.isInteger( args[ 0 ] ) ) {
+                args[ 0 ] = this.#options.port;
+            } else {
+                args.unshift( this.#options.port );
+            }
+        }
+        this.debug.log( `Server is running on port ${port}` );
+        return super.listen( ...args );
+    }
+
+    summary() {
+        return {
+            'log-path' : this.#options[ 'log-path' ],
+            port : ''
+        }
     }
 
     config() {
