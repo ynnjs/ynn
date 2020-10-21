@@ -7,6 +7,7 @@
  * Description: 
  ******************************************************************/
 
+import { AddressInfo } from 'net';
 import Koa, { KoaOptions } from '@ynn/koa';
 import cargs from './cargs';
 import Logger from './logger';
@@ -25,15 +26,17 @@ export type YnnOptions = KoaOptions & {
 
 export default class Ynn extends Koa {
     public static cargs = cargs;
-    public logger: Proxy;
+    public logger!: Logger;
     public debug: DebugLogger;
+
+    #address: AddressInfo;
 
     #logger = ( options: YnnOptions ): void => {
         const { logger, logging, debugging } = options;
         const { debug } = this;
 
-        this.logger = new Proxy( {}, {
-            get( o: Record<any, any>, method: any ): ( ...args: any[] ) => any {
+        this.logger = new Proxy<Logger>( logger, {
+            get( o: Logger, method: any ): ( ...args: any[] ) => any {
                 /**
                  * if 
                  */
@@ -81,19 +84,18 @@ export default class Ynn extends Koa {
                 args.unshift( this.#options.port );
             }
         }
-        this.debug.log( `Server is running on port ${port}` );
-        return super.listen( ...args );
+        this.#address = super.listen( ...args );
+        this.debug.log( `Server is running on port ${this.#address.port}` );
+        return this.#address;
     }
 
     summary() {
         return {
             'log-path' : this.#options[ 'log-path' ],
-            port : ''
+            port : this.#address.port
         }
     }
 
     config() {
     }
 }
-
-export default Ynn;
