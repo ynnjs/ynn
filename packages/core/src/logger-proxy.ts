@@ -7,20 +7,39 @@
  * Description: 
  ******************************************************************/
 
+import DebugLogger from './debug';
 import Logger from './logger';
 
 export type LoggerProxyOptions = {
     debugging?: boolean;
     logging?: boolean;
     logger?: Logger;
+    debug: DebugLogger;
 }
 
-export default ( logger: Logger, options: LoggerProxyOptions = {} ) => {
-    const { debugging = true, logging = false, logger } = options;
+export default ( options: LoggerProxyOptions ) => {
+    const { debugging = true, logging = false, logger, debug } = options;
+    const blank = () => {};
 
-    return new Proxy<Logger>( logger, {
+    return new Proxy<Logger | Record<any, any>>( logger || {}, {
         get( logger: Logger, method: string ): ( ...args: any[] ) => any {
-            if( !debugging
+            if( !debugging && ( !logging || ( logging && !logger ) ) ) return blank;
+
+            let fn;
+
+            if( typeof logger?.[ method ] === 'function' ) {
+                fn = logger[ method ].bind( logger );
+            } else {
+                debug.error( `Function "${method}" not exists in logger.` );
+                fn = blank;
+            }
+
+            if( !debugging ) return fn;
+
+            return ( ...args: any[] ): void => {
+                fn( ...args );
+                debug[ typeof debug[ method ] === 'function' ? method : 'log' ]( ...args );
+            }
         }
     } );
 }

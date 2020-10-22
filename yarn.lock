@@ -1441,6 +1441,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.4.0
     "@ynn/koa": ^0.0.0
     benny: ^3.6.14
+    cli-style: ^0.0.6
     eslint: ^7.10.0
     jest: ^26.5.2
     supertest: ^5.0.0
@@ -2122,7 +2123,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0":
+"chalk@npm:^4.0.0, chalk@npm:^4.1.0":
   version: 4.1.0
   resolution: "chalk@npm:4.1.0"
   dependencies:
@@ -2171,6 +2172,15 @@ __metadata:
   dependencies:
     restore-cursor: ^2.0.0
   checksum: df33c11b3c236c9238ec8112330e7a3f25d59c73b2cffea8ed4f9ab1881d93f8467d7a0920434a880e8cea37f264da5f26549f2afa350c764fac956c02fd841a
+  languageName: node
+  linkType: hard
+
+"cli-style@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "cli-style@npm:0.0.6"
+  dependencies:
+    chalk: ^4.1.0
+  checksum: d42e98fd4df52489f6451b1dc7b592924b2996225db0abf86e57c643ed5ada907b6c27220351d715e9086b92d7b03a7ccf9a9b156a1d01101b95c63a20b1ef7e
   languageName: node
   linkType: hard
 

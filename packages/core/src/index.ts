@@ -12,6 +12,7 @@ import Koa, { KoaOptions } from '@ynn/koa';
 import cargs from './cargs';
 import Logger from './logger';
 import DebugLogger, { DebugLoggerOptions } from './debug';
+import loggerProxy from './logger-proxy';
 
 export type YnnOptions = KoaOptions & {
     debugging?: boolean | keyof Logger | Array<keyof Logger>;
@@ -32,34 +33,11 @@ export default class Ynn extends Koa {
     #address: AddressInfo;
 
     #logger = ( options: YnnOptions ): void => {
-        const { logger, logging, debugging } = options;
-        const { debug } = this;
+        const { logger, logging = false, debugging = true } = options;
 
-        this.logger = new Proxy<Logger>( logger, {
-            get( o: Logger, method: any ): ( ...args: any[] ) => any {
-                /**
-                 * if 
-                 */
-                if( !debugging && ( !logging || ( logging && !logger ) ) ) {
-                    return () => {};
-                }
-
-                let fn;
-
-                if( typeof logger[ method ] === 'function' ) {
-                    fn = logger[ method ].bind( logger );
-                } else {
-                    debug.error( `Function "${method}" not exists in logger.` );
-                    fn = () => {};
-                }
-
-                if( !debugging ) return fn;
-
-                return ( ...args: any[] ): void => {
-                    fn( ...args );
-                    debug[ typeof debug[ method ] === 'function' ? method : 'log' ]( ...args );
-                }
-            }
+        this.logger = loggerProxy( {
+            debug : this.debug,
+            logging, debugging, logger
         } );
     }
 
