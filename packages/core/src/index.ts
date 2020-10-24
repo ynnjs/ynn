@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import { AddressInfo } from 'net';
+import { Server } from 'http';
 import Koa, { KoaOptions } from '@ynn/koa';
 import cargs from './cargs';
 import Logger from './logger';
@@ -15,12 +16,12 @@ import DebugLogger, { DebugLoggerOptions } from './debug';
 import loggerProxy from './logger-proxy';
 
 export type YnnOptions = KoaOptions & {
-    debugging?: boolean | keyof Logger | Array<keyof Logger>;
+    debugging?: boolean;
     debugOptions?: DebugLoggerOptions;
-    logging?: boolean | string | string[];
+    logging?: boolean;
     configDir?: string;
     logPath?: string;
-    logger?: string | boolean | Logger;
+    logger?: Logger;
     port?: number;
     [ key: string ]: any;
 }
@@ -29,8 +30,9 @@ export default class Ynn extends Koa {
     public static cargs = cargs;
     public logger!: Logger;
     public debug: DebugLogger;
+    public server: Server | null = null;
 
-    #address: AddressInfo;
+    #address: AddressInfo | null = null;
 
     #logger = ( options: YnnOptions ): void => {
         const { logger, logging = false, debugging = true } = options;
@@ -41,7 +43,7 @@ export default class Ynn extends Koa {
         } );
     }
 
-    #options: YnnOptions;
+    #options!: YnnOptions;
 
     #setup = ( options: YnnOptions ): void => {
         this.#options = { ...options, ...cargs };
@@ -51,10 +53,10 @@ export default class Ynn extends Koa {
     constructor( options: YnnOptions = {} ) {
         super();
         this.debug = new DebugLogger( options.debugOptions || {} );
-        options = this.#setup( options );
+        this.#setup( options );
     }
 
-    listen( ...args ) {
+    listen( ...args ): Server {
         if( this.#options.port ) {
             if( Number.isInteger( args[ 0 ] ) ) {
                 args[ 0 ] = this.#options.port;
@@ -62,15 +64,16 @@ export default class Ynn extends Koa {
                 args.unshift( this.#options.port );
             }
         }
-        this.#address = super.listen( ...args );
-        this.debug.log( `Server is running on port ${this.#address.port}` );
-        return this.#address;
+        this.server = super.listen( ...args );
+        this.#address = ( this.server as Server ).address() as AddressInfo;
+        this.debug.log( `Server is running on port ${( this.#address as AddressInfo ).port}` );
+        return this.server as Server;
     }
 
     summary() {
         return {
             'log-path' : this.#options[ 'log-path' ],
-            port : this.#address.port
+            port : this.#address?.port ?? null
         }
     }
 

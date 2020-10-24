@@ -35,6 +35,7 @@
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
         "@ynn/koa": "^0.0.0",
+        "@ynn/http-assert": "^0.0.0",
         "cli-style": "^0.1.1",
         "yargs": "^16.0.3"
     },
