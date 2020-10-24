@@ -23,8 +23,10 @@
         "@typescript-eslint/eslint-plugin": "^4.4.0",
         "@typescript-eslint/parser": "^4.4.0",
         "benny": "^3.6.14",
+        "escape-string-regexp": "^4.0.0",
         "eslint": "^7.10.0",
         "jest": "^26.5.2",
+        "jest-mock-process": "^1.4.0",
         "supertest": "^5.0.0",
         "ts-jest": "^26.4.1",
         "ts-node": "^9.0.0",
@@ -33,7 +35,7 @@
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
         "@ynn/koa": "^0.0.0",
-        "cli-style": "^0.0.6",
+        "cli-style": "^0.1.1",
         "yargs": "^16.0.3"
     },
     "engines": {

@@ -27,12 +27,14 @@ export default ( options: LoggerProxyOptions ) => {
 
             let fn;
 
-            if( typeof logger?.[ method ] === 'function' ) {
-                fn = logger[ method ].bind( logger );
-            } else {
-                debug.error( `Function "${method}" not exists in logger.` );
-                fn = blank;
-            }
+            if( logging ) {
+                if( typeof logger?.[ method ] === 'function' ) {
+                    fn = logger[ method ].bind( logger );
+                } else {
+                    debugging && debug.error( `Function "${method}" not exists in logger.` );
+                    fn = blank;
+                }
+            } else fn = blank;
 
             if( !debugging ) return fn;
 

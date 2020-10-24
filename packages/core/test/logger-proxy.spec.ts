@@ -8,37 +8,103 @@
  ******************************************************************/
 
 import loggerProxy from '../src/logger-proxy';
-import DebugLogger from '../src/debug';
+import Debug from '../src/debug';
+
+const loggerMethods = [ 'log', 'debug', 'warn', 'verbose', 'error', 'critical' ];
+const debugMethods = [ 'log', 'debug', 'warn', 'verbose', 'error' ];
+
+function mock( options: any = {} ) {
+    const debug = new Debug;
+    const logger = new Debug;
+    debugMethods.forEach( x => debug[ x ] = jest.fn() );
+    loggerMethods.forEach( x => logger[ x ] = jest.fn() );
+    const proxy = loggerProxy( { logger, debug, ...options } )
+    return { debug, logger, proxy }
+}
 
 describe( 'logger-proxy', () => {
 
-    it( 'logging is false', () => {
-        
+    describe( 'supress both logging and debugging', () => {
+        loggerMethods.forEach( x => {
+            it( `${x}`, () => {
+                const { logger, debug, proxy } = mock( { logging : false, debugging : false } );
+                proxy[ x ]( '123' );
+                expect( logger[ x ] ).toHaveBeenCalledTimes( 0 );
+                expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledTimes( 0 );
+            } );
+        } );
     } );
 
-    it( 'logging is true', () => {
-        
-    } );
-    
-    it( 'debugging is false', () => {
-        const debug = new DebugLogger();
-        debug.error = jest.fn();
-        const logger = loggerProxy( { debug, logging : false } );
-
-        logger.log( '' );
-        expect( debug.error ).toHaveBeenCalled();
-    } ); 
-
-    it( 'debugging is ture', () => {
-        
+    describe( 'debugging only', () => {
+        loggerMethods.forEach( x => {
+            it( `${x}`, () => {
+                const { logger, debug, proxy } = mock( { logging : false, debugging : true } );
+                const str = new Date().toString();
+                proxy[ x ]( str );
+                expect( logger[ x ] ).toHaveBeenCalledTimes( 0 );
+                expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledTimes( 1 );
+            } );
+        } );
     } );
 
-    it( 'logger is set', () => {
-        
+    describe( 'logging only', () => {
+        loggerMethods.forEach( x => {
+            it( `${x}`, () => {
+                const { logger, debug, proxy } = mock( { logging : true, debugging : false } );
+                const str = new Date().toString();
+                proxy[ x ]( str );
+                expect( logger[ x ] ).toHaveBeenCalledTimes( 1 );
+                expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledTimes( 0 );
+            } );
+        } );
     } );
 
-    it( 'logger is unset', () => {
-        
+    describe( 'no logger', () => {
+        loggerMethods.forEach( x => {
+            it( `${x}`, () => {
+                const debug = new Debug;
+                debugMethods.forEach( x => debug[ x ] = jest.fn() );
+                const proxy = loggerProxy( { debug, debugging : true, logging : true } )
+                const str = new Date().toString();
+                proxy[ x ]( str );
+                expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledTimes( x === 'error' ? 2 : 1 );
+            } );
+        } );
     } );
 
+
+    describe( 'extra and non-existent logger method', () => {
+        it( 'supressed debugging', () => {
+            const { logger, debug, proxy } = mock( { logging : true, debugging : false } );
+            const str = new Date().toString();
+            ( proxy as any ).xxx( str );
+            expect( logger.log ).toHaveBeenCalledTimes( 0 );
+            expect( debug.error ).toHaveBeenCalledTimes( 0 );
+        } );
+
+        it( 'debugging', () => {
+            const { logger, debug, proxy } = mock( { logging : true, debugging : true } );
+            const str = new Date().toString();
+            ( proxy as any ).xxx( str );
+            expect( logger.log ).toHaveBeenCalledTimes( 0 );
+            expect( debug.error ).toHaveBeenCalledTimes( 1 );
+            expect( debug.error ).toHaveBeenCalledWith( 'Function "xxx" not exists in logger.' );
+            expect( debug.log ).toHaveBeenCalledTimes( 1 );
+            expect( debug.log ).toHaveBeenCalledWith( str );
+        } );
+    } );
+
+    describe( 'logging and debugging', () => {
+        loggerMethods.forEach( x => {
+            it( `${x}`, () => {
+                const { logger, debug, proxy } = mock( { logging : true, debugging : true } );
+                const str = new Date().toString();
+                proxy[ x ]( str );
+                expect( logger[ x ] ).toHaveBeenCalledTimes( 1 );
+                expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledTimes( 1 );
+                expect( logger[ x ] ).toHaveBeenCalledWith( str );
+                expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledWith( str );
+            } );
+        } );
+    } );
 } );

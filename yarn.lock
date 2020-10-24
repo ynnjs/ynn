@@ -1441,9 +1441,11 @@ __metadata:
     "@typescript-eslint/parser": ^4.4.0
     "@ynn/koa": ^0.0.0
     benny: ^3.6.14
-    cli-style: ^0.0.6
+    cli-style: ^0.1.1
+    escape-string-regexp: ^4.0.0
     eslint: ^7.10.0
     jest: ^26.5.2
+    jest-mock-process: ^1.4.0
     supertest: ^5.0.0
     ts-jest: ^26.4.1
     ts-node: ^9.0.0
@@ -2175,12 +2177,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-style@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "cli-style@npm:0.0.6"
+"cli-style@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "cli-style@npm:0.1.1"
   dependencies:
     chalk: ^4.1.0
-  checksum: d42e98fd4df52489f6451b1dc7b592924b2996225db0abf86e57c643ed5ada907b6c27220351d715e9086b92d7b03a7ccf9a9b156a1d01101b95c63a20b1ef7e
+  checksum: 4ef69ce667cd4a3124dfb514da3523c6f0a17c61220325e1ad862614d64799302a78174114c5918f8a72a8b3f2a2af4618c7890ecb240dfbd246877e0a407819
   languageName: node
   linkType: hard
 
@@ -2800,6 +2802,13 @@ __metadata:
   version: 2.0.0
   resolution: "escape-string-regexp@npm:2.0.0"
   checksum: f3500f264e864aef0c336a2efb3adb1cee9ba1abbe15d69f0d9dab423607cac91aa009b23011b4e6cfd6d6b79888873e21dad1882047aa2e1555dd307428c51d
+  languageName: node
+  linkType: hard
+
+"escape-string-regexp@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "escape-string-regexp@npm:4.0.0"
+  checksum: c747be8d5ff7873127e3e0cffe7d2206a37208077fa9c30a3c1bb4f26bebd081c8c24d5fba7a99449f9d20670bea3dc5e1b6098b0f074b099bd38766271a272f
   languageName: node
   linkType: hard
 
@@ -4523,6 +4532,15 @@ fsevents@^2.1.2:
     slash: ^3.0.0
     stack-utils: ^2.0.2
   checksum: 45d83f7e6bbb7850041c4f037de69d3f034c05d3ec4bedab30a64c3691ba4e45fd33ce8af60c17deae54a808fd8e64f0ffa19d517c5002c5b1779858c88351a9
+  languageName: node
+  linkType: hard
+
+"jest-mock-process@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "jest-mock-process@npm:1.4.0"
+  peerDependencies:
+    jest: ">=23.4 <27"
+  checksum: bd11e5142dd5fe6e4b58b22a14ba69008f40f68d7db4d25a5545bc915ca1631e0e54525b73d2c44156ad97124ad0beca63229364f7f35ca7e2d29f87fed451cf
   languageName: node
   linkType: hard
 
