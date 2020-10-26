@@ -21,7 +21,7 @@ export default ( options: LoggerProxyOptions ) => {
     const { debugging = true, logging = false, logger, debug } = options;
     const blank = () => {};
 
-    return new Proxy<Logger | Record<any, any>>( logger || {}, {
+    return new Proxy<any>( logger || {}, {
         get( logger: Logger, method: string ): ( ...args: any[] ) => any {
             if( !debugging && ( !logging || ( logging && !logger ) ) ) return blank;
 

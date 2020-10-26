@@ -28,7 +28,7 @@ export type YnnOptions = KoaOptions & {
 
 export default class Ynn extends Koa {
     public static cargs = cargs;
-    public logger!: Logger;
+    public logger!: any;
     public debug: DebugLogger;
     public server: Server | null = null;
 
