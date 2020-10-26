@@ -1,9 +1,9 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  * 
- * File: index.js
+ * File: src/ynn.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 03/05/2020
+ * Time: 10/26/2020
  * Description: 
  ******************************************************************/
 

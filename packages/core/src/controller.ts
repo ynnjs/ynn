@@ -7,8 +7,9 @@
  * Description: 
  ******************************************************************/
 
-import Koa, { KoaContext } from '@ynn/koa';
+import { KoaContext } from '@ynn/koa';
 import assert, { Assertion } from '@ynn/http-assert';
+import Ynn from './ynn';
 
 export type ControllerOptions = {
 };
