@@ -15,6 +15,9 @@ export type ControllerOptions = {
 };
 
 export default class Controller {
+
+    public app: Ynn;
+
     constructor( public ctx: KoaContext, options: ControllerOptions = {} ) {
         const { app } = ctx.app;
         this.app = app;
