@@ -23,7 +23,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _address, _logger, _options, _setup;
+var _address, _configs, _logger, _options, _setup;
 Object.defineProperty(exports, "__esModule", { value: true });
 const koa_1 = __importDefault(require("@ynn/koa"));
 const cargs_1 = __importDefault(require("./cargs"));
@@ -34,6 +34,7 @@ class Ynn extends koa_1.default {
         super();
         this.server = null;
         _address.set(this, null);
+        _configs.set(this, []);
         _logger.set(this, (options) => {
             const { logger, logging = false, debugging = true } = options;
             this.logger = logger_proxy_1.default({
@@ -69,9 +70,16 @@ class Ynn extends koa_1.default {
             port: __classPrivateFieldGet(this, _address)?.port ?? null
         };
     }
-    config() {
+    config(path, defaultValue) {
+        let res;
+        for (const config of __classPrivateFieldGet(this, _configs)) {
+            res = config.get(path);
+            if (res !== undefined)
+                return res;
+        }
+        return res === undefined ? defaultValue : res;
     }
 }
 exports.default = Ynn;
-_address = new WeakMap(), _logger = new WeakMap(), _options = new WeakMap(), _setup = new WeakMap();
+_address = new WeakMap(), _configs = new WeakMap(), _logger = new WeakMap(), _options = new WeakMap(), _setup = new WeakMap();
 Ynn.cargs = cargs_1.default;

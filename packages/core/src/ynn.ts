@@ -12,6 +12,7 @@ import { Server } from 'http';
 import Koa, { KoaOptions } from '@ynn/koa';
 import cargs from './cargs';
 import Logger from './logger';
+import Config from './config';
 import DebugLogger, { DebugLoggerOptions } from './debug';
 import loggerProxy from './logger-proxy';
 
@@ -33,6 +34,7 @@ export default class Ynn extends Koa {
     public server: Server | null = null;
 
     #address: AddressInfo | null = null;
+    #configs: Config[] = [];
 
     #logger = ( options: YnnOptions ): void => {
         const { logger, logging = false, debugging = true } = options;
@@ -77,6 +79,13 @@ export default class Ynn extends Koa {
         }
     }
 
-    config() {
+    config( path: string, defaultValue?: any ): any {
+        let res;
+
+        for( const config of this.#configs ) {
+            res = config.get( path );
+            if( res !== undefined ) return res;
+        }
+        return res === undefined ? defaultValue : res;
     }
 }
