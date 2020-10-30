@@ -13,7 +13,7 @@ import path from 'path';
 async function loadFiles( dir: string ): Record<string, any> { 
     const res = {};
     const subtasks = [];
-
+t
     const files = await fs.readdir( dir );
 
     for( const name of files ) {
@@ -23,7 +23,6 @@ async function loadFiles( dir: string ): Record<string, any> {
 
         const sub = path.join( dir, name ); 
 
-        
 
     }
 
