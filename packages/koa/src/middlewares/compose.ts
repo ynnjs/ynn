@@ -13,7 +13,7 @@ export type ComposedMiddleware<T> = ( context: T, next?: Next ) => Promise<void>
 
 export default function compose<T>( middleware: Middleware<T>[] ): ComposedMiddleware<T>  { 
 
-    return ( ctx, next ) => {
+    return ( ctx, next, ...args: any[] ) => {
         // last called middleware
         let index = -1;
 
@@ -23,7 +23,7 @@ export default function compose<T>( middleware: Middleware<T>[] ): ComposedMiddl
             const fn = i === middleware.length ? next : middleware[ i ];
             if( !fn ) return Promise.resolve();
             try {
-                return Promise.resolve( fn( ctx, dispatch.bind( null, i + 1 ) ) );
+                return Promise.resolve( fn( ctx, dispatch.bind( null, i + 1 ), ...args ) );
             } catch( e ) { return Promise.reject( e ) }
         }
 

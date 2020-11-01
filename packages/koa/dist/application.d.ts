@@ -14,6 +14,8 @@ import Keygrip from 'keygrip';
 import { KoaContext } from './context';
 import { KoaRequest } from './request';
 import { KoaResponse } from './response';
+import compose from './middlewares/compose';
+export { compose };
 export declare type Keys = Keygrip | string[];
 export declare type KoaOptions = {
     keys?: Keys;

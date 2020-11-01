@@ -24,6 +24,9 @@ export type YnnOptions = KoaOptions & {
     logPath?: string;
     logger?: Logger;
     port?: number;
+    controllers?: any[];
+    providors?: any[];
+    modules?: any[];
     [ key: string ]: any;
 }
 

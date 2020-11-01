@@ -16,6 +16,7 @@ const path_1 = __importDefault(require("path"));
 async function loadFiles(dir) {
     const res = {};
     const subtasks = [];
+    t;
     const files = await fs_1.default.readdir(dir);
     for (const name of files) {
         // skip ., .. and hidden files

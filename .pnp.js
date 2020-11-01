@@ -1769,6 +1769,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:7.12.1"],
             ["jest", "npm:26.6.1"],
             ["jest-mock-process", "virtual:83d33cae7a8952608223574d674cd42684107f637be67ce9c8d62461dafde945ddba5fe9e8fa3f2a13cb37761ce53b1acea368a9186a5b0908a2513376bd876c#npm:1.4.0"],
+            ["path-to-regexp", "npm:6.2.0"],
             ["supertest", "npm:5.0.0"],
             ["ts-jest", "virtual:bf8197faa3e3c97d45f13f6176b0c4dbcab626254c3899d5686ed178837c7e53189467ebce9dfdcdf6d269b75ba87644f883264b0a749d11c8023d40c2103e9e#npm:26.4.3"],
             ["ts-node", "virtual:00cb363eca666ebe8c7cc7da30d2f656777ac86f75e545bc875128ed70cc292a29c0698c51b7f4bce43558316a9798b032e1155567ed1455dc2df41ae5a90fc4#npm:9.0.0"],
@@ -6421,6 +6422,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/path-parse-npm-1.0.6-4a4c90546c-2eee4b93fb.zip/node_modules/path-parse/",
           "packageDependencies": [
             ["path-parse", "npm:1.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["path-to-regexp", [
+        ["npm:6.2.0", {
+          "packageLocation": "./.yarn/cache/path-to-regexp-npm-6.2.0-efbac3c1ff-4116de71f5.zip/node_modules/path-to-regexp/",
+          "packageDependencies": [
+            ["path-to-regexp", "npm:6.2.0"]
           ],
           "linkType": "HARD",
         }]

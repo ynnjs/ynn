@@ -9,7 +9,7 @@
  ******************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
 function compose(middleware) {
-    return (ctx, next) => {
+    return (ctx, next, ...args) => {
         // last called middleware
         let index = -1;
         function dispatch(i) {
@@ -20,7 +20,7 @@ function compose(middleware) {
             if (!fn)
                 return Promise.resolve();
             try {
-                return Promise.resolve(fn(ctx, dispatch.bind(null, i + 1)));
+                return Promise.resolve(fn(ctx, dispatch.bind(null, i + 1), ...args));
             }
             catch (e) {
                 return Promise.reject(e);

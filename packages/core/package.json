@@ -37,6 +37,7 @@
         "@ynn/http-assert": "^0.0.0",
         "@ynn/koa": "^0.0.0",
         "cli-style": "^0.1.1",
+        "path-to-regexp": "^6.2.0",
         "yargs": "^16.1.0"
     },
     "engines": {

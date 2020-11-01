@@ -11,6 +11,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.compose = void 0;
 const http_1 = __importDefault(require("http"));
 const util_1 = __importDefault(require("util"));
 const events_1 = require("events");
@@ -22,6 +23,7 @@ const context_1 = __importDefault(require("./context"));
 const request_1 = __importDefault(require("./request"));
 const response_1 = __importDefault(require("./response"));
 const compose_1 = __importDefault(require("./middlewares/compose"));
+exports.compose = compose_1.default;
 const debug = util_1.default.debuglog('ynn:koa:application');
 const RESPOND_EXPLICIT_NULL_BODY = Symbol.for('respond#explicit#null#body');
 class Koa extends events_1.EventEmitter {

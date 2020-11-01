@@ -104,7 +104,7 @@ describe( 'app.use( fn )', () => {
         const app = new Koa();
 
         [ null, undefined, 0, false, 'not a function' ].forEach( v => {
-            assert.throws(() => app.use( v ), /middleware must be a function!/);
+            assert.throws( () => app.use( v as any ), /middleware must be a function!/ );
         } );
     } );
 

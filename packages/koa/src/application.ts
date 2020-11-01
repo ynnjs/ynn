@@ -23,6 +23,8 @@ import compose from './middlewares/compose';
 const debug = util.debuglog( 'ynn:koa:application' );
 const RESPOND_EXPLICIT_NULL_BODY = Symbol.for( 'respond#explicit#null#body' );
 
+export { compose };
+
 export type Keys = Keygrip | string[];
 
 export type KoaOptions = {

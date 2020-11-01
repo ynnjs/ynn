@@ -118,10 +118,10 @@ const context = {
         res.end(msg);
     },
     get cookies() {
-        return this[COOKIES] ||= new cookies_1.default(this.req, this.res, {
+        return this[COOKIES] || (this[COOKIES] = new cookies_1.default(this.req, this.res, {
             keys: this.app.keys,
             secure: this.request.secure
-        });
+        }));
     },
     set cookies(cookies) {
         this[COOKIES] = cookies;

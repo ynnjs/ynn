@@ -362,15 +362,15 @@ describe( 'app.respond', () => {
 
                 app.use( ctx => {
                     ctx.status = 200;
-                    ctx.message = 'ok';
+                    ctx.message = 'okay';
                 } );
 
                 const res = await request( app.callback() )
                     .get( '/' )
                     .expect( 200 )
-                    .expect( 'ok' );
+                    .expect( 'okay' );
 
-                assert.equal( res.res.statusMessage, 'ok' );
+                assert.equal( ( res as any ).res.statusMessage, 'okay' );
             } );
         } );
 
@@ -658,8 +658,8 @@ describe( 'app.respond', () => {
 
                 app.use( () => {
                     const err = new Error( 'sorry!' );
-                    err.status = 403;
-                    err.expose = true;
+                    ( err as any ).status = 403;
+                    ( err as any ).expose = true;
                     throw err;
                 } );
 
@@ -675,7 +675,7 @@ describe( 'app.respond', () => {
 
                 app.use( () => {
                     const err = new Error( 's3 explodes' );
-                    err.status = 403;
+                    ( err as any ).status = 403;
                     throw err;
                 } );
 

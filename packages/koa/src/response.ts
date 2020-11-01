@@ -121,14 +121,14 @@ const Response: KoaResponse = {
     /**
      * Get response body.
      */
-    get body(): KoaResponseBody {
+    get body() {
         return this[ BODY ]!;
     },
 
     /**
      * Set response body
      */
-    set body( val: KoaResponseBody ) {
+    set body( val ) {
         const original = this[ BODY ];
         this[ BODY ]= val;
 
@@ -306,7 +306,7 @@ const Response: KoaResponse = {
      *      this.response.etag = '"md5hashsum"';
      *      this.response.etag = 'W//"123456789"';
      */
-    set etag( val: string ) {
+    set etag( val ) {
         if( !/^(W\/)?"/.test( val ) ) val = `"${val}"`;
         this.set( 'ETag', val );
     },
