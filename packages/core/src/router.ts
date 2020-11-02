@@ -86,6 +86,8 @@ export default class implements Router {
     delete: Method;
     options: Method;
 
+    static match = match;
+
     constructor( public app?: Koa ) {
         this.get = createMethod.call( this, 'get' );
         this.put = createMethod.call( this, 'put' );

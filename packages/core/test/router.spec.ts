@@ -10,4 +10,12 @@
 import Koa, { compose } from '@ynn/koa';
 import Router from '../src/router';
 
-new Router();
+describe( 'Router', () => {
+    
+
+    describe( 'Router.match', () => {
+        it( '', () => {
+            Router.match( 'a' );
+        } ); 
+    } );
+} );

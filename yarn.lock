@@ -747,7 +747,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/accepts@npm:*, @types/accepts@npm:^1.3.5":
+"@types/accepts@npm:^1.3.5":
   version: 1.3.5
   resolution: "@types/accepts@npm:1.3.5"
   dependencies:
@@ -823,7 +823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/content-disposition@npm:*, @types/content-disposition@npm:^0.5.3":
+"@types/content-disposition@npm:^0.5.3":
   version: 0.5.3
   resolution: "@types/content-disposition@npm:0.5.3"
   checksum: 1b7d94b19ae8564816233b74df5f662052d393d0fdb317c81d894f5e1e762010c46b1812ce01a1492a72603e182afd18a59673e25ae737efc3e470ba261697d7
@@ -844,7 +844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookies@npm:*, @types/cookies@npm:^0.7.4":
+"@types/cookies@npm:^0.7.4":
   version: 0.7.4
   resolution: "@types/cookies@npm:0.7.4"
   dependencies:
@@ -907,14 +907,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/http-assert@npm:*, @types/http-assert@npm:^1.5.1":
+"@types/http-assert@npm:^1.5.1":
   version: 1.5.1
   resolution: "@types/http-assert@npm:1.5.1"
   checksum: 0c9cbc568be88c60870d96953880c9b2c1d7c290df928a4004693debb715b8ad1b3e8a2f4b13b84e22b41379d20d9255e960532cf613a28126e8a433ddabac01
   languageName: node
   linkType: hard
 
-"@types/http-errors@npm:*, @types/http-errors@npm:^1.8.0":
+"@types/http-errors@npm:^1.8.0":
   version: 1.8.0
   resolution: "@types/http-errors@npm:1.8.0"
   checksum: f6a0cf40d026b339f3358771d1a98bce7e637429882255246ccf4056cf0f2df7aaf2997ba3072e13df8688f0cd2f9f99ac4d84bed4665710793de35642b4cdad
@@ -990,45 +990,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/koa-compose@npm:*":
-  version: 3.2.5
-  resolution: "@types/koa-compose@npm:3.2.5"
-  dependencies:
-    "@types/koa": "*"
-  checksum: bb6cae03095752d2f351e650ec4f5631c4512aec85bf5f7bab210a91a04714fbe0e75edac120cb56aff2cee5c6549bd6bf7a0ccc35f3adc0aa41d463b0a1f310
-  languageName: node
-  linkType: hard
-
-"@types/koa@npm:*":
-  version: 2.11.2
-  resolution: "@types/koa@npm:2.11.2"
-  dependencies:
-    "@types/accepts": "*"
-    "@types/cookies": "*"
-    "@types/http-assert": "*"
-    "@types/keygrip": "*"
-    "@types/koa-compose": "*"
-    "@types/node": "*"
-  checksum: 5a1a80da8db99fc2c57d63ed52cfb0fdf2bf8094b6bc5f7dcba62f108a43d3687145c8c73dd582ea19c1cabc96f44a7532c4a7b9090377a84364325f5da3a9ba
-  languageName: node
-  linkType: hard
-
-"@types/koa@npm:^2.11.6":
-  version: 2.11.6
-  resolution: "@types/koa@npm:2.11.6"
-  dependencies:
-    "@types/accepts": "*"
-    "@types/content-disposition": "*"
-    "@types/cookies": "*"
-    "@types/http-assert": "*"
-    "@types/http-errors": "*"
-    "@types/keygrip": "*"
-    "@types/koa-compose": "*"
-    "@types/node": "*"
-  checksum: 38887e8baea2db1b3ec9007aa165306ccd84d0f47560712fe197cf26d5eb931e9cd8891f12d77970f0d7f24de29920a764a65f2c31b4491f5cc162e3b9390089
-  languageName: node
-  linkType: hard
-
 "@types/mime@npm:*":
   version: 2.0.1
   resolution: "@types/mime@npm:2.0.1"
@@ -1047,6 +1008,13 @@ __metadata:
   version: 14.14.5
   resolution: "@types/node@npm:14.14.5"
   checksum: 4916d5c46e604be9b76c69300efdf26538f74ad63a5df572a6b66b95238ddbed3c2bcd5a9748c6ec2ef1bf529d84b3f3a53a0eed54d1f46eaa29471cbb7b1406
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^14.14.6":
+  version: 14.14.6
+  resolution: "@types/node@npm:14.14.6"
+  checksum: 9b06b04ab2ae3761136fb39b573f95d90e748ebcf232e126304d642e4910039a74973547635729b627a0401791a1f2491aa9aa6d4d6bb80922a0b869a2731a63
   languageName: node
   linkType: hard
 
@@ -1472,8 +1440,7 @@ __metadata:
   dependencies:
     "@lvchengbin/is": ^1.0.5
     "@types/jest": ^26.0.15
-    "@types/koa": ^2.11.6
-    "@types/node": ^14.14.5
+    "@types/node": ^14.14.6
     "@types/supertest": ^2.0.10
     "@types/yargs": ^15.0.9
     "@typescript-eslint/eslint-plugin": ^4.6.0
@@ -1487,7 +1454,7 @@ __metadata:
     jest: ^26.6.1
     jest-mock-process: ^1.4.0
     path-to-regexp: ^6.2.0
-    supertest: ^5.0.0
+    supertest: ^6.0.0
     ts-jest: ^26.4.3
     ts-node: ^9.0.0
     typescript: ^4.0.5
@@ -1564,6 +1531,21 @@ __metadata:
     type-is: ^1.6.18
     typescript: ^4.0.5
     vary: ^1.1.2
+  languageName: unknown
+  linkType: soft
+
+"@ynn/testing@workspace:packages/testing":
+  version: 0.0.0-use.local
+  resolution: "@ynn/testing@workspace:packages/testing"
+  dependencies:
+    "@types/jest": ^26.0.15
+    "@types/node": ^14.14.6
+    "@typescript-eslint/eslint-plugin": ^4.6.0
+    "@typescript-eslint/parser": ^4.6.0
+    eslint: ^7.12.1
+    ts-jest: ^26.4.3
+    ts-node: ^9.0.0
+    typescript: ^4.0.5
   languageName: unknown
   linkType: soft
 
@@ -6727,6 +6709,16 @@ resolve@^1.18.1:
     methods: 1.1.2
     superagent: 6.1.0
   checksum: b4863c4627d47792048889ab35b36380c6e5026b5f64a29efe7546f69cf04040aee8da9615fc6c46a8813ac481abccdc509b140ea37f8ebfc00efc0508743dce
+  languageName: node
+  linkType: hard
+
+"supertest@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "supertest@npm:6.0.0"
+  dependencies:
+    methods: 1.1.2
+    superagent: 6.1.0
+  checksum: 9fda097854777394a35bd7f339bc5e0557921170d277cbb1bf05660731f7f3d5c5a4f65b3ede5c6dd1a3ca7491cecebd5f872bc5013ed7dc13b59cb5c2c635ca
   languageName: node
   linkType: hard
 
