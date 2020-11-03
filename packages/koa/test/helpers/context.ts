@@ -14,7 +14,7 @@ const context = ( req?: any, res?: any, app?: any ) => {
     const socket = new Stream.Duplex();
     req = { headers : {}, socket, ...Stream.Readable.prototype, ...req }; 
     res = { _headers : {}, socket, ...Stream.Writable.prototype, ...res };
-    req.socket.removeAddress = req.socket.remoteAddress || '127.0.0.1';
+    req.socket.remoteAddress = req.socket.remoteAddress || '127.0.0.1';
     app = app || new Koa();
     app.on( 'error', () => {} );
     res.getHeaders = () => res._headers;
