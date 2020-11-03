@@ -7,7 +7,6 @@
  * Description: 
  ******************************************************************/
 
-import util from 'util';
 import { pathToRegexp } from 'path-to-regexp';
 import Koa, { compose, Middleware } from '@ynn/koa';
 
@@ -19,41 +18,25 @@ export interface Router {
     app?: Koa;
 }
 
-const isRegExp = util.types.isRegExp;
-
-function match( path: string | RegExp, ctx, options ): false | string[] {
-    if( isRegExp( path ) ) {
-        const matches = ctx.path.match( path );
-        matches.groups && ( ctx.params = matches.groups );
-        return matches;
-    }
+function match( path: string | RegExp, ctx, options = {} ): false | string[] {
     const keys = [];
     const matches = pathToRegexp( path, keys, options ).exec( ctx.path );
 
-    if( matches ) {
-        for( let i = 0, l = keys.length; i < l; i += 1 ) {
-            const { name } = keys[ i ]; 
-            ctx.params[ name ] = matches[ i + 1 ];
-        }
-        return matches;
+    if( !matches ) return false;
+
+    ctx.params ||= {};
+
+    for( let i = 0, l = keys.length; i < l; i += 1 ) {
+        ctx.params[ keys[ i ].name ] = matches[ i + 1 ];
     }
 
-    return false;
+    matches.groups && Object.assign( ctx.params, matches.groups );
+    return matches;
 }
 
 function execute( this: Router, ctx, next, path, fn, options: any = {} ): Promise<any> {
 
-    ctx.params ||= {};
-    let matches: false | string[] = false;
-
-    if( Array.isArray( path ) ) {
-        for( const item of path ) {
-            matches = match( item, ctx, options );
-            if( matches ) break;
-        }
-    } else {
-        matches = match( path, ctx, options );
-    }
+    const matches = match( path, ctx, options );
 
     if( !matches ) return next();
 

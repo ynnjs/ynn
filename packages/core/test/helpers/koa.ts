@@ -7,7 +7,7 @@
  * Description: 
  ******************************************************************/
 
-import net from 'net';
+import Stream from 'stream';
 import { IncomingMessage, ServerResponse } from 'http';
 import statuses from 'statuses';
 import is from '@lvchengbin/is';
@@ -29,21 +29,24 @@ export type ReqOptions = {
 
 export class Req extends IncomingMessage {
     constructor( options: ReqOptions = {} ) {
-        super();
-        options.headers ?? ( this.headers = options.headers );
+        super( options.socket || new Stream.Duplex() );
+        this.headers = options.headers || {};
         this.method = options.method || 'GET';
+        this.aborted = !!options.aborted;
+        this.complete = is.boolean( options.complete ) ? options.complete : true;
+        this.statusCode = options.statusCode || 200;
+        this.url = options.url ?? '/';
+
         if( options.httpVersion ) {
             this.httpVersion = options.httpVersion;
             const [ httpVersionMajor, httpVersionMinor ] = this.httpVersion.split( '.' );
             Object.assign( this, { httpVersionMajor, httpVersionMinor } );
         }
-        this.aborted = !!options.aborted;
-        this.complete = is.boolean( options.complete ) ? options.complete : true;
-        this.statusCode = options.statusCode || 200;
+
         if( options.statusMessage ) {
             this.statusMessage = options.statusMessage;
         } else {
-            this.statusMessage = statuses.message[ this.statusCode ];
+            this.statusMessage = statuses.message[ this.statusCode ] || '';
         }
 
         /**
@@ -53,12 +56,10 @@ export class Req extends IncomingMessage {
             this.headers[ 'Host' ] = options.host;
         }
 
-        this.socket = options.socket || new net.Socket();
-
         /**
          * set remoteAddress to 127.0.0.1
          */
-        this.scoket.remoteAddress = options.remoteAddress || this.socket.remoteAddress || '127.0.0.1';
+        ( this.socket as any ).remoteAddress = options.remoteAddress || this.socket.remoteAddress || '127.0.0.1';
     }
 }
 

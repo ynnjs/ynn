@@ -42,7 +42,7 @@ describe( 'Config', () => {
     } );
 
     it( 'should support wrapping an non-object value', () => {
-        expect( new Config().get( 'app.name', 'default name' ) ).toEqual( 'default name' );
+        expect( new Config( null ).get( 'app.name', 'default name' ) ).toEqual( 'default name' );
     } );
 
 } );
