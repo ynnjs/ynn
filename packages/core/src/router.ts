@@ -7,7 +7,7 @@
  * Description: 
  ******************************************************************/
 
-import { pathToRegexp } from 'path-to-regexp';
+import { pathToRegexp, Key } from 'path-to-regexp';
 import Koa, { compose, Middleware } from '@ynn/koa';
 
 export type Path = string | RegExp | Array<string | RegExp>;
@@ -18,19 +18,24 @@ export interface Router {
     app?: Koa;
 }
 
-function match( path: string | RegExp, ctx, options = {} ): false | string[] {
-    const keys = [];
+function match( path: string | RegExp | Array<string |RegExp>, ctx, options = {} ): false | string[] {
+    const keys: Key[] = [];
     const matches = pathToRegexp( path, keys, options ).exec( ctx.path );
 
-    if( !matches ) return false;
-
     ctx.params ||= {};
+
+    if( !matches ) return false;
 
     for( let i = 0, l = keys.length; i < l; i += 1 ) {
         ctx.params[ keys[ i ].name ] = matches[ i + 1 ];
     }
 
-    matches.groups && Object.assign( ctx.params, matches.groups );
+    if( matches.groups ) {
+        const { groups } = matches;
+        for( const key of Object.keys( groups ) ) {
+            groups[ key ] && ( ctx.params[ key ] = groups[ key ] );
+        }
+    }
     return matches;
 }
 
@@ -72,13 +77,13 @@ export default class implements Router {
     static match = match;
 
     constructor( public app?: Koa ) {
-        this.get = createMethod.call( this, 'get' );
-        this.put = createMethod.call( this, 'put' );
-        this.head = createMethod.call( this, 'head' );
-        this.post = createMethod.call( this, 'post' );
-        this.patch = createMethod.call( this, 'patch' );
-        this.delete = createMethod.call( this, 'delete' );
-        this.options = createMethod.call( this, 'options' );
+        this.get = createMethod.call( this, 'GET' );
+        this.put = createMethod.call( this, 'PUT' );
+        this.head = createMethod.call( this, 'HEAD' );
+        this.post = createMethod.call( this, 'POST' );
+        this.patch = createMethod.call( this, 'PATCH' );
+        this.delete = createMethod.call( this, 'DELETE' );
+        this.options = createMethod.call( this, 'OPTIONS' );
     }
 
     any( methods: string | string[], ...args: Parameters<Method> ): ReturnType<Method> {

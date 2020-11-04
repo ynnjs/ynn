@@ -33,7 +33,7 @@ export class Req extends IncomingMessage {
         this.headers = options.headers || {};
         this.method = options.method || 'GET';
         this.aborted = !!options.aborted;
-        this.complete = is.boolean( options.complete ) ? options.complete : true;
+        this.complete = is.boolean( options.complete ) ? options.complete as boolean : true;
         this.statusCode = options.statusCode || 200;
         this.url = options.url ?? '/';
 
@@ -86,7 +86,7 @@ export class Res extends ServerResponse {
         if( options.statusMessage ) {
             this.statusMessage = options.statusMessage;
         } else {
-            this.statusMessage = statuses.message[ this.statusCode ];
+            this.statusMessage = statuses.message[ this.statusCode ] || '';
         }
     }
 }
@@ -114,4 +114,10 @@ export function createRequest( reqOrOptions?: IncomingMessage | ReqOptions ) {
 export function createResponse( resOrOptions?: ServerResponse | ResOptions ) {
     const res = resOrOptions instanceof ServerResponse ? resOrOptions : new Res( resOrOptions );
     return createContext( { res } ).response;
+}
+
+export default class extends Koa {
+    $( { req = new Req(), res = new Res() }: { req?: Req, res?: Res } ): Promise<any> {
+        return this.callback()( req, res );
+    }
 }

@@ -7,13 +7,26 @@
  * Description: 
  ******************************************************************/
 
-import Koa, { compose } from '@ynn/koa';
 import Router from '../src/router';
-import { createContext, Req } from './helpers/koa';
+import Koa, { createContext, Req, Res } from './helpers/koa';
 
 describe( 'Router', () => {
+
+    describe( 'Router.get', () => {
+        it( '', () => {
+            const app = new Koa();
+            const router = new Router( app );
+            const req = new Req( { url : '/a', method : 'GET' } );
+
+            router.get( '/a', ( ctx, next ) => {
+                console.log( '```````````````````````````' );
+            } );
+
+            app.callback()( req, new Res() );
+        } );
+    } );
     
-    describe( 'Router.match', () => {
+    describe( 'static method Router.match', () => {
         it( 'should match a string', () => {
             const req = new Req( { url : '/a' } );
             const ctx = createContext( { req } );
@@ -50,5 +63,44 @@ describe( 'Router', () => {
             expect( Router.match( [ /^\/b\/\d+/, '/a/:id' ], ctx ) ).toBeTruthy();
         } );
 
+        it( 'should create params property in ctx even though false is returned', () => {
+            const ctx = createContext();
+            Router.match( '/a/:id', ctx );
+            expect( ctx ).toHaveProperty( 'params', {} );
+        } );
+
+        it( 'should fill ctx.params with items matched in string', () => {
+            const req = new Req( { url : '/a/123' } );
+            const ctx = createContext( { req } );
+            Router.match( '/a/:id', ctx );
+            expect( ctx ).toHaveProperty( 'params', {
+                id : '123'
+            } );
+        } );
+
+        it( 'should fill ctx.params in capturing groups', () => {
+            const req = new Req( { url : '/a/123' } );
+            const ctx = createContext( { req } );
+            Router.match( /^\/a\/(?<id>\d+)/, ctx );
+            expect( ctx ).toHaveProperty( 'params', { id : '123' } );
+        } );
+
+        it( 'should get correct params in complex situation', () => {
+            const req = new Req( { url : 'http://www.google.com/user/123456' } );
+            const ctx = createContext( { req } );
+            Router.match( [ /^\/a\/(?<id>\d+)/, '/user/:id' ], ctx );
+            expect( ctx ).toHaveProperty( 'params', { id: '123456' } );
+        } );
+
+        it( 'should return the matching results', () => {
+            const req = new Req( { url : '/a/123' } );
+            const ctx = createContext( { req } );
+            const matches = Router.match( /^\/a\/(?<id>\d+)/, ctx );
+            expect( Array.isArray( matches ) ).toBeTruthy();
+            expect( matches[ 0 ] ).toEqual( '/a/123' );  
+            expect( matches[ 1 ] ).toEqual( '123' );  
+            expect( matches ).toHaveProperty( 'index', 0 );  
+            expect( matches ).toHaveProperty( 'groups', { id : '123' } );  
+        } );
     } );
 } );
