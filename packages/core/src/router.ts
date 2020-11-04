@@ -22,8 +22,6 @@ function match( path: string | RegExp | Array<string |RegExp>, ctx, options = {}
     const keys: Key[] = [];
     const matches = pathToRegexp( path, keys, options ).exec( ctx.path );
 
-    ctx.params ||= {};
-
     if( !matches ) return false;
 
     for( let i = 0, l = keys.length; i < l; i += 1 ) {
