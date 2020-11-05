@@ -10,29 +10,33 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_to_regexp_1 = require("path-to-regexp");
 const koa_1 = require("@ynn/koa");
-function match(path, ctx, options = {}) {
+function match(rule, path, options = {}) {
     const keys = [];
-    const matches = path_to_regexp_1.pathToRegexp(path, keys, options).exec(ctx.path);
-    ctx.params || (ctx.params = {});
+    const matches = path_to_regexp_1.pathToRegexp(rule, keys, options).exec(path);
     if (!matches)
         return false;
-    for (let i = 0, l = keys.length; i < l; i += 1) {
-        ctx.params[keys[i].name] = matches[i + 1];
-    }
+    const params = {};
+    keys.forEach((key, i) => {
+        params[key.name] = matches[i + 1];
+    });
     if (matches.groups) {
         const { groups } = matches;
         for (const key of Object.keys(groups)) {
-            groups[key] && (ctx.params[key] = groups[key]);
+            groups[key] && (params[key] = groups[key]);
         }
     }
-    return matches;
+    return { params, matches };
 }
-function execute(ctx, next, path, fn, options = {}) {
-    const matches = match(path, ctx, options);
-    if (!matches)
+function execute(ctx, next, rule, fn, options = {}) {
+    const res = match(rule, ctx.path, options);
+    if (res === false) {
+        ctx.params = {};
+        ctx.routerMatches = [];
         return next();
-    const args = matches.slice(1).map(v => decodeURIComponent(v));
+    }
+    const args = res.matches.slice(1).map(v => decodeURIComponent(v));
     ctx.routerMatches = args;
+    ctx.params = res.params;
     return Promise.resolve(fn.call(this.app, ctx, next, ...args));
 }
 function createMethod(method) {

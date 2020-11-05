@@ -18,35 +18,44 @@ export interface Router {
     app?: Koa;
 }
 
-function match( path: string | RegExp | Array<string |RegExp>, ctx, options = {} ): false | string[] {
+function match( rule: string | RegExp | Array<string |RegExp>, path: string, options = {} ): false | {
+    params: Record<string, string>,
+    matches: string[]
+} {
     const keys: Key[] = [];
-    const matches = pathToRegexp( path, keys, options ).exec( ctx.path );
+    const matches = pathToRegexp( rule, keys, options ).exec( path );
 
     if( !matches ) return false;
 
-    for( let i = 0, l = keys.length; i < l; i += 1 ) {
-        ctx.params[ keys[ i ].name ] = matches[ i + 1 ];
-    }
+    const params = {};
+
+    keys.forEach( ( key: Key, i: number ) => {
+        params[ key.name ] = matches[ i + 1 ];
+    } );
 
     if( matches.groups ) {
         const { groups } = matches;
         for( const key of Object.keys( groups ) ) {
-            groups[ key ] && ( ctx.params[ key ] = groups[ key ] );
+            groups[ key ] && ( params[ key ] = groups[ key ] );
         }
     }
-    return matches;
+    return { params, matches };
 }
 
-function execute( this: Router, ctx, next, path, fn, options: any = {} ): Promise<any> {
+function execute( this: Router, ctx, next, rule, fn, options: any = {} ): Promise<any> {
 
-    const matches = match( path, ctx, options );
+    const res = match( rule, ctx.path, options );
 
-    if( !matches ) return next();
+    if( res === false ) {
+        ctx.params = {};
+        ctx.routerMatches = [];
+        return next();
+    }
 
-    const args = matches.slice( 1 ).map( v => decodeURIComponent( v ) );
+    const args = res.matches.slice( 1 ).map( v => decodeURIComponent( v ) );
     ctx.routerMatches = args;
+    ctx.params = res.params;
     return Promise.resolve( fn.call( this.app, ctx, next, ...args ) );
-
 }
 
 function createMethod( this: Router, method: string ): Method {

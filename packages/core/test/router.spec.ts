@@ -8,11 +8,11 @@
  ******************************************************************/
 
 import Router from '../src/router';
-import Koa, { createContext, Req, Res } from './helpers/koa';
+import Koa, { Req } from './helpers/koa';
 
 describe( 'Router', () => {
 
-    describe( 'Router.get', () => {
+    xdescribe( 'Router.get', () => {
         it( 'should execute the callback function as a middleware of Koa', done => {
             const app = new Koa();
             const router = new Router( app );
@@ -97,89 +97,57 @@ describe( 'Router', () => {
     
     describe( 'static method Router.match', () => {
         it( 'should match a string', () => {
-            const req = new Req( { url : '/a' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            expect( Router.match( '/a', ctx ) ).toBeTruthy();
+            expect( Router.match( '/a', '/a' ) ).toBeTruthy();
         } ); 
 
         it( 'should match a RegExp', () => {
-            const req = new Req( { url : '/a/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            expect( Router.match( /^\/a\/\d+/, ctx ) ).toBeTruthy();
+            expect( Router.match( /^\/a\/\d+/, '/a/123' ) ).toBeTruthy();
         } );
 
         it( 'should not mismatch', () => {
-            const req = new Req( { url : '/b/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            expect( Router.match( /^\/a\/\d+/, ctx ) ).toBeFalsy();
+            expect( Router.match( /^\/a\/\d+/, '/b/123' ) ).toBeFalsy();
         } );
 
         it( 'should support array of strings', () => {
-            const req = new Req( { url : '/a' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            expect( Router.match( [ '/b', '/a' ], ctx ) ).toBeTruthy();
+            expect( Router.match( [ '/b', '/a' ], '/a' ) ).toBeTruthy();
         } );
 
         it( 'should support array of Regexp', () => {
-            const req = new Req( { url : '/a/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            expect( Router.match( [ /^\/b\/\d+/, /^\/a\/\d+/ ], ctx ) ).toBeTruthy();
+            expect( Router.match( [ /^\/b\/\d+/, /^\/a\/\d+/ ], '/a/123' ) ).toBeTruthy();
         } );
 
         it( 'should support array of mixed values', () => {
-            const req = new Req( { url : '/a/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            expect( Router.match( [ /^\/b\/\d+/, '/a/:id' ], ctx ) ).toBeTruthy();
-        } );
-
-        xit( 'should create params property in ctx even though false is returned', () => {
-            const ctx = createContext();
-            Router.match( '/a/:id', ctx );
-            expect( ctx ).toHaveProperty( 'params', {} );
+            expect( Router.match( [ /^\/b\/\d+/, '/a/:id' ], '/a/123' ) ).toBeTruthy();
         } );
 
         it( 'should fill ctx.params with items matched in string', () => {
-            const req = new Req( { url : '/a/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            Router.match( '/a/:id', ctx );
-            expect( ctx ).toHaveProperty( 'params', {
-                id : '123'
-            } );
+            const res = Router.match( '/a/:id', '/a/123' );
+            expect( res ).toHaveProperty( 'params', { id : '123' } );
+            expect( res ).toHaveProperty( 'matches', [ '123' ] );
         } );
 
-        it( 'should fill ctx.params in capturing groups', () => {
-            const req = new Req( { url : '/a/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            Router.match( /^\/a\/(?<id>\d+)/, ctx );
-            expect( ctx ).toHaveProperty( 'params', { id : '123' } );
+        it( 'should return correct result with capturing groups', () => {
+            const res = Router.match( /^\/a\/(?<id>\d+)/, '/a/123' );
+            expect( res ).toHaveProperty( 'params', { id : '123' } );
+            expect( res ).toHaveProperty( 'matches', [ '123' ] );
         } );
 
-        it( 'should get correct params in complex situation', () => {
-            const req = new Req( { url : 'http://www.google.com/user/123456' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            Router.match( [ /^\/a\/(?<id>\d+)/, '/user/:id' ], ctx );
-            expect( ctx ).toHaveProperty( 'params', { id: '123456' } );
+        it( 'should return correct result in complex situation', () => {
+            const res = Router.match( [ /^\/a\/(?<id>\d+)/, '/user/:id' ], '/user/123456' );
+            const { matches, params } = res as any;
+            expect( params ).toHaveProperty( 'id', '123456' );
+            expect( matches[ 1 ] ).toEqual( '123456' );
         } );
 
         it( 'should return the matching results', () => {
-            const req = new Req( { url : '/a/123' } );
-            const ctx = createContext( { req } );
-            ctx.params = {};
-            const matches = Router.match( /^\/a\/(?<id>\d+)/, ctx );
+            const res = Router.match( /^\/a\/(?<id>\d+)/, '/a/123' );
+            const { matches, params } = res as any;
             expect( Array.isArray( matches ) ).toBeTruthy();
             expect( matches[ 0 ] ).toEqual( '/a/123' );  
             expect( matches[ 1 ] ).toEqual( '123' );  
             expect( matches ).toHaveProperty( 'index', 0 );  
             expect( matches ).toHaveProperty( 'groups', { id : '123' } );  
+            expect( params ).toEqual( { id : '123' } );
         } );
     } );
 } );
