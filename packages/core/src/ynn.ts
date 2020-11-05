@@ -15,6 +15,7 @@ import Logger from './logger';
 import Config from './config';
 import DebugLogger, { DebugLoggerOptions } from './debug';
 import loggerProxy from './logger-proxy';
+import Router from './router';
 
 export type YnnOptions = KoaOptions & {
     debugging?: boolean;
@@ -27,6 +28,7 @@ export type YnnOptions = KoaOptions & {
     controllers?: any[];
     providors?: any[];
     modules?: any[];
+    routers?: ( ( ...args: any[] ) => any ) | Record<string, string | (( ...args: any[] ) => string)>;
     [ key: string ]: any;
 }
 
@@ -35,6 +37,7 @@ export default class Ynn extends Koa {
     public logger!: any;
     public debug: DebugLogger;
     public server: Server | null = null;
+    public router: Router;
 
     #address: AddressInfo | null = null;
     #configs: Config[] = [];
@@ -50,8 +53,20 @@ export default class Ynn extends Koa {
 
     #options!: YnnOptions;
 
+    #router = ( options: YnnOptions ): void => {
+        const router = new Router( this );
+
+        if( options.routers ) {
+
+        }
+
+        router.any( '*', /.*/, ( ctx, next ) => {
+        } );
+    }
+
     #setup = ( options: YnnOptions ): void => {
         this.#options = { ...options, ...cargs };
+        this.#router( this.#options );
         this.#logger( this.#options );
     }
 
