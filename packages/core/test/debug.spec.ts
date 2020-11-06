@@ -33,7 +33,7 @@ describe( 'debug', () => {
             const str = new Date().toString();
             debug.log( str );
             expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-            expect( mockStdout ).toHaveBeenCalledWith( str );
+            expect( mockStdout ).toHaveBeenCalledWith( `${str}\n` );
         } );
     } ); 
 
@@ -46,10 +46,10 @@ describe( 'debug', () => {
                 const str = new Date().toString();
                 debug.error( str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).toHaveBeenCalledWith( str );
+                expect( mockStdout ).toHaveBeenCalledWith( `${str}\n` );
             } );
 
-            it( 'should print log without any styles', () => {
+            it( 'should print log with given styles', () => {
                 const debug = new Debug( {
                     styles : {
                         [ method ] : { color : 'grey' }
@@ -59,7 +59,7 @@ describe( 'debug', () => {
                 const str = new Date().toString();
                 debug.error( str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).not.toHaveBeenCalledWith( str );
+                expect( mockStdout ).not.toHaveBeenCalledWith( `${str}\n` );
                 expect( mockStdout ).toHaveBeenCalledWith( expect.stringMatching( new RegExp( escapeRegexp( str ) ) ) );
             } );
 
@@ -85,7 +85,7 @@ describe( 'debug', () => {
                 const str = new Date().toString();
                 debug[ method ]( str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).toHaveBeenCalledWith( str );
+                expect( mockStdout ).toHaveBeenCalledWith( `${str}\n` );
             } );
 
             it( 'should not print any log if levels is set with all levels', () => {
@@ -94,7 +94,7 @@ describe( 'debug', () => {
                 const str = new Date().toString();
                 debug[ method ]( str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).toHaveBeenCalledWith( str );
+                expect( mockStdout ).toHaveBeenCalledWith( `${str}\n` );
             } );
 
             it( 'should format messages', () => {
@@ -103,21 +103,21 @@ describe( 'debug', () => {
                 const str = new Date().toString();
                 debug[ method ]( 'message: %s', str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).toHaveBeenCalledWith( `message: ${str}` );
+                expect( mockStdout ).toHaveBeenCalledWith( `message: ${str}\n` );
             } );
 
             it( 'should execute static method and print the original string', () => {
                 const str = new Date().toString();
                 Debug[ method ]( false, 'message: %s', str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).toHaveBeenCalledWith( `message: ${str}` );
+                expect( mockStdout ).toHaveBeenCalledWith( `message: ${str}\n` );
             } );
 
             it( 'should execute static method and print styled string', () => {
                 const str = new Date().toString();
                 Debug[ method ]( {}, 'message: %s', str );
                 expect( mockStdout ).toHaveBeenCalledTimes( 1 );
-                expect( mockStdout ).not.toHaveBeenCalledWith( `message: ${str}` );
+                expect( mockStdout ).not.toHaveBeenCalledWith( `message: ${str}\n` );
                 expect( mockStdout ).toHaveBeenCalledWith( expect.stringMatching( escapeRegexp( `message: ${str}` ) ) );
             } );
         } );

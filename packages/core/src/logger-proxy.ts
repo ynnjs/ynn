@@ -7,14 +7,13 @@
  * Description: 
  ******************************************************************/
 
-import DebugLogger from './debug';
 import Logger from './logger';
 
 export type LoggerProxyOptions = {
     debugging?: boolean;
     logging?: boolean;
     logger?: Logger;
-    debug: DebugLogger;
+    debug: Logger;
 }
 
 export default ( options: LoggerProxyOptions ) => {
@@ -23,6 +22,7 @@ export default ( options: LoggerProxyOptions ) => {
 
     return new Proxy<any>( logger || {}, {
         get( logger: Logger, method: string ): ( ...args: any[] ) => any {
+            if( typeof method !== 'string' ) return logger[ method ];
             if( !debugging && ( !logging || ( logging && !logger ) ) ) return blank;
 
             let fn;
@@ -38,9 +38,13 @@ export default ( options: LoggerProxyOptions ) => {
 
             if( !debugging ) return fn;
 
-            return ( ...args: any[] ): void => {
-                fn( ...args );
-                debug[ typeof debug[ method ] === 'function' ? method : 'log' ]( ...args );
+            return ( msg: any, ...args: any[] ): void => {
+                fn( msg, ...args );
+                if( typeof debug[ method ] === 'function' ) {
+                    debug[ method ]( msg, ...args );
+                } else if( typeof debug[ method ] === 'undefined' ) {
+                    debug.log( msg, ...args );
+                }
             }
         }
     } );

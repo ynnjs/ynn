@@ -11,6 +11,7 @@
         "build:watch": "tsc --watch",
         "test": "jest",
         "test:watch": "jest --watch",
+        "test:cov": "jest --coverage",
         "prepublish": "yarn build",
         "lint": "eslint src/**/*.ts --cache"
     },
@@ -26,6 +27,7 @@
         "escape-string-regexp": "^4.0.0",
         "eslint": "^7.12.1",
         "jest": "^26.6.1",
+        "jest-extended": "^0.11.5",
         "jest-mock-process": "^1.4.0",
         "statuses": "^2.0.0",
         "supertest": "^6.0.0",

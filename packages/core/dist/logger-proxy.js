@@ -13,6 +13,8 @@ exports.default = (options) => {
     const blank = () => { };
     return new Proxy(logger || {}, {
         get(logger, method) {
+            if (typeof method !== 'string')
+                return logger[method];
             if (!debugging && (!logging || (logging && !logger)))
                 return blank;
             let fn;
@@ -29,9 +31,14 @@ exports.default = (options) => {
                 fn = blank;
             if (!debugging)
                 return fn;
-            return (...args) => {
-                fn(...args);
-                debug[typeof debug[method] === 'function' ? method : 'log'](...args);
+            return (msg, ...args) => {
+                fn(msg, ...args);
+                if (typeof debug[method] === 'function') {
+                    debug[method](msg, ...args);
+                }
+                else if (typeof debug[method] === 'undefined') {
+                    debug.log(msg, ...args);
+                }
             };
         }
     });

@@ -8,8 +8,9 @@
  ******************************************************************/
 
 import { KoaContext } from '@ynn/koa';
-import assert, { Assertion } from '@ynn/http-assert';
+import assert from '@ynn/http-assert';
 import Ynn from './ynn';
+import Logger from './logger';
 
 export type ControllerOptions = {
 };
@@ -17,11 +18,16 @@ export type ControllerOptions = {
 export default class Controller {
 
     public app: Ynn;
+    public logger: Logger;
+    public config: Ynn[ 'config' ];
+    public assert = assert;
 
     constructor( public ctx: KoaContext, options: ControllerOptions = {} ) {
         const { app } = ctx.app;
         this.app = app;
         this.logger = app.logger;
+
+        this.config = app.config.bind( app );
     }
 
     throw( ...args ) {
@@ -31,13 +37,5 @@ export default class Controller {
     async response( data: any, type, options = {} ) {
         const { ctx } = this;
         ctx.body = data;
-    }
-
-    config() {
-        return this.app.config( ...arguments );
-    }
-
-    assert( value: any, ...args ): Assertion {
-        return assert( value, ...args );
     }
 }

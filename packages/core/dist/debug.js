@@ -28,7 +28,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = __importDefault(require("util"));
 const cli_style_1 = __importDefault(require("cli-style"));
 const styles = {
-    log: { color: 'grey' },
+    log: { color: 'white' },
     error: { color: 'red' },
     warn: { color: 'orange' },
     debug: { color: 'cyan' },
@@ -94,7 +94,7 @@ class DebugLogger {
         this.print(style && { ...styles.verbose, ...style }, msg, ...args);
     }
     static print(style, msg, ...args) {
-        process.stdout.write(cli_style_1.default(util_1.default.format(msg, ...args), style));
+        process.stdout.write(cli_style_1.default(util_1.default.format(msg, ...args) + '\n', style));
     }
 }
 exports.default = DebugLogger;

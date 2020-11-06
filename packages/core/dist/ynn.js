@@ -23,19 +23,29 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _address, _configs, _logger, _options, _setup;
+var _address, _configs, _controllers, _providers, _setupDebug, _setupLogger, _options, _setupRouter, _setup;
 Object.defineProperty(exports, "__esModule", { value: true });
 const koa_1 = __importDefault(require("@ynn/koa"));
 const cargs_1 = __importDefault(require("./cargs"));
 const debug_1 = __importDefault(require("./debug"));
 const logger_proxy_1 = __importDefault(require("./logger-proxy"));
+const router_1 = __importDefault(require("./router"));
 class Ynn extends koa_1.default {
     constructor(options = {}) {
         super();
         this.server = null;
         _address.set(this, null);
         _configs.set(this, []);
-        _logger.set(this, (options) => {
+        _controllers.set(this, []);
+        _providers.set(this, []);
+        _setupDebug.set(this, (options) => {
+            const opts = {
+                levels: options.debugging,
+                ...options.debugOptions
+            };
+            this.debug = options.debug || new debug_1.default(opts);
+        });
+        _setupLogger.set(this, (options) => {
             const { logger, logging = false, debugging = true } = options;
             this.logger = logger_proxy_1.default({
                 debug: this.debug,
@@ -43,11 +53,20 @@ class Ynn extends koa_1.default {
             });
         });
         _options.set(this, void 0);
+        _setupRouter.set(this, (options) => {
+            const router = new router_1.default(this);
+            if (options.routers) {
+            }
+            router.any('*', /.*/, (ctx, next) => {
+            });
+            this.router = router;
+        });
         _setup.set(this, (options) => {
             __classPrivateFieldSet(this, _options, { ...options, ...cargs_1.default });
-            __classPrivateFieldGet(this, _logger).call(this, __classPrivateFieldGet(this, _options));
+            __classPrivateFieldGet(this, _setupDebug).call(this, __classPrivateFieldGet(this, _options));
+            __classPrivateFieldGet(this, _setupLogger).call(this, __classPrivateFieldGet(this, _options));
+            __classPrivateFieldGet(this, _setupRouter).call(this, __classPrivateFieldGet(this, _options));
         });
-        this.debug = new debug_1.default(options.debugOptions || {});
         __classPrivateFieldGet(this, _setup).call(this, options);
     }
     listen(...args) {
@@ -81,5 +100,5 @@ class Ynn extends koa_1.default {
     }
 }
 exports.default = Ynn;
-_address = new WeakMap(), _configs = new WeakMap(), _logger = new WeakMap(), _options = new WeakMap(), _setup = new WeakMap();
+_address = new WeakMap(), _configs = new WeakMap(), _controllers = new WeakMap(), _providers = new WeakMap(), _setupDebug = new WeakMap(), _setupLogger = new WeakMap(), _options = new WeakMap(), _setupRouter = new WeakMap(), _setup = new WeakMap();
 Ynn.cargs = cargs_1.default;

@@ -18,6 +18,7 @@ import loggerProxy from './logger-proxy';
 import Router from './router';
 
 export type YnnOptions = KoaOptions & {
+    debug?: Logger;
     debugging?: boolean;
     debugOptions?: DebugLoggerOptions;
     logging?: boolean;
@@ -34,15 +35,26 @@ export type YnnOptions = KoaOptions & {
 
 export default class Ynn extends Koa {
     public static cargs = cargs;
-    public logger!: any;
-    public debug: DebugLogger;
     public server: Server | null = null;
-    public router: Router;
+    public debug!: Logger;
+    public logger!: Logger | Record<string, any>;
+    public router!: Router;
 
     #address: AddressInfo | null = null;
     #configs: Config[] = [];
+    #controllers: any[] = [];
+    #providers: any[] = [];
 
-    #logger = ( options: YnnOptions ): void => {
+    #setupDebug = ( options: YnnOptions ): void => {
+        const opts = {
+            levels : options.debugging,
+            ...options.debugOptions
+        };
+
+        this.debug = options.debug || new DebugLogger( opts );
+    }
+
+    #setupLogger = ( options: YnnOptions ): void => {
         const { logger, logging = false, debugging = true } = options;
 
         this.logger = loggerProxy( {
@@ -53,26 +65,27 @@ export default class Ynn extends Koa {
 
     #options!: YnnOptions;
 
-    #router = ( options: YnnOptions ): void => {
+    #setupRouter = ( options: YnnOptions ): void => {
         const router = new Router( this );
 
         if( options.routers ) {
-
         }
 
         router.any( '*', /.*/, ( ctx, next ) => {
         } );
+
+        this.router = router;
     }
 
     #setup = ( options: YnnOptions ): void => {
         this.#options = { ...options, ...cargs };
-        this.#router( this.#options );
-        this.#logger( this.#options );
+        this.#setupDebug( this.#options );
+        this.#setupLogger( this.#options );
+        this.#setupRouter( this.#options );
     }
 
     constructor( options: YnnOptions = {} ) {
         super();
-        this.debug = new DebugLogger( options.debugOptions || {} );
         this.#setup( options );
     }
 

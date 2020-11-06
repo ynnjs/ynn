@@ -17,7 +17,7 @@ function match(rule, path, options = {}) {
         return false;
     const params = {};
     keys.forEach((key, i) => {
-        params[key.name] = matches[i + 1];
+        matches[i + 1] && (params[key.name] = matches[i + 1]);
     });
     if (matches.groups) {
         const { groups } = matches;
@@ -63,11 +63,30 @@ class default_1 {
         this.options = createMethod.call(this, 'OPTIONS');
     }
     any(methods, ...args) {
+        /**
+         * compose all middlwares if the third argument is a list of middleware function
+         */
         if (Array.isArray(args[1]))
             args[1] = koa_1.compose(args[1]);
+        /**
+         * the first argument should be case insensitive.
+         * to uppercase all strings for try matching ctx.method.
+         */
+        if (Array.isArray(methods)) {
+            methods = methods.map((method) => method.toUpperCase());
+        }
+        else {
+            methods = methods.toUpperCase();
+        }
         const func = (ctx, next) => {
-            if (methods !== '*' && !methods.includes(ctx.method))
-                return next();
+            methodCheck: {
+                if (methods === '*')
+                    break methodCheck;
+                if (typeof methods === 'string' && methods !== ctx.method)
+                    return next();
+                if (Array.isArray(methods) && !methods.includes(ctx.method))
+                    return next();
+            }
             return execute.call(this, ctx, next, ...args);
         };
         return this.app ? this.app.use(func) : func;

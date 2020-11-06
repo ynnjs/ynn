@@ -7,6 +7,7 @@
  * Description: 
  ******************************************************************/
 
+import 'jest-extended';
 import Router from '../src/router';
 import Koa, { Req } from './helpers/koa';
 
@@ -275,7 +276,8 @@ describe( 'Router', () => {
         it( 'should return the matching results', () => {
             const res = Router.match( /^\/a\/(?<id>\d+)/, '/a/123' );
             const { matches, params } = res as any;
-            expect( Array.isArray( matches ) ).toBeTruthy();
+            expect( matches ).toBeArray();
+            expect( matches ).toBeArrayOfSize( 2 );
             expect( matches[ 0 ] ).toEqual( '/a/123' );  
             expect( matches[ 1 ] ).toEqual( '123' );  
             expect( matches ).toHaveProperty( 'index', 0 );  

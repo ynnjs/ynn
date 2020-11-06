@@ -19,7 +19,7 @@ export type DebugLoggerOptions = {
 };
 
 const styles = {
-    log : { color : 'grey' },
+    log : { color : 'white' },
     error : { color : 'red' },
     warn : { color : 'orange' },
     debug : { color : 'cyan' },
@@ -97,6 +97,6 @@ export default class DebugLogger implements Logger {
     }
 
     private static print( style: StyleOptions, msg: any, ...args: any ): void {
-        process.stdout.write( clistyle( util.format( msg, ...args ), style ) );
+        process.stdout.write( clistyle( util.format( msg, ...args ) + '\n', style ) );
     }
 }
