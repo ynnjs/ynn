@@ -26,7 +26,7 @@ export declare type KoaOptions = {
     subdomainOffset?: number;
 };
 export { KoaContext, KoaRequest, KoaResponse };
-export declare type Middleware = (...args: any[]) => any;
+export declare type KoaMiddleware = (...args: any[]) => any;
 export default class Koa extends EventEmitter {
     silent: boolean;
     proxy: boolean;
@@ -35,7 +35,7 @@ export default class Koa extends EventEmitter {
     context: any;
     request: any;
     response: any;
-    middleware: Middleware[];
+    middleware: KoaMiddleware[];
     subdomainOffset: number;
     maxIpsCount: number;
     env: string;
@@ -67,7 +67,7 @@ export default class Koa extends EventEmitter {
     /**
      * Use the given middleware `fn`
      */
-    use(fn: Middleware): this;
+    use(fn: KoaMiddleware): this;
     /**
      * Return a request handler callback
      * for node's native http server.
@@ -78,7 +78,7 @@ export default class Koa extends EventEmitter {
     /**
      * handle request in callback
      */
-    handleRequest(ctx: any, middleware: Middleware): Promise<any>;
+    handleRequest(ctx: any, middleware: KoaMiddleware): Promise<any>;
     /**
      * Initialize a new context
      */

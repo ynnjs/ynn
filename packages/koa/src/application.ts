@@ -38,7 +38,7 @@ export type KoaOptions = {
 
 export { KoaContext, KoaRequest, KoaResponse }
 
-export type Middleware = ( ...args: any[] ) => any;
+export type KoaMiddleware = ( ...args: any[] ) => any;
 
 export default class Koa extends EventEmitter {
     public silent = false;
@@ -48,7 +48,7 @@ export default class Koa extends EventEmitter {
     public context = Object.create( context );
     public request = Object.create( request );
     public response = Object.create( response );
-    public middleware: Middleware[] = [];
+    public middleware: KoaMiddleware[] = [];
     public subdomainOffset = 2;
     public maxIpsCount: number;
     public env = 'development';
@@ -110,7 +110,7 @@ export default class Koa extends EventEmitter {
     /**
      * Use the given middleware `fn`
      */
-    use( fn: Middleware ): this {
+    use( fn: KoaMiddleware ): this {
         if( typeof fn !== 'function' ) throw new TypeError( 'middleware must be a function!' );
         debug( 'use %s', fn.name || '-' );
         this.middleware.push( fn );
@@ -131,7 +131,7 @@ export default class Koa extends EventEmitter {
     /**
      * handle request in callback
      */
-    handleRequest( ctx, middleware: Middleware ): Promise<any> {
+    handleRequest( ctx, middleware: KoaMiddleware ): Promise<any> {
         const { res } = ctx;
         res.statusCode = 404;
         const onerror = e => ctx.onerror( e );

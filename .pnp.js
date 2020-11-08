@@ -1405,6 +1405,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/koa", [
+        ["npm:2.11.6", {
+          "packageLocation": "./.yarn/cache/@types-koa-npm-2.11.6-81a2ea172d-38887e8bae.zip/node_modules/@types/koa/",
+          "packageDependencies": [
+            ["@types/koa", "npm:2.11.6"],
+            ["@types/accepts", "npm:1.3.5"],
+            ["@types/content-disposition", "npm:0.5.3"],
+            ["@types/cookies", "npm:0.7.4"],
+            ["@types/http-assert", "npm:1.5.1"],
+            ["@types/http-errors", "npm:1.8.0"],
+            ["@types/keygrip", "npm:1.0.2"],
+            ["@types/koa-compose", "npm:3.2.5"],
+            ["@types/node", "npm:13.7.7"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/koa-compose", [
+        ["npm:3.2.5", {
+          "packageLocation": "./.yarn/cache/@types-koa-compose-npm-3.2.5-b9ab25d904-bb6cae0309.zip/node_modules/@types/koa-compose/",
+          "packageDependencies": [
+            ["@types/koa-compose", "npm:3.2.5"],
+            ["@types/koa", "npm:2.11.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/mime", [
         ["npm:2.0.1", {
           "packageLocation": "./.yarn/cache/@types-mime-npm-2.0.1-1018885da5-61a328979f.zip/node_modules/@types/mime/",
@@ -1988,6 +2015,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@ynn/core", "workspace:packages/core"],
             ["@lvchengbin/is", "npm:1.0.5"],
             ["@types/jest", "npm:26.0.15"],
+            ["@types/koa", "npm:2.11.6"],
             ["@types/node", "npm:14.14.6"],
             ["@types/statuses", "npm:2.0.0"],
             ["@types/supertest", "npm:2.0.10"],

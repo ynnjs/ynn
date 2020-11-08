@@ -8,11 +8,11 @@
  ******************************************************************/
 
 import { pathToRegexp, Key } from 'path-to-regexp';
-import Koa, { compose, Middleware } from '@ynn/koa';
+import Koa, { compose, KoaMiddleware } from '@ynn/koa';
 
 export type Path = string | RegExp | Array<string | RegExp>;
-export type Handler = Middleware | Middleware[];
-export type Method = ( path: Path, fn: Handler ) => Koa | Middleware;
+export type Handler = KoaMiddleware | KoaMiddleware[];
+export type Method = ( path: Path, fn: Handler ) => Koa | KoaMiddleware;
 
 export interface Router {
     app?: Koa;
