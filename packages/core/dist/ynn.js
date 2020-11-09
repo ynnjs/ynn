@@ -44,6 +44,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _address, _configs, _setupDebug, _setupLogger, _options, _setupRouter, _setup;
 Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
 const escape_string_regexp_1 = __importDefault(require("escape-string-regexp"));
 const is_1 = __importDefault(require("@lvchengbin/is"));
 const koa_1 = __importStar(require("@ynn/koa"));
@@ -56,8 +57,7 @@ class Ynn extends koa_1.default {
         super();
         this.server = null;
         this.isModule = false;
-        this.controllers = [];
-        this.providers = [];
+        // public providers: Record<string, any>;
         _address.set(this, null);
         _configs.set(this, []);
         _setupDebug.set(this, (options) => {
@@ -92,8 +92,8 @@ class Ynn extends koa_1.default {
                     }
                     let map;
                     if (typeof rule[2] === 'string') {
-                        const [controller, action] = rule[2].split('.');
-                        map = { controller, action };
+                        const [action, controller, module] = rule[2].split('.').reverse();
+                        map = { module, controller, action };
                     }
                     else {
                         map = { ...rule[2] };
@@ -125,7 +125,8 @@ class Ynn extends koa_1.default {
             __classPrivateFieldGet(this, _setupRouter).call(this, __classPrivateFieldGet(this, _options));
         });
         this.isModule = !!options.isModule;
-        this.modules = options.modules || {};
+        this.modules = { ...options.modules };
+        this.controllers = { ...options.controllers };
         __classPrivateFieldGet(this, _setup).call(this, options);
     }
     listen(...args) {
@@ -167,8 +168,9 @@ class Ynn extends koa_1.default {
         if (module) {
             const m = this.modules[module];
             if (!m) {
-                this.logger.error(`module ${module} is not loaded.`);
-                throw new Error(`module ${module} is not loaded`);
+                const msg = `module ${module} is not loaded.`;
+                this.logger.error(msg);
+                throw new Error(msg);
             }
             /**
              * change ctx.app to the target module
@@ -194,38 +196,40 @@ class Ynn extends koa_1.default {
             });
         }
         const { controller = 'index' } = map;
-        const Controller = this.controllers[controller];
-        if (!Controller) {
-            this.logger.error(`controller ${controller} is not loaded.`);
+        const C = this.controllers[controller];
+        if (!C) {
+            const msg = `controller ${controller} is not loaded.`;
+            this.logger.error(msg);
+            throw new Error(msg);
         }
-        if (is_1.default.class(Controller)) {
-            const c = new Controller();
+        if (is_1.default.class(C)) {
+            const c = new C(ctx);
+            const { action = 'index' } = map;
             const fn = c[action + 'Action'];
+            ctx.routerTarget = { controller, action };
             if (typeof fn === 'function') {
                 try {
-                    const data = await func.call(c, ctx);
+                    const data = await fn.call(c, ctx);
                     if (data !== undefined) {
-                        /**
-                         * @todo
-                         */
                         ctx.body = data;
                     }
                 }
                 catch (e) {
-                    // @todo
                     ctx.throw(e);
                 }
             }
             else if (fn) {
-                // @todo
-                ctx.body = data;
+                ctx.body = fn;
             }
             else {
                 ctx.throw(404);
             }
         }
-        if (typeof Controller === 'function') {
-            Controller(ctx);
+        else if (typeof C === 'function') {
+            C(ctx);
+        }
+        else {
+            ctx.body = C;
         }
         return next();
     }

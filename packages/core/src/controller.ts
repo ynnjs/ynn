@@ -19,11 +19,10 @@ export default class Controller {
 
     public app: Ynn;
     public logger: Logger;
-    public config: Ynn[ 'config' ];
     public assert = assert;
 
-    constructor( public ctx: KoaContext, options: ControllerOptions = {} ) {
-        const { app } = ctx.app;
+    constructor( public ctx: KoaContext ) {
+        const { app } = ctx;
         this.app = app;
         this.logger = app.logger;
 
@@ -33,6 +32,14 @@ export default class Controller {
     throw( ...args ) {
         return this.ctx.throw( ...args );
     }
+
+    config( ...args ) {
+        return this.ctx.app.config( ...args );
+    }
+
+    // provider( name: string ) {
+    //     return this.ctx.app.providers[ name ];
+    // }
 
     async response( data: any, type, options = {} ) {
         const { ctx } = this;

@@ -107,6 +107,7 @@ class Koa extends events_1.EventEmitter {
      * handle request in callback
      */
     handleRequest(ctx, middleware) {
+        ctx.app = this;
         const { res } = ctx;
         res.statusCode = 404;
         const onerror = e => ctx.onerror(e);

@@ -132,6 +132,7 @@ export default class Koa extends EventEmitter {
      * handle request in callback
      */
     handleRequest( ctx, middleware: KoaMiddleware ): Promise<any> {
+        ctx.app = this;
         const { res } = ctx;
         res.statusCode = 404;
         const onerror = e => ctx.onerror( e );

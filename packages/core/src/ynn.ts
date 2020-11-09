@@ -7,6 +7,7 @@
  * Description: 
  ******************************************************************/
 
+import 'reflect-metadata';
 import { AddressInfo } from 'net';
 import { Server } from 'http';
 import escapeRegexp from 'escape-string-regexp';
@@ -20,17 +21,15 @@ import loggerProxy from './logger-proxy';
 import Router from './router';
 import Controller from './controller';
 
-export type RouterRuleMap = {
+export type RouterTarget = {
     module?: string;
     controller?: string;
     action?: string;
 };
 
-export type YnnController = Controller | KoaMiddleware;
-
 export type RouterRule<
     M = string | RegExp | (string | RegExp)[],
-    T = string | RouterRuleMap | KoaMiddleware
+    T = string | RouterTarget | KoaMiddleware
 > = [M, T] | [string | string[], M, T]
 
 export type YnnOptions = KoaOptions & {
@@ -42,8 +41,8 @@ export type YnnOptions = KoaOptions & {
     logPath?: string;
     logger?: Logger;
     port?: number;
-    controllers?: any[];
-    providors?: any[];
+    controllers?: Record<string, typeof Controller | KoaMiddleware>;
+    providors?: Record<string, any>;
     modules?: Record<string, Koa>;
     routers?: RouterRule[] | ( ( ...args ) => void | RouterRule[] ),
     isMoudule?: boolean;
@@ -51,15 +50,15 @@ export type YnnOptions = KoaOptions & {
 }
 
 export default class Ynn extends Koa {
-    public static cargs = cargs;
-    public server: Server | null = null;
-    public debug!: Logger;
-    public logger!: Logger | Record<string, any>;
-    public modules: Record<string, Koa>;
-    public router!: Router;
-    public isModule = false;
-    public controllers: YnnController[] = [];
-    public providers: any[] = [];
+    static cargs = cargs;
+    server: Server | null = null;
+    debug!: Logger;
+    logger!: Logger | Record<string, any>;
+    modules: Record<string, Koa>;
+    router!: Router;
+    isModule = false;
+    controllers: NonNullable<YnnOptions[ 'controllers' ]>;
+    // public providers: Record<string, any>;
 
     #address: AddressInfo | null = null;
     #configs: Config[] = [];
@@ -104,13 +103,13 @@ export default class Ynn extends Koa {
                     return;
                 }
 
-                let map: RouterRuleMap;
+                let map: RouterTarget;
 
                 if( typeof rule[ 2 ] === 'string' ) {
-                    const [ controller, action ] = ( rule[ 2 ] as string ).split( '.' );
-                    map = { controller, action };
+                    const [ action, controller, module ] = ( rule[ 2 ] as string ).split( '.' ).reverse();
+                    map = { module, controller, action };
                 } else {
-                    map = { ...( rule[ 2 ] as RouterRuleMap ) };
+                    map = { ...( rule[ 2 ] as RouterTarget ) };
                 }
 
                 router.any( rule[ 0 ], rule[ 1 ], ( ctx, next ) => {
@@ -147,7 +146,8 @@ export default class Ynn extends Koa {
     constructor( options: YnnOptions = {} ) {
         super();
         this.isModule = !!options.isModule;
-        this.modules = options.modules || {};
+        this.modules = { ...options.modules };
+        this.controllers = { ...options.controllers };
         this.#setup( options );
     }
 
@@ -182,8 +182,8 @@ export default class Ynn extends Koa {
         return res === undefined ? defaultValue : res;
     }
 
-    async execute( map: RouterRuleMap, ctx: KoaContext, next ): Promise<any> {
-        const { module } = map as any;
+    async execute( map: RouterTarget, ctx: KoaContext, next ): Promise<any> {
+        const { module } = map;
 
         /**
          * if module is specified
@@ -195,8 +195,9 @@ export default class Ynn extends Koa {
             const m = this.modules[ module ];
 
             if( !m ) {
-                this.logger.error( `module ${module} is not loaded.` );
-                throw new Error( `module ${module} is not loaded` );
+                const msg = `module ${module} is not loaded.`;
+                this.logger.error( msg );
+                throw new Error( msg );
             }
 
             /**
@@ -210,7 +211,7 @@ export default class Ynn extends Koa {
                 res = m.execute( {
                     controller : map.controller,
                     action : map.action
-                } as RouterRuleMap, ctx, next );
+                } as RouterTarget, ctx, next );
             } else {
                 const downstream = compose( m.middleware );
                 res = downstream( ctx, next );
@@ -227,40 +228,40 @@ export default class Ynn extends Koa {
 
         const { controller = 'index' } = map;
 
-        const Controller = this.controllers[ controller ];
+        const C = this.controllers[ controller ];
 
-        if( !Controller ) {
-            this.logger.error( `controller ${controller} is not loaded.` );
+        if( !C ) {
+            const msg = `controller ${controller} is not loaded.`;
+            this.logger.error( msg );
+            throw new Error( msg );
         }
 
-        if( is.class( Controller ) ) {
-            const c = new Controller();
+        if( is.class( C ) ) {
+            const c = new (C as typeof Controller)( ctx );
+            const { action = 'index' } = map;
             const fn = c[ action + 'Action' ];
+
+            ctx.routerTarget = { controller, action };
+
             if( typeof fn === 'function' ) {
                 try {
-                    const data = await func.call( c, ctx );
+                    const data = await fn.call( c, ctx );
                     if( data !== undefined ) {
-                        /**
-                         * @todo
-                         */
                         ctx.body = data;
                     }
                 } catch( e ) {
-                    // @todo
                     ctx.throw( e );
                 }
             } else if( fn ) {
-                // @todo
-                ctx.body = data;
+                ctx.body = fn;
             } else {
                 ctx.throw( 404 );
             }
+        } else if( typeof C === 'function' ) {
+            (C as KoaMiddleware)( ctx );
+        } else {
+            ctx.body = C;
         }
-
-        if( typeof Controller === 'function' ) {
-            Controller( ctx );
-        }
-
         return next();
     }
 }

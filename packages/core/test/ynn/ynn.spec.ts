@@ -9,9 +9,10 @@
 
 import { mockProcessStdout } from 'jest-mock-process';
 import Koa from '@ynn/koa';
-import Router from '../src/router';
-import Logger from '../src/logger';
-import Ynn from '../src/ynn';
+import Router from '../../src/router';
+import Controller from '../../src/controller';
+// import Logger from '../../src/logger';
+import Ynn, { Req } from '../helpers/ynn';
 
 describe( 'Ynn', () => {
     describe( 'Ynn instance', () => {
@@ -57,17 +58,24 @@ describe( 'Ynn', () => {
             expect( routers ).toHaveBeenCalledWith( app.router, app );
         } );
 
-        it( '', () => {
+        it( 'should support controller.action', () => {
+
             const app = new Ynn( {
                 routers : [
                     [ '/user/:id', 'user.index' ],
                     [ /^user\/\d+/, 'user.profile' ],
                     [ 'get', /^user\/profile/, 'user.profile' ],
                     [ [ 'get', 'post' ], '/user/profile/save', 'user.saveProfile' ],
-                    [ '/user', ( ctx, next ) => {
-                    } ]
-                ]
+                    [ '/user', ( ctx, next ) => next() ]
+                ],
+                controllers : { user }
             } ); 
+
+            return app.$( {
+                req : new Req( { url : '/user/123' } )
+            } ).then( ( ...args ) => {
+                console.log( '~~~~~~~~~~~~', args );
+            } );
         } );
     } );
 

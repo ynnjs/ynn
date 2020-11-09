@@ -1718,10 +1718,12 @@ __metadata:
     cli-style: ^0.1.1
     escape-string-regexp: ^4.0.0
     eslint: ^7.12.1
+    eslint_d: ^9.1.2
     jest: ^26.6.1
     jest-extended: ^0.11.5
     jest-mock-process: ^1.4.0
     path-to-regexp: ^6.2.0
+    reflect-metadata: ^0.1.13
     statuses: ^2.0.0
     supertest: ^6.0.0
     ts-jest: ^26.4.3
@@ -1786,6 +1788,7 @@ __metadata:
     encodeurl: ^1.0.2
     escape-html: ^1.0.3
     eslint: ^7.12.1
+    eslint_d: ^9.1.2
     fresh: ^0.5.2
     http-assert: ^1.4.1
     http-errors: ^1.8.0
@@ -2742,6 +2745,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core_d@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "core_d@npm:2.0.0"
+  dependencies:
+    supports-color: ^5.5.0
+  checksum: 1b623bb129b5750211f0c84c7b0c801d5ac7d570803e337c1d0d05fecb728b4449cc01ebfb0ea530c37152a52cead6c3390e12ad8d74cbd71e6337e76c1adda6
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^6.0.0":
   version: 6.0.5
   resolution: "cross-spawn@npm:6.0.5"
@@ -3263,7 +3275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^7.12.1":
+"eslint@npm:^7.12.1, eslint@npm:^7.3.0":
   version: 7.12.1
   resolution: "eslint@npm:7.12.1"
   dependencies:
@@ -3307,6 +3319,20 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: b3d11ea516d2932db5854ea942a546b711e6ee8735306627042bb9e2539e96844cc62cdb5826039f5d0509202936045c2cd7b84b457004c891a326f8eccae333
+  languageName: node
+  linkType: hard
+
+"eslint_d@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "eslint_d@npm:9.1.2"
+  dependencies:
+    core_d: ^2.0.0
+    eslint: ^7.3.0
+    nanolru: ^1.0.0
+    optionator: ^0.9.1
+  bin:
+    eslint_d: bin/eslint_d.js
+  checksum: 2ad5f7caeb96bf4748c27e72581b86aee01d33fa499648d0d1fc8aeb783180a206b7be3b353e5a4791808ebb19e5097f5d2dd21432395275fb889a8b90c7a5e5
   languageName: node
   linkType: hard
 
@@ -6099,6 +6125,13 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"nanolru@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "nanolru@npm:1.0.0"
+  checksum: 3e9d4407a7c5c8c29867cee33aec8ea60b300be34ecc858f4613cfa95bc0fff9af6a2a462737d7e2dc829414d1281263fdd6c1c7a844ef5d1c5cc77a1ddba17e
+  languageName: node
+  linkType: hard
+
 "nanomatch@npm:^1.2.9":
   version: 1.2.13
   resolution: "nanomatch@npm:1.2.13"
@@ -6817,6 +6850,13 @@ fsevents@^2.1.2:
     string_decoder: ^1.1.1
     util-deprecate: ^1.0.1
   checksum: f178b1daa80d9e58ebba71dbb08486430aa6f0dea3a22a1b7401f3f6983077d0bc0edea43099db06b8d006c9ad48d6383e8fb72c05d5b187670aeaf1b9b44f00
+  languageName: node
+  linkType: hard
+
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 629101e6c8b7e0d3166fa51953f908f45b5c73dbaf1375c4f8c3ed62221b870c951343b9b031d0c49957e7262a88020f41be25731ee85b5d779f12c7cec66005
   languageName: node
   linkType: hard
 
@@ -7655,7 +7695,7 @@ resolve@^1.18.1:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^5.3.0":
+"supports-color@npm:^5.3.0, supports-color@npm:^5.5.0":
   version: 5.5.0
   resolution: "supports-color@npm:5.5.0"
   dependencies:
