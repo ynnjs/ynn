@@ -182,7 +182,7 @@ export default class Ynn extends Koa {
         return res === undefined ? defaultValue : res;
     }
 
-    execute( map: RouterRuleMap, ctx: KoaContext, next ): Promise<any> {
+    async execute( map: RouterRuleMap, ctx: KoaContext, next ): Promise<any> {
         const { module } = map as any;
 
         /**
@@ -196,9 +196,12 @@ export default class Ynn extends Koa {
 
             if( !m ) {
                 this.logger.error( `module ${module} is not loaded.` );
-                return;
+                throw new Error( `module ${module} is not loaded` );
             }
 
+            /**
+             * change ctx.app to the target module
+             */
             ctx.app = m;
 
             let res: Promise<any>;
@@ -209,11 +212,14 @@ export default class Ynn extends Koa {
                     action : map.action
                 } as RouterRuleMap, ctx, next );
             } else {
-                const downstream = compose( m.middware );
+                const downstream = compose( m.middleware );
                 res = downstream( ctx, next );
             }
 
             return res.then( value => {
+                /**
+                 * restore ctx.app to current instance
+                 */
                 ctx.app = this;
                 return value;
             } );
@@ -228,8 +234,27 @@ export default class Ynn extends Koa {
         }
 
         if( is.class( Controller ) ) {
-            new Controller();
-            return;
+            const c = new Controller();
+            const fn = c[ action + 'Action' ];
+            if( typeof fn === 'function' ) {
+                try {
+                    const data = await func.call( c, ctx );
+                    if( data !== undefined ) {
+                        /**
+                         * @todo
+                         */
+                        ctx.body = data;
+                    }
+                } catch( e ) {
+                    // @todo
+                    ctx.throw( e );
+                }
+            } else if( fn ) {
+                // @todo
+                ctx.body = data;
+            } else {
+                ctx.throw( 404 );
+            }
         }
 
         if( typeof Controller === 'function' ) {

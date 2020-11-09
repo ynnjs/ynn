@@ -157,7 +157,7 @@ class Ynn extends koa_1.default {
         }
         return res === undefined ? defaultValue : res;
     }
-    execute(map, ctx, next) {
+    async execute(map, ctx, next) {
         const { module } = map;
         /**
          * if module is specified
@@ -168,8 +168,11 @@ class Ynn extends koa_1.default {
             const m = this.modules[module];
             if (!m) {
                 this.logger.error(`module ${module} is not loaded.`);
-                return;
+                throw new Error(`module ${module} is not loaded`);
             }
+            /**
+             * change ctx.app to the target module
+             */
             ctx.app = m;
             let res;
             if (m instanceof Ynn) {
@@ -179,10 +182,13 @@ class Ynn extends koa_1.default {
                 }, ctx, next);
             }
             else {
-                const downstream = koa_1.compose(m.middware);
+                const downstream = koa_1.compose(m.middleware);
                 res = downstream(ctx, next);
             }
             return res.then(value => {
+                /**
+                 * restore ctx.app to current instance
+                 */
                 ctx.app = this;
                 return value;
             });
@@ -193,8 +199,30 @@ class Ynn extends koa_1.default {
             this.logger.error(`controller ${controller} is not loaded.`);
         }
         if (is_1.default.class(Controller)) {
-            new Controller();
-            return;
+            const c = new Controller();
+            const fn = c[action + 'Action'];
+            if (typeof fn === 'function') {
+                try {
+                    const data = await func.call(c, ctx);
+                    if (data !== undefined) {
+                        /**
+                         * @todo
+                         */
+                        ctx.body = data;
+                    }
+                }
+                catch (e) {
+                    // @todo
+                    ctx.throw(e);
+                }
+            }
+            else if (fn) {
+                // @todo
+                ctx.body = data;
+            }
+            else {
+                ctx.throw(404);
+            }
         }
         if (typeof Controller === 'function') {
             Controller(ctx);
