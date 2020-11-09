@@ -7,4 +7,4 @@
  * Description: 
  ******************************************************************/
 
-
+export const HEADER_METADATA_KEY = Symbol( 'ynn#header#metadata#key' );
