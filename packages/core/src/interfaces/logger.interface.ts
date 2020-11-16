@@ -1,9 +1,9 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  * 
- * File: logger/index.ts
+ * File: interfaces/logger.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 11/01/2020
+ * Time: 11/16/2020
  * Description: 
  ******************************************************************/
 
