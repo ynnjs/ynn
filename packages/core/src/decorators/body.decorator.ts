@@ -7,11 +7,17 @@
  * Description: 
  ******************************************************************/
 
-import { KoaContext } from '@ynn/koa';
+import Pipe from '../interfaces/pipe.interface';
 
 /**
  *
  */
-export function Body(): ParameterDecorator;
-export function Body( property: string ): ParameterDecorator;
-export function Body( property: string, pipe: ( value:  ctx: KoaContext ): ParameterDecorator;
+export function Body(): ParameterDecorator & MethodDecorator;
+export function Body( property: string ): ParameterDecorator & MethodDecorator;
+export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
+
+export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDecorator & MethodDecorator {
+    return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
+    }
+}

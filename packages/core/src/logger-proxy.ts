@@ -7,7 +7,7 @@
  * Description: 
  ******************************************************************/
 
-import Logger from './logger';
+import Logger from './interfaces/logger.interface';
 
 export type LoggerProxyOptions = {
     debugging?: boolean;

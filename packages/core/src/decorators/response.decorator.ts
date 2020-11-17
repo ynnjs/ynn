@@ -1,14 +1,12 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  * 
- * File: interfaces/pipe.interface.ts
+ * File: decorators/response.decorator.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 11/16/2020
+ * Time: 11/17/2020
  * Description: 
  ******************************************************************/
 
-import { KoaContext } from '@ynn/koa';
+import Pipe from '../interfaces/pipe.interface';
 
-export default interface Pipe {
-    ( value: any, ctx: KoaContext, metadata: Record<string, string> ): any;
-}
+export function Response( pipe: Pipe ): MethodDecorator | ClassDecorator;

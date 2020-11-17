@@ -9,7 +9,7 @@
 
 import util from 'util';
 import clistyle, { StyleOptions } from 'cli-style';
-import Logger from './logger';
+import Logger from './interfaces/logger.interface';
 
 type OptionsStyles = Record<keyof Logger, StyleOptions>;
 

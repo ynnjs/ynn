@@ -7,9 +7,12 @@
  * Description: 
  ******************************************************************/
 
-export function Status( status: number, message?: string ): MethodDecorator {
+export function Status( statusCode: number ): MethodDecorator;
+export function Status( statusCode: number, message: string ): MethodDecorator;
+
+export function Status( statusCode: number, message?: string ): MethodDecorator {
     return ( target, key: string | symbol, descriptor: TypedPropertyDescriptor<any> ) => {
-        Reflect.defineMetadata( '__STATUS__', [ status, message ], descriptor.value );
+        Reflect.defineMetadata( '__STATUS__', [ statusCode, message ], descriptor.value );
         return descriptor;
     }
 }
