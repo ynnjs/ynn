@@ -11,8 +11,8 @@ import Pipe from '../interfaces/pipe.interface';
 
 /**
  * Function for generating an action parameter decorator or a method decorator.
- * The entire `body` object will be extracted and will be bound to ctx as ctx.body.
- * Populates the decorated parameter with the value of body while using it to generate a parameter decorator.
+ * The request stream will be parsed and the entire `body` object will be extracted and be bound to ctx as ctx.body.
+ * Populates the decorated parameter with the value of body while using this method to generate a parameter decorator.
  *
  * For example:
  *
@@ -26,17 +26,18 @@ import Pipe from '../interfaces/pipe.interface';
 export function Body(): ParameterDecorator & MethodDecorator;
 
 /**
+ * Function for generating an action parameter decorator.
+ * The request stream will be parsed and the entire `body` object will be extracted and be bound to ctx as ctx.body.
+ * Populates the property of body to the decorated parameter.
+ *
  * For example:
  *
  * ```typescript
- * @Body( 'name' )
- * create() {}
- *
  * async create( @Body( 'name' ) ) {}
  * ```
  * @param property name of single property to extract from the `body` object.
  */
-export function Body( property: string ): ParameterDecorator & MethodDecorator;
+export function Body( property: string ): ParameterDecorator;
 
 /**
  * For example:
@@ -66,9 +67,15 @@ export function Body( property: string, pipe: Pipe ): ParameterDecorator & Metho
 
 export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDecorator & MethodDecorator {
     return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
+        /**
+         * to generate a parameter decorator
+         *
+         *
+         */
         if( typeof parameterIndexOrDescriptor === 'number' ) {
-
-            console.log( propertyOrPipe, pipe );
+            const PARAM_BODY_METADATA = '__PARAM_BODY__';
+            const exists = Reflect.getMetadata( PARAM_BODY_METADATA, target.constructor, key ) || {};
+            Reflect.defineMetadata( PARAM_BODY_METADATA, target.constructor, key  );
         }
     }
 }
