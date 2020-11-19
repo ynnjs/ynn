@@ -66,16 +66,45 @@ export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
 export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDecorator & MethodDecorator {
+
+    const PARAM_BODY_METADATA = '__PARAM_BODY__';
+    const ACTION_BODY_METADATA = '__ACTION_BODY__';
+
+    const t1 = typeof propertyOrPipe;
+    const t2 = typeof pipe;
+
+    let property: string | null;
+    let pipeFunction: Pipe | null;
+
+    if( t1 === 'string' ) {
+        property = propertyOrPipe;
+    } else if( t1 === 'function' ) {
+        pipeFunction = propertyOrPipe;
+    }
+
+    if( !pipe && t2 === 'function' ) {
+        pipeFunction = pipe;
+    }
+
     return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
-        /**
-         * to generate a parameter decorator
-         *
-         *
-         */
         if( typeof parameterIndexOrDescriptor === 'number' ) {
-            const PARAM_BODY_METADATA = '__PARAM_BODY__';
-            const exists = Reflect.getMetadata( PARAM_BODY_METADATA, target.constructor, key ) || {};
-            Reflect.defineMetadata( PARAM_BODY_METADATA, target.constructor, key  );
+            /**
+             * to generate a parameter decorator
+             *
+             * record the metadata with the information of parameter decorator.
+             */
+            const args = Reflect.getMetadata( PARAM_BODY_METADATA, target.constructor, key ) || {};
+            args[ parameterIndexOrDescriptor ] ||= [];
+            args[ parameterIndexOrDescriptor ].push( {
+                paramtype : 'BODY',
+                property,
+                pipe : pipeFunction
+            } );
+
+            Reflect.defineMetadata( PARAM_BODY_METADATA, args, target.constructor, key  );
+        } else {
+
+            const args = Reflect.getMetadata( ACTION_BODY_METADATA, target.constructor, key );
         }
     }
 }
