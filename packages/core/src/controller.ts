@@ -10,7 +10,7 @@
 import { KoaContext } from '@ynn/koa';
 import assert from '@ynn/http-assert';
 import Ynn from './ynn';
-import Logger from './logger';
+import Logger from './interfaces/logger.interface';
 
 export type ControllerOptions = {
 };
@@ -44,5 +44,6 @@ export default class Controller {
     async response( data: any, type, options = {} ) {
         const { ctx } = this;
         ctx.body = data;
+        console.log( options );
     }
 }

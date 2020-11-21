@@ -14,7 +14,7 @@ import escapeRegexp from 'escape-string-regexp';
 import is from '@lvchengbin/is';
 import Koa, { compose, KoaOptions, KoaMiddleware, KoaContext } from '@ynn/koa';
 import cargs from './cargs';
-import Logger from './logger';
+import Logger from './interfaces/logger.interface';
 import Config from './config';
 import DebugLogger, { DebugLoggerOptions } from './debug';
 import loggerProxy from './logger-proxy';

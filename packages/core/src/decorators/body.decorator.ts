@@ -73,13 +73,13 @@ export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDe
     const t1 = typeof propertyOrPipe;
     const t2 = typeof pipe;
 
-    let property: string | null;
-    let pipeFunction: Pipe | null;
+    let property: string | undefined;
+    let pipeFunction: Pipe | undefined;
 
     if( t1 === 'string' ) {
-        property = propertyOrPipe;
+        property = propertyOrPipe as string;
     } else if( t1 === 'function' ) {
-        pipeFunction = propertyOrPipe;
+        pipeFunction = propertyOrPipe as Pipe;
     }
 
     if( !pipe && t2 === 'function' ) {
@@ -93,7 +93,9 @@ export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDe
              *
              * record the metadata with the information of parameter decorator.
              */
-            const args = Reflect.getMetadata( PARAM_BODY_METADATA, target.constructor, key ) || {};
+            const descriptor = Reflect.getOwnPropertyDescriptor( target, key );
+
+            const args = Reflect.getMetadata( PARAM_BODY_METADATA, descriptor ) || {};
             args[ parameterIndexOrDescriptor ] ||= [];
             args[ parameterIndexOrDescriptor ].push( {
                 paramtype : 'BODY',
@@ -101,10 +103,20 @@ export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDe
                 pipe : pipeFunction
             } );
 
-            Reflect.defineMetadata( PARAM_BODY_METADATA, args, target.constructor, key  );
+            Reflect.defineMetadata( PARAM_BODY_METADATA, args, descriptor );
         } else {
 
-            const args = Reflect.getMetadata( ACTION_BODY_METADATA, target.constructor, key );
+            const args = Reflect.getMetadata( ACTION_BODY_METADATA, parameterIndexOrDescriptor.value ) || [];
+
+            global.abcdefg = parameterIndexOrDescriptor;
+
+            args.push( {
+                type : 'BODY',
+                property,
+                pipe: pipeFunction
+            } );
+
+            Reflect.defineMetadata( ACTION_BODY_METADATA, args, parameterIndexOrDescriptor.value );
         }
     }
 }
