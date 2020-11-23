@@ -10,6 +10,12 @@
 import 'reflect-metadata';
 import { Body } from '../../src/decorators/body.decorator';
 import Controller from '../../src/controller';
+import {
+    PARAM_BODY_METADATA,
+    ACTION_BODY_METADATA,
+    PARAM_QUERY_METADATA,
+    ACTION_QUERY_METADATA
+} from '../../src/constants';
 
 describe( 'Ynn Decorator: Body', () => {
 
@@ -25,15 +31,15 @@ describe( 'Ynn Decorator: Body', () => {
             }
 
             const descriptor = Reflect.getOwnPropertyDescriptor( C.prototype, 'indexAction' );
-            const metadata = Reflect.getMetadata( '__ACTION_BODY__', descriptor!.value );
+            const metadata = Reflect.getMetadata( ACTION_BODY_METADATA, descriptor!.value );
 
-            console.log( '<<<<<<<<<<<<', ( global as any ).abcdefg === descriptor );
+            console.log( 'Method Decorator: ', metadata );
 
-            console.log( metadata );
+            Reflect.deleteMetadata( ACTION_BODY_METADATA, descriptor!.value );
         } );
     } );
 
-    xdescribe( 'Parameter Decorator', () => {
+    describe( 'Parameter Decorator', () => {
 
         it( '', () => {
             
@@ -43,10 +49,9 @@ describe( 'Ynn Decorator: Body', () => {
                 }
             }
 
-            const descriptor = Reflect.getOwnPropertyDescriptor( C.prototype, 'indexAction' );
-
-            const metadata = Reflect.getMetadata( '__PARAM_BODY__', descriptor as any );
-            console.log( metadata );
+            const metadata = Reflect.getMetadata( PARAM_BODY_METADATA, C, 'indexAction' );
+            console.log( 'Parameter Decorator: ', metadata );
+            Reflect.deleteMetadata( PARAM_BODY_METADATA, C, 'indexAction' );
         } );
         
     } );

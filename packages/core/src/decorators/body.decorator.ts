@@ -8,6 +8,16 @@
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
+import {
+    PARAM_BODY_METADATA,
+    ACTION_BODY_METADATA,
+    PARAM_QUERY_METADATA,
+    ACTION_QUERY_METADATA,
+    PARAM_HEADER_METADATA,
+    ACTION_HEADER_METADATA,
+    PARAM_PARAM_METADATA,
+    ACTION_PARAM_METADATA
+} from '../constants';
 
 /**
  * Function for generating an action parameter decorator or a method decorator.
@@ -67,9 +77,6 @@ export function Body( property: string, pipe: Pipe ): ParameterDecorator & Metho
 
 export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDecorator & MethodDecorator {
 
-    const PARAM_BODY_METADATA = '__PARAM_BODY__';
-    const ACTION_BODY_METADATA = '__ACTION_BODY__';
-
     const t1 = typeof propertyOrPipe;
     const t2 = typeof pipe;
 
@@ -93,9 +100,7 @@ export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDe
              *
              * record the metadata with the information of parameter decorator.
              */
-            const descriptor = Reflect.getOwnPropertyDescriptor( target, key );
-
-            const args = Reflect.getMetadata( PARAM_BODY_METADATA, descriptor ) || {};
+            const args = Reflect.getMetadata( PARAM_BODY_METADATA, target.constructor, key ) || {};
             args[ parameterIndexOrDescriptor ] ||= [];
             args[ parameterIndexOrDescriptor ].push( {
                 paramtype : 'BODY',
@@ -103,12 +108,10 @@ export function Body( propertyOrPipe?: string | Pipe, pipe?: Pipe ): ParameterDe
                 pipe : pipeFunction
             } );
 
-            Reflect.defineMetadata( PARAM_BODY_METADATA, args, descriptor );
+            Reflect.defineMetadata( PARAM_BODY_METADATA, args, target.constructor, key );
         } else {
 
             const args = Reflect.getMetadata( ACTION_BODY_METADATA, parameterIndexOrDescriptor.value ) || [];
-
-            global.abcdefg = parameterIndexOrDescriptor;
 
             args.push( {
                 type : 'BODY',

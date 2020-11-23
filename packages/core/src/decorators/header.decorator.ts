@@ -21,7 +21,11 @@ export function Header( propertyOrPipeOrHeaders?: string | Pipe | Record<string,
     const t1 = typeof propertyOrPipeOrHeaders;
     const t2 = typeof pipeOrValue;
 
-    if( ( t1 === 'string' && t2 === 'string' ) || ( t2 === 'undefined' && t1 === 'object' ) ) {
+    /**
+     * Method decorator for action method.
+     * Setting header(s) to the response data
+     */
+    if( ( t1 === 'string' && t2 === 'string' ) || ( t1 && t2 === 'undefined' && t1 === 'object' ) ) {
         return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
         }
     }
