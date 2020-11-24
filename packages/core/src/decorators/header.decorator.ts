@@ -8,6 +8,11 @@
  ******************************************************************/
 
 import Pipe from '../interface/pipe.interface';
+import {
+    ACTION_RESPONSE_HEADER_METADATA,
+    ACTION_HEADER_METADATA,
+    PARAM_HEADER_METADATA
+} from '../constants';
 
 export function Header( property: string, value: string ): MethodDecorator;
 export function Header( headers: Record<string, string> ): MethodDecorator;
@@ -25,12 +30,48 @@ export function Header( propertyOrPipeOrHeaders?: string | Pipe | Record<string,
      * Method decorator for action method.
      * Setting header(s) to the response data
      */
-    if( ( t1 === 'string' && t2 === 'string' ) || ( t1 && t2 === 'undefined' && t1 === 'object' ) ) {
+    if( ( t1 === 'string' && t2 === 'string' ) || ( propertyOrPipeOrHeaders && t1 === 'object' ) ) {
         return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
+
+            const args = Reflect.getMetadata( ACTION_RESPONSE_HEADER_METADATA, parameterIndexOrDescriptor.value ) || [];
+
+            if( t1 === 'string' ) {
+                args.push( [ propertyOrPipeOrHeaders, pipeOrValue ] );
+            } else {
+                args.push( propertyOrPipeOrHeaders );
+            }
+
+            Reflect.defineMetadata( ACTION_RESPONSE_HEADER_METADATA, parameterIndexOrDescriptor.value );
         }
     }
 
+    let property: string | undefined;
+    let pipeFunction: Pipe | undefined;
+
+    if( t1 === 'string' ) {
+        property = propertyOrPipeOrHeaders as string;
+    } else if( t1 === 'function' ) {
+        pipeFunction = propertyOrPipeOrHeaders as Pipe;
+    }
+
+    if( !pipeOrValue && t2 === 'function' ) {
+        pipeFunction = pipeOrValue;
+    }
+
     return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
+        if( typeof parameterIndexOrDescriptor === 'number' ) {
+            /**
+             * to generate a parameter decorator
+             *
+             * record the metadata with the information of parameter decorator
+             */
+            const args = Reflect.getMetadata( PARAM_HEADER_METADATA, target.constructor, key ) || {};
+            args[ parameterIndexOrDescriptor ] ||= [];
+            args[ parameterIndexOrDescriptor ].push( {
+                property,
+                pipe : pipeFunction
+            } );
+        }
     }
 }
 
