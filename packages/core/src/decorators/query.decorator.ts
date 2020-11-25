@@ -8,13 +8,14 @@
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
+import { PARAM_QUERY_METADATA, ACTION_QUERY_METADATA } from '../constants';
+import { createActionDecorator } from './util';
 
 export function Query(): ParameterDecorator & MethodDecorator;
 export function Query( property: string ): ParameterDecorator & MethodDecorator;
 export function Query( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 export function Query( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
-export function Query( propertyOrPipe: string | Pipe, pipe?: Pipe ): ParameterDecorator | MethodDecorator {
-    return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
-    }
+export function Query( ...args: [ (string | Pipe)?, Pipe? ] ): ParameterDecorator | MethodDecorator {
+    return createActionDecorator( PARAM_QUERY_METADATA, ACTION_QUERY_METADATA, ...args );
 }
