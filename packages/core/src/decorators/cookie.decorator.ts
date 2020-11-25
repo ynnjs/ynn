@@ -9,8 +9,18 @@
 
 import Pipe from '../interface/pipe.interface';
 
-export function Cookie( property: string, value: string ): MethodDecorator;
-export function Cookie( cookies: Record<string, any> ): MethodDecorator;
+// @todo
+interface KoaCookieOptions {
+    name?: string;
+}
+
+/**
+ * Function for generating a method decorator
+ * The property of cookie will be removed.
+ */
+export function cookie( property: string, value: null ): MethodDecorator;
+export function cookie( property: string, value: string ): MethodDecorator;
+export function Cookie( property: string, value: string, options: KoaCookieOptions ): MethodDecorator;
 export function Cookie(): ParameterDecorator & MethodDecorator;
 export function Cookie( property: string ): ParameterDecorator & MethodDecorator;
 export function Cookie( pipe: Pipe ): ParameterDecorator & MethodDecorator;

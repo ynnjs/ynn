@@ -46,16 +46,16 @@ export function Header( propertyOrPipeOrHeaders?: string | Pipe | Record<string,
     }
 
     let property: string | undefined;
-    let pipeFunction: Pipe | undefined;
+    let pipe: Pipe | undefined;
 
     if( t1 === 'string' ) {
         property = propertyOrPipeOrHeaders as string;
     } else if( t1 === 'function' ) {
-        pipeFunction = propertyOrPipeOrHeaders as Pipe;
+        pipe = propertyOrPipeOrHeaders as Pipe;
     }
 
     if( !pipeOrValue && t2 === 'function' ) {
-        pipeFunction = pipeOrValue;
+        pipe = pipeOrValue as Pipe;
     }
 
     return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
@@ -67,19 +67,18 @@ export function Header( propertyOrPipeOrHeaders?: string | Pipe | Record<string,
              */
             const args = Reflect.getMetadata( PARAM_HEADER_METADATA, target.constructor, key ) || {};
             args[ parameterIndexOrDescriptor ] ||= [];
-            args[ parameterIndexOrDescriptor ].push( {
-                property,
-                pipe : pipeFunction
-            } );
+            args[ parameterIndexOrDescriptor ].push( { property, pipe } );
+
+            Reflect.defineMetadata( PARAM_HEADER_METADATA, target.constructor, key ) || {};
+        } else {
+
+            /**
+             * to generate a method decorator for action a method.
+             */
+            const args = Reflect.getMetadata( ACTION_HEADER_METADATA, parameterIndexOrDescriptor.value ) || [];
+            args.push( { property, pipe } );
+
+            Reflect.defineMetadata( ACTION_HEADER_METADATA, args, parameterIndexOrDescriptor.value );
         }
     }
 }
-
-// export function Header( name: string, value: string ): MethodDecorator {
-//     return ( target, key: string | symbol, descriptor: TypedPropertyDescriptor<any> ) => {
-//         const exists = Reflect.getMetadata( '__HEADER__', descriptor.value ) || [];
-//         const metadata = [ ...exists, [ name, value ] ];
-//         Reflect.defineMetadata( '__Header__', metadata, descriptor.value );
-//         return descriptor;
-//     }
-// }

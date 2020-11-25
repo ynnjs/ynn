@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import util from 'util';
-import Cookies from 'cookies';
+import Cookies, { SetOption as CookieOptions } from 'cookies';
 import statuses from 'statuses';
 import httpErrors, { HttpError } from 'http-errors';
 import httpAssert from 'http-assert';
@@ -17,6 +17,8 @@ import { KoaRequest } from './request';
 import { KoaResponse } from './response';
 
 const COOKIES = Symbol( 'cookies' );
+
+export { CookieOptions };
 
 export interface KoaContext {
     request?: KoaRequest;
