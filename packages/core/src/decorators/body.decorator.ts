@@ -8,14 +8,7 @@
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
-import {
-    PARAM_BODY_METADATA,
-    ACTION_BODY_METADATA,
-    // PARAM_HEADER_METADATA,
-    // ACTION_HEADER_METADATA,
-    // PARAM_PARAM_METADATA,
-    // ACTION_PARAM_METADATA
-} from '../constants';
+import { PARAM_BODY_METADATA, ACTION_BODY_METADATA } from '../constants';
 
 import { createActionDecorator } from './util';
 
@@ -32,6 +25,8 @@ import { createActionDecorator } from './util';
  *
  * async create( @Body() account: CreateAccountDto ) {}
  * ```
+ *
+ * @returns the parameter decorator or the method decorator.
  */
 export function Body(): ParameterDecorator & MethodDecorator;
 
@@ -46,6 +41,8 @@ export function Body(): ParameterDecorator & MethodDecorator;
  * async create( @Body( 'name' ) ) {}
  * ```
  * @param property name of single property to extract from the `body` object.
+ *
+ * @returns the parameter decorator.
  */
 export function Body( property: string ): ParameterDecorator;
 
@@ -58,6 +55,10 @@ export function Body( property: string ): ParameterDecorator;
  *
  * async create( @Body( validationFunction ) ) {}
  * ```
+ *
+ * @param pipe function for data transformation or validation.
+ *
+ * @returns the parameter decorator or the method decorator.
  */
 export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
@@ -72,6 +73,9 @@ export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
  * ```
  *
  * @param property name of single property to extract from the `body` object.
+ * @param pipe function for data transformation or validation.
+ *
+ * @returns the parameter decorator or the method decorator.
  */
 export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 

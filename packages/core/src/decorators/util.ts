@@ -48,3 +48,6 @@ export function createActionDecorator(
         }
     };
 }
+
+// export function createActionResponseDecorator( metadataKey: string | symbol, ) {
+// }

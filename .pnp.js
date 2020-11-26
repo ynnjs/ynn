@@ -57,6 +57,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@types/eslint", "npm:7.2.5"],
             ["eslint", "npm:7.13.0"],
             ["ts-node", "virtual:00cb363eca666ebe8c7cc7da30d2f656777ac86f75e545bc875128ed70cc292a29c0698c51b7f4bce43558316a9798b032e1155567ed1455dc2df41ae5a90fc4#npm:9.0.0"],
             ["typescript", "patch:typescript@npm%3A4.1.2#builtin<compat/typescript>::version=4.1.2&hash=5bf698"]
@@ -1105,6 +1106,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-escape-html-npm-1.0.0-aacd6ae8d9-ff1e94aff8.zip/node_modules/@types/escape-html/",
           "packageDependencies": [
             ["@types/escape-html", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/eslint", [
+        ["npm:7.2.5", {
+          "packageLocation": "./.yarn/cache/@types-eslint-npm-7.2.5-348992bc58-ff870aaaec.zip/node_modules/@types/eslint/",
+          "packageDependencies": [
+            ["@types/eslint", "npm:7.2.5"],
+            ["@types/estree", "npm:0.0.45"],
+            ["@types/json-schema", "npm:7.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/estree", [
+        ["npm:0.0.45", {
+          "packageLocation": "./.yarn/cache/@types-estree-npm-0.0.45-71d6bd2510-9d339cbcf2.zip/node_modules/@types/estree/",
+          "packageDependencies": [
+            ["@types/estree", "npm:0.0.45"]
           ],
           "linkType": "HARD",
         }]
@@ -8558,6 +8579,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["ynn", "workspace:."],
+            ["@types/eslint", "npm:7.2.5"],
             ["eslint", "npm:7.13.0"],
             ["ts-node", "virtual:00cb363eca666ebe8c7cc7da30d2f656777ac86f75e545bc875128ed70cc292a29c0698c51b7f4bce43558316a9798b032e1155567ed1455dc2df41ae5a90fc4#npm:9.0.0"],
             ["typescript", "patch:typescript@npm%3A4.1.2#builtin<compat/typescript>::version=4.1.2&hash=5bf698"]
