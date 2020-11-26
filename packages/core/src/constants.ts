@@ -8,6 +8,10 @@
  ******************************************************************/
 
 
+export const ACTION_PARAMETER_METADATA_KEY = Symbol( 'action#parameter#metadata#key' );
+export const ACTION_METHOD_METADATA_KEY = Symbol( 'action#method#metadata#key' );
+export const ACTION_RESPONSE_METADATA_KEY = Symbol( 'action#response#metadata#key' );
+
 export const PARAM_BODY_METADATA = Symbol( 'param#body#metadata' );
 export const ACTION_BODY_METADATA = Symbol( 'action#body#metadata' );
 export const PARAM_QUERY_METADATA = Symbol( 'param#query#metadata' );

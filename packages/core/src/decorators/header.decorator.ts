@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import Pipe from '../interface/pipe.interface';
-import { ACTION_RESPONSE_HEADER_METADATA, ACTION_HEADER_METADATA, PARAM_HEADER_METADATA } from '../constants';
+import { ACTION_RESPONSE_METADATA_KEY } from '../constants';
 import { createActionDecorator } from './util';
 
 export function Header( property: string, value: string ): MethodDecorator;
@@ -31,17 +31,11 @@ export function Header( ...args: [ (string | Pipe | Record<string, string>)?, (P
     if( ( t1 === 'string' && t2 === 'string' ) || ( propertyOrPipeOrHeaders && t1 === 'object' ) ) {
         return ( target: any, key: string | symbol, indexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
 
-            const args = Reflect.getMetadata( ACTION_RESPONSE_HEADER_METADATA, indexOrDescriptor.value ) || [];
-
-            if( t1 === 'string' ) {
-                args.push( [ propertyOrPipeOrHeaders, pipeOrValue ] );
-            } else {
-                args.push( propertyOrPipeOrHeaders );
-            }
-
-            Reflect.defineMetadata( ACTION_RESPONSE_HEADER_METADATA, indexOrDescriptor.value );
+            const args = Reflect.getMetadata( ACTION_RESPONSE_METADATA_KEY, indexOrDescriptor.value ) || [];
+            args.push( { type : 'header', args } );
+            Reflect.defineMetadata( ACTION_RESPONSE_METADATA_KEY, indexOrDescriptor.value );
         }
     }
 
-    return createActionDecorator( PARAM_HEADER_METADATA, ACTION_HEADER_METADATA, ...args as [ (string | Pipe)?, Pipe? ] );
+    return createActionDecorator( 'header', ...args as [ (string | Pipe)?, Pipe? ] );
 }

@@ -8,7 +8,6 @@
  ******************************************************************/
 
 import Pipe from '../interface/pipe.interface';
-import { PARAM_PARAM_METADATA, ACTION_PARAM_METADATA } from '../constants';
 import { createActionDecorator } from './util';
 
 export function Param(): ParameterDecorator & MethodDecorator;
@@ -17,5 +16,5 @@ export function Param( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 export function Param( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
 export function Param( ...args: [ (string | Pipe)?, Pipe ] ): ParameterDecorator & MethodDecorator {
-    return createActionDecorator( PARAM_PARAM_METADATA, ACTION_PARAM_METADATA, ...args );
+    return createActionDecorator( 'param', ...args );
 }

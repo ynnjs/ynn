@@ -8,8 +8,6 @@
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
-import { PARAM_BODY_METADATA, ACTION_BODY_METADATA } from '../constants';
-
 import { createActionDecorator } from './util';
 
 /**
@@ -80,5 +78,5 @@ export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
 export function Body( ...args: [ (string | Pipe)?, Pipe? ] ): ParameterDecorator & MethodDecorator {
-    return createActionDecorator( PARAM_BODY_METADATA, ACTION_BODY_METADATA, ...args );
+    return createActionDecorator( 'body', ...args );
 }
