@@ -7,12 +7,33 @@
  * Description: 
  ******************************************************************/
 
+import { createActionResponseDecorator } from './util';
+
+/**
+ * 
+ * For example:
+ *
+ * ```typescript
+ * @Status( 400 )
+ * create() {}
+ * ```
+ *
+ * @returns the method decorator
+ */
 export function Status( statusCode: number ): MethodDecorator;
+
+/**
+ * For example:
+ *
+ * ```typescript
+ * @Status( 400, 'Bad Request' )
+ * create() {}
+ * ```
+ *
+ * @returns the method decorator
+ */
 export function Status( statusCode: number, message: string ): MethodDecorator;
 
 export function Status( statusCode: number, message?: string ): MethodDecorator {
-    return ( target, key: string | symbol, descriptor: TypedPropertyDescriptor<any> ) => {
-        Reflect.defineMetadata( '__STATUS__', [ statusCode, message ], descriptor.value );
-        return descriptor;
-    }
+    return createActionResponseDecorator( 'status', { statusCode, message } );
 }

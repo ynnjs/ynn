@@ -8,8 +8,7 @@
  ******************************************************************/
 
 import Pipe from '../interface/pipe.interface';
-import { ACTION_RESPONSE_METADATA_KEY } from '../constants';
-import { createActionDecorator } from './util';
+import { createActionDecorator, createActionResponseDecorator } from './util';
 
 export function Header( property: string, value: string ): MethodDecorator;
 export function Header( headers: Record<string, string> ): MethodDecorator;
@@ -29,12 +28,18 @@ export function Header( ...args: [ (string | Pipe | Record<string, string>)?, (P
      * Setting header(s) to the response data
      */
     if( ( t1 === 'string' && t2 === 'string' ) || ( propertyOrPipeOrHeaders && t1 === 'object' ) ) {
-        return ( target: any, key: string | symbol, indexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
 
-            const args = Reflect.getMetadata( ACTION_RESPONSE_METADATA_KEY, indexOrDescriptor.value ) || [];
-            args.push( { type : 'header', args } );
-            Reflect.defineMetadata( ACTION_RESPONSE_METADATA_KEY, indexOrDescriptor.value );
+        const args = [];
+
+        if( t1 === 'string' ) {
+            args.push( [ propertyOrPipeOrHeaders as string, pipeOrValue as string ] );
+        } else {
+            Object.keys( propertyOrPipeOrHeaders as Record<string, string> ).forEach( key => {
+                args.push( [ key, propertyOrPipeOrHeaders[ key ] ] );
+            } );
         }
+
+        return createActionResponseDecorator( 'header', args );
     }
 
     return createActionDecorator( 'header', ...args as [ (string | Pipe)?, Pipe? ] );

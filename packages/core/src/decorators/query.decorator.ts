@@ -18,7 +18,7 @@ export function Query(): ParameterDecorator & MethodDecorator;
 /**
  * @returns the parameter decorator
  */
-export function Query( property: string ): MethodDecorator;
+export function Query( property: string ): ParameterDecorator;
 
 /**
  * @returns the parameter decorator or the method decorator

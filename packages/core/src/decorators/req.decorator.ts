@@ -8,11 +8,29 @@
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
+import { createActionDecorator } from './util';
 
+/**
+ * @returns the parameter decorator or the method decorator
+ */
 export function Req(): ParameterDecorator & MethodDecorator;
+
+/**
+ * @returns the parameter decorator
+ */
+export function Req( property: string ): ParameterDecorator;
+
+/**
+ * @returns the parameter decorator or the method decorator
+ */
 export function Req( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
-export function Req( pipe?: Pipe ): ParameterDecorator & MethodDecorator {
-    return ( target: any, key: string | symbol, parameterIndexOrDescriptor: TypedPropertyDescriptor<any> | number ) => {
-    }
+/**
+ * @returns the parameter decorator or the method decorator
+ */
+
+export function Req( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
+
+export function Req( ...args: [ (string | Pipe)?, Pipe? ] ): ParameterDecorator & MethodDecorator {
+    return createActionDecorator( 'req', ...args );
 }

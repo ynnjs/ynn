@@ -8,7 +8,11 @@
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
-import { ACTION_PARAMETER_METADATA_KEY, ACTION_METHOD_METADATA_KEY } from '../constants';
+import {
+    ACTION_PARAMETER_METADATA_KEY,
+    ACTION_METHOD_METADATA_KEY,
+    ACTION_RESPONSE_METADATA_KEY
+} from '../constants';
 
 export function createActionDecorator( type: string, propertyOrPipe?: string | Pipe, pipeFunction?: Pipe ): MethodDecorator & ParameterDecorator {
 
@@ -48,5 +52,11 @@ export function createActionDecorator( type: string, propertyOrPipe?: string | P
 export function createActionRequestDecorator() {
 }
 
-// export function createActionResponseDecorator( metadataKey: string | symbol, ) {
-// }
+export function createActionResponseDecorator( type: string, args: any ): MethodDecorator {
+
+    return ( target: any, key: string | symbol, descriptor: TypedPropertyDescriptor<any> ) => {
+        const metadata = Reflect.getMetadata( ACTION_RESPONSE_METADATA_KEY, descriptor.value ) || [];
+        metadata.push( { type, args } );
+        Reflect.defineMetadata( ACTION_RESPONSE_METADATA_KEY, metadata, descriptor.value );
+    }
+}

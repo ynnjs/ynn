@@ -20,6 +20,7 @@ import DebugLogger, { DebugLoggerOptions } from './debug';
 import loggerProxy from './logger-proxy';
 import Router from './router';
 import Controller from './controller';
+import { ACTION_PARAMETER_METADATA_KEY, ACTION_METHOD_METADATA_KEY, ACTION_RESPONSE_METADATA_KEY } from './constants';
 
 export type RouterTarget = {
     module?: string;
@@ -32,6 +33,8 @@ export type RouterRule<
     T = string | RouterTarget | KoaMiddleware
 > = [M, T] | [string | string[], M, T]
 
+export type YnnController = KoaMiddleware | typeof Controller;
+
 export type YnnOptions = KoaOptions & {
     debug?: Logger;
     debugging?: boolean;
@@ -41,7 +44,7 @@ export type YnnOptions = KoaOptions & {
     logPath?: string;
     logger?: Logger;
     port?: number;
-    controllers?: Record<string, typeof Controller | KoaMiddleware>;
+    controllers?: Record<string, YnnController>;
     providors?: Record<string, any>;
     modules?: Record<string, Koa>;
     routers?: RouterRule[] | ( ( ...args ) => void | RouterRule[] ),
@@ -62,6 +65,10 @@ export default class Ynn extends Koa {
 
     #address: AddressInfo | null = null;
     #configs: Config[] = [];
+    #controllers: {
+        controller: any;
+        executor: ( ...args: any ) => void;
+    };
 
     #setupDebug = ( options: YnnOptions ): void => {
         const opts = {
@@ -134,6 +141,16 @@ export default class Ynn extends Koa {
         } );
 
         this.router = router;
+    }
+
+    #setupControllers = ( options: YnnOptions ): void => {
+        const { controllers } = options; 
+        Object.keys( controllers ).forEach( controller => {
+            if( controller instanceof Controller ) {
+
+            } else {
+            }
+        } );
     }
 
     #setup = ( options: YnnOptions ): void => {
