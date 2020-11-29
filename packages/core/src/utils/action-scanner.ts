@@ -10,7 +10,7 @@
 import { ACTIONS_METADATA_KEY, ACTION_METHOD_SUFFIX } from '../constants';
 
 export type ActionInfo = {
-    methodName: string | symbol;
+    methodName: string | symbol | number;
     descriptor: TypedPropertyDescriptor<any>;
 }
 
@@ -31,7 +31,7 @@ export default function scanner( obj: any ) {
     while( proto ) {
 
         Reflect.ownKeys( proto ).forEach( ( key: string | symbol | number ) => {
-            if( hasOwn( key ) || hasOverwritten( key ) || typeof key === 'number' ) return;
+            if( hasOwn( key ) || hasOverwritten( key ) ) return;
 
             /**
              * An action must be a function
