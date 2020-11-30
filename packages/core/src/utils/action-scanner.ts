@@ -26,7 +26,7 @@ export default function scanner( obj: any ) {
     let proto: any = obj;
 
     /**
-     * to scan action method from current object hierarchically.
+     * to scan action methods from current object hierarchically.
      */
     while( proto ) {
 
