@@ -44,30 +44,27 @@ export default function scanner( obj: any ) {
 
             const descriptor = Reflect.getOwnPropertyDescriptor( proto, key );
 
+            if( !descriptor ) return;
+
             /**
              * scan all actions are exposed by @Action() decorator
              */
             Reflect.getMetadata( ACTIONS_METADATA_KEY, descriptor.value )?.forEach( ( name: string ) => {
-                actions[ name ] = {
-                    methodName : key,
-                    descriptor
-                }
+                actions[ name ] = { methodName : key, descriptor }
             } );
 
             /**
              * scan all methods whose name end withs 'Action'
              */
             if( typeof key === 'string' && key.endsWith( ACTION_METHOD_SUFFIX ) ) {
+                const name = key.substr( 0, key.length - ACTION_METHOD_SUFFIX_LENGTH );
                 /**
                  * the action method that exposed with @Action() decorator has high precedence.
                  * indexAction should not override @Action( 'index' )
                  */
-                if( hasOwn( key ) ) return;
-                
-                actions[ key.substr( 0, key.length - ACTION_METHOD_SUFFIX_LENGTH ) ] = {
-                    methodName : key,
-                    descriptor
-                };
+                if( hasOwn( name ) ) return;
+
+                actions[ name ] = { methodName : key, descriptor };
             }
         } );
         proto = Reflect.getPrototypeOf( proto );
