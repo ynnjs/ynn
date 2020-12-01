@@ -118,6 +118,7 @@ describe( 'utils.scanner', () => {
         const actions = scanner( Controller.prototype );
 
         expect( actions.index.methodName ).toEqual( 'fn' );
+        expect( actions.home.methodName ).toEqual( 'indeAction' );
 
         console.log( actions );
 
