@@ -8,8 +8,8 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import scanner from '../../src/utils/action-scanner';
-import Action from '../../src/decorators/action.decorator';
+import { scanner } from '../src/action';
+import Action from '../src/decorators/action.decorator';
 
 describe( 'utils.scanner', () => {
 
@@ -118,9 +118,6 @@ describe( 'utils.scanner', () => {
         const actions = scanner( Controller.prototype );
 
         expect( actions.index.methodName ).toEqual( 'fn' );
-        expect( actions.home.methodName ).toEqual( 'indeAction' );
-
-        console.log( actions );
-
+        expect( actions.home.methodName ).toEqual( 'indexAction' );
     } );
 } );
