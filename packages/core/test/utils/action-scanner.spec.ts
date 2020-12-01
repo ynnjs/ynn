@@ -104,4 +104,8 @@ describe( 'utils.scanner', () => {
         expect( actions.indexAction.methodName ).toEqual( 'indexAction' );
         expect( actions.indexAction.descriptor ).toHaveProperty( 'value', Controller.prototype.indexAction );
     } );
+
+    it( 'should not override action specified with @Action() by xxxAction method', () => {
+        
+    } );
 } );
