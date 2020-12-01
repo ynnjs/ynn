@@ -8,7 +8,11 @@
  ******************************************************************/
 
 import { KoaContext } from '@ynn/koa';
-import { ACTIONS_METADATA_KEY, ACTION_METHOD_SUFFIX } from './constants';
+import {
+    ACTIONS_METADATA_KEY,
+    ACTION_METHOD_SUFFIX,
+    ACTION_METHOD_METADATA_KEY
+} from './constants';
 
 export type ActionInfo = {
     methodName: string | symbol | number;
