@@ -106,6 +106,20 @@ describe( 'utils.scanner', () => {
     } );
 
     it( 'should not override action specified with @Action() by xxxAction method', () => {
-        
+         
+        class Controller {
+            @Action( 'home' )
+            indexAction() {}
+
+            @Action( 'index' )
+            fn() {}
+        }
+
+        const actions = scanner( Controller.prototype );
+
+        expect( actions.index.methodName ).toEqual( 'fn' );
+
+        console.log( actions );
+
     } );
 } );
