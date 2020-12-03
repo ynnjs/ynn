@@ -9,9 +9,14 @@
 
 import { KoaContext } from '@ynn/koa';
 import {
+    ActionMethodMetadata,
+    ActionParameterMetadata
+} from './interfaces/metadata.interface';
+import {
     ACTIONS_METADATA_KEY,
     ACTION_METHOD_SUFFIX,
-    ACTION_METHOD_METADATA_KEY
+    ACTION_METHOD_METADATA_KEY,
+    ACTION_PARAMETER_METADATA_KEY
 } from './constants';
 
 export type ActionInfo = {
@@ -86,8 +91,54 @@ export function register( Controller, actionInfo: ActionInfo ) {
         /**
          * execute all steps specified with action method decorator
          */
-        Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, descriptor.value ).forEach();
+        Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, descriptor.value ).forEach( ( metadata: ActionMethodMetadata ) => {
+            const { type, property, pipe } = metadata;
 
+            switch( type ) {
+                case 'body' : {
+                    break;
+                }
+                case 'query' : {
+                    break;
+                }
+                case 'param' : {
+                    break;
+                }
+                case 'request' : {
+                    break;
+                }
+                case 'req' : {
+                    break;
+                }
+                case 'cookie' : {
+                    break;
+                }
+                case 'header' : {
+                    break;
+                }
+                case 'status' : {
+                    break;
+                }
+                case 'exception' : {
+                    break;
+                }
+                case 'file' : {
+                    break;
+                }
+                case 'default' : {
+                    break;
+                }
+            }
+        } );
+
+        {
+            /**
+             * to fill all arguments specified with parameter decorators.
+             */
+
+            const metadata: Record<number, ActionParameterMetadata> = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, Controller, methodName );
+
+        }
 
         const response = controller[ methodName ]( ...args );
     };

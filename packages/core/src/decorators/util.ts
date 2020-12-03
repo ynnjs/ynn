@@ -9,6 +9,10 @@
 
 import Pipe from '../interfaces/pipe.interface';
 import {
+    ActionMethodMetadata,
+    ActionParameterMetadata,
+} from '../intrefaces/metadata.interface';
+import {
     ACTION_PARAMETER_METADATA_KEY,
     ACTION_METHOD_METADATA_KEY,
     ACTION_RESPONSE_METADATA_KEY
@@ -37,12 +41,11 @@ export function createActionDecorator( type: string, propertyOrPipe?: string | P
              * to generate a parameter decorator
              * record the metadata with the information of parameter decorator
              */
-            const args = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, target.constructor, key ) || {};
-            args[ indexOrDescriptor ] ||= [];
-            args[ indexOrDescriptor ].push( { type, property, pipe } );
+            const args: ( ActionParameterMetadata | undefined )[] = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, target.constructor, key ) || [];
+            args[ indexOrDescriptor ] = { type, property, pipe };
             Reflect.defineMetadata( ACTION_PARAMETER_METADATA_KEY, args, target.constructor, key );
         } else {
-            const args = Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, indexOrDescriptor.value ) || [];
+            const args: ActionMethodMetadata[] = Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, indexOrDescriptor.value ) || [];
             args.push( { type, property, pipe } );
             Reflect.defineMetadata( ACTION_METHOD_METADATA_KEY, args, indexOrDescriptor.value );
         }
