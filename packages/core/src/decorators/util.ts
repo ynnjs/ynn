@@ -10,7 +10,7 @@
 import Pipe from '../interfaces/pipe.interface';
 import {
     ActionMethodMetadata,
-    ActionParameterMetadata,
+    ActionParameterMetadata
 } from '../intrefaces/metadata.interface';
 import {
     ACTION_PARAMETER_METADATA_KEY,

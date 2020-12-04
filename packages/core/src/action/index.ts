@@ -136,7 +136,20 @@ export function register( Controller, actionInfo: ActionInfo ) {
              * to fill all arguments specified with parameter decorators.
              */
 
-            const metadata: Record<number, ActionParameterMetadata> = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, Controller, methodName );
+            const metadata: (ActionParameterMetadata | undefined)[] = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, Controller, methodName ) as (ActionParameterMetadata | undefined )[];
+
+            metadata?.forEach( ( item: ActionParameterMetadata | undefined ) => {
+                if( item === undefined ) {
+                    args.push( undefined );
+                    return;
+                }
+
+                switch( item.type ) {
+                    case 'body' : {
+                        break;
+                    }
+                }
+            } );
 
         }
 

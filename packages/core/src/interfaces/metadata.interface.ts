@@ -21,4 +21,4 @@ export interface ActionParameterMetadata {
     pipe?: Pipe | undefined;
 }
 
-// export type ActionParameterMetadata
+export type ActionParameterMetadataList = (ActionParameterMetadata | undefined)[];

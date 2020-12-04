@@ -26,7 +26,7 @@ import { createActionDecorator } from './util';
  *
  * @returns the parameter decorator or the method decorator.
  */
-export function Body(): ParameterDecorator & MethodDecorator;
+export default function Body(): ParameterDecorator & MethodDecorator;
 
 /**
  * Function for generating an action parameter decorator.
@@ -42,7 +42,7 @@ export function Body(): ParameterDecorator & MethodDecorator;
  *
  * @returns the parameter decorator.
  */
-export function Body( property: string ): ParameterDecorator;
+export default function Body( property: string ): ParameterDecorator;
 
 /**
  * For example:
@@ -58,7 +58,7 @@ export function Body( property: string ): ParameterDecorator;
  *
  * @returns the parameter decorator or the method decorator.
  */
-export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export default function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
 /**
  * For example
@@ -75,8 +75,8 @@ export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
  *
  * @returns the parameter decorator or the method decorator.
  */
-export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export default function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
-export function Body( ...args: [ (string | Pipe)?, Pipe? ] ): ParameterDecorator & MethodDecorator {
+export default function Body( ...args: [ (string | Pipe)?, Pipe? ] ): ParameterDecorator & MethodDecorator {
     return createActionDecorator( 'body', ...args );
 }
