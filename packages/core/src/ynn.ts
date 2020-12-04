@@ -20,7 +20,7 @@ import DebugLogger, { DebugLoggerOptions } from './debug';
 import loggerProxy from './logger-proxy';
 import Router from './router';
 import Controller from './controller';
-import actionScanner from './action-scanner';
+import { scanner } from './action';
 
 export type RouterTarget = {
     module?: string;
@@ -149,7 +149,8 @@ export default class Ynn extends Koa {
             const Controller = controllers[ name ];
 
             if( is.class( Controller ) ) {
-                const actions = actionScanner( Controller.prototype );
+                scanner( Controller.prototype ).forEach( ( actionInfo ) => {
+                } );
                 this.registerAction( `${name}` );
             } else {
             }
