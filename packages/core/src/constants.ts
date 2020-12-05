@@ -10,6 +10,12 @@
 export const ACTION_METHOD_SUFFIX = 'Action';
 
 export const ACTIONS_METADATA_KEY = Symbol( 'actions#metadata#key' );
-export const ACTION_PARAMETER_METADATA_KEY = Symbol( 'action#parameter#metadata#key' );
-export const ACTION_METHOD_METADATA_KEY = Symbol( 'action#method#metadata#key' );
+
+/**
+ * Metadata keys for Action Interception Decorators
+ */
 export const ACTION_RESPONSE_METADATA_KEY = Symbol( 'action#response#metadata#key' );
+export const ACTION_EXCEPTION_METADATA_KEY = Symbol( 'action#exception#metadata#key' );
+export const ACTION_METHOD_METADATA_KEY = Symbol( 'action#method#metadata#key' );
+
+export const ACTION_PARAMETER_METADATA_KEY = Symbol( 'action#parameter#metadata#key' );
