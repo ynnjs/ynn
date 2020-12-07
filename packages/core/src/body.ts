@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import qs from 'qs';
-import cobody from 'co-body';
+import cobody, { Options as CobodyOptions } from 'co-body';
 import { KoaContext } from '@ynn/koa';
 
 /**
@@ -26,7 +26,15 @@ export interface MultipartOptions {
     multiples?: boolean;
 }
 
-export interface BodyOptions {
+/**
+ * BodyOptions extends Cobody.Options.
+ *
+ * @see https://github.com/cojs/co-body
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/co-body/index.d.ts
+ *
+ *
+ */
+export interface BodyOptions extends CobodyOptions {
     encoding?: string;
     limit?: string;
     strict?: boolean;
@@ -39,8 +47,12 @@ export interface BodyOptions {
     multipartOptions?: MultipartOptions;
 }
 
-function parseMultipart( ctx: KoaContext ): Promise<{ fields: any; files: any; }> {
-    return Promise();
+function parseMultipart( ctx: KoaContext, options: MultipartOptions ): Promise<{ fields: any; files: any; }> {
+
+    const form = formidable(  );
+    return new Promise( ( resolve, reject ) => {
+        for
+    } );
 }
 
 /**
@@ -56,12 +68,17 @@ export default function parseBody( ctx: KoaContext, options: BodyOptions ): Retu
 
 export default function parseBody( ctx: KoaContext, options: BodyOptions ): Promise<any> {
 
+    const encoding = 'utf-8';
+    const limit = '2mb';
+
     if( ctx.is( options.multipartTypes || 'multipart' ) ) {
-        return parseMultipart( ctx );
+        return parseMultipart( ctx, {
+            encoding,
+        } );
     }
 
     return cobody( ctx.req, {
-        encoding : 'utf-8',
+        encoding,
         limit : '2mb',
         returnRawBody : false,
         ...options
