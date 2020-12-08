@@ -1024,6 +1024,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/bytes", [
+        ["npm:3.1.0", {
+          "packageLocation": "./.yarn/cache/@types-bytes-npm-3.1.0-81383ade8b-184b848178.zip/node_modules/@types/bytes/",
+          "packageDependencies": [
+            ["@types/bytes", "npm:3.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/co-body", [
         ["npm:5.1.0", {
           "packageLocation": "./.yarn/cache/@types-co-body-npm-5.1.0-f24497d61b-e9bbd2e56f.zip/node_modules/@types/co-body/",
@@ -1609,6 +1618,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@ynn/core", "workspace:packages/core"],
             ["@lvchengbin/is", "npm:1.0.5"],
+            ["@types/bytes", "npm:3.1.0"],
             ["@types/co-body", "npm:5.1.0"],
             ["@types/formidable", "npm:1.0.31"],
             ["@types/jest", "npm:26.0.15"],
@@ -1621,6 +1631,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@ynn/http-assert", "workspace:packages/http-assert"],
             ["@ynn/koa", "workspace:packages/koa"],
             ["benny", "npm:3.6.15"],
+            ["bytes", "npm:3.1.0"],
             ["cli-style", "npm:0.1.1"],
             ["co-body", "npm:6.1.0"],
             ["escape-string-regexp", "npm:4.0.0"],

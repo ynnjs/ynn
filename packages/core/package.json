@@ -16,6 +16,7 @@
         "lint": "eslint src/**/*.ts --cache"
     },
     "devDependencies": {
+        "@types/bytes": "^3.1.0",
         "@types/co-body": "^5.1.0",
         "@types/formidable": "^1.0.31",
         "@types/jest": "^26.0.15",
@@ -42,6 +43,7 @@
         "@lvchengbin/is": "^1.0.5",
         "@ynn/http-assert": "^0.0.0",
         "@ynn/koa": "^0.0.0",
+        "bytes": "^3.1.0",
         "cli-style": "^0.1.1",
         "co-body": "^6.1.0",
         "escape-string-regexp": "^4.0.0",

@@ -868,6 +868,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bytes@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@types/bytes@npm:3.1.0"
+  checksum: 184b8481789417872c8055811b4af7a41e1f5a30488ae0be8468ce0ca86f29a36a7175db9cc434599d50658ae0b709331323d97eb2a721e4ca1d2199da53a0a4
+  languageName: node
+  linkType: hard
+
 "@types/co-body@npm:^5.1.0":
   version: 5.1.0
   resolution: "@types/co-body@npm:5.1.0"
@@ -1360,6 +1367,7 @@ __metadata:
   resolution: "@ynn/core@workspace:packages/core"
   dependencies:
     "@lvchengbin/is": ^1.0.5
+    "@types/bytes": ^3.1.0
     "@types/co-body": ^5.1.0
     "@types/formidable": ^1.0.31
     "@types/jest": ^26.0.15
@@ -1372,6 +1380,7 @@ __metadata:
     "@ynn/http-assert": ^0.0.0
     "@ynn/koa": ^0.0.0
     benny: ^3.6.15
+    bytes: ^3.1.0
     cli-style: ^0.1.1
     co-body: ^6.1.0
     escape-string-regexp: ^4.0.0
@@ -2011,7 +2020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bytes@npm:3.1.0":
+"bytes@npm:3.1.0, bytes@npm:^3.1.0":
   version: 3.1.0
   resolution: "bytes@npm:3.1.0"
   checksum: c3f64645ef37922c8194fef88a052de2a28101882dfdf8a225493888c4941a26ea15164957e7492e5c5e3a8e98ee6276f4834efacb68e2d8ad4d91f903250b6c
