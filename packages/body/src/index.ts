@@ -1,9 +1,9 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  * 
- * File: src/body.ts
+ * File: src/body-parser.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/05/2020
+ * Time: 12/09/2020
  * Description: 
  ******************************************************************/
 
@@ -66,8 +66,8 @@ function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Prom
  */
 
 export default function parseBody( ctx: KoaContext, options: BodyOptions & { returnRawBody: true; } ): Promise<{ parsed: any; raw: any; }>;
-export default function parseBody( ctx: KoaContext, options: BodyOptions ): Promise<any>;
-export default function parseBody( ctx: KoaContext, options: BodyOptions ): ReturnType<typeof parseMultipart>;
+export default function parseBody( ctx: KoaContext, options?: BodyOptions ): Promise<any>;
+export default function parseBody( ctx: KoaContext, options?: BodyOptions ): ReturnType<typeof parseMultipart>;
 
 export default function parseBody( ctx: KoaContext, options?: BodyOptions = {} ): Promise<any> {
 
