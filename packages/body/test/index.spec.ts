@@ -11,6 +11,16 @@ import request from 'supertest';
 import Koa from '@ynn/koa';
 import body, { BodyOptions } from '../src';
 
+interface CreateAppOptions {
+    bodyOptions?: BodyOptions;
+    done?: ( ...args: any[] ) => any;
+    requestOptions?: {
+        send?: any;
+        set?: [string, string][];
+        field?: [string, string][];
+    }
+}
+
 function createApp( options: BodyOptions = {} ) {
     const app = new Koa();
 
@@ -19,8 +29,8 @@ function createApp( options: BodyOptions = {} ) {
 
     } );
 
-    request( app.callback() )
-        .post( '/' );
+    const send = request( app.callback() ).post( '/' );
+        
 }
 
 describe( 'body', () => {
@@ -28,12 +38,15 @@ describe( 'body', () => {
     it( '', done => {
         const app = new Koa();
         app.use( async ( ctx ) => {
-            console.log( 'xxxxxxxxxxxxxxxxx' );
-            const body = await parser( ctx );
+            ctx.body = {};
+            const parsed = await body( ctx );
+            console.log( parsed );
             done();
         } );
         request( app.callback() )
             .post( '/' )
-            .then( () => {} );
+            .send( { name : 'lx' } )
+            .expect( 200 )
+            .end( () => {} );
     } );
 } );

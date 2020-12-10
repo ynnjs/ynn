@@ -7,6 +7,8 @@
  * Description: 
  ******************************************************************/
 
+// /// <reference path="../typings/formidable/index.d.ts" />
+
 import qs from 'qs';
 import bytes from 'bytes';
 import formidable from 'formidable';
@@ -49,6 +51,9 @@ export interface BodyOptions extends CobodyOptions {
 
 function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Promise<{ fields: any; files: any; }> {
 
+    /**
+     * 
+     */
     const form = formidable( options );
     return new Promise( ( resolve, reject ) => {
         form.parse( ctx.req, ( err, fields, files ) => {
@@ -69,7 +74,7 @@ export default function parseBody( ctx: KoaContext, options: BodyOptions & { ret
 export default function parseBody( ctx: KoaContext, options?: BodyOptions ): Promise<any>;
 export default function parseBody( ctx: KoaContext, options?: BodyOptions ): ReturnType<typeof parseMultipart>;
 
-export default function parseBody( ctx: KoaContext, options?: BodyOptions = {} ): Promise<any> {
+export default function parseBody( ctx: KoaContext, options: BodyOptions = {} ): Promise<any> {
 
     const encoding = options.encoding || 'utf-8';
     const limit = '20mb';
@@ -81,7 +86,7 @@ export default function parseBody( ctx: KoaContext, options?: BodyOptions = {} )
     if( ctx.is( options.multipartTypes || 'multipart' ) ) {
         return parseMultipart( ctx, {
             encoding,
-            multipart : true,
+            multiples: true,
             maxFileSize : maxSize,
             maxFieldsSize : maxSize,
             ...( options.multipartOptions ?? {} )

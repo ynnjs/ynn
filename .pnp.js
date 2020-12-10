@@ -1172,15 +1172,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["@types/events", [
-        ["npm:3.0.0", {
-          "packageLocation": "./.yarn/cache/@types-events-npm-3.0.0-2eee0ea973-1407d79d6d.zip/node_modules/@types/events/",
-          "packageDependencies": [
-            ["@types/events", "npm:3.0.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["@types/express", [
         ["npm:4.17.3", {
           "packageLocation": "./.yarn/cache/@types-express-npm-4.17.3-ac3232298a-aeb57af48f.zip/node_modules/@types/express/",
@@ -1200,17 +1191,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express-serve-static-core", "npm:4.17.2"],
             ["@types/node", "npm:13.7.7"],
             ["@types/range-parser", "npm:1.2.3"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@types/formidable", [
-        ["npm:1.0.31", {
-          "packageLocation": "./.yarn/cache/@types-formidable-npm-1.0.31-b2373c2952-77c614bbff.zip/node_modules/@types/formidable/",
-          "packageDependencies": [
-            ["@types/formidable", "npm:1.0.31"],
-            ["@types/events", "npm:3.0.0"],
-            ["@types/node", "npm:13.7.7"]
           ],
           "linkType": "HARD",
         }]
@@ -1784,7 +1764,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@ynn/body", "workspace:packages/body"],
             ["@types/bytes", "npm:3.1.0"],
             ["@types/co-body", "npm:5.1.0"],
-            ["@types/formidable", "npm:1.0.31"],
             ["@types/jest", "npm:26.0.18"],
             ["@types/node", "npm:14.14.11"],
             ["@types/supertest", "npm:2.0.10"],
