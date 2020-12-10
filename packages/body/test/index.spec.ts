@@ -12,21 +12,23 @@ import Koa from '@ynn/koa';
 import body, { BodyOptions } from '../src';
 
 interface CreateAppOptions {
+    callback: ( ...args: any[] ) => any;
     bodyOptions?: BodyOptions;
     done?: ( ...args: any[] ) => any;
     requestOptions?: {
         send?: any;
         set?: [string, string][];
         field?: [string, string][];
+        attach?: [string, string][];
     }
 }
 
-function createApp( options: BodyOptions = {} ) {
+function createApp( options: CreateAppOptions ) {
     const app = new Koa();
 
     app.use( async( ctx ) => {
-        const parsed = await body( ctx );
-
+        const parsed = await body( ctx, options.bodyOptions || {} );
+        options.callback();
     } );
 
     const send = request( app.callback() ).post( '/' );
