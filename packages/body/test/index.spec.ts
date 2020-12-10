@@ -13,10 +13,10 @@ import body, { BodyOptions } from '../src';
 
 interface CreateAppOptions {
     callback: ( ...args: any[] ) => any;
-    bodyOptions?: BodyOptions;
+    body?: BodyOptions;
     done?: ( ...args: any[] ) => any;
-    requestOptions?: {
-        send?: any;
+    request?: {
+        send?: any[];
         set?: [string, string][];
         field?: [string, string][];
         attach?: [string, string][];
@@ -27,28 +27,92 @@ function createApp( options: CreateAppOptions ) {
     const app = new Koa();
 
     app.use( async( ctx ) => {
-        const parsed = await body( ctx, options.bodyOptions || {} );
-        options.callback();
+        const parsed = await body( ctx, options?.body || {} );
+        await options?.callback?.( parsed, ctx );
+        options?.done?.();
     } );
 
-    const send = request( app.callback() ).post( '/' );
-        
+    let send = request( app.callback() ).post( '/' );
+
+    options?.request?.send?.forEach( ( x: any ) => {
+        send = send.send( x );
+    } )
+
+    options.request?.set?.forEach( ( args: [string, string] ) => {
+        send = send.set( ...args );
+    } );
+
+    options.request?.field?.forEach( ( args: [string, string] ) => {
+        send = send.field( ...args );
+    } );
+
+    options.request?.attach?.forEach( ( args: [string, string] ) => {
+        send = send.attach( ...args );
+    } );
+
+    send.end( () => {} );
 }
 
 describe( 'body', () => {
-    
-    it( '', done => {
-        const app = new Koa();
-        app.use( async ( ctx ) => {
-            ctx.body = {};
-            const parsed = await body( ctx );
-            console.log( parsed );
-            done();
+    describe( 'json', () => {
+        it( 'application/json', done => {
+            createApp( {
+                done,
+                request : {
+                    send : [ { x : 1 } ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( { x : 1 } );
+                }
+            } );
         } );
-        request( app.callback() )
-            .post( '/' )
-            .send( { name : 'lx' } )
-            .expect( 200 )
-            .end( () => {} );
+    } );
+    
+    describe( 'form', () => {
+        it( 'application/x-www-form-urlencoded', done => {
+            createApp( {
+                done,
+                request : {
+                    send : [ 'x=1' ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( { x : '1' } );
+                }
+            } );
+        } );
+    } );
+
+    describe( 'text', () => {
+        it( 'text/plain', done => {
+            createApp( {
+                done,
+                request : {
+                    send : [ 'x=1' ],
+                    set : [ [ 'content-type', 'text/plain' ] ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( 'x=1' );
+                }
+            } );
+        } );
+    } );
+
+    describe( 'multipart', () => {
+        it( 'multipart/*', done => {
+            createApp( {
+                done,
+                request : {
+                    field: [ [ 'name', 'x' ] ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( {
+                        fields : {
+                            name : 'x'
+                        },
+                        files : {}
+                    } );
+                }
+            } );
+        } );
     } );
 } );
