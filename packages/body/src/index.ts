@@ -23,6 +23,8 @@ export interface MultipartOptions {
     encoding?: string;
     uploadDir?: string;
     keepExtensions?: boolean;
+    allowEmptyFiles?: boolean;
+    minFileSize?: number;
     maxFileSize?: number;
     maxFields?: number;
     maxFieldsSize?: number;
@@ -55,8 +57,10 @@ function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Prom
      * 
      */
     const form = formidable( options );
+
     return new Promise( ( resolve, reject ) => {
         form.parse( ctx.req, ( err, fields, files ) => {
+            console.log( '333333333333', err, fields, files );
             if( err ) reject( err );
             else resolve( { fields, files } );
         } );
@@ -82,12 +86,15 @@ export default function parseBody( ctx: KoaContext, options: BodyOptions = {} ):
      * to use the limit value in options as the default maxFileSize and maxFieldsSize of multipart request
      */
     const maxSize = bytes.parse( options.limit || limit );
+    console.log( 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiissssssssssssssss', ctx.headers );
 
     if( ctx.is( options.multipartTypes || 'multipart' ) ) {
         return parseMultipart( ctx, {
             encoding,
             multiples: true,
+            minFileSize : 1,
             maxFileSize : maxSize,
+            maxFields : 2000,
             maxFieldsSize : maxSize,
             ...( options.multipartOptions ?? {} )
         } );

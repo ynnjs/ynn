@@ -4103,7 +4103,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["formidable", [
         ["npm:1.2.2", {
-          "packageLocation": "./.yarn/cache/formidable-npm-1.2.2-0f629105a1-9fe5ef38d5.zip/node_modules/formidable/",
+          "packageLocation": "./.yarn/unplugged/formidable-npm-1.2.2-0f629105a1/node_modules/formidable/",
           "packageDependencies": [
             ["formidable", "npm:1.2.2"]
           ],

@@ -38,5 +38,10 @@
         "example": "example",
         "lib": "lib",
         "test": "test"
+    },
+    "dependenciesMeta": {
+        "formidable@1.2.2": {
+            "unplugged": true
+        }
     }
 }
