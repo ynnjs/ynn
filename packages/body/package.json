@@ -6,12 +6,12 @@
     "license": "MIT",
     "scripts": {
         "clean": "rm -rf dist",
-        "compile": "yarn clean && tsc --declaration",
-        "compile:watch": "tsc --watch",
+        "make": "yarn clean && tsc --declaration",
+        "make:watch": "tsc --watch",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
-        "prepublish": "yarn compile",
+        "prepublish": "yarn make",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "engines": {
@@ -38,6 +38,6 @@
         "@ynn/koa": "workspace:packages/koa",
         "bytes": "^3.1.0",
         "co-body": "^6.1.0",
-        "formidable": "^1.2.2"
+        "formidable": "2.0.0-canary.20200504.1"
     }
 }

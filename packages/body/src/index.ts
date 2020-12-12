@@ -7,8 +7,6 @@
  * Description: 
  ******************************************************************/
 
-// /// <reference path="../typings/formidable/index.d.ts" />
-
 import qs from 'qs';
 import bytes from 'bytes';
 import formidable from 'formidable';
@@ -25,9 +23,9 @@ export interface MultipartOptions {
     keepExtensions?: boolean;
     allowEmptyFiles?: boolean;
     minFileSize?: number;
-    maxFileSize?: number;
+    maxFileSize?: string | number;
     maxFields?: number;
-    maxFieldsSize?: number;
+    maxFieldsSize?: string | number;
     hash?: boolean;
     multiples?: boolean;
 }
@@ -47,7 +45,6 @@ export interface BodyOptions extends CobodyOptions {
     jsonTypes?: string[];
     formTypes?: string[];
     textTypes?: string[];
-    multipartTypes?: string[];
     multipartOptions?: MultipartOptions;
 }
 
@@ -60,7 +57,6 @@ function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Prom
 
     return new Promise( ( resolve, reject ) => {
         form.parse( ctx.req, ( err, fields, files ) => {
-            console.log( '333333333333', err, fields, files );
             if( err ) reject( err );
             else resolve( { fields, files } );
         } );
@@ -82,21 +78,32 @@ export default function parseBody( ctx: KoaContext, options: BodyOptions = {} ):
 
     const encoding = options.encoding || 'utf-8';
     const limit = '20mb';
-    /**
-     * to use the limit value in options as the default maxFileSize and maxFieldsSize of multipart request
-     */
-    const maxSize = bytes.parse( options.limit || limit );
-    console.log( 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiissssssssssssssss', ctx.headers );
 
-    if( ctx.is( options.multipartTypes || 'multipart' ) ) {
+    if( ctx.is( 'multipart' ) ) {
+
+        const { multipartOptions = {} } = options;
+        const maxSizeOptions: {
+            maxFieldsSize?: number;
+            maxFileSize?: number;
+        } = {};
+
+        if( typeof multipartOptions.maxFileSize === 'string' ) {
+            maxSizeOptions.maxFileSize = bytes.parse( multipartOptions.maxFileSize );
+        }
+
+        if( typeof multipartOptions.maxFieldsSize === 'string' ) {
+            maxSizeOptions.maxFieldsSize = bytes.parse( multipartOptions.maxFieldsSize );
+        }
+
         return parseMultipart( ctx, {
             encoding,
             multiples: true,
             minFileSize : 1,
-            maxFileSize : maxSize,
+            maxFileSize : 209715200, // 200mb
             maxFields : 2000,
-            maxFieldsSize : maxSize,
-            ...( options.multipartOptions ?? {} )
+            maxFieldsSize : 20971520, // 20mb 
+            ...multipartOptions,
+            ...maxSizeOptions
         } );
     }
 

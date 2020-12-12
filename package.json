@@ -18,16 +18,15 @@
         "packages/*"
     ],
     "devDependencies": {
-        "@types/eslint": "^7.2.5",
-        "eslint": "^7.13.0",
-        "ts-node": "^9.0.0",
-        "typescript": "^4.1.2"
+        "commitizen": "^4.2.2",
+        "cz-conventional-changelog": "^3.3.0",
+        "husky": "next"
     },
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
     "scripts": {},
     "engines": {
-        "node": ">=8.0"
+        "node": ">=14.15.1"
     },
     "bugs": {
         "url": "https://github.com/ynnjs/ynn/issues"
@@ -39,9 +38,9 @@
         "lib": "lib",
         "test": "test"
     },
-    "dependenciesMeta": {
-        "formidable@1.2.2": {
-            "unplugged": true
+    "config" : {
+        "commitizen" : {
+            "path" : "cz-conventional-changelog"
         }
     }
 }

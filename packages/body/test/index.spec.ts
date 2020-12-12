@@ -7,15 +7,19 @@
  * Description: 
  ******************************************************************/
 
+import 'jest-extended';
+import fs from 'fs';
 import path from 'path';
 import request from 'supertest';
-import Koa from '@ynn/koa';
+import formidable from 'formidable';
+import Koa, { KoaContext } from '@ynn/koa';
 import body, { BodyOptions } from '../src';
 
 interface CreateAppOptions {
     callback?: ( ...args: any[] ) => any;
     error?: ( ...args: any[] ) => any;
     body?: BodyOptions;
+    beforeParsing?: ( ctx: KoaContext ) => any;
     request?: {
         send?: any[];
         set?: [string, string][];
@@ -28,11 +32,12 @@ function createApp( options: CreateAppOptions ) {
     const app = new Koa();
 
     app.use( async ( ctx ) => {
+        options?.beforeParsing?.( ctx );
         try {
             const parsed = await body( ctx, options?.body || {} );
             options?.callback?.( parsed, ctx );
         } catch( e ) {
-            if( !options?.error ) console.log( e );
+            if( !options?.error ) console.log( 'Uncaught Error: ', e );
             options?.error?.( e );
         }
     } );
@@ -52,6 +57,9 @@ function createApp( options: CreateAppOptions ) {
     } );
 
     options.request?.attach?.forEach( ( args: [string, string] ) => {
+        if( !fs.existsSync( args[ 1 ] ) ) {
+            throw new TypeError( `${args[1]} not exists.` );
+        }
         send = send.attach( ...args );
     } );
 
@@ -59,7 +67,7 @@ function createApp( options: CreateAppOptions ) {
 }
 
 describe( 'body', () => {
-    xdescribe( 'json', () => {
+    describe( 'json', () => {
         it( 'application/json', done => {
             createApp( {
                 request : {
@@ -85,9 +93,29 @@ describe( 'body', () => {
                 }
             } );
         } );
+
+        it( 'options.jsonTypes', done => {
+            const contentType = 'application/j-s-o-n';
+            createApp( {
+                body : {
+                    jsonTypes : [ contentType ]
+                },
+                request : {
+                    send : [ { x : 1 } ]
+                    // set : [ [ 'content-type', 'application/j-s-o-n' ] ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( { x : 1 } );
+                    done();
+                },
+                beforeParsing( ctx ) {
+                    ctx.headers[ 'content-type' ] = contentType;
+                }
+            } );
+        } );
     } );
     
-    xdescribe( 'form', () => {
+    describe( 'form', () => {
         it( 'application/x-www-form-urlencoded', done => {
             createApp( {
                 request : {
@@ -113,9 +141,28 @@ describe( 'body', () => {
                 }
             } );
         } );
+
+        it( 'options.formTypes', done => {
+            const contentType = 'application/f-o-r-m';
+            createApp( {
+                body : {
+                    formTypes : [ contentType ]
+                },
+                request : {
+                    send : [ 'x=1' ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( { x : '1' } );
+                    done();
+                },
+                beforeParsing( ctx ) {
+                    ctx.headers[ 'content-type' ] = contentType;
+                }
+            } );
+        } );
     } );
 
-    xdescribe( 'text', () => {
+    describe( 'text', () => {
         it( 'text/plain', done => {
             createApp( {
                 request : {
@@ -143,54 +190,120 @@ describe( 'body', () => {
                 }
             } );
         } );
+
+        it( 'options.textTypes', done => {
+            const contentType = 'application/t-e-x-t';
+            createApp( {
+                body : {
+                    textTypes : [ contentType ]
+                },
+                request : {
+                    send : [ 'x=1' ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( 'x=1' );
+                    done();
+                },
+                beforeParsing( ctx ) {
+                    ctx.headers[ 'content-type' ] = contentType;
+                }
+            } );
+        } );
     } );
 
     describe( 'multipart', () => {
-        it( 'multipart/*', done => {
+        const file = path.resolve( __dirname, 'fixtures/upload.txt' );
+
+        it( 'upload single file', done => {
             createApp( {
                 request : {
-                    field : [ [ 'name', 'a-new-file.txt' ] ],
-                    attach: [ [ 'file', path.resolve( __dirname, '../fixtures/upload.txt' ) ] ]
+                    field : [ [ 'name', 'x' ] ],
+                    attach: [ [ 'file', file ] ]
                 },
                 callback( parsed ) {
-                    expect( parsed ).toEqual( {
-                        fields : { name : 'x' },
-                        files : {}
-                    } );
-                    done();
-                },
-                error( e ) {
-                    console.error( e );
-                    done();
-                }
-            } );
-        } );
-
-        xit( 'limit fieldsSize with options.limit', done => {
-            createApp( {
-                body : { limit : '1b' },
-                request : {
-                    field : [ [ 'name', 'a-new-file.txt' ] ],
-                    attach: [ [ 'file', path.resolve( __dirname, '../fixtures/upload.txt' ) ] ]
-                },
-                error( e ) {
-                    expect( e ).toBeInstanceOf( Error );
-                    expect( e.message ).toMatch( /maxFieldsSize exceeded/ );
+                    expect( parsed ).toHaveProperty( 'fields', { name : 'x' } );
+                    expect( parsed ).toHaveProperty( 'files' );
+                    expect( parsed.files ).toHaveProperty( 'file' );
+                    expect( parsed.files.file ).toBeInstanceOf( formidable.File );
+                    expect( parsed.files.file ).toContainEntries( [
+                        [ 'size', fs.statSync( file ).size ],
+                        [ 'name', 'upload.txt' ],
+                        [ 'type', 'text/plain' ]
+                    ] );
+                    expect( fs.readFileSync( parsed.files.file.path ) ).toEqual( fs.readFileSync( file ) );
                     done();
                 }
             } );
         } );
 
-        xit( 'limit fieldsSize with options.limit', done => {
+        it( 'upload multiple files', done => {
             createApp( {
-                body : { limit : '1b' },
+                request : {
+                    field : [ [ 'name', 'x' ] ],
+                    attach: [
+                        [ 'file1', file ],
+                        [ 'file2', file ]
+                    ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toHaveProperty( 'fields', { name : 'x' } );
+                    expect( parsed ).toHaveProperty( 'files' );
+                    expect( parsed.files ).toHaveProperty( 'file1' );
+                    expect( parsed.files ).toHaveProperty( 'file2' );
+                    expect( parsed.files.file1 ).toBeInstanceOf( formidable.File );
+                    expect( parsed.files.file2 ).toBeInstanceOf( formidable.File );
+                    expect( parsed.files.file1 ).toContainEntries( [
+                        [ 'size', fs.statSync( file ).size ],
+                        [ 'name', 'upload.txt' ],
+                        [ 'type', 'text/plain' ]
+                    ] );
+                    expect( parsed.files.file2 ).toContainEntries( [
+                        [ 'size', fs.statSync( file ).size ],
+                        [ 'name', 'upload.txt' ],
+                        [ 'type', 'text/plain' ]
+                    ] );
+                    expect( fs.readFileSync( parsed.files.file1.path ) ).toEqual( fs.readFileSync( file ) );
+                    expect( fs.readFileSync( parsed.files.file2.path ) ).toEqual( fs.readFileSync( file ) );
+                    done();
+                }
+            } );
+        } );
+
+        it( 'limit file size with options.multipartOptions.maxFileSize', done => {
+            createApp( {
+                body : {
+                    limit : '1b',
+                    multipartOptions : {
+                        maxFileSize : '1b'
+                    }
+                },
                 request : {
                     field : [ [ 'name', 'a-new-file.txt' ] ],
-                    attach: [ [ 'file', path.resolve( __dirname, '../fixtures/upload.txt' ) ] ]
+                    attach: [ [ 'file', file ] ]
                 },
                 error( e ) {
                     expect( e ).toBeInstanceOf( Error );
-                    expect( e.message ).toMatch( /maxFieldsSize exceeded/ );
+                    expect( e.message ).toMatch( /maxFileSize \(\d+ bytes\) exceeded/ );
+                    done();
+                }
+            } );
+        } );
+
+        it( 'limit fieldsSize with options.multipartOptions.maxFieldsSize', done => {
+            createApp( {
+                body : {
+                    limit : '100MB',
+                    multipartOptions : {
+                        maxFieldsSize : '1b'
+                    }
+                },
+                request : {
+                    field : [ [ 'name', 'a-new-file.txt' ] ],
+                    attach: [ [ 'file', file ] ]
+                },
+                error( e ) {
+                    expect( e ).toBeInstanceOf( Error );
+                    expect( e.message ).toMatch( /maxFieldsSize \(\d+ bytes\) exceeded/ );
                     done();
                 }
             } );
