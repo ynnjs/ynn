@@ -8,7 +8,8 @@
  ******************************************************************/
 
 import { KoaContext } from '@ynn/koa';
+import { ActionMetadata } from './metadata.interface';
 
 export default interface Pipe {
-    ( value: any, ctx: KoaContext, metadata: Record<string, string> ): any;
+    ( value: any, ctx: KoaContext, metadata: ActionMetadata ): any;
 }

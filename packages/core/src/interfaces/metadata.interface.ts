@@ -9,6 +9,8 @@
 
 import Pipe from './pipe.interface';
 
+type Property = string | symbol | number | undefined;
+
 export interface ActionMethodMetadata {
     type: string;
     property?: string | symbol | number | undefined;
@@ -17,8 +19,18 @@ export interface ActionMethodMetadata {
 
 export interface ActionParameterMetadata {
     type: string;
-    property?: string | symbol | number | undefined;
+    property?: Property;
     pipe?: Pipe | undefined;
+}
+
+/**
+ * the interface of metadata for `action`s.
+ */
+export interface ActionMetadata {
+    type: string;
+    decotype: 'method' | 'parameter';
+    property?: Property;
+    metatype?: unknown;
 }
 
 export type ActionParameterMetadataList = (ActionParameterMetadata | undefined)[];

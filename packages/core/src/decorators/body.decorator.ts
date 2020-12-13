@@ -51,7 +51,9 @@ export default function Body( property: string ): ParameterDecorator;
  * @Body( validationFunction );
  * create() {}
  *
- * async create( @Body( validationFunction ) ) {}
+ * async create( @Body( validationFunction ) account: Record<string, any> ) {}
+ *
+ * async create( @Body( validationFunction ) account: CreateAccountDto ) {}
  * ```
  *
  * @param pipe function for data transformation or validation.
@@ -67,7 +69,7 @@ export default function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator
  * @Body( 'name', validationFunction )
  * create() {}
  *
- * async create( @body( 'name', validationFunction ) ) {}
+ * async create( @Body( 'name', validationFunction ) name: string ) {}
  * ```
  *
  * @param property name of single property to extract from the `body` object.

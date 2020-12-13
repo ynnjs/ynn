@@ -145,7 +145,9 @@ export function register( Controller, actionInfo: ActionInfo ) {
                 }
 
                 switch( item.type ) {
-                    case 'body' : {
+                    case 'body' :
+                    case 'query' : 
+                    case 'param' : {
                         break;
                     }
                 }
