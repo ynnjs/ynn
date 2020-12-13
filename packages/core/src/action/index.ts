@@ -18,6 +18,7 @@ import {
     ACTION_METHOD_METADATA_KEY,
     ACTION_PARAMETER_METADATA_KEY
 } from './constants';
+import requestInterceptor from './request-interceptor';
 
 export type ActionInfo = {
     methodName: string | symbol | number;
@@ -138,6 +139,8 @@ export function register( Controller, actionInfo: ActionInfo ) {
 
             const metadata: (ActionParameterMetadata | undefined)[] = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, Controller, methodName ) as (ActionParameterMetadata | undefined )[];
 
+            const promises = [];
+
             metadata?.forEach( ( item: ActionParameterMetadata | undefined ) => {
                 if( item === undefined ) {
                     args.push( undefined );
@@ -148,10 +151,14 @@ export function register( Controller, actionInfo: ActionInfo ) {
                     case 'body' :
                     case 'query' : 
                     case 'param' : {
+                        const promise = requestInterceptor[ item.type ]( ctx, metadata );
+                        promises.push( promise );
                         break;
                     }
                 }
             } );
+
+            await Promise.all( promises );
 
         }
 
