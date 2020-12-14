@@ -10,14 +10,14 @@
 import Pipe from '../interfaces/pipe.interface';
 import { createActionDecorator } from './util';
 
-export default function Ctx(): ParameterDecorator;
+export function Ctx(): ParameterDecorator;
 
-export default function Ctx( property: string ): ParameterDecorator;
+export function Ctx( property: string ): ParameterDecorator;
 
-export default function Ctx( pipe: Pipe ): MethodDecorator & ParameterDecorator;
+export function Ctx( pipe: Pipe ): MethodDecorator & ParameterDecorator;
 
-export default function Ctx( property: string, pipe: Pipe ): MethodDecorator & ParameterDecorator;
+export function Ctx( property: string, pipe: Pipe ): MethodDecorator & ParameterDecorator;
 
-export default function Ctx( ...args: [ (string | Pipe)?, Pipe? ] ): MethodDecorator & ParameterDecorator {
+export function Ctx( ...args: [ (string | Pipe)?, Pipe? ] ): MethodDecorator & ParameterDecorator {
     return createActionDecorator( 'ctx', ...args );
 }
