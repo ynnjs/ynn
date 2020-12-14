@@ -7,19 +7,16 @@
  * Description: 
  ******************************************************************/
 
-import body from '@ynn/body';
+import parser from '@ynn/body';
+import Pipe from '../interface/pipe.interface';
 
-export interface Options {
-    property?: string | undefined;
-    pipe?: Pipe | undefined;
-}
 
 export default async function body( ctx, options: Options ) {
     /**
      * don't parse the body again if it has already been parsed
      */
     if( !ctx.body ) {
-        ctx.body = await body( ctx );
+        ctx.body = await parser( ctx );
     }
 
     const { property, pipe } = options;

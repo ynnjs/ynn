@@ -38,9 +38,9 @@
         "lib": "lib",
         "test": "test"
     },
-    "config" : {
-        "commitizen" : {
-            "path" : "cz-conventional-changelog"
+    "config": {
+        "commitizen": {
+            "path": "cz-conventional-changelog"
         }
     }
 }
