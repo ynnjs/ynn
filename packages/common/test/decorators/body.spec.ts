@@ -8,13 +8,10 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import { Body } from '../../src/decorators/body.decorator';
-import Controller from '../../src/controller';
+import { Body } from '../../src';
 import {
     PARAM_BODY_METADATA,
     ACTION_BODY_METADATA,
-    PARAM_QUERY_METADATA,
-    ACTION_QUERY_METADATA
 } from '../../src/constants';
 
 describe( 'Ynn Decorator: Body', () => {
@@ -23,7 +20,7 @@ describe( 'Ynn Decorator: Body', () => {
 
         it( '', () => {
             
-            class C extends Controller {
+            class C {
 
                 @Body()
                 indexAction() {
@@ -43,7 +40,7 @@ describe( 'Ynn Decorator: Body', () => {
 
         it( '', () => {
             
-            class C extends Controller {
+            class C {
                 indexAction( @Body() data: any ) {
                     return data;
                 }
