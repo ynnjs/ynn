@@ -7,6 +7,12 @@
  * Description:
  ******************************************************************/
 
+import 'reflect-metadata';
+import {
+    ACTION_METHOD_METADATA_KEY,
+    ACTION_PARAMETER_METADATA_KEY
+} from '../constants';
+
 export interface Interceptors<T extends any[]> {
     before: ( ...args: T ) => void;
     after: ( value: any, ...args: T ) => any;
@@ -15,6 +21,13 @@ export interface Interceptors<T extends any[]> {
 }
 
 export default function generateInterceptor<T extends any[], E extends any[]>( constructor, descriptor, methodName, ...args: T ): Interceptors<T> {
+
+    Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, descriptor.value ).forEach( ( metadata ) => {
+        const { type, property, pipe } = metadata;
+    } );
+
+    Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, constrcutor, methodName );
+
     const before = ( ...args: T ) => {
     };
 
