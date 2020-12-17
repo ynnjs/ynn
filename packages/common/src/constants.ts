@@ -7,25 +7,10 @@
  * Description:
  ******************************************************************/
 
-/**
- * Metadata keys for storing all actions declared with @Action decorator.
- *
- * @example
- *
- * ```ts
- * @Action()
- * create() {}
- * ```
- */
-export const ACTIONS_METADATA_KEY = Symbol( 'actions#metadata#key' );
+export const INTERCEPTOR_BEFORE_KEY = Symbol( 'interceptor#after#key' );
 
-/**
- * Metadata keys for Action Interception Decorators
- */
-export const ACTION_METHOD_METADATA_KEY = Symbol( 'action#method#metadata#key' );
+export const INTERCEPTOR_AFTER_KEY = Symbol( 'interceptor#after#key' );
 
-export const ACTION_PARAMETER_METADATA_KEY = Symbol( 'action#parameter#metadata#key' );
+export const INTERCEPTOR_PARAMETER_KEY = Symbol( 'interceptor#parameter#key' );
 
-export const ACTION_EXCEPTION_METADATA_KEY = Symbol( 'action#exception#metadata#key' );
-
-export const ACTION_RESPONSE_METADATA_KEY = Symbol( 'action#response#metadata#key' );
+export const INTERCEPTOR_EXCEPTION_KEY = Symbol( 'interceptor#exception#key' );

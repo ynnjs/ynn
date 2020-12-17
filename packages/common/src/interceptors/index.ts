@@ -9,24 +9,37 @@
 
 import 'reflect-metadata';
 import {
-    ACTION_METHOD_METADATA_KEY,
-    ACTION_PARAMETER_METADATA_KEY
+    INTERCEPTOR_BEFORE_KEY,
+    INTERCEPTOR_AFTER_KEY,
+    INTERCEPTOR_PARAMETER_KEY,
+    INTERCEPTOR_EXCEPTION_KEY
 } from '../constants';
 
 export interface Interceptors<T extends any[]> {
-    before: ( ...args: T ) => void;
-    after: ( value: any, ...args: T ) => any;
-    arguments: any[];
-    exception: ( ...args: any[] ) => any;
+    callBefore: ( ...args: T ) => void;
+    callAfter: ( value: any, ...args: T ) => any;
+    args: any[];
+    onException: ( ...args: any[] ) => any;
 }
 
-export default function generateInterceptor<T extends any[], E extends any[]>( constructor, descriptor, methodName, ...args: T ): Interceptors<T> {
+export interface GenerateInterceptorOptions {
+    beforeMethods: Record<string, any>;
+    afterMethods: Record<string, any>;
+    onException: Record<string, any>;
+}
 
-    Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, descriptor.value ).forEach( ( metadata ) => {
+export default function generateInterceptor<T extends any[], E extends any[]>(
+    constructor,
+    descriptor,
+    methodName,
+    options: GenerateInterceptorOptions
+): Interceptors<T> {
+
+    Reflect.getMetadata( INTERCEPTOR_BEFORE_KEY, descriptor.value ).forEach( ( metadata ) => {
         const { type, property, pipe } = metadata;
     } );
 
-    Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, constrcutor, methodName );
+    Reflect.getMetadata( INTERCEPTOR_PARAMETER_KEY, constructor, methodName );
 
     const before = ( ...args: T ) => {
     };
