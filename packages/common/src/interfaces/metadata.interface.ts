@@ -11,6 +11,15 @@ import Pipe from './pipe.interface';
 
 type Property = string | symbol | number | undefined;
 
+type InterfaceMetadataType = string | symbol | number;
+
+export interface InterceptorMetadata<T = InterfaceMetadataType, M extends Record<string, any>> {
+    type: T;
+    interceptorType: 'before' | 'after' | 'parameter' | 'exception';
+    parameters: Record<string, any>;
+
+}
+
 export interface ActionMethodMetadata {
     type: string;
     property?: string | symbol | number | undefined;
