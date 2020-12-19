@@ -11,7 +11,11 @@ import parser from '@ynn/body';
 import Pipe from '../interface/pipe.interface';
 
 
-export default async function body( ctx, options: Options ) {
+/**
+ * @example
+ *
+ */
+export default async function body( options, ctx ) {
     /**
      * don't parse the body again if it has already been parsed
      */

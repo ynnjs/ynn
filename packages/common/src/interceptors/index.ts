@@ -15,42 +15,77 @@ import {
     INTERCEPTOR_EXCEPTION_KEY
 } from '../constants';
 
+import {
+    MethodInterceptorMetadata,
+    ParameterInterceptorMetadata
+} from '../interfaces/metadata.interface';
+
 export interface Interceptors<T extends any[]> {
-    callBefore: ( ...args: T ) => void;
-    callAfter: ( value: any, ...args: T ) => any;
-    args: any[];
-    onException: ( ...args: any[] ) => any;
+    before: ( ...args: T ) => void;
+    after: ( value: any, ...args: T ) => any;
+    parameters: any[];
+    exception: ( ...args: any[] ) => any;
 }
 
 export interface GenerateInterceptorOptions {
     beforeMethods: Record<string, any>;
     afterMethods: Record<string, any>;
-    onException: Record<string, any>;
+    parameterMethods: Record<string, any>;
+    exceptionMethods : Record<string, any>;
 }
 
-export default function generateInterceptor<T extends any[], E extends any[]>(
+export default function generateInterceptorMethods<T extends any[]>(
     constructor,
     descriptor,
     methodName,
-    options: GenerateInterceptorOptions
+    options?: GenerateInterceptorOptions
 ): Interceptors<T> {
 
-    Reflect.getMetadata( INTERCEPTOR_BEFORE_KEY, descriptor.value ).forEach( ( metadata ) => {
-        const { type, property, pipe } = metadata;
+    function extract<T = MethodInterceptorMetadata>(
+        key: string | symbol,
+        methods: Record<string, any>
+    ): any[] {
+        const boundMethods = [];
+
+        Reflect.getMetadata( key, descriptor.value ).forEach( ( metadata: T ) => {
+            boundMethods.push( { method : methods[ metadata.type ], metadata } );
+        } );
+
+        return boundMethods;
+    }
+
+
+    const { beforeMethods, afterMethods, parameterMethods, exceptionMethods } = options || {};
+
+    /**
+     * extract all interceptors' information from metadata.
+     */
+    const boundBeforeMethods = extract( INTERCEPTOR_BEFORE_KEY, beforeMethods );
+    const boundAfterMethods = extract( INTERCEPTOR_AFTER_KEY, afterMethods );
+    const boundExceptionMethods = extract( INTERCEPTOR_EXCEPTION_KEY, exceptionMethods );
+
+    const boundParameterMethods = [];
+
+    Reflect.getMetadata( INTERCEPTOR_PARAMETER_KEY, constructor, methodName ).forEach( ( metadata: ParameterInterceptorMetadata ) => {
+        boundParameterMethods.push( {
+            method : parameterMethods[ metadata.type ],
+            metadata
+        } );
     } );
 
-    Reflect.getMetadata( INTERCEPTOR_PARAMETER_KEY, constructor, methodName );
+    const before = ( ...args: T ): Promise<any> => {
+        const promises = [];
+        boundBeforeMethods.forEach( ( interceptor ) => {
+            promises.push( interceptor.method( interceptor.metadata, ...args ) );
+        } );
 
-    const before = ( ...args: T ) => {
+        return Promise.all( promises );
     };
 
-    const after = ( value: any, ...args: T ) => {
-    };
+    const after = ( value: any, ...args: T ): any => {
+        boundAfterMethods.forEach( ( interceptor ) => {
+        } ); 
+    }
 
-    const param: any[] = [];
-
-    const exception = ( ...args: E ) => {
-    };
-
-    return { before, after, params, exception }
+    return { before, after, parameters, exception };
 }

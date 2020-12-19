@@ -11,35 +11,41 @@ import Pipe from './pipe.interface';
 
 type Property = string | symbol | number | undefined;
 
-type InterfaceMetadataType = string | symbol | number;
-
-export interface InterceptorMetadata<T = InterfaceMetadataType, M extends Record<string, any>> {
-    type: T;
-    interceptorType: 'before' | 'after' | 'parameter' | 'exception';
-    parameters: Record<string, any>;
-
-}
-
-export interface ActionMethodMetadata {
-    type: string;
-    property?: string | symbol | number | undefined;
-    pipe?: Pipe | undefined;
-}
-
-export interface ActionParameterMetadata {
-    type: string;
-    property?: Property;
-    pipe?: Pipe | undefined;
-}
+type InterceptorParameters = Record<string, any>;
 
 /**
- * the interface of metadata for `action`s.
+ * @example
+ * ```ts
+ * const metadata: MethodInterceptorMetadata<{
+ *     property : string;
+ * }> = {
+ *     type : 'body',
+ *     interceptorType : 'before',
+ *     parameters : {
+ *         property : 'id'
+ *     }
+ * }
+ * ```
  */
-export interface ActionMetadata {
-    type: string;
-    decotype: 'method' | 'parameter';
-    property?: Property;
-    metatype?: unknown;
+export interface MethodInterceptorMetadata<T extends InterceptorParameters> {
+    type: string | symbol | number;
+    interceptorType: 'before' | 'after';
+    parameters: T;
 }
 
-export type ActionParameterMetadataList = (ActionParameterMetadata | undefined)[];
+export interface ParameterInterceptorMetadata<T extends InterceptorParameters> {
+    type: string | symbol | number;
+    interceptorType: 'parameter';
+    metadataType: unknown;
+    parameters: T;
+}
+
+export type ActionInterceptorMetadata = MethodInterceptorMetadata<{
+    property?: Property; 
+    pipe?: Pipe;
+}>
+
+export type ActionParameterInterceptorMetadata = ParameterInterceptorMetadata<{
+    property?: Property;
+    pipe?: Pipe;
+}>;
