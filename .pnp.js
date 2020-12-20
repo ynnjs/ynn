@@ -43,7 +43,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/koa"
       },
       {
-        "name": "method-interceptor",
+        "name": "@ynn/method-interceptor",
         "reference": "workspace:packages/method-interceptor"
       },
       {
@@ -59,8 +59,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@ynn/core", ["workspace:packages/core"]],
       ["@ynn/http-assert", ["workspace:packages/http-assert"]],
       ["@ynn/koa", ["workspace:packages/koa"]],
+      ["@ynn/method-interceptor", ["workspace:packages/method-interceptor"]],
       ["@ynn/testing", ["workspace:packages/testing"]],
-      ["method-interceptor", ["workspace:packages/method-interceptor"]],
       ["ynn", ["workspace:."]]
     ],
     "fallbackPool": [
@@ -1814,6 +1814,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["type-is", "npm:1.6.18"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=5bf698"],
             ["vary", "npm:1.1.2"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@ynn/method-interceptor", [
+        ["workspace:packages/method-interceptor", {
+          "packageLocation": "./packages/method-interceptor/",
+          "packageDependencies": [
+            ["@ynn/method-interceptor", "workspace:packages/method-interceptor"],
+            ["@types/jest", "npm:26.0.19"],
+            ["@types/node", "npm:14.14.14"],
+            ["@typescript-eslint/eslint-plugin", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.10.0"],
+            ["@typescript-eslint/parser", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.10.0"],
+            ["eslint", "npm:7.16.0"],
+            ["jest", "npm:26.6.3"],
+            ["jest-extended", "npm:0.11.5"],
+            ["ts-jest", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:26.4.4"],
+            ["ts-node", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:9.1.1"],
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=5bf698"]
           ],
           "linkType": "SOFT",
         }]
@@ -6403,25 +6422,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["merge2", "npm:1.4.1"]
           ],
           "linkType": "HARD",
-        }]
-      ]],
-      ["method-interceptor", [
-        ["workspace:packages/method-interceptor", {
-          "packageLocation": "./packages/method-interceptor/",
-          "packageDependencies": [
-            ["method-interceptor", "workspace:packages/method-interceptor"],
-            ["@types/jest", "npm:26.0.19"],
-            ["@types/node", "npm:14.14.14"],
-            ["@typescript-eslint/eslint-plugin", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.10.0"],
-            ["@typescript-eslint/parser", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.10.0"],
-            ["eslint", "npm:7.16.0"],
-            ["jest", "npm:26.6.3"],
-            ["jest-extended", "npm:0.11.5"],
-            ["ts-jest", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:26.4.4"],
-            ["ts-node", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:9.1.1"],
-            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=5bf698"]
-          ],
-          "linkType": "SOFT",
         }]
       ]],
       ["methods", [

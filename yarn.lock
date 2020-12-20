@@ -1545,6 +1545,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ynn/method-interceptor@workspace:packages/method-interceptor":
+  version: 0.0.0-use.local
+  resolution: "@ynn/method-interceptor@workspace:packages/method-interceptor"
+  dependencies:
+    "@types/jest": ^26.0.19
+    "@types/node": ^14.14.14
+    "@typescript-eslint/eslint-plugin": ^4.10.0
+    "@typescript-eslint/parser": ^4.10.0
+    eslint: ^7.16.0
+    jest: ^26.6.3
+    jest-extended: ^0.11.5
+    ts-jest: ^26.4.4
+    ts-node: ^9.1.1
+    typescript: ^4.1.3
+  peerDependencies:
+    reflect-metadata: "*"
+  languageName: unknown
+  linkType: soft
+
 "@ynn/testing@workspace:packages/testing":
   version: 0.0.0-use.local
   resolution: "@ynn/testing@workspace:packages/testing"
@@ -5720,25 +5739,6 @@ fsevents@^2.1.2:
   checksum: f6a054fa9666ab56eaac9628c24fb5710ba4ccd3a2d3f511247fbbc470f27d0dcf3bbbddbc84ad98dc47304830775caffe95ee3bd67b5e0b0f7c280122f24ca8
   languageName: node
   linkType: hard
-
-"method-interceptor@workspace:packages/method-interceptor":
-  version: 0.0.0-use.local
-  resolution: "method-interceptor@workspace:packages/method-interceptor"
-  dependencies:
-    "@types/jest": ^26.0.19
-    "@types/node": ^14.14.14
-    "@typescript-eslint/eslint-plugin": ^4.10.0
-    "@typescript-eslint/parser": ^4.10.0
-    eslint: ^7.16.0
-    jest: ^26.6.3
-    jest-extended: ^0.11.5
-    ts-jest: ^26.4.4
-    ts-node: ^9.1.1
-    typescript: ^4.1.3
-  peerDependencies:
-    reflect-metadata: "*"
-  languageName: unknown
-  linkType: soft
 
 "methods@npm:1.1.2, methods@npm:^1.1.2":
   version: 1.1.2
