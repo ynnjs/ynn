@@ -7,6 +7,8 @@
  * Description:
  ******************************************************************/
 
+import { MethodInterceptorMetadata } from './metadata.interface';
+
 export interface InterceptorMethod {
     ( ...args: any[] ): any;
 }
@@ -18,4 +20,20 @@ export type InterceptorMethodPool = Record<InterceptorMethodKey, InterceptorMeth
 export interface InterceptorMethodInfo<T> {
     method: InterceptorMethod;
     metadata: T;
+}
+
+export interface InterceptorBefore<T> {
+    ( metadata: MethodInterceptorMetadata, ...args: T ): any;
+}
+
+export interface InterceptorAfter<T> {
+    ( value: any, metadata: MethodInterceptorMetadata, ...args: T ): Promise<any>;
+}
+
+export interface InterceptorException<T> {
+    ( e: any, metadata: MethodInterceptorMetadata, ...args: T ): any;
+}
+
+export interface InterceptorParameters<T> {
+    ( ...args: T ): Promise<any[]>;
 }

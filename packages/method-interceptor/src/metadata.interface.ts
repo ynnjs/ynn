@@ -41,20 +41,49 @@ export interface InterceptorMetadata<T = any> {
  * @typeparam T - Type of the parameters
  *
  * @example
+ *
  * ```ts
- *     const metadata: MethodInterceptorMetadata<{
- *         property: string;
- *     }> = {
- *         type : 'body',
- *         interceptorType : 'before',
- *         parameters : {
- *             property : 'id'
- *         }
+ * const metadata: MethodInterceptorMetadata<{
+ *     property: string;
+ * }> = {
+ *     type : 'body',
+ *     interceptorType : 'before',
+ *     parameters : {
+ *         property : 'id'
  *     }
+ * }
  * ```
  */
 export interface MethodInterceptorMetadata<T extends Parameters> extends InterceptorMetadata<T> {
-    interceptorType: 'before' | 'after' | 'exception';
+    interceptorType: 'before' | 'after';
+}
+
+/**
+ * metadata for exception interceptor of classes or class instance methods.
+ *
+ * @typeparam T - Type of the parameters
+ *
+ * @example
+ *
+ * ```ts
+ * const metadata: ExceptionInterceptorMetadata<{
+ *     property: string;
+ * }> = {
+ *     type : TypeError,
+ *     interceptorType : 'exception',
+ *     parameters : {
+ *         property : 'id'
+ *     }
+ * }
+ * ```
+ */
+export interface ExceptionInterceptorMetadata<T extends Parameters> extends InterceptorMetadata<T> {
+    interceptorType: 'exception';
+    /**
+     * the type should be a constructor or undefined.
+     * using `undefined` means the interceptor can handle all types of Error object.
+     */
+    exceptionType: ( new( ...args: any[] ) => any ) | undefined;
 }
 
 /**
@@ -69,16 +98,16 @@ export interface MethodInterceptorMetadata<T extends Parameters> extends Interce
  *
  * @example
  * ```ts
- *     const metadata: ParameterInterceptorMetadata<{
- *         property: string;
- *     }> = {
- *         type : 'body',
- *         interceptorType : 'parameter',
- *         metadataType : 'UserDto',
- *         parameter : {
- *             property : 'id'
- *         }
+ * const metadata: ParameterInterceptorMetadata<{
+ *     property: string;
+ * }> = {
+ *     type : 'body',
+ *     interceptorType : 'parameter',
+ *     metadataType : 'UserDto',
+ *     parameter : {
+ *         property : 'id'
  *     }
+ * }
  * ```
  */
 export interface ParameterInterceptorMetadata<T extends Parameters> extends InterceptorMetadata<T> {

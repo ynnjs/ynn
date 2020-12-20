@@ -8,11 +8,7 @@
  ******************************************************************/
 
 import { MethodInterceptorMetadata } from './metadata.interface';
-import {
-    InterceptorMethodKey,
-    InterceptorMethodPoll,
-    InterceptorMethodInfo
-} from './interceptor.interface';
+import { InterceptorMethodKey, InterceptorMethodPoll, InterceptorMethodInfo } from './interceptor.interface';
 
 /**
  * extract all interceptor methods of a descriptor with specific key from a method pool.
