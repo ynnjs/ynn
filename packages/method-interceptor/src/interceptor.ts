@@ -14,14 +14,14 @@ import { KEY_BEFORE, KEY_AFTER, KEY_PARAMETER, KEY_EXCEPTION } from './constant'
 import { MethodInterceptorMetadata, ParameterInterceptorMetadata, ExceptionInterceptorMetadata } from './metadata.interface';
 import { InterceptorBefore, InterceptorAfter, InterceptorException, InterceptorParameters, InterceptorMethodInfo, InterceptorMethodPoll } from './interceptor.interface';
 
-export interface GenerateInterceptorOptions {
+export interface CreateInterceptorOptions {
     beforeMethods?: InterceptorMethodPoll;
     afterMethods?: InterceptorMethodPoll;
     parameterMethods?: InterceptorMethodPoll;
     exceptionMethods?: InterceptorMethodPoll;
 }
 
-export interface GeneratedInterceptorMethods<T extends any[]> {
+export interface CreatedInterceptorMethods<T extends any[]> {
     before: InterceptorBefore<T>;
     after: InterceptorAfter<T>;
     exception: InterceptorException<T>;
@@ -117,7 +117,7 @@ export function createInterceptorMethodParameters<T>( constructor, methodName, m
  * @param constructor - The constructor
  * @param descriptor - The descriptor which want to be called
  * @param methodName - The name of the method, it's used for generating `parameters interceptor method`.
- * @param options - The options that conforms `GeneratedInterceptorMethods<T>`;
+ * @param options - The options that conforms `CreatedInterceptorMethods<T>`;
  *
  * @returns The object with all type of interceptor methods.
  */
@@ -125,8 +125,8 @@ export function createInterceptorMethods<T>(
     constructor: new ( ...args: any[] ) => any,
     descriptor: TypedPropertyDescriptor<any>,
     methodName: string,
-    options?: GenerateInterceptorOptions
-): GeneratedInterceptorMethods<T> {
+    options?: CreateInterceptorOptions
+): CreatedInterceptorMethods<T> {
 
     const before = createInterceptorMethodBefore<T>( descriptor, options.beforeMethods );
     const after = createInterceptorMethodAfter<T>( descriptor, options.afterMethods );
