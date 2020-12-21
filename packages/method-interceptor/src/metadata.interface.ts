@@ -115,5 +115,5 @@ export interface ParameterInterceptorMetadata<T extends Parameters> extends Inte
     /**
      * the metadata type of the parameter.
      */
-    metadataType: unknown;
+    // metadataType: unknown;
 }

@@ -28,6 +28,80 @@ export interface GeneratedInterceptorMethods<T extends any[]> {
     parameters: InterceptorParameters<T>;
 }
 
+export function generateInterceptorMethodBefore<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorBefore<T> {
+
+    type Info = InterceptorMethodInfo<MethodInterceptorMetadata>;
+
+    if( !methods ) return () => Promise.resolve();
+
+    const bound: Info[] = extract( KEY_BEFORE, descriptor, methods );
+
+    return ( ...args ) => {
+        const promises = [];
+        bound.forEach( ( info : Info ) => {
+            promises.push( info.method( info.metadata, ...args ) );
+        } );
+        return Promise.all( promises );
+    }
+}
+
+export function generateInterceptorMethodAfter<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorAfter<T> {
+
+    if( !methods ) return value => Promise.resolve( value );
+
+    const bound = extract( KEY_AFTER, descriptor, methods );
+
+    return async ( value, ...args ) => {
+        let res = value;
+        for( const info of bound ) {
+            res = await info.method( res, info.metadata, ...args ); 
+        }
+        return res;
+    }
+}
+
+export function generateInterceptorMethodException<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorException<T> {
+
+    /**
+     * the exception interceptor would throw the given Error as default.
+     */
+    if( !methods ) return ( e: any ): any => { throw e };
+
+    const bound = extract<ExceptionInterceptorMetadata>( KEY_EXCEPTION, descriptor, methods );
+
+    return ( e: any, ...args ): any => {
+        /**
+         * find out the first exception interceptor method which can handle the error.
+         */
+        for( const info of bound ) {
+            if( info.metadata.exceptionType === undefined || e instanceof info.metadata.type ) {
+                /**
+                 * return the value if the handler doesn't throw another exception.
+                 */
+                return info.method( e, ...args );
+            }
+        }
+        throw e;
+    }
+}
+
+export function generateInterceptorMethodParameters( methods ) {
+
+    let parameters: Methods[ 'parameters' ] = () => [];
+
+    type Info = InterceptorMethodInfo<ParameterInterceptorMetadata>;
+    const bound: Info[] = [];
+
+    const paramtypes = Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName ); 
+
+    Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName ).forEach( ( metadata: ParameterInterceptorMetadata ) => {
+        bound.push( {
+            method : methods[ metadata.type ],
+            metadata
+        } );
+    } );
+}
+
 /**
  * generate all interceptor methods using given information.
  *
@@ -47,79 +121,10 @@ export function generateInterceptorMethods<T>(
     options?: GenerateInterceptorOptions
 ): GeneratedInterceptorMethods<T> {
 
-    type Methods = GeneratedInterceptorMethods<T>;
+    const before = generateInterceptorMethodBefore<T>( descriptor, options.beforeMethods );
+    const after = generateInterceptorMethodAfter<T>( descriptor, options.afterMethods );
+    const exception = generateInterceptorMethodException<T>( descriptor, options.exceptionMethods );
 
-    let before: Methods[ 'before' ] = () => {};
-
-    if( options?.beforeMethods ) {
-        type Info = InterceptorMethodInfo<MethodInterceptorMetadata>;
-        const bound: Info[] = extract( KEY_BEFORE, descriptor, options.beforeMethods );
-
-        before = ( ...args ) => {
-            const promises = [];
-            bound.forEach( ( info : Info ) => {
-                promises.push( info.method( info.metadata, ...args ) );
-            } );
-            return Promise.all( promises );
-        }
-    }
-
-    /**
-     * generate the interceptor method which should be called after calling the class instance method.
-     */
-    let after: Methods[ 'after' ] = value => Promise.resolve( value );
-
-    if( options?.afterMethods ) {
-        type Info = InterceptorMethodInfo<MethodInterceptorMetadata>;
-        const bound: Info[] = extract( KEY_AFTER, descriptor, options.afterMethods );
-
-        after = async ( value, ...args ) => {
-            let res = value;
-            for( const info of bound ) {
-                res = await info.method( res, info.metadata, ...args ); 
-            }
-            return res;
-        }
-    }
-
-    /**
-     * the exception interceptor would throw the given Error as default.
-     */
-    let exception: Methods[ 'exception' ] = ( e: any ): any => { throw e };
-
-    if( options?.exceptionMethods ) {
-        type Info = InterceptorMethodInfo<ExceptionInterceptorMetadata>;
-        const bound: Info[] = extract<ExceptionInterceptorMetadata>( KEY_EXCEPTION, descriptor, options.exceptionMethods );
-
-        exception = ( e: any, ...args ): any => {
-            /**
-             * find out the first exception interceptor method which can handle the error.
-             */
-            for( const info of bound ) {
-                if( info.metadata.exceptionType === undefined || e instanceof info.metadata.type ) {
-                    /**
-                     * return the value if the handler doesn't throw another exception.
-                     */
-                    return info.method( e, ...args );
-                }
-            }
-            throw e;
-        }
-    }
-
-    let parameters: Methods[ 'parameters' ] = () => [];
-
-    if( options?.parameterMethods ) {
-        type Info = InterceptorMethodInfo<ParameterInterceptorMetadata>;
-        const bound: Info[] = [];
-
-        Reflect.getMetadata( KEY_PARAMETER, constructor, methodName ).forEach( ( metadata: ParameterInterceptorMetadata ) => {
-            bound.push( {
-                method : options.parameterMethods[ metadata.type ],
-                metadata
-            } );
-        } );
-    }
 
     return { before, after, parameters, exception};
 }
