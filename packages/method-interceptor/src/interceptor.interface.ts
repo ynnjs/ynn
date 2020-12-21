@@ -18,7 +18,10 @@ export type InterceptorMethodKey = string | symbol | number;
 export type InterceptorMethodPool = Record<InterceptorMethodKey, InterceptorMethod>;
 
 export interface InterceptorMethodInfo<T> {
-    method: InterceptorMethod;
+    /**
+     * the method could be undefined in the type of interceptor is not set.
+     */
+    method: InterceptorMethod | undefined;
     metadata: T;
 }
 

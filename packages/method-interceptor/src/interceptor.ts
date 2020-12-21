@@ -28,7 +28,7 @@ export interface GeneratedInterceptorMethods<T extends any[]> {
     parameters: InterceptorParameters<T>;
 }
 
-export function generateInterceptorMethodBefore<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorBefore<T> {
+export function createInterceptorMethodBefore<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorBefore<T> {
 
     type Info = InterceptorMethodInfo<MethodInterceptorMetadata>;
 
@@ -45,7 +45,7 @@ export function generateInterceptorMethodBefore<T>( descriptor: TypedPropertyDes
     }
 }
 
-export function generateInterceptorMethodAfter<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorAfter<T> {
+export function createInterceptorMethodAfter<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorAfter<T> {
 
     if( !methods ) return value => Promise.resolve( value );
 
@@ -60,7 +60,7 @@ export function generateInterceptorMethodAfter<T>( descriptor: TypedPropertyDesc
     }
 }
 
-export function generateInterceptorMethodException<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorException<T> {
+export function createInterceptorMethodException<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorException<T> {
 
     /**
      * the exception interceptor would throw the given Error as default.
@@ -85,25 +85,32 @@ export function generateInterceptorMethodException<T>( descriptor: TypedProperty
     }
 }
 
-export function generateInterceptorMethodParameters( methods ) {
-
-    let parameters: Methods[ 'parameters' ] = () => [];
+export function createInterceptorMethodParameters<T>( constructor, methodName, methods ): InterceptorParameters<T> {
 
     type Info = InterceptorMethodInfo<ParameterInterceptorMetadata>;
     const bound: Info[] = [];
 
-    const paramtypes = Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName ); 
+    const metadatas: ParameterInterceptorMetadata[] = Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName );
 
-    Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName ).forEach( ( metadata: ParameterInterceptorMetadata ) => {
+    Reflect.getMetadata( 'design:paramtypes', constructor.prorotype, methodName ).forEach( ( paramtype: unknown, i: number ) => {
+
+        const metadata = metadatas[ i ];
+        metadata.paramtype = paramtype;
+
         bound.push( {
             method : methods[ metadata.type ],
-            metadata
+            metadata : {
+                ...( metadatas[ i ] || {} ),
+                paramtype
+            }
         } );
     } );
+
+    return () => {};
 }
 
 /**
- * generate all interceptor methods using given information.
+ * create all interceptor methods using given information.
  *
  * @typeparam T - The type of arguments that will be passed to each interceptor method whill calling it.
  *
@@ -114,17 +121,17 @@ export function generateInterceptorMethodParameters( methods ) {
  *
  * @returns The object with all type of interceptor methods.
  */
-export function generateInterceptorMethods<T>(
+export function createInterceptorMethods<T>(
     constructor: new ( ...args: any[] ) => any,
     descriptor: TypedPropertyDescriptor<any>,
     methodName: string,
     options?: GenerateInterceptorOptions
 ): GeneratedInterceptorMethods<T> {
 
-    const before = generateInterceptorMethodBefore<T>( descriptor, options.beforeMethods );
-    const after = generateInterceptorMethodAfter<T>( descriptor, options.afterMethods );
-    const exception = generateInterceptorMethodException<T>( descriptor, options.exceptionMethods );
+    const before = createInterceptorMethodBefore<T>( descriptor, options.beforeMethods );
+    const after = createInterceptorMethodAfter<T>( descriptor, options.afterMethods );
+    const exception = createInterceptorMethodException<T>( descriptor, options.exceptionMethods );
+    const parameters = createInterceptorMethodParameters<T>( constructor, methodName, options.parameterMethods );
 
-
-    return { before, after, parameters, exception};
+    return { before, after, exception, parameters };
 }
