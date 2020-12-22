@@ -12,13 +12,17 @@ import 'reflect-metadata';
 import extract from './extract-interceptor-method';
 import { KEY_BEFORE, KEY_AFTER, KEY_PARAMETER, KEY_EXCEPTION } from './constant';
 import { MethodInterceptorMetadata, ParameterInterceptorMetadata, ExceptionInterceptorMetadata } from './metadata.interface';
-import { InterceptorBefore, InterceptorAfter, InterceptorException, InterceptorParameters, InterceptorMethodInfo, InterceptorMethodPoll } from './interceptor.interface';
+import { InterceptorBefore, InterceptorAfter, InterceptorException, InterceptorParameters, InterceptorMethodInfo, InterceptorMethodPool } from './interceptor.interface';
 
-export interface CreateInterceptorOptions {
-    beforeMethods?: InterceptorMethodPoll;
-    afterMethods?: InterceptorMethodPoll;
-    parameterMethods?: InterceptorMethodPoll;
-    exceptionMethods?: InterceptorMethodPoll;
+export interface InterceptorMethodsOptions {
+
+    constructor: new ( ...args: any[] ) => any,
+    descriptor: TypedPropertyDescriptor<any>,
+    methodName: string,
+    beforeMethods?: InterceptorMethodPool;
+    afterMethods?: InterceptorMethodPool;
+    parameterMethods?: InterceptorMethodPool;
+    exceptionMethods?: InterceptorMethodPool;
 }
 
 export interface CreatedInterceptorMethods<T extends any[]> {
@@ -28,7 +32,7 @@ export interface CreatedInterceptorMethods<T extends any[]> {
     parameters: InterceptorParameters<T>;
 }
 
-export function createInterceptorMethodBefore<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorBefore<T> {
+export function createMethodBefore<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPool | undefined ): InterceptorBefore<T> {
 
     type Info = InterceptorMethodInfo<MethodInterceptorMetadata>;
 
@@ -45,7 +49,7 @@ export function createInterceptorMethodBefore<T>( descriptor: TypedPropertyDescr
     }
 }
 
-export function createInterceptorMethodAfter<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorAfter<T> {
+export function createMethodAfter<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPool | undefined ): InterceptorAfter<T> {
 
     if( !methods ) return value => Promise.resolve( value );
 
@@ -60,7 +64,7 @@ export function createInterceptorMethodAfter<T>( descriptor: TypedPropertyDescri
     }
 }
 
-export function createInterceptorMethodException<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPoll | undefined ): InterceptorException<T> {
+export function createMethodException<T>( descriptor: TypedPropertyDescriptor<any>, methods: InterceptorMethodPool | undefined ): InterceptorException<T> {
 
     /**
      * the exception interceptor would throw the given Error as default.
@@ -85,7 +89,7 @@ export function createInterceptorMethodException<T>( descriptor: TypedPropertyDe
     }
 }
 
-export function createInterceptorMethodParameters<T>( constructor, methodName, methods ): InterceptorParameters<T> {
+export function createMethodParameters<T>( constructor, methodName, methods ): InterceptorParameters<T> {
 
     type Info = InterceptorMethodInfo<ParameterInterceptorMetadata>;
     const bound: Info[] = [];
@@ -121,17 +125,23 @@ export function createInterceptorMethodParameters<T>( constructor, methodName, m
  *
  * @returns The object with all type of interceptor methods.
  */
-export function createInterceptorMethods<T>(
+export function createMethods<T>(
     constructor: new ( ...args: any[] ) => any,
     descriptor: TypedPropertyDescriptor<any>,
     methodName: string,
     options?: CreateInterceptorOptions
 ): CreatedInterceptorMethods<T> {
 
-    const before = createInterceptorMethodBefore<T>( descriptor, options.beforeMethods );
-    const after = createInterceptorMethodAfter<T>( descriptor, options.afterMethods );
-    const exception = createInterceptorMethodException<T>( descriptor, options.exceptionMethods );
-    const parameters = createInterceptorMethodParameters<T>( constructor, methodName, options.parameterMethods );
+    const before = createMethodBefore<T>( descriptor, options.beforeMethods );
+    const after = createMethodAfter<T>( descriptor, options.afterMethods );
+    const exception = createMethodException<T>( descriptor, options.exceptionMethods );
+    const parameters = createMethodParameters<T>( constructor, methodName, options.parameterMethods );
 
     return { before, after, exception, parameters };
+}
+
+export function createCompositeMethod<T>(
+    constructor: new ( ...args: any[] ) => any,
+    descriptor: TypedPropertyDescriptor<any>,
+) {
 }
