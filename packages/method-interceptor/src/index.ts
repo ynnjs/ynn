@@ -7,45 +7,46 @@
  * Description:
  ******************************************************************/
 
-export * from './interceptor.interface';
-export * from './decorator.interface'; 
-export * from './interceptor';
-export * from './decorator';
-export * as CONSTANTS from './constants';
+import * as interceptor from './interceptor';
 
-export {
-    // createBeforeDecorator() {
-    // },
+// export * from './interceptor.interface';
+// export * from './decorator.interface'; 
+// export * from './interceptor';
+// export * from './decorator';
+// export * as CONSTANTS from './constants';
 
-    // createParameterDecorator() {
-    // },
+export { interceptor };
+// createBeforeDecorator() {
+// },
 
-    // createAfterDecorator() {
-    // },
+// createParameterDecorator() {
+// },
 
-    // createExceptionDecorator() {
-    // },
-    //
-    // createDecorator() {
-    // },
-    //
-    // createMethods() {
-    // },
-    //
-    // createMethodBefore() {
-    // },
-    //
-    // createMethodAfter() {
-    // },
-    //
-    // createMethodParameters() {
-    // },
-    //
-    // createMethodException() {
-    // },
-    //
-    // createCompositeMethod() {
-    // },
-    //
-    // Constants
-}
+// createAfterDecorator() {
+// },
+
+// createExceptionDecorator() {
+// },
+//
+// createDecorator() {
+// },
+//
+// createMethods() {
+// },
+//
+// createMethodBefore() {
+// },
+//
+// createMethodAfter() {
+// },
+//
+// createMethodParameters() {
+// },
+//
+// createMethodException() {
+// },
+//
+// createCompositeMethod() {
+// },
+//
+// Constants

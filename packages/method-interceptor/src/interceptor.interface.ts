@@ -9,19 +9,17 @@
 
 import { MethodInterceptorMetadata } from './metadata.interface';
 
-export interface InterceptorMethod {
+export interface Method {
     ( ...args: any[] ): any;
 }
 
-export type InterceptorMethodKey = string | symbol | number;
+export type Methods = Record<keyof any, Method>;
 
-export type InterceptorMethodPool = Record<InterceptorMethodKey, InterceptorMethod>;
-
-export interface InterceptorMethodInfo<T> {
+export interface MethodInfo<T> {
     /**
      * the method could be undefined in the type of interceptor is not set.
      */
-    method: InterceptorMethod | undefined;
+    method: Method | undefined;
     metadata: T;
 }
 

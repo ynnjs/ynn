@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { MethodInterceptorMetadata } from './metadata.interface';
-import { InterceptorMethodKey, InterceptorMethodPoll, InterceptorMethodInfo } from './interceptor.interface';
+import { MethodInterceptorMetadata } from '../metadata.interface';
+import { Methods, MethodInfo } from './interceptor.interface';
 
 /**
  * extract all interceptor methods of a descriptor with specific key from a method pool.
@@ -21,11 +21,7 @@ import { InterceptorMethodKey, InterceptorMethodPoll, InterceptorMethodInfo } fr
  *
  * @returns a list of extracted methods' information.
  */
-export default function extractMethodInterceptor<T = MethodInterceptorMetadata>(
-    key: InterceptorMethodKey,
-    methods: InterceptorMethodPoll,
-    descriptor: TypedPropertyDescriptor<any>
-): InterceptorMethodInfo<T>[] {
+export default function extractMethodInterceptor<T = MethodInterceptorMetadata>( key: keyof Methods, methods: Methods, descriptor: TypedPropertyDescriptor<any> ): MethodInfo<T>[] {
 
     const boundMethods = [];
 
