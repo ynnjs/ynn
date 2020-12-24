@@ -104,10 +104,7 @@ export function createMethodParameters<T>( constructor, methodName, methods ): I
 
         bound.push( {
             method : methods[ metadata.type ],
-            metadata : {
-                ...( metadatas[ i ] || {} ),
-                paramtype
-            }
+            metadata : { ...( metadatas[ i ] || {} ), paramtype }
         } );
     } );
 
