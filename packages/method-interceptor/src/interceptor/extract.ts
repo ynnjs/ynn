@@ -7,7 +7,7 @@
  * Description: 
  ******************************************************************/
 
-import { MethodInterceptorMetadata } from '../metadata.interface';
+import { MetadataBefore, MetadataAfter, MetadataParameter, MetadataException } from '../metadata.interface';
 import { Methods, MethodInfo } from './interceptor.interface';
 
 /**
@@ -21,7 +21,7 @@ import { Methods, MethodInfo } from './interceptor.interface';
  *
  * @returns a list of extracted methods' information
  */
-function before<T = MethodInterceptorMetadata>( key: keyof Methods, descriptor: PropertyDescriptor, methods: Methods ): MethodInfo<T>[] {
+function extractMethods<T>( key: keyof Methods, descriptor: PropertyDescriptor, methods: Methods ): MethodInfo<T>[] {
 
     const bound = [];
 
@@ -35,8 +35,20 @@ function before<T = MethodInterceptorMetadata>( key: keyof Methods, descriptor: 
     return bound;
 }
 
-function paramtypes(
-    key: keyof Methods,
+
+function before<T>( ...args: Parameters<typeof extractMethods> ) {
+    return extractMethods<MetadataBefore<T>>( KEY_BEFORE, ...args );
+}
+
+function after<T>( ...args: Parameters<typeof extractMethods> ) {
+    return extractMethods<MetadataAfter<T>>( ...args );
+}
+
+function exception<T>( ...args: Parameters<typeof extractMethods> ) {
+    return extractMethods<MetadataException<T>>( ...args );
+}
+
+function paramtypes<T>(
     constructor: new ( ...args: any[] ) => any,
     methodName: string | symbol | number,
     methods: Methods
@@ -46,7 +58,7 @@ function paramtypes(
     /**
      * get metadata for PARAMETER INTERCEPTOR of given method.
      */
-    const metadatas: ParameterInterceptorMetadata[] = Reflect.getMetadata( key, constructor.prototype, methodName ); 
+    const metadatas: MetadataParameter[] = Reflect.getMetadata( key, constructor.prototype, methodName ); 
 
     /**
      * combine paramtypes and metadatas for interceptor.
@@ -65,4 +77,4 @@ function paramtypes(
     return bound;
 }
 
-export default { methods, paramtypes };
+export default { before, after, exception, paramtypes };

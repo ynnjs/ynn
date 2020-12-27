@@ -7,14 +7,12 @@
  * Description:
  ******************************************************************/
 
-type Parameters = Record<string, any>;
-
 /**
  * the base metadata interface for Interceptor
  *
  * @typeparam T - Type of the parameters
  */
-export interface InterceptorMetadata<T = any> {
+export interface Metadata<P = any> {
     /**
      * the type of the interceptor method,
      * it should be defined in decorators and used to find out which interceptor method should be used.
@@ -32,18 +30,18 @@ export interface InterceptorMetadata<T = any> {
     /**
      * the parameters which will be passed to interceptor methods.
      */
-    parameters: T;
+    parameters: P;
 }
 
 /**
  * metadata for class instance methods
  *
- * @typeparam T - Type of the parameters
+ * @typeparam P - Type of the parameters
  *
  * @example
  *
  * ```ts
- * const metadata: MethodInterceptorMetadata<{
+ * const metadata: MetadataBefore<{
  *     property: string;
  * }> = {
  *     type : 'body',
@@ -54,19 +52,23 @@ export interface InterceptorMetadata<T = any> {
  * }
  * ```
  */
-export interface MethodInterceptorMetadata<T extends Parameters> extends InterceptorMetadata<T> {
-    interceptorType: 'before' | 'after';
+export interface MetadataBefore<P> extends Metadata<P> {
+    interceptorType: 'before';
+}
+
+export interface MetadataAfter<P> extends Metadata<P> {
+    interceptorType: 'after';
 }
 
 /**
  * metadata for exception interceptor of classes or class instance methods.
  *
- * @typeparam T - Type of the parameters
+ * @typeparam P - Type of the parameters
  *
  * @example
  *
  * ```ts
- * const metadata: ExceptionInterceptorMetadata<{
+ * const metadata: MatadataException<{
  *     property: string;
  * }> = {
  *     type : TypeError,
@@ -77,7 +79,7 @@ export interface MethodInterceptorMetadata<T extends Parameters> extends Interce
  * }
  * ```
  */
-export interface ExceptionInterceptorMetadata<T extends Parameters> extends InterceptorMetadata<T> {
+export interface MetadataException<P> extends Metadata<P> {
     interceptorType: 'exception';
     /**
      * the type should be a constructor or undefined.
@@ -94,11 +96,11 @@ export interface ExceptionInterceptorMetadata<T extends Parameters> extends Inte
  * the typescript's `emitDecoratorMetadata` option should be set to true if you wanna use this feature.
  * {@link https://www.typescriptlang.org/docs/handbook/decorators.html#metadata}
  *
- * @typeparam T - Type of the parameters
+ * @typeparam P - Type of the parameters
  *
  * @example
  * ```ts
- * const metadata: ParameterInterceptorMetadata<{
+ * const metadata: MetadataParameter<{
  *     property: string;
  * }> = {
  *     type : 'body',
@@ -110,7 +112,7 @@ export interface ExceptionInterceptorMetadata<T extends Parameters> extends Inte
  * }
  * ```
  */
-export interface ParameterInterceptorMetadata<T extends Parameters> extends InterceptorMetadata<T> {
+export interface MetadataParameter<P> extends Metadata<P> {
     interceptorType: 'parameter';
     /**
      * the metadata type of the parameter.

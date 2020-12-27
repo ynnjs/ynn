@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VariadicFunction<P = any[], R = any> default arguments (type) should match snapshot 1`] = `"VariadicFunction<any[], any>"`;
+
+exports[`VariadicFunction<P = any[], R = any> default arguments (type) should match snapshot 2`] = `"() => void"`;
+
+exports[`VariadicFunction<P = any[], R = any> specific arguments (type) should match snapshot 1`] = `"VariadicFunction<[string, number], number>"`;
+
+exports[`VariadicFunction<P = any[], R = any> specific arguments (type) should match snapshot 2`] = `"(a: string, b: number) => number"`;
