@@ -9,10 +9,8 @@
 
 /**
  * the base metadata interface for Interceptor
- *
- * @typeparam T - Type of the parameters
  */
-export interface Metadata<P = any> {
+export interface Metadata {
     /**
      * the type of the interceptor method,
      * it should be defined in decorators and used to find out which interceptor method should be used.
@@ -30,20 +28,16 @@ export interface Metadata<P = any> {
     /**
      * the parameters which will be passed to interceptor methods.
      */
-    parameters: P;
+    parameters?: any;
 }
 
 /**
  * metadata for class instance methods
  *
- * @typeparam P - Type of the parameters
- *
  * @example
  *
  * ```ts
- * const metadata: MetadataBefore<{
- *     property: string;
- * }> = {
+ * const metadata: MetadataBefore = {
  *     type : 'body',
  *     interceptorType : 'before',
  *     parameters : {
@@ -52,11 +46,11 @@ export interface Metadata<P = any> {
  * }
  * ```
  */
-export interface MetadataBefore<P> extends Metadata<P> {
+export interface MetadataBefore extends Metadata {
     interceptorType: 'before';
 }
 
-export interface MetadataAfter<P> extends Metadata<P> {
+export interface MetadataAfter extends Metadata {
     interceptorType: 'after';
 }
 
@@ -68,9 +62,7 @@ export interface MetadataAfter<P> extends Metadata<P> {
  * @example
  *
  * ```ts
- * const metadata: MatadataException<{
- *     property: string;
- * }> = {
+ * const metadata: MatadataException = {
  *     type : TypeError,
  *     interceptorType : 'exception',
  *     parameters : {
@@ -79,7 +71,7 @@ export interface MetadataAfter<P> extends Metadata<P> {
  * }
  * ```
  */
-export interface MetadataException<P> extends Metadata<P> {
+export interface MetadataException extends Metadata {
     interceptorType: 'exception';
     /**
      * the type should be a constructor or undefined.
@@ -100,9 +92,7 @@ export interface MetadataException<P> extends Metadata<P> {
  *
  * @example
  * ```ts
- * const metadata: MetadataParameter<{
- *     property: string;
- * }> = {
+ * const metadata: MetadataParameter = {
  *     type : 'body',
  *     interceptorType : 'parameter',
  *     metadataType : 'UserDto',
@@ -112,7 +102,7 @@ export interface MetadataException<P> extends Metadata<P> {
  * }
  * ```
  */
-export interface MetadataParameter<P> extends Metadata<P> {
+export interface MetadataParameter extends Metadata {
     interceptorType: 'parameter';
     /**
      * the metadata type of the parameter.

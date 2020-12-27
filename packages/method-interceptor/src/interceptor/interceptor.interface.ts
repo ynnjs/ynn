@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { BeforeMetadata, AfterMetadata, ExceptionMetadata, ParameterMetadata } from './metadata.interface';
+import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata.interface';
 
 export interface Method {
     ( ...args: any[] ): any;
@@ -24,15 +24,15 @@ export interface MethodInfo<T> {
 }
 
 export interface InterceptorBefore<T> {
-    ( metadata: BeforeMetadata, ...args: T ): Promise<any>;
+    ( ...args: T ): Promise<any>;
 }
 
 export interface InterceptorAfter<T> {
-    ( value: any, metadata: AfterMetadata, ...args: T ): Promise<any>;
+    ( value: any, ...args: T ): Promise<any>;
 }
 
 export interface InterceptorException<T> {
-    ( e: any, metadata: ExceptionMetadata, ...args: T ): any;
+    ( e: any, ...args: T ): any;
 }
 
 export interface InterceptorParameters<T> {

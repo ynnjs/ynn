@@ -7,6 +7,8 @@
  * Description: 
  ******************************************************************/
 
+import { ParametersShift } from '@ynn/utility-types';
+import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER } from '../constants';
 import { MetadataBefore, MetadataAfter, MetadataParameter, MetadataException } from '../metadata.interface';
 import { Methods, MethodInfo } from './interceptor.interface';
 
@@ -16,10 +18,10 @@ import { Methods, MethodInfo } from './interceptor.interface';
  * @typeparam T - the tyep of meadata
  *
  * @param key - the key for metadata
- * @param methods - the method pool that provides interceptor methods.
  * @param descriptor - the target descriptor of the class instance method.
+ * @param methods - the method pool that provides interceptor methods.
  *
- * @returns a list of extracted methods' information
+ * @returns a list of information of extracted methods
  */
 function extractMethods<T>( key: keyof Methods, descriptor: PropertyDescriptor, methods: Methods ): MethodInfo<T>[] {
 
@@ -36,16 +38,25 @@ function extractMethods<T>( key: keyof Methods, descriptor: PropertyDescriptor, 
 }
 
 
-function before<T>( ...args: Parameters<typeof extractMethods> ) {
-    return extractMethods<MetadataBefore<T>>( KEY_BEFORE, ...args );
+/**
+ * extract the before interceptor
+ *
+ * @param descriptor - the target descriptor of the class instance method.
+ * @param methods - the method pool that provides interceptor methods.
+ *
+ * @return a list of information of extracted methods for *BEFORE INTERCEPTOR*.
+ */
+function before( ...args: ParametersShift<typeof extractMethods> ) {
+    return extractMethods<MetadataBefore>( KEY_BEFORE, ...args );
 }
 
-function after<T>( ...args: Parameters<typeof extractMethods> ) {
-    return extractMethods<MetadataAfter<T>>( ...args );
+
+function after( ...args: ParametersShift<typeof extractMethods> ) {
+    return extractMethods<MetadataAfter>( KEY_AFTER, ...args );
 }
 
-function exception<T>( ...args: Parameters<typeof extractMethods> ) {
-    return extractMethods<MetadataException<T>>( ...args );
+function exception( ...args: ParametersShift<typeof extractMethods> ) {
+    return extractMethods<MetadataException>( KEY_EXCEPTION, ...args );
 }
 
 function paramtypes<T>(
@@ -58,7 +69,7 @@ function paramtypes<T>(
     /**
      * get metadata for PARAMETER INTERCEPTOR of given method.
      */
-    const metadatas: MetadataParameter[] = Reflect.getMetadata( key, constructor.prototype, methodName ); 
+    const metadatas: MetadataParameter[] = Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName ); 
 
     /**
      * combine paramtypes and metadatas for interceptor.

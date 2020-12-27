@@ -7,9 +7,10 @@
  * Description: 
  ******************************************************************/
 
-import { KEY_BEFORE } from '../constants';
 import { InterceptorBefore, Methods } from './interceptor.interface';
-import extract from './extract-method';
+import extract from './extract';
+
+function createInterceptorBefore<T>( descriptor: PropertyDescriptor ): InterceptorBefore<T>;
 
 function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorBefore<T>;
 
@@ -31,11 +32,11 @@ function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods?: u
 /**
  * 
  */
-function createInterceptorBefore<T, P>( descriptor: PropertyDescriptor, methods?: Methods | undefined ): InterceptorBefore<T> {
+function createInterceptorBefore( descriptor, methods ) {
 
     if( !methods ) return () => Promise.resolve();
 
-    const bound = extract.before<P>( KEY_BEFORE, descriptor, methods );
+    const bound = extract.before( descriptor, methods );
 
     return ( ...args ) => {
         const promises = [];

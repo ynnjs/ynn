@@ -36,5 +36,8 @@
     },
     "peerDependencies": {
         "reflect-metadata": "*"
+    },
+    "dependencies": {
+        "@ynn/utility-types": "workspace:packages/utility-types"
     }
 }
