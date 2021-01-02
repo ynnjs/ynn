@@ -1,31 +1,34 @@
 {
-    "name": "@ynn/testing",
-    "version": "0.0.0",
-    "description": "Ynn test library",
-    "main": "dist/index.js",
+    "name": "@ynn/waka",
     "author": "LvChengbin <lvchengbin59@gmail.com>",
+    "version": "0.0.0",
     "license": "MIT",
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "yarn clean && tsc --declaration",
+        "build": "yarn clean && tsc --desclaration",
         "build:watch": "tsc --watch",
         "test": "jest",
         "test:watch": "jest --watch",
         "prepublish": "yarn build",
         "lint": "eslint src/**/*.ts --cache"
     },
+    "engines": {
+        "node": ">14.15.0"
+    },
+    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
     "devDependencies": {
         "@types/jest": "^26.0.19",
-        "@types/node": "^14.14.16",
+        "@types/node": "^14.14.19",
         "@typescript-eslint/eslint-plugin": "^4.11.1",
         "@typescript-eslint/parser": "^4.11.1",
+        "benny": "^3.6.15",
         "eslint": "^7.17.0",
         "jest": "^26.6.3",
         "ts-jest": "^26.4.4",
         "ts-node": "^9.1.1",
         "typescript": "^4.1.3"
-    },
-    "engines": {
-        "node": ">=14.15.0"
     }
 }
