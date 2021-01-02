@@ -7,8 +7,6 @@
  * Description:
  ******************************************************************/
 
-import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata.interface';
-
 export interface Method {
     ( ...args: any[] ): any;
 }
@@ -23,8 +21,22 @@ export interface MethodInfo<T> {
     metadata: T;
 }
 
+/**
+ * The declaration of InterceptorBefore method.
+ *
+ * @paramtype T - Type of the arguments which will be passed to the generated methods.
+ *
+ * @example
+ *
+ * ```ts
+ * ( ctx: KoaContext ) => Promise.all( [
+ *     fn1( ctx ),
+ *     fn2( ctx )
+ * ] );
+ * ```
+ */
 export interface InterceptorBefore<T> {
-    ( ...args: T ): Promise<any>;
+    ( ...args: T ): Promise<any[]>;
 }
 
 export interface InterceptorAfter<T> {

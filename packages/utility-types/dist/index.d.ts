@@ -7,4 +7,5 @@
  * Description:
  ******************************************************************/
 export declare type VariadicFunction<P extends any[] = any[], R = any> = (...args: P) => R;
+export declare type VariadicClass<P extends any[] = any[], T = any> = new (...args: P) => T;
 export declare type ParametersShift<T extends VariadicFunction> = ((...args: Parameters<T>) => any) extends ((_: any, ...args: infer U) => any) ? U : [];

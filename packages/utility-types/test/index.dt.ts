@@ -7,7 +7,7 @@
  * Description: 
  ******************************************************************/
 
-import { VariadicFunction, ParametersShift } from '../src';
+import { VariadicFunction, VariadicClass, ParametersShift } from '../src';
 
 function testType<T>(): T {
     return undefined as any;
@@ -24,7 +24,7 @@ function testType<T>(): T {
     const o: O = {};
 
     // @dts-jest:pass:snap default arguments
-    testType<VariadicFunction>()
+    testType<VariadicFunction>();
 
     // @dts-jest:pass:snap specific arguments
     testType<VariadicFunction<[string, number], number>>();
@@ -34,6 +34,36 @@ function testType<T>(): T {
 
     // @dts-jest:pass:snap specific arguments
     o.f2 = ( a: string, b: number ) => b;
+}
+
+// @dts-jest:group VariadicClass<P = any[], T = any>
+{
+
+    interface X {
+        name: string;
+    }
+
+    interface O {
+        c1?: VariadicClass;
+        c2?: VariadicClass<[string, number], X>
+    }
+
+    const o: O = {};
+
+    // @dts-jest:pass:snap variadic arguments and return type
+    testType<VariadicClass>();
+
+    // @dts-jest:pass:snap specific arguments
+    testType<VariadicClass<[string, number], X>>();
+
+    // @dts-jest:pass:snap default arguments
+    o.c1 = class {}
+
+    // @dts-jest:pass:snap specific arguments
+    o.c2 = class {
+        constructor( public name: string, public age: number ) {}
+    }
+
 }
 
 // @dts-jest:group ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]>

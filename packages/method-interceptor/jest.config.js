@@ -1,9 +1,9 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  * 
- * File: body/jest.config.js
+ * File: method-interceptor/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/09/2020
+ * Time: 01/02/2021
  * Description: 
  ******************************************************************/
 
