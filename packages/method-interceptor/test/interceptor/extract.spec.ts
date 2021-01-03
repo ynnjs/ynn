@@ -79,6 +79,48 @@ describe( 'interceptor/extract', () => {
     } );
 
     describe( 'extract.parameter', () => {
-        
+
+        it( 'should only have parameter metadata', () => {
+            
+            class A { action() } 
+
+            const methods = { fn() {} };
+
+            Reflect.defineMetadata( 'design:paramtypes', [ String ], A.prototype, 'action' );
+
+            expect( extract.parameter( A, 'action', methods ) ).toEqual( [ {
+                method : undefined,
+                metadata : {
+                    paramtype : String
+                }
+            } ] );
+
+        } );
+
+        it( 'should have both parameter metadata and interceptor metadata', () => {
+
+            class A { action() } 
+
+            const methods = { fn() {} };
+
+            const metadata = [ {
+                type : 'fn',
+                interceptorType : 'parameter'
+            } ];
+
+            Reflect.defineMetadata( 'design:paramtypes', [ String ], A.prototype, 'action' );
+            Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'action' );
+
+            expect( extract.parameter( A, 'action', methods ) ).toEqual( [ {
+                method : methods.fn,
+                metadata : {
+                    ...metadata[ 0 ],
+                    paramtype : String
+                }
+            } ] );
+            
+        } );
+
     } );
+
 } );
