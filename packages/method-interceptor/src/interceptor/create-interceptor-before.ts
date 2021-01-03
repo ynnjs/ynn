@@ -10,9 +10,9 @@
 import { InterceptorBefore, Methods } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor ): InterceptorBefore<T>;
+function createInterceptorBefore<T = any[]>( descriptor: PropertyDescriptor ): InterceptorBefore<T>;
 
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorBefore<T>;
+function createInterceptorBefore<T = any[]>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorBefore<T>;
 
 /**
  * create an empty interceptor method with methods is undefined.
@@ -27,14 +27,14 @@ function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods: Me
  *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods?: undefined ): InterceptorBefore<T>;
+function createInterceptorBefore<T = any[]>( descriptor: PropertyDescriptor, methods?: undefined ): InterceptorBefore<T>;
 
 /**
  * 
  */
 function createInterceptorBefore( descriptor, methods ) {
 
-    if( !methods ) return () => Promise.resolve();
+    if( !methods ) return () => Promise.resolve( [] );
 
     const bound = extract.before( descriptor, methods );
 

@@ -7,7 +7,8 @@
  * Description:
  ******************************************************************/
 
-import * as interceptor from './interceptor';
+import 'reflect-metadata';
+export * from './interceptor';
 
 // export * from './interceptor.interface';
 // export * from './decorator.interface'; 
@@ -15,7 +16,6 @@ import * as interceptor from './interceptor';
 // export * from './decorator';
 // export * as CONSTANTS from './constants';
 
-export { interceptor };
 // createBeforeDecorator() {
 // },
 

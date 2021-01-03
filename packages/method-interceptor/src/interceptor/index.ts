@@ -7,4 +7,6 @@
  * Description:
  ******************************************************************/
 
-export * from './create-method-before';
+import createInterceptorBefore from './create-interceptor-before';
+
+export { createInterceptorBefore }

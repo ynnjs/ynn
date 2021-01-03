@@ -35,18 +35,18 @@ export interface MethodInfo<T> {
  * ] );
  * ```
  */
-export interface InterceptorBefore<T> {
+export interface InterceptorBefore<T extends any[] = any[]> {
     ( ...args: T ): Promise<any[]>;
 }
 
-export interface InterceptorAfter<T> {
+export interface InterceptorAfter<T extends any[] = any[]> {
     ( value: any, ...args: T ): Promise<any>;
 }
 
-export interface InterceptorException<T> {
+export interface InterceptorException<T extends any[] = any[]> {
     ( e: any, ...args: T ): any;
 }
 
-export interface InterceptorParameters<T> {
+export interface InterceptorParameters<T extends any[] = any[]> {
     ( ...args: T ): Promise<any[]>;
 }
