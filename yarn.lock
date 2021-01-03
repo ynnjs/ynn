@@ -1014,6 +1014,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/eslint@npm:^7.2.6":
+  version: 7.2.6
+  resolution: "@types/eslint@npm:7.2.6"
+  dependencies:
+    "@types/estree": "*"
+    "@types/json-schema": "*"
+  checksum: 3a89e63d02c447b7182a30b80925ccfbd46661aa3e7262a61aa8de9b90d1de4b0b722f681f7473b35258e110ef726d73df406374abdac8435358dd13ca74251d
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:*, @types/estree@npm:^0.0.45":
+  version: 0.0.45
+  resolution: "@types/estree@npm:0.0.45"
+  checksum: 9d339cbcf29a96a32e9d40efc21009c2342e93c4f653294dd1ef081ae474bca9e54707e5d4a1cff90b9e3566e8bdd71ac31e0c3d24bc2ff1d3d5aa75058b3937
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:*":
   version: 4.17.2
   resolution: "@types/express-serve-static-core@npm:4.17.2"
@@ -1113,7 +1130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.3":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.3":
   version: 7.0.6
   resolution: "@types/json-schema@npm:7.0.6"
   checksum: 820cabe35ac915b93e38b0c01957e5c49d7d9f69251dddfbf39af0ff4fe24f6e08b39e55603e0d212dea7bcaa383b1218b58a738d1c02013dc22df06547ff238
@@ -1476,6 +1493,24 @@ __metadata:
     ts-node: ^9.1.1
     typescript: ^4.1.3
     yargs: ^16.1.1
+  languageName: unknown
+  linkType: soft
+
+"@ynn/eslint-plugin@workspace:packages/eslint-plugin":
+  version: 0.0.0-use.local
+  resolution: "@ynn/eslint-plugin@workspace:packages/eslint-plugin"
+  dependencies:
+    "@types/eslint": ^7.2.6
+    "@types/estree": ^0.0.45
+    "@types/jest": ^26.0.19
+    "@types/node": ^14.14.19
+    "@typescript-eslint/eslint-plugin": ^4.11.1
+    "@typescript-eslint/parser": ^4.11.1
+    eslint: ^7.17.0
+    jest: ^26.6.3
+    ts-jest: ^26.4.4
+    ts-node: ^9.1.1
+    typescript: ^4.1.3
   languageName: unknown
   linkType: soft
 
