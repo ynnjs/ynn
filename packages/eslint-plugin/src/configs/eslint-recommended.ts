@@ -84,7 +84,7 @@ export = {
             'no-shadow-restricted-names' : 'error',
             'no-undef' : 'error',
             'no-unused-vars' : 'error',
-            'no-use-before-define' : [ 'error',{ functions : false, classes : false } ],
+            'no-use-before-define' : [ 'error', { functions : false, classes : false } ],
 
             // Stylistic Issues
             'array-bracket-spacing' : [ 'error', 'always' ],

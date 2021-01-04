@@ -1,16 +1,15 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
- * File: rules/no-literal-url.spec.ts
+ * File: rules/rule-tester.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/03/2020
+ * Time: 01/04/2021
  * Description:
  ******************************************************************/
 
-import rules from '../src/rules';
 import { RuleTester } from 'eslint';
 
-const ruleTester = new RuleTester( {
+export default new RuleTester( {
     parserOptions : {
         ecmaVersion : 2020
     },
@@ -18,5 +17,3 @@ const ruleTester = new RuleTester( {
         es6 : true
     }
 } );
-
-console.log( 'test completed successfully' );

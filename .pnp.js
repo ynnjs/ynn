@@ -1856,13 +1856,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/estree", "npm:0.0.45"],
             ["@types/jest", "npm:26.0.19"],
             ["@types/node", "npm:14.14.19"],
+            ["@types/yargs", "npm:15.0.12"],
             ["@typescript-eslint/eslint-plugin", "virtual:402cb624ceddf8c3854044906da5e751568ae81854040f32a4d1d3ca9f812898c801991e9b4a6eab4a336f98cebc72fa1d4f8ac46ae1d9b96c39bc32d9fb3421#npm:4.11.1"],
             ["@typescript-eslint/parser", "virtual:402cb624ceddf8c3854044906da5e751568ae81854040f32a4d1d3ca9f812898c801991e9b4a6eab4a336f98cebc72fa1d4f8ac46ae1d9b96c39bc32d9fb3421#npm:4.11.1"],
+            ["cli-style", "npm:0.1.1"],
             ["eslint", "npm:7.17.0"],
             ["jest", "npm:26.6.3"],
             ["ts-jest", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:26.4.4"],
             ["ts-node", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:9.1.1"],
-            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=5bf698"]
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=5bf698"],
+            ["yargs", "npm:16.2.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -9721,6 +9724,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yargs-npm-16.1.1-374a071ba7-f88462770b.zip/node_modules/yargs/",
           "packageDependencies": [
             ["yargs", "npm:16.1.1"],
+            ["cliui", "npm:7.0.3"],
+            ["escalade", "npm:3.1.1"],
+            ["get-caller-file", "npm:2.0.5"],
+            ["require-directory", "npm:2.1.1"],
+            ["string-width", "npm:4.2.0"],
+            ["y18n", "npm:5.0.5"],
+            ["yargs-parser", "npm:20.2.3"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:16.2.0", {
+          "packageLocation": "./.yarn/cache/yargs-npm-16.2.0-547873d425-a79ce1f043.zip/node_modules/yargs/",
+          "packageDependencies": [
+            ["yargs", "npm:16.2.0"],
             ["cliui", "npm:7.0.3"],
             ["escalade", "npm:3.1.1"],
             ["get-caller-file", "npm:2.0.5"],

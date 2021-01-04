@@ -27,4 +27,17 @@ describe( 'interceptor/create-method-before', () => {
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
         expect( createInterceptorBefore( descriptor )() ).resolves.toEqual( [] );
     } );
+
+    it( 'should return a Promise object with expected values', () => {
+        
+    } );
+
+    it( 'should have called the corresponding methods', () => {
+        const o = { x() {} };
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const fn = jest.fn();
+        const methods = { fn };
+        createInterceptorBefore( descriptor, methods )();
+        expect( fn ).toHaveBeenCalledTimes( 1 );
+    } );
 } );

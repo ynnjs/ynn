@@ -12,7 +12,7 @@ import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER } from '../../src/c
 import extract from '../../src/interceptor/extract';
 
 describe( 'interceptor/extract', () => {
-
+    
     [ 
         { t : 'before', k : KEY_BEFORE },
         { t : 'after', k : KEY_AFTER },
