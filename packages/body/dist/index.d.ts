@@ -59,14 +59,39 @@ declare function parseMultipart(ctx: KoaContext, options?: MultipartOptions): Pr
     files: Files;
 }>;
 /**
- * function body<O extends BodyOptions>(
- *     ctx: KoaContext,
- *     options: O
- * ): O extends { returnRawBody: true; } ? Promise<{ parsed: any; raw: any; }> : Promise<any>;
+ * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
+ *
+ * @param ctx - the context object conforming the Koa's context object.
+ * @param options - the options object. {@link BodyOptions}
+ *
+ * @returns the raw body object returns by `co-body`. {@link RawBody}
  */
 export default function parseBody(ctx: KoaContext, options: BodyOptions & {
     returnRawBody: true;
 }): RawBody;
-export default function parseBody(ctx: KoaContext, options?: BodyOptions): ReturnType<typeof cobody>;
+/**
+ * get body data by setting `options.returnRawBody` to `true`, if the `Content-Type` matches `multipart` type, the function will not return the raw body data, it will return parsed value.
+ *
+ * @param ctx - the context object conforming the Koa's context object.
+ * @param options - the options object. {@link BodyOptions}
+ *
+ * @returns the parsed body with `fields` and `files`.
+ */
+export default function parseBody(ctx: KoaContext, options: BodyOptions & {
+    returnRawBody: true;
+}): ReturnType<typeof parseMultipart>;
+/**
+ * get parsed body with default `co-body` options for `json`, `text` and `form` request.
+ *
+ * @param ctx - the context object conforming the Koa's context object.
+ *
+ * @returns the parsed body object.
+ */
+export default function parseBody(ctx: KoaContext): ReturnType<typeof cobody>;
+export default function parseBody(ctx: KoaContext, options: BodyOptions): ReturnType<typeof cobody>;
+/**
+ * parse multipart request body.
+ */
+export default function parseBody(ctx: KoaContext): ReturnType<typeof parseMultipart>;
 export default function parseBody(ctx: KoaContext, options?: BodyOptions): ReturnType<typeof parseMultipart>;
 export {};
