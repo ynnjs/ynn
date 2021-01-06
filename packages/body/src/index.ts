@@ -16,9 +16,9 @@ import { KoaContext } from '@ynn/koa';
 /**
  * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
  * The `parsed` part will be in different types while using different request types.
- *  - It will be `string` while `Content-Type` matches `text`.
- *  - It will be `ReturnType<typeof qs.parse>` while `Content-Type` matches `form`.
- *  - It will be `ReturnType<typeof JSON.parse>` while `Content-Type` matches `json`.
+ *  - it will be `string` while `Content-Type` matches `text`.
+ *  - it will be `ReturnType<typeof qs.parse>` while `Content-Type` matches `form`.
+ *  - it will be `ReturnType<typeof JSON.parse>` while `Content-Type` matches `json`.
  */
 type RawBody = Promise<{
     parsed: string | ReturnType<typeof qs.parse> | ReturnType<typeof JSON.parse>;

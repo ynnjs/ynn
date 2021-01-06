@@ -11,10 +11,14 @@ import { Fields, Files } from 'formidable';
 import cobody, { Options as CobodyOptions } from 'co-body';
 import { KoaContext } from '@ynn/koa';
 /**
- * the type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
+ * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
+ * The `parsed` part will be in different types while using different request types.
+ *  - it will be `string` while `Content-Type` matches `text`.
+ *  - it will be `ReturnType<typeof qs.parse>` while `Content-Type` matches `form`.
+ *  - it will be `ReturnType<typeof JSON.parse>` while `Content-Type` matches `json`.
  */
 declare type RawBody = Promise<{
-    parsed: string;
+    parsed: string | ReturnType<typeof qs.parse> | ReturnType<typeof JSON.parse>;
     raw: string;
 }>;
 /**

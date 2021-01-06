@@ -23,8 +23,5 @@ module.exports = {
         es6 : true,
         jest : true,
         node : true
-    },
-    rules : {
-        // '@typescript-eslint/no-explicit-any' : [ 'error', { ignoreRestArgs : true } ]
     }
 };

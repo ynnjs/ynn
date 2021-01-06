@@ -121,8 +121,10 @@ describe( 'body', () => {
                     send : [ { x : 1 } ]
                 },
                 callback( parsed ) {
-                    console.log( parsed );
-                    expect( parsed ).toEqual( { x : 1 } );
+                    expect( parsed ).toEqual( {
+                        parsed : { x : 1 },
+                        raw : JSON.stringify( { x : 1 } )
+                    } );
                     done();
                 },
                 body : {
@@ -177,6 +179,24 @@ describe( 'body', () => {
                 }
             } );
         } );
+
+        it( 'should return raw body', done => {
+            createApp( {
+                request : {
+                    send : [ 'x=1' ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( {
+                        parsed : { x : '1' },
+                        raw : 'x=1'
+                    } );
+                    done();
+                },
+                body : {
+                    returnRawBody : true
+                }
+            } );
+        } );
     } );
 
     describe( 'text', () => {
@@ -223,6 +243,25 @@ describe( 'body', () => {
                 },
                 beforeParsing( ctx ) {
                     ctx.headers[ 'content-type' ] = contentType;
+                }
+            } );
+        } );
+
+        it( 'text/plain', done => {
+            createApp( {
+                request : {
+                    send : [ 'x=1' ],
+                    set : [ [ 'content-type', 'text/plain' ] ]
+                },
+                callback( parsed ) {
+                    expect( parsed ).toEqual( {
+                        parsed : 'x=1',
+                        raw : 'x=1'
+                    } );
+                    done();
+                },
+                body : {
+                    returnRawBody : true
                 }
             } );
         } );
