@@ -11,9 +11,7 @@ declare const _default: {
     configs: {
         recommended: {
             extends: string[];
-            rules: {
-                '@z-toolkit/no-literal-url': string;
-            };
+            rules: {};
         };
         'eslint-recommended': {
             overrides: {

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: interceptor/create-interceptor-before.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/26/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { InterceptorBefore, Methods } from './interceptor.interface';
@@ -27,12 +27,12 @@ function createInterceptorBefore<T = any[]>( descriptor: PropertyDescriptor, met
  *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore<T = any[]>( descriptor: PropertyDescriptor, methods?: undefined ): InterceptorBefore<T>;
+function createInterceptorBefore<T = any[]>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorBefore<T>;
 
 /**
- * 
+ *
  */
-function createInterceptorBefore( descriptor, methods ) {
+function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods?: Methods | undefined ): InterceptorBefore<T> {
 
     if( !methods ) return () => Promise.resolve( [] );
 
@@ -46,7 +46,7 @@ function createInterceptorBefore( descriptor, methods ) {
         } );
 
         return Promise.all( promises );
-    }
+    };
 }
 
 export default createInterceptorBefore;

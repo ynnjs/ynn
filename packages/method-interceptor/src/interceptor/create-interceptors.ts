@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: interceptor/create-interceptors.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/26/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { Methods } from './interceptor.interface';
@@ -33,5 +33,5 @@ export default function createInterceptors<T, P>(
         after : createInterceptorAfter<T, P>( descriptor, options?.methodsAfter ),
         exception : createInterceptorException<T, P>( descriptor, options?.methodsException ),
         parameter : createInterceptorParameter<T>( constructor, methodName, )
-    }
+    };
 }

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: test/index.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/09/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import 'jest-extended';
@@ -13,15 +13,16 @@ import path from 'path';
 import request from 'supertest';
 import formidable from 'formidable';
 import Koa, { KoaContext } from '@ynn/koa';
+import { VariadicFunction } from '@ynn/utility-types';
 import body, { BodyOptions } from '../src';
 
 interface CreateAppOptions {
-    callback?: ( ...args: any[] ) => any;
-    error?: ( ...args: any[] ) => any;
+    callback?: VariadicFunction;
+    error?: VariadicFunction;
     body?: BodyOptions;
-    beforeParsing?: ( ctx: KoaContext ) => any;
+    beforeParsing?: ( ctx: KoaContext ) => void;
     request?: {
-        send?: any[];
+        send?: ( Record<string, string | number> | string | undefined )[];
         set?: [string, string][];
         field?: [string, string][];
         attach?: [string, string][];
@@ -31,7 +32,7 @@ interface CreateAppOptions {
 function createApp( options: CreateAppOptions ) {
     const app = new Koa();
 
-    app.use( async ( ctx ) => {
+    app.use( async( ctx ) => {
         options?.beforeParsing?.( ctx );
         try {
             const parsed = await body( ctx, options?.body || {} );
@@ -44,9 +45,9 @@ function createApp( options: CreateAppOptions ) {
 
     let send = request( app.callback() ).post( '/' );
 
-    options?.request?.send?.forEach( ( x: any ) => {
+    options?.request?.send?.forEach( x => {
         send = send.send( x );
-    } )
+    } );
 
     options.request?.set?.forEach( ( args: [string, string] ) => {
         send = send.set( ...args );
@@ -58,12 +59,12 @@ function createApp( options: CreateAppOptions ) {
 
     options.request?.attach?.forEach( ( args: [string, string] ) => {
         if( !fs.existsSync( args[ 1 ] ) ) {
-            throw new TypeError( `${args[1]} not exists.` );
+            throw new TypeError( `${args[ 1 ]} not exists.` );
         }
         send = send.attach( ...args );
     } );
 
-    send.end( () => {} );
+    send.end( () => {} ); // eslint-disable-line @typescript-eslint/no-empty-function
 }
 
 describe( 'body', () => {
@@ -113,8 +114,24 @@ describe( 'body', () => {
                 }
             } );
         } );
+
+        it( 'should return with the raw body', done => {
+            createApp( {
+                request : {
+                    send : [ { x : 1 } ]
+                },
+                callback( parsed ) {
+                    console.log( parsed );
+                    expect( parsed ).toEqual( { x : 1 } );
+                    done();
+                },
+                body : {
+                    returnRawBody : true
+                }
+            } );
+        } );
     } );
-    
+
     describe( 'form', () => {
         it( 'application/x-www-form-urlencoded', done => {
             createApp( {
@@ -218,7 +235,7 @@ describe( 'body', () => {
             createApp( {
                 request : {
                     field : [ [ 'name', 'x' ] ],
-                    attach: [ [ 'file', file ] ]
+                    attach : [ [ 'file', file ] ]
                 },
                 callback( parsed ) {
                     expect( parsed ).toHaveProperty( 'fields', { name : 'x' } );
@@ -240,7 +257,7 @@ describe( 'body', () => {
             createApp( {
                 request : {
                     field : [ [ 'name', 'x' ] ],
-                    attach: [
+                    attach : [
                         [ 'file1', file ],
                         [ 'file2', file ]
                     ]
@@ -279,7 +296,7 @@ describe( 'body', () => {
                 },
                 request : {
                     field : [ [ 'name', 'a-new-file.txt' ] ],
-                    attach: [ [ 'file', file ] ]
+                    attach : [ [ 'file', file ] ]
                 },
                 error( e ) {
                     expect( e ).toBeInstanceOf( Error );
@@ -299,7 +316,7 @@ describe( 'body', () => {
                 },
                 request : {
                     field : [ [ 'name', 'a-new-file.txt' ] ],
-                    attach: [ [ 'file', file ] ]
+                    attach : [ [ 'file', file ] ]
                 },
                 error( e ) {
                     expect( e ).toBeInstanceOf( Error );

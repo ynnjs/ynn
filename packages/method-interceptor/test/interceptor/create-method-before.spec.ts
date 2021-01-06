@@ -14,7 +14,7 @@ describe( 'interceptor/create-method-before', () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
         expect( createInterceptorBefore( descriptor, {} ) ).toBeInstanceOf( Function );
-    } ); 
+    } );
 
     it( 'should return a Promise object by the created function', () => {
         const o = { x() {} };
@@ -29,7 +29,7 @@ describe( 'interceptor/create-method-before', () => {
     } );
 
     it( 'should return a Promise object with expected values', () => {
-        
+
     } );
 
     it( 'should have called the corresponding methods', () => {

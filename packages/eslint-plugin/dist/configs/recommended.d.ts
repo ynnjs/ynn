@@ -8,8 +8,6 @@
  ******************************************************************/
 declare const _default: {
     extends: string[];
-    rules: {
-        '@z-toolkit/no-literal-url': string;
-    };
+    rules: {};
 };
 export = _default;

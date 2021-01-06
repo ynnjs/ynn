@@ -11,7 +11,7 @@ import yargs from 'yargs';
 import cliStyle from 'cli-style';
 
 function red( s: string ) {
-    return cliStyle( s, { color : 'red' } )
+    return cliStyle( s, { color : 'red' } );
 }
 
 const rules: Record<string | number, () => any> = {

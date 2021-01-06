@@ -7,8 +7,16 @@
  * Description:
  ******************************************************************/
 import qs from 'qs';
-import { Options as CobodyOptions } from 'co-body';
+import { Fields, Files } from 'formidable';
+import cobody, { Options as CobodyOptions } from 'co-body';
 import { KoaContext } from '@ynn/koa';
+/**
+ * the type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
+ */
+declare type RawBody = Promise<{
+    parsed: string;
+    raw: string;
+}>;
 /**
  * the `options` for parsing multipart request
  * @see https://github.com/node-formidable/formidable
@@ -43,8 +51,8 @@ export interface BodyOptions extends CobodyOptions {
     multipartOptions?: MultipartOptions;
 }
 declare function parseMultipart(ctx: KoaContext, options?: MultipartOptions): Promise<{
-    fields: any;
-    files: any;
+    fields: Fields;
+    files: Files;
 }>;
 /**
  * function body<O extends BodyOptions>(
@@ -54,10 +62,7 @@ declare function parseMultipart(ctx: KoaContext, options?: MultipartOptions): Pr
  */
 export default function parseBody(ctx: KoaContext, options: BodyOptions & {
     returnRawBody: true;
-}): Promise<{
-    parsed: any;
-    raw: any;
-}>;
-export default function parseBody(ctx: KoaContext, options?: BodyOptions): Promise<any>;
+}): RawBody;
+export default function parseBody(ctx: KoaContext, options?: BodyOptions): ReturnType<typeof cobody>;
 export default function parseBody(ctx: KoaContext, options?: BodyOptions): ReturnType<typeof parseMultipart>;
 export {};

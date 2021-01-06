@@ -9,7 +9,7 @@
 
 export = {
     overrides : [ {
-        files : [ '*.js', '*.jsx' ],
+        files : [ '*.js', '*.jsx', '*.ts', '*.tsx' ],
         rules : {
             // Posible Errors
             'for-direction' : 'error',

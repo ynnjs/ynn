@@ -1,17 +1,29 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/body-parser.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/09/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import qs from 'qs';
 import bytes from 'bytes';
-import formidable from 'formidable';
+import formidable, { Fields, Files } from 'formidable';
 import cobody, { Options as CobodyOptions } from 'co-body';
 import { KoaContext } from '@ynn/koa';
+
+/**
+ * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
+ * The `parsed` part will be in different types while using different request types.
+ *  - It will be `string` while `Content-Type` matches `text`.
+ *  - It will be `ReturnType<typeof qs.parse>` while `Content-Type` matches `form`.
+ *  - It will be `ReturnType<typeof JSON.parse>` while `Content-Type` matches `json`.
+ */
+type RawBody = Promise<{
+    parsed: string | ReturnType<typeof qs.parse> | ReturnType<typeof JSON.parse>;
+    raw: string;
+}>
 
 /**
  * the `options` for parsing multipart request
@@ -48,11 +60,8 @@ export interface BodyOptions extends CobodyOptions {
     multipartOptions?: MultipartOptions;
 }
 
-function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Promise<{ fields: any; files: any; }> {
+function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Promise<{ fields: Fields; files: Files; }> {
 
-    /**
-     * 
-     */
     const form = formidable( options );
 
     return new Promise( ( resolve, reject ) => {
@@ -69,12 +78,11 @@ function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Prom
  *     options: O
  * ): O extends { returnRawBody: true; } ? Promise<{ parsed: any; raw: any; }> : Promise<any>;
  */
-
-export default function parseBody( ctx: KoaContext, options: BodyOptions & { returnRawBody: true; } ): Promise<{ parsed: any; raw: any; }>;
-export default function parseBody( ctx: KoaContext, options?: BodyOptions ): Promise<any>;
+export default function parseBody( ctx: KoaContext, options: BodyOptions & { returnRawBody: true; } ): RawBody;
+export default function parseBody( ctx: KoaContext, options?: BodyOptions ): ReturnType<typeof cobody>;
 export default function parseBody( ctx: KoaContext, options?: BodyOptions ): ReturnType<typeof parseMultipart>;
 
-export default function parseBody( ctx: KoaContext, options: BodyOptions = {} ): Promise<any> {
+export default function parseBody( ctx: KoaContext, options: BodyOptions = {} ): ReturnType<typeof cobody> | ReturnType<typeof parseMultipart> | RawBody {
 
     const encoding = options.encoding || 'utf-8';
     const limit = '20mb';
@@ -97,11 +105,11 @@ export default function parseBody( ctx: KoaContext, options: BodyOptions = {} ):
 
         return parseMultipart( ctx, {
             encoding,
-            multiples: true,
+            multiples : true,
             minFileSize : 1,
             maxFileSize : 209715200, // 200mb
             maxFields : 2000,
-            maxFieldsSize : 20971520, // 20mb 
+            maxFieldsSize : 20971520, // 20mb
             ...multipartOptions,
             ...maxSizeOptions
         } );

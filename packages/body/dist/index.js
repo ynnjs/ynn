@@ -15,9 +15,6 @@ const bytes_1 = __importDefault(require("bytes"));
 const formidable_1 = __importDefault(require("formidable"));
 const co_body_1 = __importDefault(require("co-body"));
 function parseMultipart(ctx, options = {}) {
-    /**
-     *
-     */
     const form = formidable_1.default(options);
     return new Promise((resolve, reject) => {
         form.parse(ctx.req, (err, fields, files) => {

@@ -12,17 +12,17 @@ import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER } from '../../src/c
 import extract from '../../src/interceptor/extract';
 
 describe( 'interceptor/extract', () => {
-    
-    [ 
+
+    [
         { t : 'before', k : KEY_BEFORE },
         { t : 'after', k : KEY_AFTER },
         { t : 'exception', k : KEY_EXCEPTION }
     ].forEach( ( x ) => {
         describe( `extract.${x.t}`, () => {
-            
+
             it( 'should return the correct list of bound methods', () => {
 
-                class A { action() {} }
+                class A { action() {} } // eslint-disable-line class-methods-use-this
 
                 const methods = { fn() {} };
 
@@ -30,7 +30,7 @@ describe( 'interceptor/extract', () => {
 
                 const metadata = [ {
                     type : 'fn',
-                    interceptorType : x.t 
+                    interceptorType : x.t
                 } ];
 
                 if( descriptor ) {
@@ -44,8 +44,8 @@ describe( 'interceptor/extract', () => {
             } );
 
             it( 'should use undefined if some type of interceptor does not have corresponding method', () => {
-                
-                class A { action() {} }
+
+                class A { action() {} } // eslint-disable-line class-methods-use-this
 
                 const methods = {};
 
@@ -53,7 +53,7 @@ describe( 'interceptor/extract', () => {
 
                 const metadata = [ {
                     type : 'fn',
-                    interceptorType : x.t 
+                    interceptorType : x.t
                 } ];
 
                 if( descriptor ) {
@@ -67,12 +67,13 @@ describe( 'interceptor/extract', () => {
             } );
 
             it( 'should have returned an empty array if metadata not exists', () => {
-                class A { action() {} }
+
+                class A { action() {} } // eslint-disable-line class-methods-use-this
 
                 const methods = {};
                 const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'action' );
 
-                expect( extract[ x.t ]( descriptor, methods ) ).toEqual( [] ); 
+                expect( extract[ x.t ]( descriptor, methods ) ).toEqual( [] );
             } );
 
         } );
@@ -81,8 +82,8 @@ describe( 'interceptor/extract', () => {
     describe( 'extract.parameter', () => {
 
         it( 'should only have parameter metadata', () => {
-            
-            class A { action() } 
+
+            class A { action() {} } // eslint-disable-line class-methods-use-this
 
             const methods = { fn() {} };
 
@@ -99,7 +100,7 @@ describe( 'interceptor/extract', () => {
 
         it( 'should have both parameter metadata and interceptor metadata', () => {
 
-            class A { action() } 
+            class A { action() {} } // eslint-disable-line class-methods-use-this
 
             const methods = { fn() {} };
 
@@ -118,7 +119,7 @@ describe( 'interceptor/extract', () => {
                     paramtype : String
                 }
             } ] );
-            
+
         } );
 
     } );

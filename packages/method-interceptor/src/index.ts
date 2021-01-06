@@ -10,43 +10,45 @@
 import 'reflect-metadata';
 export * from './interceptor';
 
-// export * from './interceptor.interface';
-// export * from './decorator.interface'; 
-// export * from './interceptor';
-// export * from './decorator';
-// export * as CONSTANTS from './constants';
+console.log( 'abc' );
 
-// createBeforeDecorator() {
-// },
+/* export * from './interceptor.interface';
+   export * from './decorator.interface';
+   export * from './interceptor';
+   export * from './decorator';
+   export * as CONSTANTS from './constants'; */
 
-// createParameterDecorator() {
-// },
+/* createBeforeDecorator() {
+   }, */
 
-// createAfterDecorator() {
-// },
+/* createParameterDecorator() {
+   }, */
 
-// createExceptionDecorator() {
-// },
-//
-// createDecorator() {
-// },
-//
-// createMethods() {
-// },
-//
-// createMethodBefore() {
-// },
-//
-// createMethodAfter() {
-// },
-//
-// createMethodParameters() {
-// },
-//
-// createMethodException() {
-// },
-//
-// createCompositeMethod() {
-// },
-//
-// Constants
+/* createAfterDecorator() {
+   }, */
+
+/* createExceptionDecorator() {
+   },
+
+   createDecorator() {
+   },
+
+   createMethods() {
+   },
+
+   createMethodBefore() {
+   },
+
+   createMethodAfter() {
+   },
+
+   createMethodParameters() {
+   },
+
+   createMethodException() {
+   },
+
+   createCompositeMethod() {
+   },
+
+   Constants */

@@ -9,7 +9,5 @@
  ******************************************************************/
 module.exports = {
     extends: ['./configs/eslint-recommended'],
-    rules: {
-        '@z-toolkit/no-literal-url': 'error'
-    }
+    rules: {}
 };

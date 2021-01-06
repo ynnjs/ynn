@@ -1,20 +1,20 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: interceptor/create-interceptor-exception.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/28/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { InterceptorException, Methods } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorException<T>( descriptor: PropertyDescriptor ): InterceptorException<T>;
+function createInterceptorException<T = any[]>( descriptor: PropertyDescriptor ): InterceptorException<T>;
 
-function createInterceptorException<T>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorException<T>;
+function createInterceptorException<T = any[]>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorException<T>;
 
-function createInterceptorException<T>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorException<T>;
+function createInterceptorException<T = any[]>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorException<T>;
 
 
 function createInterceptorException( descriptor, methods ) {
@@ -35,7 +35,7 @@ function createInterceptorException( descriptor, methods ) {
         }
 
         throw e;
-    }
+    };
 }
 
 export default createInterceptorException;

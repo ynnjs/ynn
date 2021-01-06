@@ -8,8 +8,15 @@
  ******************************************************************/
 
 export = {
-    extends : [ './configs/eslint-recommended' ],
-    rules : {
-        '@z-toolkit/no-literal-url' : 'error'
-    }
+    // parser : '@typescript-eslint-parser',
+    plugins : [ '@typescript-eslint' ],
+    extends : [
+        './configs/eslint-recommended',
+        'plugin:@typescript-eslint/recommended'
+    ],
+    parserOptions : {
+        sourceType : 'module',
+        ecmaVersion : 2021
+    },
+    rules : {}
 }

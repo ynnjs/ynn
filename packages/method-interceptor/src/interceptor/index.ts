@@ -9,4 +9,4 @@
 
 import createInterceptorBefore from './create-interceptor-before';
 
-export { createInterceptorBefore }
+export { createInterceptorBefore };
