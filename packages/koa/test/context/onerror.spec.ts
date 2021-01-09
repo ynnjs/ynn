@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: context/onerror.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import vm from 'vm';
@@ -46,8 +46,8 @@ describe( 'ctx.onerror( err )', () => {
             .expect( 'Content-Type', 'text/plain; charset=utf-8' )
             .expect( 'Content-Length', '4' );
 
-        assert.equal( ({}).hasOwnProperty.call( res.headers, 'vary' ), false );
-        assert.equal( ({}).hasOwnProperty.call( res.headers, 'x-csrf-token' ), false );
+        assert.equal( ( {} ).hasOwnProperty.call( res.headers, 'vary' ), false );
+        assert.equal( ( {} ).hasOwnProperty.call( res.headers, 'x-csrf-token' ), false );
     } );
 
     it( 'should set headers specified in the error', async() => {
@@ -59,10 +59,10 @@ describe( 'ctx.onerror( err )', () => {
             ctx.body = 'response';
 
             throw Object.assign( new Error( 'boom' ), {
-                status: 418,
-                expose: true,
-                headers: {
-                    'X-New-Header': 'Value'
+                status : 418,
+                expose : true,
+                headers : {
+                    'X-New-Header' : 'Value'
                 }
             } );
         } );
@@ -73,8 +73,8 @@ describe( 'ctx.onerror( err )', () => {
             .expect( 'Content-Type', 'text/plain; charset=utf-8' )
             .expect( 'X-New-Header', 'Value' );
 
-        assert.equal( ({}).hasOwnProperty.call( res.headers, 'vary' ), false );
-        assert.equal( ({}).hasOwnProperty.call( res.headers, 'x-csrf-token' ), false );
+        assert.equal( ( {} ).hasOwnProperty.call( res.headers, 'vary' ), false );
+        assert.equal( ( {} ).hasOwnProperty.call( res.headers, 'x-csrf-token' ), false );
     } );
 
     it( 'should ignore error after headerSent', done => {
@@ -90,14 +90,14 @@ describe( 'ctx.onerror( err )', () => {
             ctx.status = 200;
             ctx.set( 'X-Foo', 'Bar' );
             ctx.flushHeaders();
-            await Promise.reject( new Error( 'mock error' ));
+            await Promise.reject( new Error( 'mock error' ) );
             ctx.body = 'response';
         } );
 
-        request( app.callback())
+        request( app.callback() )
             .get( '/' )
             .expect( 'X-Foo', 'Bar' )
-            .expect( 200, () => {} );
+            .expect( 200 );
     } );
 
     it( 'should set status specified in the error using statusCode', () => {
@@ -201,17 +201,17 @@ describe( 'ctx.onerror( err )', () => {
 
             const app = new Koa();
             const error = Object.assign( new ExternError( 'boom' ), {
-                status: 418,
-                expose: true
+                status : 418,
+                expose : true
             } );
             app.use( () => { throw error } );
 
-            const gotRightErrorPromise = new Promise(( resolve, reject ) => {
+            const gotRightErrorPromise = new Promise( ( resolve, reject ) => {
                 app.on( 'error', receivedError => {
                     try {
                         assert.strictEqual( receivedError, error );
-                        resolve();
-                    } catch ( e ) {
+                        resolve( receivedError );
+                    } catch( e ) {
                         reject( e );
                     }
                 } );
@@ -246,13 +246,13 @@ describe( 'ctx.onerror( err )', () => {
 
             ctx.app.emit = () => {};
             ctx.res = {
-                getHeaderNames: () => [ 'content-type', 'content-length' ],
-                removeHeader: () => removed++,
-                end: () => {},
-                emit: () => {}
+                getHeaderNames : () => [ 'content-type', 'content-length' ],
+                removeHeader : () => removed++,
+                end : () => {},
+                emit : () => {}
             };
 
-            ctx.onerror( new Error( 'error' ));
+            ctx.onerror( new Error( 'error' ) );
 
             assert.equal( removed, 2 );
         } );
@@ -265,11 +265,11 @@ describe( 'ctx.onerror( err )', () => {
                 done();
             } );
 
-            app.use( async () => {
-                throw { key: 'value' }; // eslint-disable-line no-throw-literal
+            app.use( async() => {
+                throw { key : 'value' }; // eslint-disable-line no-throw-literal
             } );
 
-            request( app.callback())
+            request( app.callback() )
                 .get( '/' )
                 .expect( 500 )
                 .expect( 'Internal Server Error', () => {} );

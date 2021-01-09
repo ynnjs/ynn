@@ -10,19 +10,19 @@
 import { InterceptorException, Methods } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorException<T = any[]>( descriptor: PropertyDescriptor ): InterceptorException<T>;
+function createInterceptorException<T>( descriptor: PropertyDescriptor ): InterceptorException<T>;
 
-function createInterceptorException<T = any[]>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorException<T>;
+function createInterceptorException<T>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorException<T>;
 
-function createInterceptorException<T = any[]>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorException<T>;
+function createInterceptorException<T>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorException<T>;
 
 
-function createInterceptorException( descriptor, methods ) {
+function createInterceptorException<T>( descriptor: PropertyDescriptor, methods?: Methods | undefined ): InterceptorException<T> {
 
     /**
      * throw the exception directly if there is no methods provided.
      */
-    if( !methods ) return ( e: any ): any => { throw e };
+    if( !methods ) return ( e: unknown ): void => { throw e };
 
     const bound = extract.exception( descriptor, methods );
 
@@ -30,7 +30,7 @@ function createInterceptorException( descriptor, methods ) {
 
         for( const info of bound ) {
             if( info.metadata.exceptionType === undefined || e instanceof info.metadata.type ) {
-                return info.method( e, ...args );
+                return info.method( e, info.metadata, ...args );
             }
         }
 

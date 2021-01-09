@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/redirect.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -12,7 +12,7 @@ import request from 'supertest';
 import Koa from '../../src/application';
 import context from '../helpers/context';
 
-function escape( html ){
+function escape( html ) {
     return String( html )
         .replace( /&/g, '&amp;' )
         .replace( /"/g, '&quot;' )
@@ -37,8 +37,8 @@ describe( 'ctx.redirect( url )', () => {
 
         request( app.callback() )
             .get( '/' )
-            .end(( err, res ) => {
-                if ( err ) return done( err );
+            .end( ( err, res ) => {
+                if( err ) return done( err );
                 assert.equal( res.status, 302 );
                 assert.equal( res.headers.location, 'http://google.com/%F0%9F%98%93' );
                 done();

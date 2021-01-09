@@ -10,6 +10,11 @@
 module.exports = {
     overrides: [{
             files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
+            parserOptions: {
+                sourceType: 'module',
+                ecmaVersion: 2021
+            },
+            env: { es6: true, jest: true, node: true },
             rules: {
                 // Posible Errors
                 'for-direction': 'error',
@@ -69,6 +74,12 @@ module.exports = {
                 'no-return-await': 'error',
                 'no-self-assign': 'error',
                 'no-self-compare': 'error',
+                'no-throw-literal': 'error',
+                'no-unused-expressions': ['error', {
+                        allowShortCircuit: true,
+                        allowTernary: true,
+                        allowTaggedTemplates: true
+                    }],
                 'no-unused-labels': 'error',
                 'no-useless-catch': 'error',
                 'no-useless-escape': 'error',
@@ -95,10 +106,19 @@ module.exports = {
                 'indent': ['error', 4, { SwitchCase: 1 }],
                 'jsx-quotes': ['error', 'prefer-double'],
                 'key-spacing': ['error', { beforeColon: true, afterColon: true }],
-                'keyword-spacing': ['error', { before: true, after: true, overrides: { 'if': { after: false }, 'for': { after: false }, 'while': { after: false }, 'switch': { after: false }, 'catch': { after: false } } }],
+                'keyword-spacing': ['error', {
+                        before: true,
+                        after: true,
+                        overrides: {
+                            if: { after: false },
+                            for: { after: false },
+                            while: { after: false },
+                            switch: { after: false },
+                            catch: { after: false }
+                        }
+                    }],
                 'linebreak-style': ['error', 'unix'],
                 'lines-between-class-members': ['error', 'always'],
-                'multiline-comment-style': ['error', 'bare-block'],
                 'new-cap': 'error',
                 'no-mixed-spaces-and-tabs': 'error',
                 'no-multi-assign': 'error',

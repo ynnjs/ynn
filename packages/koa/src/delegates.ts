@@ -1,16 +1,19 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/delegates.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/03/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 export default class Delegates {
     #methods: string[] = [];
+
     #getters: string[] = [];
+
     #setters: string[] = [];
+
     constructor( public proto: unknown, public target: string ) {}
 
     method( name: string ): this {
@@ -18,7 +21,7 @@ export default class Delegates {
         this.#methods.push( name );
         ( this.proto as any )[ name ] = function( this: any ) {
             return this[ target ][ name ].apply( this[ target ], arguments );
-        }
+        };
         return this;
     }
 

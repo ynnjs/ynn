@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: request/charset.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 
@@ -15,7 +15,7 @@ describe( 'req.charset', () => {
     describe( 'with no content-type present', () => {
         it( 'should return ""', () => {
             const req = context.request();
-            assert( '' === req.charset );
+            assert( req.charset === '' );
         } );
     } );
 
@@ -23,7 +23,7 @@ describe( 'req.charset', () => {
         it( 'should return ""', () => {
             const req = context.request();
             req.headers[ 'content-type' ] = 'text/plain';
-            assert( '' === req.charset );
+            assert( req.charset === '' );
         } );
     } );
 

@@ -10,12 +10,13 @@
 import { VariadicClass, ParametersShift } from '@ynn/utility-types';
 import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER } from '../constants';
 import { Metadata, MetadataBefore, MetadataAfter, MetadataParameter, MetadataException } from '../metadata.interface';
-import { Methods, MethodInfo } from './interceptor.interface';
+import { MethodBefore, MethodAfter, MethodException, MethodParameter, Methods, MethodInfo } from './interceptor.interface';
 
 /**
  * extract all interceptor methods of a descriptor with specific key from a method pool.
  *
  * @typeparam T - the type of meadata, it should be extended from Metadata interface
+ * @typeparam M - the type of values for methods object.
  *
  * @param key - the key for metadata
  * @param descriptor - the target descriptor of the class instance method.
@@ -23,9 +24,9 @@ import { Methods, MethodInfo } from './interceptor.interface';
  *
  * @returns a list of information of extracted methods
  */
-function extractMethods<T extends Metadata>( key: keyof Methods, descriptor: PropertyDescriptor, methods: Methods ) {
+function extractMethods<T extends Metadata, M>( key: keyof Methods, descriptor: PropertyDescriptor, methods: Methods<M> ) {
 
-    const bound: MethodInfo<T>[] = [];
+    const bound: MethodInfo<T, M>[] = [];
 
     Reflect.getMetadata( key, descriptor.value )?.forEach( ( metadata: T ) => {
         /**
@@ -37,7 +38,6 @@ function extractMethods<T extends Metadata>( key: keyof Methods, descriptor: Pro
     return bound;
 }
 
-
 /**
  * extract the before interceptor
  *
@@ -46,22 +46,22 @@ function extractMethods<T extends Metadata>( key: keyof Methods, descriptor: Pro
  *
  * @return a list of information of extracted methods for *BEFORE INTERCEPTOR*.
  */
-function before( ...args: ParametersShift<typeof extractMethods> ) {
-    return extractMethods<MetadataBefore>( KEY_BEFORE, ...args );
+function before( ...args: ParametersShift<typeof extractMethods> ): MethodInfo<MetadataBefore>[] {
+    return extractMethods<MetadataBefore, MethodBefore>( KEY_BEFORE, ...args );
 }
 
 
-function after( ...args: ParametersShift<typeof extractMethods> ) {
-    return extractMethods<MetadataAfter>( KEY_AFTER, ...args );
+function after( ...args: ParametersShift<typeof extractMethods> ): MethodInfo<MetadataAfter>[] {
+    return extractMethods<MetadataAfter, MethodAfter>( KEY_AFTER, ...args );
 }
 
-function exception( ...args: ParametersShift<typeof extractMethods> ) {
-    return extractMethods<MetadataException>( KEY_EXCEPTION, ...args );
+function exception( ...args: ParametersShift<typeof extractMethods> ): MethodInfo<MetadataException>[] {
+    return extractMethods<MetadataException, MethodException>( KEY_EXCEPTION, ...args );
 }
 
-function parameter( constructor: VariadicClass, methodName: string | symbol | number, methods: Methods ) {
+function parameter( constructor: VariadicClass, methodName: keyof Methods, methods: Methods<MethodParameter> ): MethodInfo<Partial<MetadataParameter, MethodParameter>>[] {
 
-    const bound: MethodInfo<Partial<MetadataParameter>>[] = [];
+    const bound: MethodInfo<Partial<MetadataParameter>, MethodParameter>[] = [];
 
     /**
      * get metadata for PARAMETER INTERCEPTOR of given method.

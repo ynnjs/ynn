@@ -1,34 +1,34 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/writable.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import net from 'net';
 import assert from 'assert';
 import Koa from '../../src/application';
 
-function sleep( time ){
-    return new Promise( resolve => setTimeout( resolve, time ) );
+function sleep( time ) {
+    return new Promise( resolve => { setTimeout( resolve, time ) } );
 }
 
 describe( 'res.writable', () => {
     describe( 'when continuous requests in one persistent connection', () => {
-        function requestTwice( server, done ){
+        function requestTwice( server, done ) {
             const port = server.address()?.port;
             const buf = Buffer.from( 'GET / HTTP/1.1\r\nHost: localhost:' + port + '\r\nConnection: keep-alive\r\n\r\n' );
             const client = net.connect( port );
-            const datas: any[] = [];
+            const datas: unknown[] = [];
             client.on( 'error', done )
                 .on( 'data', data => datas.push( data ) )
                 .on( 'end', () => done( null, datas ) );
 
-            setImmediate(() => client.write( buf ) );
-            setImmediate(() => client.write( buf ) );
-            setTimeout(() => client.end(), 100 );
+            setImmediate( () => client.write( buf ) );
+            setImmediate( () => client.write( buf ) );
+            setTimeout( () => client.end(), 100 );
         }
 
         it( 'should always be writable and respond to all requests', done => {
@@ -41,20 +41,20 @@ describe( 'res.writable', () => {
 
             const server = app.listen();
             requestTwice( server, ( _, datas ) => {
-                const responses = Buffer.concat( datas as any ).toString();
-                assert.equal(/request 1, writable: true/.test( responses ), true );
-                assert.equal(/request 2, writable: true/.test( responses ), true );
+                const responses = Buffer.concat( datas as Uint8Array ).toString();
+                assert.equal( /request 1, writable: true/.test( responses ), true );
+                assert.equal( /request 2, writable: true/.test( responses ), true );
                 done();
             } );
         } );
     } );
 
     describe( 'when socket closed before response sent', () => {
-        function requestClosed( server ){
+        function requestClosed( server ) {
             const port = server.address().port;
             const buf = Buffer.from( 'GET / HTTP/1.1\r\nHost: localhost:' + port + '\r\nConnection: keep-alive\r\n\r\n' );
             const client = net.connect( port );
-            setImmediate(() => {
+            setImmediate( () => {
                 client.write( buf );
                 client.end();
             } );
@@ -64,8 +64,8 @@ describe( 'res.writable', () => {
             const app = new Koa();
             app.use( ctx => {
                 sleep( 1000 )
-                    .then(() => {
-                        if ( ctx.writable ) return done( new Error( 'ctx.writable should not be true' ) );
+                    .then( () => {
+                        if( ctx.writable ) return done( new Error( 'ctx.writable should not be true' ) );
                         done();
                     } );
             } );
@@ -75,14 +75,14 @@ describe( 'res.writable', () => {
     } );
 
     describe( 'when response finished', () => {
-        function request( server ){
+        function request( server ) {
             const port = server.address().port;
             const buf = Buffer.from( 'GET / HTTP/1.1\r\nHost: localhost:' + port + '\r\nConnection: keep-alive\r\n\r\n' );
             const client = net.connect( port );
-            setImmediate(() => {
+            setImmediate( () => {
                 client.write( buf );
             } );
-            setTimeout(() => {
+            setTimeout( () => {
                 client.end();
             }, 100 );
         }
@@ -91,7 +91,7 @@ describe( 'res.writable', () => {
             const app = new Koa();
             app.use( ctx => {
                 ctx.res.end();
-                if ( ctx.writable ) return done( new Error( 'ctx.writable should not be true' ) );
+                if( ctx.writable ) return done( new Error( 'ctx.writable should not be true' ) );
                 done();
             } );
             const server = app.listen();

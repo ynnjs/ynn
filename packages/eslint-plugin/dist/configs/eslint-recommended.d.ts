@@ -9,6 +9,15 @@
 declare const _default: {
     overrides: {
         files: string[];
+        parserOptions: {
+            sourceType: string;
+            ecmaVersion: number;
+        };
+        env: {
+            es6: boolean;
+            jest: boolean;
+            node: boolean;
+        };
         rules: {
             'for-direction': string;
             'getter-return': string;
@@ -66,6 +75,12 @@ declare const _default: {
             'no-return-await': string;
             'no-self-assign': string;
             'no-self-compare': string;
+            'no-throw-literal': string;
+            'no-unused-expressions': (string | {
+                allowShortCircuit: boolean;
+                allowTernary: boolean;
+                allowTaggedTemplates: boolean;
+            })[];
             'no-unused-labels': string;
             'no-useless-catch': string;
             'no-useless-escape': string;
@@ -131,7 +146,6 @@ declare const _default: {
             })[];
             'linebreak-style': string[];
             'lines-between-class-members': string[];
-            'multiline-comment-style': string[];
             'new-cap': string;
             'no-mixed-spaces-and-tabs': string;
             'no-multi-assign': string;

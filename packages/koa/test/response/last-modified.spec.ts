@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/last-modified.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -30,7 +30,7 @@ describe( 'res.lastModified', () => {
         const res = response();
         const date = new Date();
         res.lastModified = date;
-        assert.equal(( res.lastModified.getTime() / 1000 ), Math.floor( date.getTime() / 1000 ) );
+        assert.equal( ( res.lastModified.getTime() / 1000 ), Math.floor( date.getTime() / 1000 ) );
     } );
 
     describe( 'when lastModified not set', () => {

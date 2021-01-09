@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/application.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 09/29/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import http from 'http';
@@ -36,23 +36,35 @@ export type KoaOptions = {
     subdomainOffset?: number;
 }
 
-export { KoaContext, KoaRequest, KoaResponse }
+export { KoaContext, KoaRequest, KoaResponse };
 
 export type KoaMiddleware = ( ...args: any[] ) => any;
 
 export default class Koa extends EventEmitter {
     public silent = false;
+
     public proxy: boolean;
+
     public trustXRealIp = false;
+
     public proxyIpHeader: string;
+
     public context = Object.create( context );
+
     public request = Object.create( request );
+
     public response = Object.create( response );
+
     public middleware: KoaMiddleware[] = [];
+
     public subdomainOffset = 2;
+
     public maxIpsCount: number;
+
     public env = 'development';
+
     public keys: Keys;
+
     public static HttpError = HttpError;
 
     constructor( options: KoaOptions = {} ) {
@@ -95,7 +107,7 @@ export default class Koa extends EventEmitter {
             subdomainOffset : this.subdomainOffset,
             proxy : this.proxy,
             env : this.env
-        }
+        };
     }
 
     /**
@@ -127,7 +139,7 @@ export default class Koa extends EventEmitter {
         if( !this.listenerCount( 'error' ) ) this.on( 'error', this.onerror );
         return ( req, res ) => this.handleRequest( this.createContext( req, res ), compose( this.middleware ) );
     }
-    
+
     /**
      * handle request in callback
      */
@@ -138,16 +150,17 @@ export default class Koa extends EventEmitter {
         const onerror = e => ctx.onerror( e );
         onFinished( res, onerror );
         return middleware( ctx ).then( (): any => {
-            if( false === ctx.respond ) return;
+            if( ctx.respond === false ) return;
             if( !ctx.writable ) return;
-            let { body, status } = ctx;
+            const { status } = ctx;
+            let { body } = ctx;
 
             if( statuses.empty[ status ] ) {
                 ctx.body = null;
                 return res.end();
             }
 
-            if( 'HEAD' === ctx.method ) {
+            if( ctx.method === 'HEAD' ) {
                 if( !res.headerSent && !ctx.response.has( 'Content-Length' ) ) {
                     const { length } = ctx.response;
                     Number.isInteger( length ) && ( ctx.length = length );
@@ -155,7 +168,7 @@ export default class Koa extends EventEmitter {
                 return res.end();
             }
 
-            if( null == body ) {
+            if( body === null ) {
                 if( ctx.response[ RESPOND_EXPLICIT_NULL_BODY ] ) {
                     ctx.response.remove( 'Content-Type' );
                     ctx.response.remove( 'Transfer-Encoding' );
@@ -176,7 +189,7 @@ export default class Koa extends EventEmitter {
             }
 
             if( Buffer.isBuffer( body ) ) return res.end( body );
-            if( 'string' === typeof body ) return res.end( body );
+            if( typeof body === 'string' ) return res.end( body );
             if( body instanceof Stream ) return body.pipe( res );
 
             body = JSON.stringify( body );
@@ -209,17 +222,17 @@ export default class Koa extends EventEmitter {
     /**
      * Default error handler.
      */
-    onerror( e ): void {
-        // When dealing with cross-globals a normal `instanceof` check doesn't work properly
-        // See https://github.com/koajs/koa/issues/1466
-        // We can probably remove it onec jest fixes https://github.com/facekbook/jest/issues/2549.
-        if( ({}).toString.call( e ) !== '[object Error]' && !( e instanceof Error ) ) {
+    onerror( e: Error ): void {
+        /* When dealing with cross-globals a normal `instanceof` check doesn't work properly
+           See https://github.com/koajs/koa/issues/1466
+           We can probably remove it onec jest fixes https://github.com/facekbook/jest/issues/2549. */
+        if( ( {} ).toString.call( e ) !== '[object Error]' && !( e instanceof Error ) ) {
             throw new TypeError( util.format( 'non-error thrown: %j', e ) );
         }
-        
-        if( 404 === e.status || e.expose ) return;
+
+        if( e.status === 404 || e.expose ) return;
         if( this.silent ) return;
 
-        console.error( `\n${(e.stack || e.toString()).replace(/^/gm, '  ' )}\n` );
+        console.error( `\n${( e.stack || e.toString() ).replace( /^/gm, '  ' )}\n` );
     }
 }

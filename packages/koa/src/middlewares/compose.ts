@@ -1,17 +1,17 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: middlewares/compose.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 09/30/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 export type Next = ( ...args: any[] ) => any;
 export type Middleware<T> = ( context: T, next: Next ) => any;
 export type ComposedMiddleware<T> = ( context: T, next?: Next ) => Promise<void>;
 
-export default function compose<T>( middleware: Middleware<T>[] ): ComposedMiddleware<T>  { 
+export default function compose<T>( middleware: Middleware<T>[] ): ComposedMiddleware<T> {
 
     return ( ctx, next, ...args: any[] ) => {
         // last called middleware
@@ -28,5 +28,5 @@ export default function compose<T>( middleware: Middleware<T>[] ): ComposedMiddl
         }
 
         return dispatch( 0 );
-    }
+    };
 }

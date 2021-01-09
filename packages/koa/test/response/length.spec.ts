@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/length.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import fs from 'fs';
@@ -47,11 +47,11 @@ describe( 'res.length', () => {
                 res.body = Buffer.from( 'foo bar' );
                 assert.equal( res.length, 7 );
 
-                res.body = { hello: 'world' };
+                res.body = { hello : 'world' };
                 res.remove( 'Content-Length' );
                 assert.equal( res.length, 17 );
 
-                res.body = { hello: 'world' };
+                res.body = { hello : 'world' };
                 assert.equal( res.length, 17 );
 
                 res.body = fs.createReadStream( 'package.json' );

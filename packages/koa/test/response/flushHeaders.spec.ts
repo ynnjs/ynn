@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/flushHeaders.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import http from 'http';
@@ -94,27 +94,27 @@ describe( 'ctx.flushHeaders()', () => {
         app.use( ctx => {
             ctx.type = 'json';
             ctx.status = 200;
-            ctx.headers[ 'Link' ] = '</css/mycss.css>; as=style; rel=preload, <https://img.craftflair.com>; rel=preconnect; crossorigin';
+            ctx.headers.Link = '</css/mycss.css>; as=style; rel=preload, <https://img.craftflair.com>; rel=preconnect; crossorigin';
             const stream = ctx.body = new PassThrough();
             ctx.flushHeaders();
 
-            setTimeout(() => {
-                stream.end( JSON.stringify({ message: 'hello!' } ) );
+            setTimeout( () => {
+                stream.end( JSON.stringify( { message : 'hello!' } ) );
             }, 10000 );
         } );
 
-        app.listen( function( this: Server, err ){
-            if ( err ) return done( err );
+        app.listen( function( this: Server, err ) {
+            if( err ) return done( err );
 
             const port = ( this.address() as AddressInfo )?.port;
 
-            http.request({ port } )
+            http.request( { port } )
                 .on( 'response', res => {
                     const onData = () => done( new Error( 'boom' ) );
                     res.on( 'data', onData );
 
                     // shouldn't receive any data for a while
-                    setTimeout(() => {
+                    setTimeout( () => {
                         res.removeListener( 'data', onData );
                         done();
                     }, 1000 );
@@ -135,12 +135,12 @@ describe( 'ctx.flushHeaders()', () => {
         app.use( ctx => {
             ctx.type = 'json';
             ctx.status = 200;
-            ctx.headers[ 'Link' ] = '</css/mycss.css>; as=style; rel=preload, <https://img.craftflair.com>; rel=preconnect; crossorigin';
+            ctx.headers.Link = '</css/mycss.css>; as=style; rel=preload, <https://img.craftflair.com>; rel=preconnect; crossorigin';
             ctx.length = 20;
             ctx.flushHeaders();
             const stream = ctx.body = new PassThrough();
 
-            setTimeout(() => {
+            setTimeout( () => {
                 stream.emit( 'error', new Error( 'mock error' ) );
             }, 100 );
         } );

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: application/onerror.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import vm from 'vm';
@@ -16,7 +16,7 @@ describe( 'app.onerror( err )', () => {
     it( 'should throw an error if a non-error is given', () => {
         const app = new Koa();
 
-        assert.throws(() => {
+        assert.throws( () => {
             app.onerror( 'foo' );
         }, TypeError, 'non-error thrown: foo' );
     } );
@@ -26,11 +26,11 @@ describe( 'app.onerror( err )', () => {
 
         const app = new Koa();
         const error = Object.assign( new ExternError( 'boom' ), {
-            status: 418,
-            expose: true
+            status : 418,
+            expose : true
         } );
 
-        assert.doesNotThrow(() => app.onerror( error ));
+        assert.doesNotThrow( () => app.onerror( error ) );
     } );
 
     it( 'should do nothing if status is 404', () => {

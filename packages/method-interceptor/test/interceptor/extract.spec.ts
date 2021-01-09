@@ -83,7 +83,7 @@ describe( 'interceptor/extract', () => {
 
         it( 'should only have parameter metadata', () => {
 
-            class A { action() {} } // eslint-disable-line class-methods-use-this
+            class A { action() {} }
 
             const methods = { fn() {} };
 
@@ -100,7 +100,7 @@ describe( 'interceptor/extract', () => {
 
         it( 'should have both parameter metadata and interceptor metadata', () => {
 
-            class A { action() {} } // eslint-disable-line class-methods-use-this
+            class A { action() {} }
 
             const methods = { fn() {} };
 

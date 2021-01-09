@@ -35,7 +35,7 @@ export interface Metadata {
     /**
      * the parameters which will be passed to interceptor methods.
      */
-    parameters?: any;
+    parameters?: unknown;
 }
 
 /**

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/context.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/02/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import util from 'util';
@@ -56,7 +56,7 @@ const context: KoaContext = {
             req : '<original node req>',
             res : '<original node res>',
             socket : '<original node socket>'
-        }
+        };
     },
 
     /**
@@ -66,7 +66,7 @@ const context: KoaContext = {
      *
      * See: https://github.com/jshttp/http-assert
      */
-    assert: httpAssert,
+    assert : httpAssert,
 
     /**
      * Throw an error with `status` (default 500) and `msg`.
@@ -91,14 +91,14 @@ const context: KoaContext = {
      * Default error handling.
      */
     onerror( e: Error ): void {
-        // don't do anything if there is no error.
-        // this allows you to pass `this.onerror` to node-style callbacks.
-        if( null === e ) return;
+        /* don't do anything if there is no error.
+           this allows you to pass `this.onerror` to node-style callbacks. */
+        if( e === null ) return;
 
-        // When dealing with cross-globals a normal `instanceof` check doesn't work properly
-        // See https://github.com/koajs/koa/issues/1466
-        // We can probably remove it onec jest fixes https://github.com/facekbook/jest/issues/2549.
-        if( ({}).toString.call( e ) !== '[object Error]' && !( e instanceof Error ) ) {
+        /* When dealing with cross-globals a normal `instanceof` check doesn't work properly
+           See https://github.com/koajs/koa/issues/1466
+           We can probably remove it onec jest fixes https://github.com/facekbook/jest/issues/2549. */
+        if( ( {} ).toString.call( e ) !== '[object Error]' && !( e instanceof Error ) ) {
             e = new Error( util.format( 'non-error thrown: %j', e ) );
         }
 
@@ -127,10 +127,10 @@ const context: KoaContext = {
         let statusCode = ( e as HttpError ).status || ( e as HttpError ).statusCode;
 
         // ENOENT support
-        if( 'ENOENT' === ( e as HttpError ).code ) statusCode = 404;
+        if( ( e as HttpError ).code === 'ENOENT' ) statusCode = 404;
 
         // default to 500
-        if( 'number' !== typeof statusCode || !statuses.message[ statusCode ] ) statusCode = 500;
+        if( typeof statusCode !== 'number' || !statuses.message[ statusCode ] ) statusCode = 500;
 
         // respond
         const code = statuses.message[ statusCode ];
@@ -150,7 +150,7 @@ const context: KoaContext = {
     set cookies( cookies: Cookies ) {
         this[ COOKIES ] = cookies;
     }
-}
+};
 
 /**
  * Response delegation.

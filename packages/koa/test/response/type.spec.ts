@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/type.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -51,8 +51,8 @@ describe( 'ctx.type=', () => {
         it( 'should not set a content-type', () => {
             const ctx = context();
             ctx.type = 'asdf';
-            assert(!ctx.type );
-            assert(!ctx.response.header[ 'content-type' ]);
+            assert( !ctx.type );
+            assert( !ctx.response.header[ 'content-type' ] );
         } );
     } );
 } );
@@ -61,7 +61,7 @@ describe( 'ctx.type', () => {
     describe( 'with no Content-Type', () => {
         it( 'should return ""', () => {
             const ctx = context();
-            assert(!ctx.type );
+            assert( !ctx.type );
         } );
     } );
 

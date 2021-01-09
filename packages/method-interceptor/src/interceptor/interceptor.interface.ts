@@ -7,17 +7,66 @@
  * Description:
  ******************************************************************/
 
-export interface Method {
-    ( ...args: any[] ): any;
+import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from '../metadata.interface';
+
+/**
+ * The interface of methods that will be called by `InterceptorBefore`.
+ * Each method should return a Promise object that resolves with anything, and the resolved value will not be used for calling the target method.
+ */
+export interface MethodBefore<T extends unknown[]> {
+
+    /**
+     * @param metadaat - {@link MetadataBefore}
+     * @param ...args - other arguments for the method
+     */
+    ( metadata: MetadataBefore, ...args: T ): Promises<unknown>;
 }
 
-export type Methods = Record<keyof any, Method>;
+/**
+ * The interface of methods the will be called by `InterceptorAfter`.
+ *
+ */
+export interface MethodAfter<T extends unknown[]> {
+    /**
+     * @param value - the return value of the target method.
+     * @param metadata - {@link MetadataAfter}
+     * @param ...args - other arguments
+     */
+    ( value: unknown, metadata: MetadataAfter, ...args: T ): Promise<unknown>;
+}
 
-export interface MethodInfo<T> {
+/**
+ * the interface of methods for catch exceptions for interceptors.
+ */
+export interface MethodException<T extends unknown[]> {
+    /**
+     * the method that will be called by `InterceptorException`, the method should return a Promise object.
+     * if the Promise object resolved, the value will be treated as the new return value of the target method, otherwise, the new reject error will be thrown out.
+     *
+     * @param e - the thrown error object
+     * @param metadata - {@link MethodException}
+     * @param ...args - other arguments
+     *
+     * @return a Promise object.
+     */
+    ( e: unknown, metadata: MetadataException, ...args: T ): Promise<unknown>;
+}
+
+export interface MethodParameter<T extends unknown[]> {
+    /**
+     * @param metadata - {@link MethodParameter}
+     * @param ...args - other arguments
+     */
+    ( metadata: MetadataParameter, ...args: T ): Promise<unknown>;
+}
+
+export type Methods<T> = Record<string | number | symbol, T>;
+
+export interface MethodInfo<T, M> {
     /**
      * the method could be undefined in the type of interceptor is not set.
      */
-    method: Method | undefined;
+    method: M | undefined;
     metadata: T;
 }
 
@@ -35,18 +84,18 @@ export interface MethodInfo<T> {
  * ] );
  * ```
  */
-export interface InterceptorBefore<T extends any[] = any[]> {
-    ( ...args: T ): Promise<any[]>;
+export interface InterceptorBefore<T extends unknown[]> {
+    ( ...args: T ): Promise<unknown>;
 }
 
-export interface InterceptorAfter<T extends any[] = any[]> {
-    ( value: any, ...args: T ): Promise<any>;
+export interface InterceptorAfter<T extends unknown[]> {
+    ( value: unknown, ...args: T ): Promise<unknown>;
 }
 
-export interface InterceptorException<T extends any[] = any[]> {
-    ( e: any, ...args: T ): any;
+export interface InterceptorException<T extends unknown[]> {
+    ( e: unknown, ...args: T ): unknown;
 }
 
-export interface InterceptorParameters<T extends any[] = any[]> {
-    ( ...args: T ): Promise<any[]>;
+export interface InterceptorParameters<T extends unknown[]> {
+    ( ...args: T ): Promise<unknown[]>;
 }

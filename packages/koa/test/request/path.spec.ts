@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: request/path.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -30,7 +30,7 @@ describe( 'ctx.path=', () => {
     } );
 
     it( 'should change .url but not .originalUrl', () => {
-        const ctx = context( { url: '/login' } );
+        const ctx = context( { url : '/login' } );
         ctx.path = '/logout';
         assert.equal( ctx.url, '/logout' );
         assert.equal( ctx.originalUrl, '/login' );
@@ -38,7 +38,7 @@ describe( 'ctx.path=', () => {
     } );
 
     it( 'should not affect parseurl', () => {
-        const ctx = context( { url: '/login?foo=bar' } );
+        const ctx = context( { url : '/login?foo=bar' } );
         ctx.path = '/login';
         const url = parseurl( ctx.req );
         assert.equal( url.path, '/login?foo=bar' );

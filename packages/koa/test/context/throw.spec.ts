@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: context/throw.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -16,7 +16,7 @@ describe( 'ctx.throw( msg )', () => {
 
         try {
             ctx.throw( 'boom' );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.status, 500 );
             assert.equal( err.expose, false );
         }
@@ -30,7 +30,7 @@ describe( 'ctx.throw( err )', () => {
 
         try {
             ctx.throw( err );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.status, 500 );
             assert.equal( err.message, 'test' );
             assert.equal( err.expose, false );
@@ -45,7 +45,7 @@ describe( 'ctx.throw( err, status )', () => {
 
         try {
             ctx.throw( error, 422 );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.status, 422 );
             assert.equal( err.message, 'test' );
             assert.equal( err.expose, true );
@@ -60,7 +60,7 @@ describe( 'ctx.throw( status, err )', () => {
 
         try {
             ctx.throw( 422, error );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.status, 422 );
             assert.equal( err.message, 'test' );
             assert.equal( err.expose, true );
@@ -74,7 +74,7 @@ describe( 'ctx.throw( msg, status )', () => {
 
         try {
             ctx.throw( 'name required', 400 );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.message, 'name required' );
             assert.equal( err.status, 400 );
             assert.equal( err.expose, true );
@@ -88,7 +88,7 @@ describe( 'ctx.throw( status, msg )', () => {
 
         try {
             ctx.throw( 400, 'name required' );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.message, 'name required' );
             assert.equal( 400, err.status );
             assert.equal( true, err.expose );
@@ -102,7 +102,7 @@ describe( 'ctx.throw( status )', () => {
 
         try {
             ctx.throw( 400 );
-        } catch ( err ) {
+        } catch( err ) {
             assert.equal( err.message, 'Bad Request' );
             assert.equal( err.status, 400 );
             assert.equal( err.expose, true );
@@ -117,7 +117,7 @@ describe( 'ctx.throw( status )', () => {
                 const err = new Error( 'some error' );
                 ( err as any ).status = -1;
                 ctx.throw( err );
-            } catch ( err ) {
+            } catch( err ) {
                 assert.equal( err.message, 'some error' );
                 assert.equal( err.expose, false );
             }
@@ -130,8 +130,8 @@ describe( 'ctx.throw( status, msg, props )', () => {
         const ctx = context();
 
         try {
-            ctx.throw( 400, 'msg', { prop: true } );
-        } catch ( err ) {
+            ctx.throw( 400, 'msg', { prop : true } );
+        } catch( err ) {
             assert.equal( err.message, 'msg' );
             assert.equal( err.status, 400 );
             assert.equal( err.expose, true );
@@ -145,10 +145,10 @@ describe( 'ctx.throw( status, msg, props )', () => {
 
             try {
                 ctx.throw( 400, 'msg', {
-                    prop: true,
-                    status: -1
+                    prop : true,
+                    status : -1
                 } );
-            } catch ( err ) {
+            } catch( err ) {
                 assert.equal( err.message, 'msg' );
                 assert.equal( err.status, 400 );
                 assert.equal( err.expose, true );
@@ -163,8 +163,8 @@ describe( 'ctx.throw( msg, props )', () => {
         const ctx = context();
 
         try {
-            ctx.throw( 'msg', { prop: true } );
-        } catch ( err ) {
+            ctx.throw( 'msg', { prop : true } );
+        } catch( err ) {
             assert.equal( err.message, 'msg' );
             assert.equal( err.status, 500 );
             assert.equal( err.expose, false );
@@ -178,8 +178,8 @@ describe( 'ctx.throw( status, props )', () => {
         const ctx = context();
 
         try {
-            ctx.throw( 400, { prop: true } );
-        } catch ( err ) {
+            ctx.throw( 400, { prop : true } );
+        } catch( err ) {
             assert.equal( err.message, 'Bad Request' );
             assert.equal( err.status, 400 );
             assert.equal( err.expose, true );
@@ -193,8 +193,8 @@ describe( 'ctx.throw( err, props )', () => {
         const ctx = context();
 
         try {
-            ctx.throw( new Error( 'test' ), { prop: true } );
-        } catch ( err ) {
+            ctx.throw( new Error( 'test' ), { prop : true } );
+        } catch( err ) {
             assert.equal( err.message, 'test' );
             assert.equal( err.status, 500 );
             assert.equal( err.expose, false );

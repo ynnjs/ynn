@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: middlewares/compose.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/02/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import compose from '../../src/middlewares/compose';
@@ -12,11 +12,11 @@ import compose from '../../src/middlewares/compose';
 const wait = ( ms = 1 ): Promise<any> => new Promise( r => setTimeout( r, ms ) );
 
 describe( '@ynn/koa/compose', () => {
-    it( 'should work', async () => {
-        const arr: any[] = []; 
+    it( 'should work', async() => {
+        const arr: any[] = [];
         const stack: any[] = [];
 
-        stack.push( async ( ctx, next ) => {
+        stack.push( async( ctx, next ) => {
             arr.push( 1 );
             await wait( 1 );
             await next();
@@ -24,7 +24,7 @@ describe( '@ynn/koa/compose', () => {
             arr.push( 6 );
         } );
 
-        stack.push( async ( ctx, next ) => {
+        stack.push( async( ctx, next ) => {
             arr.push( 2 );
             await wait( 1 );
             await next();
@@ -32,7 +32,7 @@ describe( '@ynn/koa/compose', () => {
             arr.push( 5 );
         } );
 
-        stack.push( async ( ctx, next ) => {
+        stack.push( async( ctx, next ) => {
             arr.push( 3 );
             await wait( 1 );
             await next();
@@ -42,7 +42,7 @@ describe( '@ynn/koa/compose', () => {
 
         await compose( stack )( {} );
         expect( arr ).toEqual( [ 1, 2, 3, 4, 5, 6 ] );
-    } ); 
+    } );
 
     it( 'should be able to be called twice', () => {
         const stack: any[] = [];
@@ -103,11 +103,11 @@ describe( '@ynn/koa/compose', () => {
 
     it( 'should work with 0 middleware', () => compose( [] )( {} ) );
 
-    it( 'should work when yielding at the end of the stack', async () => {
-        const stack: any[] = []; 
+    it( 'should work when yielding at the end of the stack', async() => {
+        const stack: any[] = [];
         let called = false;
 
-        stack.push( async ( ctx, next ) => {
+        stack.push( async( ctx, next ) => {
             await next();
             called = true;
         } );
@@ -117,7 +117,7 @@ describe( '@ynn/koa/compose', () => {
     } );
 
     it( 'should reject on errors in middleware', () => {
-        const stack: any[] = []; 
+        const stack: any[] = [];
         stack.push( () => { throw new Error() } );
         return compose( stack )( {} ).catch( e => {
             expect( e ).toBeInstanceOf( Error );
@@ -127,11 +127,11 @@ describe( '@ynn/koa/compose', () => {
     it( 'should work when yielding at the end of the stack with yield*', () => {
         const stack: any[] = [];
         stack.push( async( ctx, next ) => { await next } );
-        return compose( stack )( {} ); 
+        return compose( stack )( {} );
     } );
 
     it( 'should keep the context', () => {
-        const ctx: Record<string, any> = {}; 
+        const ctx: Record<string, any> = {};
         const stack: any[] = [];
 
         stack.push( async( ctx2, next ) => {
@@ -152,7 +152,7 @@ describe( '@ynn/koa/compose', () => {
         return compose( stack )( ctx );
     } );
 
-    it( 'should catch downstream errors', async () => {
+    it( 'should catch downstream errors', async() => {
         const arr: any[] = [];
         const stack: any[] = [];
 
@@ -168,7 +168,7 @@ describe( '@ynn/koa/compose', () => {
             arr.push( 3 );
         } );
 
-        stack.push( async () => {
+        stack.push( async() => {
             arr.push( 4 );
             throw new Error();
         } );
@@ -178,8 +178,8 @@ describe( '@ynn/koa/compose', () => {
     } );
 
     it( 'should compose w/ next', () => {
-        let called = false; 
-        return compose( [] )( {}, async () => { called = true } ).then( () => {
+        let called = false;
+        return compose( [] )( {}, async() => { called = true } ).then( () => {
             expect( called ).toEqual( true );
         } );
     } );
@@ -191,7 +191,7 @@ describe( '@ynn/koa/compose', () => {
     } );
 
     it( 'should compose w/ other compositions', () => {
-        const called: any[] = [];        
+        const called: any[] = [];
         return compose( [
             compose( [
                 ( ctx, next ) => ( called.push( 1 ), next() ),
@@ -203,7 +203,7 @@ describe( '@ynn/koa/compose', () => {
 
     it( 'should throw if next() is called multiple times', () => {
         return compose( [
-            async ( ctx, next ) => {
+            async( ctx, next ) => {
                 await next();
                 await next();
             }
@@ -214,7 +214,7 @@ describe( '@ynn/koa/compose', () => {
     } );
 
     it( 'should return a valid middleware', () => {
-        let val = 0; 
+        let val = 0;
         return compose( [
             compose( [
                 ( ctx, next ) => ( val++, next() ),
@@ -225,15 +225,15 @@ describe( '@ynn/koa/compose', () => {
     } );
 
     it( 'should return last return value', () => {
-        const stack: any[] = []; 
+        const stack: any[] = [];
 
-        stack.push( async ( ctx, next ) => {
+        stack.push( async( ctx, next ) => {
             const val = await next();
             expect( val ).toEqual( 2 );
             return 1;
         } );
 
-        stack.push( async ( ctx, next ) => {
+        stack.push( async( ctx, next ) => {
             const val = await next();
             expect( val ).toEqual( 0 );
             return 2;
@@ -247,7 +247,7 @@ describe( '@ynn/koa/compose', () => {
     it( 'should not affect the original middleware array', () => {
         const middleware: any[] = [];
         const fn1 = ( ctx, next ) => next();
-        middleware.push( fn1 ); 
+        middleware.push( fn1 );
         compose( middleware );
         expect( middleware[ 0 ] ).toEqual( fn1 );
     } );

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/body.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import fs from 'fs';
@@ -28,7 +28,7 @@ describe( 'res.body=', () => {
                 res.body = '<em>hey</em>';
                 assert.equal( 'text/html; charset=utf-8', res.header[ 'content-type' ] );
 
-                res.body = { foo: 'bar' };
+                res.body = { foo : 'bar' };
                 assert.equal( 'application/json; charset=utf-8', res.header[ 'content-type' ] );
             } );
         } );
@@ -74,7 +74,7 @@ describe( 'res.body=', () => {
             const string = '<h1>Tobi</h1>';
             const res = response();
             res.body = string;
-            assert.equal( res.length, Buffer.byteLength( string ));
+            assert.equal( res.length, Buffer.byteLength( string ) );
         } );
 
         it( 'should set length when body is overridden', () => {
@@ -82,7 +82,7 @@ describe( 'res.body=', () => {
             const res = response();
             res.body = string;
             res.body = string + string;
-            assert.equal( res.length, 2 * Buffer.byteLength( string ));
+            assert.equal( res.length, 2 * Buffer.byteLength( string ) );
         } );
 
         describe( 'when it contains leading whitespace', () => {
@@ -144,7 +144,7 @@ describe( 'res.body=', () => {
     describe( 'when an object is given', () => {
         it( 'should default to json', () => {
             const res = response();
-            res.body = { foo: 'bar' };
+            res.body = { foo : 'bar' };
             assert.equal( 'application/json; charset=utf-8', res.header[ 'content-type' ] );
         } );
     } );

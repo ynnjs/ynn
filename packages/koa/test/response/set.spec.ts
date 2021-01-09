@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: response/set.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -40,9 +40,9 @@ describe( 'ctx.set( object )', () => {
     it( 'should set multiple fields', () => {
         const ctx = context();
 
-        ctx.set({
-            foo: '1',
-            bar: '2'
+        ctx.set( {
+            foo : '1',
+            bar : '2'
         } );
 
         assert.equal( ctx.response.header.foo, '1' );

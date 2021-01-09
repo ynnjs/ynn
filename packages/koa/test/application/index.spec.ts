@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: application/index.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -18,7 +18,7 @@ describe( 'app', () => {
 
         app.use( ctx => {
             // triggers ctx.socket.writable == false
-            ctx.socket.emit( 'error', new Error( 'boom' ));
+            ctx.socket.emit( 'error', new Error( 'boom' ) );
         } );
 
         app.on( 'error', err => {
@@ -28,7 +28,7 @@ describe( 'app', () => {
 
         request( app.callback() )
             .get( '/' )
-            .end(() => {} );
+            .end( () => {} );
     } );
 
     it( 'should not .writeHead when !socket.writable', done => {
@@ -50,7 +50,7 @@ describe( 'app', () => {
 
         request( app.callback() )
             .get( '/' )
-            .end(() => {} );
+            .end( () => {} );
     } );
 
     it( 'should set development env when NODE_ENV missing', () => {
@@ -63,31 +63,31 @@ describe( 'app', () => {
 
     it( 'should set env from the constructor', () => {
         const env = 'custom';
-        const app = new Koa({ env } );
+        const app = new Koa( { env } );
         assert.strictEqual( app.env, env );
     } );
 
     it( 'should set proxy flag from the constructor', () => {
         const proxy = true;
-        const app = new Koa({ proxy } );
+        const app = new Koa( { proxy } );
         assert.strictEqual( app.proxy, proxy );
     } );
 
     it( 'should set signed cookie keys from the constructor', () => {
         const keys = [ 'customkey' ];
-        const app = new Koa({ keys } );
+        const app = new Koa( { keys } );
         assert.strictEqual( app.keys, keys );
     } );
 
     it( 'should set subdomainOffset from the constructor', () => {
         const subdomainOffset = 3;
-        const app = new Koa({ subdomainOffset } );
+        const app = new Koa( { subdomainOffset } );
         assert.strictEqual( app.subdomainOffset, subdomainOffset );
     } );
 
     it( 'should have a static property exporting `HttpError` from http-errors library', () => {
         assert.notEqual( Koa.HttpError, undefined );
         assert.deepStrictEqual( Koa.HttpError, HttpErrors.HttpError );
-        assert.throws(() => { throw HttpErrors( 500, 'test error' ); }, Koa.HttpError );
+        assert.throws( () => { throw HttpErrors( 500, 'test error' ) }, Koa.HttpError );
     } );
 } );

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: request/is.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -83,10 +83,10 @@ describe( 'ctx.is( type )', () => {
             assert.equal( ctx.is( 'image/*', 'image/png' ), 'image/png' );
             assert.equal( ctx.is( 'image/png', 'image/*' ), 'image/png' );
 
-            assert.equal( ctx.is( ['text/*', 'image/*' ] ), 'image/png' );
-            assert.equal( ctx.is( ['image/*', 'text/*' ] ), 'image/png' );
-            assert.equal( ctx.is( ['image/*', 'image/png' ] ), 'image/png' );
-            assert.equal( ctx.is( ['image/png', 'image/*' ] ), 'image/png' );
+            assert.equal( ctx.is( [ 'text/*', 'image/*' ] ), 'image/png' );
+            assert.equal( ctx.is( [ 'image/*', 'text/*' ] ), 'image/png' );
+            assert.equal( ctx.is( [ 'image/*', 'image/png' ] ), 'image/png' );
+            assert.equal( ctx.is( [ 'image/png', 'image/*' ] ), 'image/png' );
 
             assert.equal( ctx.is( 'jpeg' ), false );
             assert.equal( ctx.is( '.jpeg' ), false );

@@ -1,9 +1,9 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
- * File: interceptor/create-method-before.spec.ts
+ * File: interceptor/create-interceptor-before.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/24/2020
+ * Time: 01/09/2021
  * Description:
  ******************************************************************/
 

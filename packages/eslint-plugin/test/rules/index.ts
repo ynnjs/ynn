@@ -10,11 +10,11 @@
 import yargs from 'yargs';
 import cliStyle from 'cli-style';
 
-function red( s: string ) {
+function red( s: string ): ReturnType<typeof cliStyle> {
     return cliStyle( s, { color : 'red' } );
 }
 
-const rules: Record<string | number, () => any> = {
+const rules: Record<string | number, () => void> = {
 };
 
 yargs.argv._.map( ( rule: string | number ) => {

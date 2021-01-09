@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: context/toJSON.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -25,19 +25,19 @@ describe( 'ctx.toJSON()', () => {
         const res = obj.response;
 
         assert.deepEqual( {
-            method: 'POST',
-            url: '/items',
-            headers: {
-                'content-type': 'text/plain'
+            method : 'POST',
+            url : '/items',
+            headers : {
+                'content-type' : 'text/plain'
             }
         }, req );
 
         assert.deepEqual( {
-            status: 200,
-            message: 'OK',
-            headers: {
-                'content-type': 'text/html; charset=utf-8',
-                'content-length': '10'
+            status : 200,
+            message : 'OK',
+            headers : {
+                'content-type' : 'text/html; charset=utf-8',
+                'content-length' : '10'
             }
         }, res );
     } );

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: application/inspect.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 
@@ -21,6 +21,6 @@ describe( 'app.inspect()', () => {
     } );
 
     it( 'should return a json representation', () => {
-        assert.deepEqual( { subdomainOffset: 2, proxy: false, env: 'test' }, app.inspect() );
+        assert.deepEqual( { subdomainOffset : 2, proxy : false, env : 'test' }, app.inspect() );
     } );
 } );

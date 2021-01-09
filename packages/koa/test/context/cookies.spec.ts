@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: context/cookies.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/03/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -13,7 +13,7 @@ import Koa from '../../src/application';
 
 describe( 'ctx.cookies', () => {
     describe( 'ctx.cookies.set()', () => {
-        it( 'should set an unsigned cookie', async () => {
+        it( 'should set an unsigned cookie', async() => {
             const app = new Koa();
 
             app.use( ctx => {
@@ -36,8 +36,8 @@ describe( 'ctx.cookies', () => {
 
                     app.use( ctx => {
                         try {
-                            ctx.cookies.set( 'foo', 'bar', { signed: true } );
-                        } catch ( err ) {
+                            ctx.cookies.set( 'foo', 'bar', { signed : true } );
+                        } catch( err ) {
                             ctx.body = err.message;
                         }
                     } );
@@ -48,13 +48,13 @@ describe( 'ctx.cookies', () => {
                 } );
             } );
 
-            it( 'should send a signed cookie', async () => {
+            it( 'should send a signed cookie', async() => {
                 const app = new Koa();
 
                 app.keys = [ 'a', 'b' ];
 
                 app.use( ctx => {
-                    ctx.cookies.set( 'name', 'jon', { signed: true } );
+                    ctx.cookies.set( 'name', 'jon', { signed : true } );
                     ctx.status = 204;
                 } );
 
@@ -70,14 +70,14 @@ describe( 'ctx.cookies', () => {
         } );
 
         describe( 'with secure', () => {
-            it( 'should get secure from request', async () => {
+            it( 'should get secure from request', async() => {
                 const app = new Koa();
 
                 app.proxy = true;
                 app.keys = [ 'a', 'b' ];
 
                 app.use( ctx => {
-                    ctx.cookies.set( 'name', 'jon', { signed: true } );
+                    ctx.cookies.set( 'name', 'jon', { signed : true } );
                     ctx.status = 204;
                 } );
 
@@ -95,12 +95,12 @@ describe( 'ctx.cookies', () => {
     } );
 
     describe( 'ctx.cookies=', () => {
-        it( 'should override cookie work', async () => {
+        it( 'should override cookie work', async() => {
             const app = new Koa();
 
             app.use( ctx => {
                 ctx.cookies = {
-                    set( key, value ){
+                    set( key, value ) {
                         ctx.set( key, value );
                     }
                 };

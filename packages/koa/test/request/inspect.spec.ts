@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: request/inspect.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import util from 'util';
@@ -18,7 +18,7 @@ describe( 'req.inspect()', () => {
             req.method = 'GET';
             delete req.req;
             assert( undefined === req.inspect() );
-            assert( 'undefined' === util.inspect( req ) );
+            assert( util.inspect( req ) === 'undefined' );
         } );
     } );
 
@@ -29,10 +29,10 @@ describe( 'req.inspect()', () => {
         req.header.host = 'example.com';
 
         const expected = {
-            method: 'GET',
-            url: 'example.com',
-            headers: {
-                host: 'example.com'
+            method : 'GET',
+            url : 'example.com',
+            headers : {
+                host : 'example.com'
             }
         };
 

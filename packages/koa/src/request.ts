@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/request.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 09/30/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import util from 'util';
@@ -61,7 +61,7 @@ export interface KoaRequest {
     origin: string;
     originalUrl?: string;
     path: string;
-    protocol: string;    
+    protocol: string;
     query: KoaRequestQuery;
     querystring: string;
     req?: IncomingMessage | Http2ServerRequest;
@@ -167,7 +167,7 @@ const Request: KoaRequest = {
     get query() {
         const str = this.querystring;
         const c = ( this[ QUERY_CACHE ] ||= {} );
-        return c[ str ] || ( c[str] = qs.parse( str ) );
+        return c[ str ] || ( c[ str ] = qs.parse( str ) );
     },
 
     /**
@@ -231,7 +231,7 @@ const Request: KoaRequest = {
     get hostname() {
         const { host } = this;
         if( !host ) return '';
-        if( '[' === host[ 0 ] ) return this.URL.hostname || ''; // IPv6
+        if( host[ 0 ] === '[' ) return this.URL.hostname || ''; // IPv6
         return host.split( ':', 1 )[ 0 ];
     },
 
@@ -257,11 +257,11 @@ const Request: KoaRequest = {
         const { status } = this.ctx!;
 
         // Get or HEAD for weak freshness validation only
-        if( 'GET' !== method && 'HEAD' !== method ) return false;
+        if( method !== 'GET' && method !== 'HEAD' ) return false;
 
         // 2xx or 304 as per rfc2616 14.26
-        if( ( status >= 200 && status < 300 ) || 304 === status ) {
-            return fresh( this.headers, this.response!.headers ); 
+        if( ( status >= 200 && status < 300 ) || status === 304 ) {
+            return fresh( this.headers, this.response!.headers );
         }
         return false;
     },
@@ -322,7 +322,7 @@ const Request: KoaRequest = {
      * Shorthand for: this.protocol === 'https';
      */
     get secure(): boolean {
-        return 'https' === this.protocol;
+        return this.protocol === 'https';
     },
 
     /**
@@ -465,7 +465,7 @@ const Request: KoaRequest = {
     acceptsLanguages( ...args ) {
         return this.accept.languages( ...args );
     },
-    
+
     /**
      * Check if the incoming request contains the "Content-Type" header field and if it contains any of the given name `type(s)`.
      * If there is no request body, `null` is returned.
@@ -511,15 +511,15 @@ const Request: KoaRequest = {
      */
     get( field: string ): string {
         switch( field = field.toLowerCase() ) {
-            case 'referer':
-            case 'referrer':
+            case 'referer' :
+            case 'referrer' :
                 /**
                  * referrer is not defined in IncomingHttpHeaders
                  * it is able to be string[]
                  * see: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/node/http.d.ts
                  */
                 return this.req!.headers.referrer as string || this.req!.headers.referer || '';
-            default:
+            default :
                 return this.req!.headers[ field ] as string || '';
         }
     },
@@ -544,8 +544,8 @@ const Request: KoaRequest = {
             method : this.method,
             url : this.url,
             headers : this.headers
-        }
+        };
     }
-}
+};
 
 export default Request;

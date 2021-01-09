@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/response.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/01/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import path from 'path';
@@ -84,7 +84,7 @@ const Response: KoaResponse = {
     get headers() {
         return this.res!.getHeaders() || {};
     },
-    
+
     /**
      * Get response status code
      */
@@ -130,10 +130,10 @@ const Response: KoaResponse = {
      */
     set body( val ) {
         const original = this[ BODY ];
-        this[ BODY ]= val;
+        this[ BODY ] = val;
 
         // no content
-        if( null == val ) {
+        if( val == null ) {
             if( !statuses.empty[ this.status ] ) this.status = 204;
             if( val === null ) this[ RESPOND_EXPLICIT_NULL_BODY ] = true;
             this.remove( 'Content-Type' );
@@ -149,7 +149,7 @@ const Response: KoaResponse = {
         const setType = !this.has( 'Content-Type' );
 
         // string
-        if( 'string' === typeof val ) {
+        if( typeof val === 'string' ) {
             if( setType ) this.type = /^\s*</.test( val ) ? 'html' : 'text';
             this.length = Buffer.byteLength( val );
             return;
@@ -167,8 +167,8 @@ const Response: KoaResponse = {
             onFinished( this.res! as ServerResponse, () => ( val as Readable ).destroy() );
             if( original != val ) {
                 val.once( 'error', e => this.ctx!.onerror( e ) );
-                /// overwriting
-                if( null != original ) this.remove( 'Content-Length' );
+                // / overwriting
+                if( original != null ) this.remove( 'Content-Length' );
             }
             if( setType ) this.type = 'bin';
             return;
@@ -196,7 +196,7 @@ const Response: KoaResponse = {
 
         const { body } = this;
         if( !body || body instanceof Stream ) return undefined;
-        if( 'string' === typeof body ) return Buffer.byteLength( body );
+        if( typeof body === 'string' ) return Buffer.byteLength( body );
         if( Buffer.isBuffer( body ) ) return body.length;
         return Buffer.byteLength( JSON.stringify( body ) );
     },
@@ -223,7 +223,7 @@ const Response: KoaResponse = {
      * when Referrer is not present `alt` or "/" is used.
      *
      * Examples:
-     *      
+     *
      *      this.redirect( 'back' );
      *      this.redirect( 'back', '/index.html' );
      *      this.redirect( '/login' );
@@ -231,7 +231,7 @@ const Response: KoaResponse = {
      */
     redirect( url, alt ) {
         // location
-        if( 'back' === url ) url = this.ctx!.get( 'Referrer' ) || alt || '/';
+        if( url === 'back' ) url = this.ctx!.get( 'Referrer' ) || alt || '/';
         this.set( 'Location', encodeurl( url ) );
 
         // status
@@ -287,7 +287,7 @@ const Response: KoaResponse = {
      */
     set lastModified( val ) {
         if( !val ) return;
-        if( 'string' === typeof val ) val = new Date( val );
+        if( typeof val === 'string' ) val = new Date( val );
         this.set( 'Last-Modified', val.toUTCString() );
     },
 
@@ -372,7 +372,7 @@ const Response: KoaResponse = {
 
         if( typeof val === 'undefined' ) val = String( val );
 
-        if( 2 === arguments.length ) {
+        if( arguments.length === 2 ) {
             this.res!.setHeader( field as string, val as string | string[] );
         } else {
             for( const key in field as Record<string, string | string[]> ) {
@@ -380,7 +380,7 @@ const Response: KoaResponse = {
             }
         }
     },
-    
+
     /**
      * Append additional header `field` with value `val`.
      *
@@ -435,7 +435,7 @@ const Response: KoaResponse = {
             status : this.status,
             message : this.message,
             headers : this.headers
-        }
+        };
     },
 
     /**
@@ -444,6 +444,6 @@ const Response: KoaResponse = {
     flushHeaders() {
         ( this.res! as ServerResponse ).flushHeaders();
     }
-}
+};
 
 export default Response;

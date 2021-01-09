@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: application/respond.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import fs from 'fs';
@@ -25,7 +25,7 @@ describe( 'app.respond', () => {
 
                 const res = ctx.res;
                 res.statusCode = 200;
-                setImmediate(() => {
+                setImmediate( () => {
                     res.setHeader( 'Content-Type', 'text/plain' );
                     res.setHeader( 'Content-Length', '3' );
                     res.end( 'lol' );
@@ -57,7 +57,7 @@ describe( 'app.respond', () => {
                 .expect( 200 )
                 .expect( 'lol' )
                 .expect( res => {
-                    assert(!res.headers.foo );
+                    assert( !res.headers.foo );
                 } );
         } );
 
@@ -113,14 +113,14 @@ describe( 'app.respond', () => {
 
             assert.equal( res.headers[ 'content-type' ], 'text/plain; charset=utf-8' );
             assert.equal( res.headers[ 'content-length' ], '5' );
-            assert(!res.text );
+            assert( !res.text );
         } );
 
         it( 'should keep json headers', async() => {
             const app = new Koa();
 
             app.use( ctx => {
-                ctx.body = { hello: 'world' };
+                ctx.body = { hello : 'world' };
             } );
 
             const res = await request( app.callback() )
@@ -129,7 +129,7 @@ describe( 'app.respond', () => {
 
             assert.equal( res.headers[ 'content-type' ], 'application/json; charset=utf-8' );
             assert.equal( res.headers[ 'content-length' ], '17' );
-            assert(!res.text );
+            assert( !res.text );
         } );
 
         it( 'should keep string headers', async() => {
@@ -145,7 +145,7 @@ describe( 'app.respond', () => {
 
             assert.equal( res.headers[ 'content-type' ], 'text/plain; charset=utf-8' );
             assert.equal( res.headers[ 'content-length' ], '11' );
-            assert(!res.text );
+            assert( !res.text );
         } );
 
         it( 'should keep buffer headers', async() => {
@@ -161,7 +161,7 @@ describe( 'app.respond', () => {
 
             assert.equal( res.headers[ 'content-type' ], 'application/octet-stream' );
             assert.equal( res.headers[ 'content-length' ], '11' );
-            assert(!res.text );
+            assert( !res.text );
         } );
 
         it( 'should keep stream header if set manually', async() => {
@@ -179,7 +179,7 @@ describe( 'app.respond', () => {
                 .expect( 200 );
 
             assert.equal( res.header[ 'content-length' ], length );
-            assert(!res.text );
+            assert( !res.text );
         } );
 
         it( 'should respond with a 404 if no body was set', () => {
@@ -214,7 +214,7 @@ describe( 'app.respond', () => {
 
             return request( app.callback() )
                 .head( '/' )
-                .expect( 'content-type', /application\/javascript/)
+                .expect( 'content-type', /application\/javascript/ )
                 .expect( 200 );
         } );
     } );
@@ -240,7 +240,7 @@ describe( 'app.respond', () => {
                 res.write( 'Hello' );
             } );
 
-            app.on( 'error', err => { throw err; } );
+            app.on( 'error', err => { throw err } );
 
             return request( app.callback() )
                 .get( '/' )
@@ -256,7 +256,7 @@ describe( 'app.respond', () => {
                 res.setHeader( 'Content-Type', 'text/html' );
                 res.write( 'Hello' );
                 return new Promise( resolve => {
-                    setTimeout(() => {
+                    setTimeout( () => {
                         res.end( 'Goodbye' );
                         resolve();
                     }, 0 );
@@ -480,7 +480,7 @@ describe( 'app.respond', () => {
             return request( app.callback() )
                 .get( '/' )
                 .expect( 200 )
-                .expect( Buffer.from( 'Hello' ));
+                .expect( Buffer.from( 'Hello' ) );
         } );
     } );
 
@@ -604,7 +604,7 @@ describe( 'app.respond', () => {
             const app = new Koa();
 
             app.use( ctx => {
-                ctx.body = { hello: 'world' };
+                ctx.body = { hello : 'world' };
             } );
 
             return request( app.callback() )
@@ -621,7 +621,7 @@ describe( 'app.respond', () => {
                     ctx.type = 'json';
                     ctx.set( 'foo', 'bar' );
                     ctx.res.flushHeaders();
-                    ctx.body = { hello: 'world' };
+                    ctx.body = { hello : 'world' };
                 } );
 
                 return request( app.callback() )
@@ -649,7 +649,7 @@ describe( 'app.respond', () => {
 
             request( app.callback() )
                 .get( '/' )
-                .end(() => {} );
+                .end( () => {} );
         } );
 
         describe( 'with an .expose property', () => {
@@ -700,10 +700,10 @@ describe( 'app.respond', () => {
         it( 'should be catchable', () => {
             const app = new Koa();
 
-            app.use(( ctx, next ) => {
-                return next().then(() => {
+            app.use( ( ctx, next ) => {
+                return next().then( () => {
                     ctx.body = 'Hello';
-                } ).catch(() => {
+                } ).catch( () => {
                     ctx.body = 'Got error';
                 } );
             } );

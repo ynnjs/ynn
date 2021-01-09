@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: request/subdomains.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/05/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -15,10 +15,10 @@ describe( 'req.subdomains', () => {
         const req = request();
         req.header.host = 'tobi.ferrets.example.com';
         req.app.subdomainOffset = 2;
-        assert.deepEqual( req.subdomains, [ 'ferrets', 'tobi' ]);
+        assert.deepEqual( req.subdomains, [ 'ferrets', 'tobi' ] );
 
         req.app.subdomainOffset = 3;
-        assert.deepEqual( req.subdomains, [ 'tobi' ]);
+        assert.deepEqual( req.subdomains, [ 'tobi' ] );
     } );
 
     it( 'should work with no host present', () => {

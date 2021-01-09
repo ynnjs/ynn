@@ -30,7 +30,7 @@ function createInterceptorAfter<T>( descriptor: PropertyDescriptor, methods?: Me
          * the methods shoule be called in sequence
          */
         for( const info of bound ) {
-            res = await info.method( info.metadata, ...args ); // eslint-disable-line no-await-in-loop
+            res = await info.method( res, info.metadata, ...args ); // eslint-disable-line no-await-in-loop
         }
 
         return res;

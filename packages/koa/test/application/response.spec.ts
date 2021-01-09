@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright ( C ) 2020 LvChengbin
- * 
+ *
  * File: application/response.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import assert from 'assert';
@@ -57,7 +57,7 @@ describe( 'app.response', () => {
     it( 'should set [ RESPOND_EXPLICIT_NULL_BODY ] correctly', async() => {
         app4.use( ctx => {
             ctx.body = null;
-            assert.strictEqual( ctx.response[ RESPOND_EXPLICIT_NULL_BODY ] , true );
+            assert.strictEqual( ctx.response[ RESPOND_EXPLICIT_NULL_BODY ], true );
         } );
 
         return request( app4.callback() )

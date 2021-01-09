@@ -11,13 +11,13 @@ import { VariadicClass } from '@ynn/utility-types';
 import { InterceptorParameter, Methods } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorParameter<T = any[]>( constructor: VariadicClass, methodName: string ): InterceptorParameter<T>;
+function createInterceptorParameter<T>( constructor: VariadicClass, methodName: string ): InterceptorParameter<T>;
 
-function createInterceptorParameter<T = any[]>( constructor: VariadicClass, methodName: string, methods: undefined ): InterceptorParameter<T>;
+function createInterceptorParameter<T>( constructor: VariadicClass, methodName: string, methods: undefined ): InterceptorParameter<T>;
 
-function createInterceptorParameter<T = any[]>( constructor: VariadicClass, methodName: string, methods: Methods ): InterceptorParameter<T>;
+function createInterceptorParameter<T>( constructor: VariadicClass, methodName: string, methods: Methods ): InterceptorParameter<T>;
 
-function createInterceptorParameter( constructor, methodName, methods ) {
+function createInterceptorParameter<T>( constructor: VariadicClass, methodName: string, methods?: Methods | undefined ): InterceptorParameter<T> {
 
     const bound = extract.parameter( constructor, methodName, methods );
 
