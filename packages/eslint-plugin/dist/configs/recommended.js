@@ -24,6 +24,7 @@ module.exports = {
             parserOptions: {
                 sourceType: 'module',
                 ecmaVersion: 2021,
+                project: path_1.default.join(__dirname, '../../**/tsconfig.json'),
                 createDefaultProgram: true,
                 ecmaFeatures: {
                     jsx: true
@@ -41,7 +42,6 @@ module.exports = {
                 'default-param-last': 'off',
                 'dot-notation': 'off',
                 'func-call-spacing': 'off',
-                'indent': 'off',
                 'keyword-spacing': 'off',
                 'lines-between-class-members': 'off',
                 'no-dup-class-members': 'off',
@@ -78,26 +78,32 @@ module.exports = {
                         selector: ['variable', 'function']
                     }],
                 '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
+                /**
+                 * disable @typescript-eslint/no-confusing-void-expression cuz of bad performance
+                 */
                 // '@typescript-eslint/no-confusing-void-expression' : [ 'error' ],
                 '@typescript-eslint/no-dynamic-delete': ['error'],
                 '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
-                // '@typescript-eslint/no-floating-promises' : [ 'error' ],
-                // '@typescript-eslint/no-for-in-array' : [ 'error' ],
+                '@typescript-eslint/no-floating-promises': ['error'],
+                '@typescript-eslint/no-for-in-array': ['error'],
                 '@typescript-eslint/no-implicit-any-catch': ['error'],
                 '@typescript-eslint/no-require-imports': ['error'],
-                // '@typescript-eslint/no-unnecessary-boolean-literal-compare' : [ 'error' ],
-                // '@typescript-eslint/no-unnecessary-condition' : [ 'error' ],
-                // '@typescript-eslint/no-unnecessary-qualifier' : [ 'error' ],
+                '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],
+                '@typescript-eslint/no-unnecessary-condition': ['error'],
+                '@typescript-eslint/no-unnecessary-qualifier': ['error'],
                 '@typescript-eslint/no-unnecessary-type-constraint': ['error'],
-                // '@typescript-eslint/non-nullable-type-assertion-style' : [ 'error' ],
-                // '@typescript-eslint/prefer-nullish-coalescing' : [ 'error' ],
+                '@typescript-eslint/non-nullable-type-assertion-style': ['error'],
+                '@typescript-eslint/prefer-nullish-coalescing': ['error'],
                 '@typescript-eslint/prefer-optional-chain': ['error'],
+                /**
+                 * disable @typescript-eslint/prefer-readonly-parameter-types cuz of the bad performance
+                 */
                 // '@typescript-eslint/prefer-readonly-parameter-types' : [ 'error' ],
-                // '@typescript-eslint/prefer-reduce-type-parameter' : [ 'error' ],
-                // '@typescript-eslint/prefer-string-starts-ends-with' : [ 'error' ],
+                '@typescript-eslint/prefer-reduce-type-parameter': ['error'],
+                '@typescript-eslint/prefer-string-starts-ends-with': ['error'],
                 '@typescript-eslint/prefer-ts-expect-error': ['error'],
-                // '@typescript-eslint/promise-function-async' : [ 'error' ],
-                // '@typescript-eslint/switch-exhaustiveness-check' : [ 'error' ],
+                '@typescript-eslint/promise-function-async': ['error'],
+                '@typescript-eslint/switch-exhaustiveness-check': ['error'],
                 '@typescript-eslint/type-annotation-spacing': ['error', {
                         before: false,
                         after: true,
@@ -110,9 +116,8 @@ module.exports = {
                 '@typescript-eslint/comma-dangle': ['error'],
                 '@typescript-eslint/comma-spacing': ['error', { before: false, after: true }],
                 '@typescript-eslint/default-param-last': ['error'],
-                // '@typescript-eslint/dot-notation' : [ 'error' ],
+                '@typescript-eslint/dot-notation': ['error'],
                 '@typescript-eslint/func-call-spacing': ['error', 'never'],
-                '@typescript-eslint/indent': ['error', 4, { SwitchCase: 1 }],
                 '@typescript-eslint/keyword-spacing': ['error', {
                         before: true,
                         after: true,
@@ -128,7 +133,7 @@ module.exports = {
                 '@typescript-eslint/no-dupe-class-members': ['error'],
                 '@typescript-eslint/no-duplicate-imports': ['error'],
                 '@typescript-eslint/no-redeclare': ['error'],
-                // '@typescript-eslint/no-throw-literal' : [ 'error' ]
+                '@typescript-eslint/no-throw-literal': ['error'],
                 '@typescript-eslint/no-unused-expressions': ['error', {
                         allowShortCircuit: true,
                         allowTernary: true,
@@ -142,7 +147,10 @@ module.exports = {
             files: ['*.spec.ts', '*.spec.js', '*.spec.tsx', '*.spec.jsx', '*.dt.ts'],
             rules: {
                 'class-methods-use-this': 'off',
-                '@typescript-eslint/no-empty-function': 'off'
+                '@typescript-eslint/no-empty-function': 'off',
+                '@typescript-eslint/no-floating-promises': 'off',
+                '@typescript-eslint/explicit-function-return-type': 'off',
+                '@typescript-eslint/prefer-readonly-parameter-types': 'off'
             }
         }]
 };

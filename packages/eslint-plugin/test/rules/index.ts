@@ -20,14 +20,14 @@ const rules: Record<string | number, () => void> = {
 yargs.argv._.map( ( rule: string | number ) => {
     const camelRuleName = String( rule ).replace( /-(.)/g, ( m, n ) => n.toUpperCase() );
 
-    if( !rules[ camelRuleName ] ) {
+    if( !rules[ camelRuleName ] ) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
         console.error( `${red( '➤' )} Rule ${camelRuleName} not exists` );
         return;
     }
 
     console.log( `➤ [${camelRuleName}] started!` );
 
-    rules[ camelRuleName ]?.();
+    rules[ camelRuleName ]();
 
     console.log( `➤ [${camelRuleName}] completed!` );
 } );

@@ -1,16 +1,16 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: interceptor/create-interceptor-before.spec.ts
+ * File: interceptor/create-interceptor-after.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 01/09/2021
+ * Time: 01/11/2021
  * Description:
  ******************************************************************/
 
 import 'reflect-metadata';
-import { createInterceptorBefore, KEY_BEFORE, MetadataBefore } from '../../src';
+import { createInterceptorAfter, KEY_AFTER, MetadataAfter } from '../../src';
 
-describe( 'interceptor/create-method-before', () => {
+describe( 'interceptor/create-method-after', () => {
     it( 'should created a function', () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );

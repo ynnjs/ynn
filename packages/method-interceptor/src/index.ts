@@ -8,9 +8,9 @@
  ******************************************************************/
 
 import 'reflect-metadata';
+export * from './constants';
 export * from './interceptor';
-
-console.log( 'abc' );
+export * from './metadata.interface';
 
 /* export * from './interceptor.interface';
    export * from './decorator.interface';

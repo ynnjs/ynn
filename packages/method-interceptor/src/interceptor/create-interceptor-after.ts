@@ -7,23 +7,22 @@
  * Description:
  ******************************************************************/
 
-import { InterceptorAfter, Methods } from './interceptor.interface';
+import { InterceptorAfter, Methods, MethodAfter } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorAfter<T>( descriptor: PropertyDescriptor ): InterceptorAfter<T>;
-function createInterceptorAfter<T>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorAfter<T>;
-function createInterceptorAfter<T>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorAfter<T>;
-
-function createInterceptorAfter<T>( descriptor: PropertyDescriptor, methods?: Methods | undefined ): InterceptorAfter<T> {
+function createInterceptorAfter<T>(
+    descriptor: Readonly<PropertyDescriptor>,
+    methods?: Readonly<Methods<MethodAfter>> | undefined
+): InterceptorAfter<T> {
 
     /**
      * the returns Promsie object should be resolved with the original value as default
      */
-    if( !methods ) return value => Promise.resolve( value );
+    if( !methods ) return async <P>( value: P ): Promise<P> => Promise.resolve( value );
 
     const bound = extract.after( descriptor, methods );
 
-    return async( value, ...args ) => {
+    return async ( value, ...args ): Promise<unknown> => {
         let res = await value;
 
         /**

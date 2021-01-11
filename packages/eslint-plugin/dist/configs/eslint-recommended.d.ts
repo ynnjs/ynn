@@ -18,6 +18,7 @@ declare const _default: {
             jest: boolean;
             node: boolean;
         };
+        reportUnusedDisableDirectives: boolean;
         rules: {
             'for-direction': string;
             'getter-return': string;
@@ -159,7 +160,11 @@ declare const _default: {
                 omitLastInOneLineBlock: boolean;
             })[];
             'space-before-blocks': string;
-            'space-before-function-paren': string[];
+            'space-before-function-paren': (string | {
+                anonymous: string;
+                named: string;
+                asyncArrow: string;
+            })[];
             'space-in-parens': string[];
             'space-infix-ops': string;
             'space-unary-ops': (string | {

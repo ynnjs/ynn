@@ -15,6 +15,7 @@ export = {
             ecmaVersion : 2021
         },
         env : { es6 : true, jest : true, node : true },
+        reportUnusedDisableDirectives : true,
         rules : {
             // Posible Errors
             'for-direction' : 'error',
@@ -132,7 +133,11 @@ export = {
             'quotes' : [ 'error', 'single' ],
             'semi' : [ 'error', 'always', { omitLastInOneLineBlock : true } ],
             'space-before-blocks' : 'error',
-            'space-before-function-paren' : [ 'error', 'never' ],
+            'space-before-function-paren' : [ 'error', {
+                anonymous : 'never',
+                named : 'never',
+                asyncArrow : 'always'
+            } ],
             'space-in-parens' : [ 'error', 'always' ],
             'space-infix-ops' : 'error',
             'space-unary-ops' : [ 'error', { words : true, nonwords : false } ],

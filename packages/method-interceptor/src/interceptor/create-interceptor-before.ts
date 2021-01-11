@@ -7,15 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { InterceptorBefore, Methods } from './interceptor.interface';
+import { InterceptorBefore, Methods, MethodBefore } from './interceptor.interface';
 import extract from './extract';
-
-let x = 1;
-let x = 1;
-
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor ): InterceptorBefore<T>;
-
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods: Methods ): InterceptorBefore<T>;
 
 /**
  * create an empty interceptor method with methods is undefined.
@@ -23,25 +16,23 @@ function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods: Me
  * @example
  *
  * ```ts
- * createInterceptorBefore<T>(
+ * createInterceptorBefore<T>()
  * ```
  *
  * @typeparam T - the type of the arguments that will passed to the generated interceptor methods.
  *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods: undefined ): InterceptorBefore<T>;
+function createInterceptorBefore<T>(
+    descriptor: Readonly<PropertyDescriptor>,
+    methods?: Readonly<Methods<MethodBefore>> | undefined
+): InterceptorBefore<T> {
 
-/**
- *
- */
-function createInterceptorBefore<T>( descriptor: PropertyDescriptor, methods?: Methods | undefined ): InterceptorBefore<T> {
-
-    if( !methods ) return () => Promise.resolve( [] );
+    if( !methods ) return async (): Promise<[]> => Promise.resolve( [] );
 
     const bound = extract.before( descriptor, methods );
 
-    return ( ...args ) => {
+    return async ( ...args ): Promise<unknown[]> => {
         const promises = [];
 
         bound.forEach( ( info ) => {

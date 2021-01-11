@@ -19,7 +19,7 @@ export interface MethodBefore<T extends unknown[]> {
      * @param metadaat - {@link MetadataBefore}
      * @param ...args - other arguments for the method
      */
-    ( metadata: MetadataBefore, ...args: T ): Promises<unknown>;
+    ( metadata: Readonly<MetadataBefore>, ...args: T ): Promise<unknown>;
 }
 
 /**
@@ -32,7 +32,7 @@ export interface MethodAfter<T extends unknown[]> {
      * @param metadata - {@link MetadataAfter}
      * @param ...args - other arguments
      */
-    ( value: unknown, metadata: MetadataAfter, ...args: T ): Promise<unknown>;
+    ( value: unknown, metadata: Readonly<MetadataAfter>, ...args: T ): Promise<unknown>;
 }
 
 /**
@@ -49,7 +49,7 @@ export interface MethodException<T extends unknown[]> {
      *
      * @return a Promise object.
      */
-    ( e: unknown, metadata: MetadataException, ...args: T ): Promise<unknown>;
+    ( e: unknown, metadata: Readonly<MetadataException>, ...args: T ): Promise<unknown>;
 }
 
 export interface MethodParameter<T extends unknown[]> {
@@ -57,7 +57,7 @@ export interface MethodParameter<T extends unknown[]> {
      * @param metadata - {@link MethodParameter}
      * @param ...args - other arguments
      */
-    ( metadata: MetadataParameter, ...args: T ): Promise<unknown>;
+    ( metadata: Readonly<MetadataParameter>, ...args: T ): Promise<unknown>;
 }
 
 export type Methods<T> = Record<string | number | symbol, T>;
@@ -66,7 +66,7 @@ export interface MethodInfo<T, M> {
     /**
      * the method could be undefined in the type of interceptor is not set.
      */
-    method: M | undefined;
+    method: M;
     metadata: T;
 }
 
@@ -96,6 +96,6 @@ export interface InterceptorException<T extends unknown[]> {
     ( e: unknown, ...args: T ): unknown;
 }
 
-export interface InterceptorParameters<T extends unknown[]> {
+export interface InterceptorParameter<T extends unknown[]> {
     ( ...args: T ): Promise<unknown[]>;
 }

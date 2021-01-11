@@ -22,7 +22,7 @@ describe( 'interceptor/extract', () => {
 
             it( 'should return the correct list of bound methods', () => {
 
-                class A { action() {} } // eslint-disable-line class-methods-use-this
+                class A { action() {} }
 
                 const methods = { fn() {} };
 
@@ -43,9 +43,9 @@ describe( 'interceptor/extract', () => {
                 }
             } );
 
-            it( 'should use undefined if some type of interceptor does not have corresponding method', () => {
+            it( 'should throw exception if some types of interceptors have no corresponding method', () => {
 
-                class A { action() {} } // eslint-disable-line class-methods-use-this
+                class A { action() {} }
 
                 const methods = {};
 
@@ -58,17 +58,13 @@ describe( 'interceptor/extract', () => {
 
                 if( descriptor ) {
                     Reflect.defineMetadata( x.k, metadata, descriptor.value );
-                    const bound = extract[ x.t ]( descriptor, methods );
-                    expect( bound ).toEqual( [ {
-                        method : undefined,
-                        metadata : metadata[ 0 ]
-                    } ] );
+                    expect( () => { extract[ x.t ]( descriptor, methods ) } ).toThrow();
                 }
             } );
 
             it( 'should have returned an empty array if metadata not exists', () => {
 
-                class A { action() {} } // eslint-disable-line class-methods-use-this
+                class A { action() {} }
 
                 const methods = {};
                 const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'action' );
@@ -119,7 +115,6 @@ describe( 'interceptor/extract', () => {
                     paramtype : String
                 }
             } ] );
-
         } );
 
     } );
