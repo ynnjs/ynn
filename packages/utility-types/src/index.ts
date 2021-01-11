@@ -38,18 +38,8 @@ export type Diff<T, U> = T extends U ? never : T;
  * type ExampleWithOptionalValue = PartialKeys<Example, 'name'>;
  * ```
  */
-export type PartialKeys<T, M extends keyof T> = {
-    [ P in Diff<keyof T, M> ]: T[ P ];
-} & {
-    [ P in M ]?: T[ P ];
-}
+export type PartialKeys<T, M extends keyof T> = { [ P in Diff<keyof T, M> ]: T[ P ] } & { [ P in M ]?: T[ P ] }
 
-export type PartialExclude<T, M extends keyof T> = {
-    [ P in keyof T ]?: T[ P ];
-} & {
-    [ P in M ]: T[ P ];
-}
+export type PartialExclude<T, M extends keyof T> = { [ P in keyof T ]?: T[ P ] } & { [ P in M ]: T[ P ] }
 
-export type Mutable<T> = {
-    -readonly [ P in keyof T ]: T[ P ];
-}
+export type Mutable<T> = { -readonly [ P in keyof T ]: T[ P ] }
