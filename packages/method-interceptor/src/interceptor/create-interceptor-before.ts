@@ -23,16 +23,16 @@ import extract from './extract';
  *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore<T>(
+function createInterceptorBefore<T extends unknown[]>(
     descriptor: Readonly<PropertyDescriptor>,
-    methods?: Readonly<Methods<MethodBefore>> | undefined
+    methods?: Methods<MethodBefore<T>> | undefined
 ): InterceptorBefore<T> {
 
     if( !methods ) return async (): Promise<[]> => Promise.resolve( [] );
 
     const bound = extract.before( descriptor, methods );
 
-    return async ( ...args ): Promise<unknown[]> => {
+    return async ( ...args: T ): Promise<unknown[]> => {
         const promises = [];
 
         bound.forEach( ( info ) => {

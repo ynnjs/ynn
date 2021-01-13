@@ -23,10 +23,10 @@ describe( 'interceptor/create-method-before', () => {
         expect( createInterceptorBefore<[]>( descriptor, {} )() ).toBeInstanceOf( Promise );
     } );
 
-    it( 'should return a Promise object which resolves with an empty array by the created function if no methods is given', () => {
+    it( 'should return a Promise object which resolves with an empty array by the created function if no methods is given', async () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
-        expect( createInterceptorBefore<[]>( descriptor )() ).resolves.toEqual( [] );
+        return expect( createInterceptorBefore<[]>( descriptor )() ).resolves.toEqual( [] );
     } );
 
     it( 'should have called the corresponding methods', async () => {
@@ -83,7 +83,7 @@ describe( 'interceptor/create-method-before', () => {
         }, 1, 'interceptor' );
     } );
 
-    it( 'should return a Promise object with expected values', () => {
+    it( 'should return a Promise object with expected values', async () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
         const methods = {
@@ -100,9 +100,8 @@ describe( 'interceptor/create-method-before', () => {
         if( descriptor ) {
             Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
             const before = createInterceptorBefore<[]>( descriptor, methods );
-            expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
-        } else {
-            throw new TypeError( 'Cannot get descriptor' );
+            return expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
         }
+        throw new TypeError( 'Cannot get descriptor' );
     } );
 } );

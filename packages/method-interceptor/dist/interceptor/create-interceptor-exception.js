@@ -19,7 +19,7 @@ function createInterceptorException(descriptor, methods) {
     if (!methods)
         return (e) => { throw e; };
     const bound = extract_1.default.exception(descriptor, methods);
-    return (e, ...args) => {
+    return async (e, ...args) => {
         for (const info of bound) {
             if (info.metadata.exceptionType === undefined || e instanceof info.metadata.type) {
                 return info.method(e, info.metadata, ...args);

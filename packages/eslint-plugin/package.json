@@ -1,13 +1,13 @@
 {
     "name": "@ynn/eslint-plugin",
-    "version": "0.0.0",
+    "version": "0.0.2",
     "description": "Ynn eslint rules and plugins",
     "main": "dist/index.js",
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
     "keywords": [
         "eslint",
-        "eslintplubin",
+        "eslintplugin",
         "eslint-plugin"
     ],
     "scripts": {
@@ -18,7 +18,8 @@
         "test:rules": "echo \"running test/rules.ts ...\" && ts-node test/rules/index.ts",
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
-        "lint": "eslint src/**/*.ts test/**/*.ts --cache --fix"
+        "lint": "eslint src/**/*.ts test/**/*.ts --cache --fix",
+        "prepublish": "yarn lint && yarn test && yarn make"
     },
     "engines": {
         "node": ">=14.15.0"
@@ -44,5 +45,13 @@
     },
     "files": [
         "dist"
-    ]
+    ],
+    "peerDependencies": {
+        "@typescript-eslint/eslint-plugin": "*",
+        "@typescript-eslint/parser": "*",
+        "eslint": "*"
+    },
+    "dependencies": {
+        "find-up": "^5.0.0"
+    }
 }

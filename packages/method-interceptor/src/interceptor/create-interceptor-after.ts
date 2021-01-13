@@ -10,10 +10,10 @@
 import { InterceptorAfter, Methods, MethodAfter } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorAfter<T>(
+function createInterceptorAfter<T extends unknown[], V = unknown>(
     descriptor: Readonly<PropertyDescriptor>,
-    methods?: Readonly<Methods<MethodAfter>> | undefined
-): InterceptorAfter<T> {
+    methods?: Methods<MethodAfter<T>> | undefined
+): InterceptorAfter<T, V> {
 
     /**
      * the returns Promsie object should be resolved with the original value as default
@@ -22,14 +22,14 @@ function createInterceptorAfter<T>(
 
     const bound = extract.after( descriptor, methods );
 
-    return async ( value, ...args ): Promise<unknown> => {
-        let res = await value;
+    return async ( value: V, ...args: T ): Promise<unknown> => {
+        let res: unknown = await Promise.resolve( value );
 
         /**
          * the methods shoule be called in sequence
          */
         for( const info of bound ) {
-            res = await info.method( res, info.metadata, ...args ); // eslint-disable-line no-await-in-loop
+            res = await info.method( info.metadata, res, ...args ); // eslint-disable-line no-await-in-loop
         }
 
         return res;

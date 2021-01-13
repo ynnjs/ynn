@@ -14,35 +14,37 @@ describe( 'interceptor/create-method-after', () => {
     it( 'should created a function', () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
-        expect( createInterceptorBefore<[]>( descriptor, {} ) ).toBeInstanceOf( Function );
+        expect( createInterceptorAfter<[]>( descriptor, {} ) ).toBeInstanceOf( Function );
     } );
 
     it( 'should return a Promise object by the created function', () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
-        expect( createInterceptorBefore<[]>( descriptor, {} )() ).toBeInstanceOf( Promise );
+        expect( createInterceptorAfter<[]>( descriptor, {} )() ).toBeInstanceOf( Promise );
     } );
 
-    it( 'should return a Promise object which resolves with an empty array by the created function if no methods is given', () => {
+    it( 'should return a Promise object resolves with the given value', async () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
-        expect( createInterceptorBefore<[]>( descriptor )() ).resolves.toEqual( [] );
+        return expect( createInterceptorAfter<[string]>( descriptor )( 'ynn' ) ).resolves.toEqual( 'ynn' );
     } );
 
-    it( 'should have called the corresponding methods', async () => {
+    it( 'should have called the corresponding methods in order', async () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
-        const fn = jest.fn();
-        const methods = { fn };
-        const metadata: MetadataBefore[] = [ {
-            type : 'fn',
-            interceptorType : 'before'
-        } ];
+        const res: string[] = [];
+        const methods = {
+            first : () => { res.push( 'first' ) },
+            second : () => { res.push( 'second' ) }
+        };
+        const metadata: MetadataAfter[] = [
+            { type : 'second', interceptorType : 'after' },
+            { type : 'first', interceptorType : 'after' }
+        ];
 
-        Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
-        const before = createInterceptorBefore<[]>( descriptor, methods );
-        await before();
-        expect( fn ).toHaveBeenCalledTimes( 1 );
+        Reflect.defineMetadata( KEY_AFTER, metadata, descriptor.value );
+        await createInterceptorAfter<[]>( descriptor, methods )();
+        expect( res ).toEqual( [ 'second', 'first' ] );
     } );
 
     it( 'should have called methods with default arguments', async () => {
@@ -50,40 +52,39 @@ describe( 'interceptor/create-method-after', () => {
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
         const fn = jest.fn();
         const methods = { fn };
-        const metadata: MetadataBefore[] = [ {
+        const metadata: MetadataAfter[] = [ {
             type : 'fn',
-            interceptorType : 'before'
+            interceptorType : 'after'
         } ];
 
-        Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
-        const before = createInterceptorBefore<[]>( descriptor, methods );
-        await before();
+        Reflect.defineMetadata( KEY_AFTER, metadata, descriptor.value );
+        await createInterceptorAfter<[]>( descriptor, methods )( 'ynn' );
         expect( fn ).toHaveBeenCalledWith( {
-            interceptorType : 'before',
+            interceptorType : 'after',
             type : 'fn'
-        } );
+        }, 'ynn' );
     } );
 
     it( 'should have called methods with given arguments', async () => {
+
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
         const fn = jest.fn();
         const methods = { fn };
-        const metadata: MetadataBefore[] = [ {
+        const metadata: MetadataAfter[] = [ {
             type : 'fn',
-            interceptorType : 'before'
+            interceptorType : 'after'
         } ];
 
-        Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
-        const before = createInterceptorBefore<[ number, string ]>( descriptor, methods );
-        await before( 1, 'interceptor' );
+        Reflect.defineMetadata( KEY_AFTER, metadata, descriptor.value );
+        await createInterceptorAfter<[], string>( descriptor, methods )( 'ynn' );
         expect( fn ).toHaveBeenCalledWith( {
-            interceptorType : 'before',
+            interceptorType : 'after',
             type : 'fn'
-        }, 1, 'interceptor' );
+        }, 'ynn' );
     } );
 
-    it( 'should return a Promise object with expected values', () => {
+    xit( 'should return a Promise object with expected values', async () => {
         const o = { x() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
         const methods = {
@@ -91,18 +92,17 @@ describe( 'interceptor/create-method-after', () => {
             fn2 : () => 'fn2',
             fn3 : async () => Promise.resolve( 'fn3' )
         };
-        const metadata: MetadataBefore[] = [
-            { type : 'fn1', interceptorType : 'before' },
-            { type : 'fn2', interceptorType : 'before' },
-            { type : 'fn3', interceptorType : 'before' }
+        const metadata: MetadataAfter[] = [
+            { type : 'fn1', interceptorType : 'after' },
+            { type : 'fn2', interceptorType : 'after' },
+            { type : 'fn3', interceptorType : 'after' }
         ];
 
         if( descriptor ) {
-            Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
-            const before = createInterceptorBefore<[]>( descriptor, methods );
-            expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
-        } else {
-            throw new TypeError( 'Cannot get descriptor' );
+            Reflect.defineMetadata( KEY_AFTER, metadata, descriptor.value );
+            const after = createInterceptorAfter<[]>( descriptor, methods );
+            return expect( after() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
         }
+        throw new TypeError( 'Cannot get descriptor' );
     } );
 } );

@@ -16,7 +16,7 @@ declare const _default: {
         parserOptions: {
             sourceType: string;
             ecmaVersion: number;
-            project: string;
+            project: string | undefined;
             createDefaultProgram: boolean;
             ecmaFeatures: {
                 jsx: boolean;

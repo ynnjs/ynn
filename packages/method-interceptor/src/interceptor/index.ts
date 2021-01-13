@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import createInterceptorBefore from './create-interceptor-before';
+import createInterceptorAfter from './create-interceptor-after';
 export * from './interceptor.interface';
 
-export { createInterceptorBefore };
+export { createInterceptorBefore, createInterceptorAfter };

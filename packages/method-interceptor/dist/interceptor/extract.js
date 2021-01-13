@@ -24,6 +24,13 @@ const constants_1 = require("../constants");
 function extractMethods(key, descriptor, methods) {
     const bound = [];
     Reflect.getMetadata(key, descriptor.value)?.forEach((metadata) => {
+        const method = methods[metadata.type];
+        /**
+         * throw error if the method cannot be found in the method list.
+         */
+        if (!method) {
+            throw new Error(`method ${metadata.type} not exists in method list.`);
+        }
         /**
          * do nothing even if methods[ metadata.type ] is not a function or is undefined.
          */
@@ -48,6 +55,9 @@ function after(...args) {
 function exception(...args) {
     return extractMethods(constants_1.KEY_EXCEPTION, ...args);
 }
+/**
+ * MethodInfo of MethodParameter may not have `method` property
+ */
 function parameter(constructor, methodName, methods) {
     const bound = [];
     /**
@@ -61,14 +71,17 @@ function parameter(constructor, methodName, methods) {
         /**
          * combine paramtypes and metadatas for interceptor.
          */
-        const metadata = metadatas[i] || {};
-        bound.push({
-            method: methods[metadata.type],
-            metadata: {
-                ...metadata,
-                paramtype
+        const metadata = metadatas[i];
+        if (!metadata) {
+            bound.push({ metadata: { paramtype } });
+        }
+        else {
+            const method = methods[metadata.type];
+            if (!method) {
+                throw new Error(`method ${metadata.type} not exists in the method list`);
             }
-        });
+            bound.push({ method, metadata: { ...metadata, paramtype } });
+        }
     });
     return bound;
 }

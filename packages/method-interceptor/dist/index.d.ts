@@ -1,9 +1,12 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  *
- * File: interceptor/extract-method.spec.ts
+ * File: src/index.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/24/2020
+ * Time: 12/20/2020
  * Description:
  ******************************************************************/
 import 'reflect-metadata';
+export * from './constants';
+export * from './interceptor';
+export * from './metadata.interface';

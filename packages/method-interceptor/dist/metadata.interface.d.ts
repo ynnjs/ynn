@@ -6,6 +6,7 @@
  * Time: 12/20/2020
  * Description:
  ******************************************************************/
+import { VariadicClass } from '@ynn/utility-types';
 /**
  * the base metadata interface for Interceptor
  */
@@ -77,7 +78,7 @@ export interface MetadataException extends Metadata {
      * the type should be a constructor or undefined.
      * using `undefined` means the interceptor can handle all types of Error object.
      */
-    exceptionType: (new (...args: any[]) => any) | undefined;
+    exceptionType: VariadicClass | undefined;
 }
 /**
  * method for parameters of class instance methods
@@ -106,5 +107,5 @@ export interface MetadataParameter extends Metadata {
     /**
      * the metadata type of the parameter.
      */
-    paramtype?: unknown;
+    paramtype: unknown;
 }

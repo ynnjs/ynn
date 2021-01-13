@@ -8,6 +8,9 @@
  ******************************************************************/
 
 import path from 'path';
+import findup from 'find-up';
+
+const tsconfig = findup.sync( [ 'tsconfig.eslint.json', 'tsconfig.lint.json', 'tsconfig.json' ] );
 
 export = {
     extends : [ path.join( __dirname, 'eslint-recommended' ) ],
@@ -22,7 +25,7 @@ export = {
         parserOptions : {
             sourceType : 'module',
             ecmaVersion : 2021,
-            project : path.join( __dirname, '../../**/tsconfig.json' ),
+            project : tsconfig,
             createDefaultProgram : true,
             ecmaFeatures : {
                 jsx : true

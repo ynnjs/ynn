@@ -11,6 +11,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const path_1 = __importDefault(require("path"));
+const find_up_1 = __importDefault(require("find-up"));
+const tsconfig = find_up_1.default.sync(['tsconfig.eslint.json', 'tsconfig.lint.json', 'tsconfig.json']);
 module.exports = {
     extends: [path_1.default.join(__dirname, 'eslint-recommended')],
     overrides: [{
@@ -24,7 +26,7 @@ module.exports = {
             parserOptions: {
                 sourceType: 'module',
                 ecmaVersion: 2021,
-                project: path_1.default.join(__dirname, '../../**/tsconfig.json'),
+                project: tsconfig,
                 createDefaultProgram: true,
                 ecmaFeatures: {
                     jsx: true

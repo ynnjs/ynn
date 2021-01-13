@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const extract_1 = __importDefault(require("./extract"));
 function createInterceptorParameter(constructor, methodName, methods) {
     const bound = extract_1.default.parameter(constructor, methodName, methods);
-    return (...args) => {
+    return async (...args) => {
         const promises = [];
         bound.forEach((info) => {
             promises.push(info.method(info.metadata, ...args));

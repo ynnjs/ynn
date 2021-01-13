@@ -6,22 +6,18 @@
  * Time: 12/20/2020
  * Description:
  ******************************************************************/
-
 import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from '../metadata.interface';
-
 /**
  * The interface of methods that will be called by `InterceptorBefore`.
  * Each method should return a Promise object that resolves with anything, and the resolved value will not be used for calling the target method.
  */
 export interface MethodBefore<T extends unknown[]> {
-
     /**
      * @param metadaat - {@link MetadataBefore}
      * @param ...args - other arguments for the method
      */
-    ( metadata: Readonly<MetadataBefore>, ...args: T ): Promise<unknown>;
+    (metadata: Readonly<MetadataBefore>, ...args: T): Promise<unknown>;
 }
-
 /**
  * The interface of methods the will be called by `InterceptorAfter`.
  *
@@ -32,9 +28,8 @@ export interface MethodAfter<T extends unknown[]> {
      * @param metadata - {@link MetadataAfter}
      * @param ...args - other arguments
      */
-    ( value: unknown, metadata: Readonly<MetadataAfter>, ...args: T ): Promise<unknown>;
+    (value: unknown, metadata: Readonly<MetadataAfter>, ...args: T): Promise<unknown>;
 }
-
 /**
  * the interface of methods for catch exceptions for interceptors.
  */
@@ -49,19 +44,16 @@ export interface MethodException<T extends unknown[]> {
      *
      * @return a Promise object.
      */
-    ( e: unknown, metadata: Readonly<MetadataException>, ...args: T ): Promise<unknown>;
+    (e: unknown, metadata: Readonly<MetadataException>, ...args: T): Promise<unknown>;
 }
-
 export interface MethodParameter<T extends unknown[]> {
     /**
      * @param metadata - {@link MethodParameter}
      * @param ...args - other arguments
      */
-    ( metadata: Readonly<MetadataParameter>, ...args: T ): Promise<unknown>;
+    (metadata: Readonly<MetadataParameter>, ...args: T): Promise<unknown>;
 }
-
-export type Methods<T> = Record<string | number | symbol, T>;
-
+export declare type Methods<T> = Record<string | number | symbol, T>;
 export interface MethodInfo<T, M> {
     /**
      * the method could be undefined in the type of interceptor is not set.
@@ -69,7 +61,6 @@ export interface MethodInfo<T, M> {
     method: M;
     metadata: T;
 }
-
 /**
  * The declaration of InterceptorBefore method.
  *
@@ -85,17 +76,14 @@ export interface MethodInfo<T, M> {
  * ```
  */
 export interface InterceptorBefore<T extends unknown[]> {
-    ( ...args: T ): Promise<unknown>;
+    (...args: T): Promise<unknown>;
 }
-
 export interface InterceptorAfter<T extends unknown[], V> {
-    ( value: V, ...args: T ): Promise<unknown>;
+    (value: V, ...args: T): Promise<unknown>;
 }
-
 export interface InterceptorException<T extends unknown[]> {
-    ( e: unknown, ...args: T ): unknown;
+    (e: unknown, ...args: T): unknown;
 }
-
 export interface InterceptorParameter<T extends unknown[]> {
-    ( ...args: T ): Promise<unknown[]>;
+    (...args: T): Promise<unknown[]>;
 }

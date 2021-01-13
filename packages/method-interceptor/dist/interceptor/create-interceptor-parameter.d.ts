@@ -8,7 +8,5 @@
  ******************************************************************/
 import { VariadicClass } from '@ynn/utility-types';
 import { InterceptorParameter, Methods } from './interceptor.interface';
-declare function createInterceptorParameter<T>(constructor: VariadicClass, methodName: string): InterceptorParameter<T>;
-declare function createInterceptorParameter<T>(constructor: VariadicClass, methodName: string, methods: undefined): InterceptorParameter<T>;
-declare function createInterceptorParameter<T>(constructor: VariadicClass, methodName: string, methods: Methods): InterceptorParameter<T>;
+declare function createInterceptorParameter<T>(constructor: VariadicClass, methodName: string, methods?: Methods | undefined): InterceptorParameter<T>;
 export default createInterceptorParameter;
