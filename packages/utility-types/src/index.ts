@@ -23,11 +23,11 @@ export type ParametersShift<T extends VariadicFunction> = ( ( ...args: Parameter
 export type Diff<T, U> = T extends U ? never : T;
 
 /**
- * PartialKeys<Type, Keys>
+ * PartialKeys<Type, KeysUnion>
  *
- * Constructs a type with all properties of `Type` and setspecific `Keys` to `optional`.
+ * Constructs a type with all properties of `Type` and set keys in `KeysUnion` to `optional`.
  *
- * @example:
+ * @example
  *
  * ```ts
  * interface Example {
@@ -35,11 +35,52 @@ export type Diff<T, U> = T extends U ? never : T;
  *     value: number;
  * }
  *
- * type ExampleWithOptionalValue = PartialKeys<Example, 'name'>;
+ * type ExampleWithOptionalValue = PartialKeys<Example, 'value'>;
+ *
+ * const example: ExampleWithOptionalValue = {
+ *     // property "name" is still required but property "value" is optional
+ *     name : 'x'
+ * };
  * ```
  */
 export type PartialKeys<T, M extends keyof T> = { [ P in Diff<keyof T, M> ]: T[ P ] } & { [ P in M ]?: T[ P ] }
 
-export type PartialExclude<T, M extends keyof T> = { [ P in keyof T ]?: T[ P ] } & { [ P in M ]: T[ P ] }
+/**
+ * PartialExcludesKeys<Type, KeysUnion>
+ *
+ * Constructs a type with all properties of `Type` and set properties to `optional` except keys in `KeysUnion`.
+ *
+ * @example
+ *
+ * ```ts
+ * interface Example {
+ *     name: string;
+ *     value: number;
+ * }
+ *
+ * type ExampleWithOptionalValue = PartialExcludesKeys<Example, 'name'>;
+ *
+ * const example: ExampleWithOptionalValue = {
+ *     // property "name" is required but property "value" is optional
+ *     name : 'x'
+ * };
+ * ```
+ *
+ */
+export type PartialExcludesKeys<T, M extends keyof T> = { [ P in keyof T ]?: T[ P ] } & { [ P in M ]: T[ P ] }
+
+/**
+ * RequiredKeys<Type, KeysUnion>
+ *
+ * Constructs a type consisting of all properties of `Type` but set properties in `KeysUnion` to required.
+ */
+export type RequiredKeys<T, U extends keyof T> = { [ P in U ]-?: T[ P ]; } & T;
+
+/**
+ * RequiredExcludesKeys<Type, KeysUnion>
+ *
+ * Constructs a type consisting of all properties of `Type` and set all properties not in `KeysUnion` to required.
+ */
+export type RequiredExcludesKeys<T, U extends keyof T> = { [ P in Diff<keyof T, U> ]-?: T[ P ]; } & T;
 
 export type Mutable<T> = { -readonly [ P in keyof T ]: T[ P ] }
