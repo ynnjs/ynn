@@ -43,7 +43,11 @@ export type Diff<T, U> = T extends U ? never : T;
  * };
  * ```
  */
-export type PartialKeys<T, M extends keyof T> = { [ P in Diff<keyof T, M> ]: T[ P ] } & { [ P in M ]?: T[ P ] }
+export type PartialKeys<T, M extends keyof T> = {
+    [ P in Diff<keyof T, M> ]: T[ P ];
+} & {
+    [ P in M ]?: T[ P ];
+}
 
 /**
  * PartialExcludesKeys<Type, KeysUnion>
@@ -67,20 +71,30 @@ export type PartialKeys<T, M extends keyof T> = { [ P in Diff<keyof T, M> ]: T[ 
  * ```
  *
  */
-export type PartialExcludesKeys<T, M extends keyof T> = { [ P in keyof T ]?: T[ P ] } & { [ P in M ]: T[ P ] }
+export type PartialExcludesKeys<T, M extends keyof T> = {
+    [ P in keyof T ]?: T[ P ];
+} & {
+    [ P in M ]: T[ P ];
+}
 
 /**
  * RequiredKeys<Type, KeysUnion>
  *
  * Constructs a type consisting of all properties of `Type` but set properties in `KeysUnion` to required.
  */
-export type RequiredKeys<T, U extends keyof T> = { [ P in U ]-?: NonNullable<T[ P ]> } & T;
+export type RequiredKeys<T, U extends keyof T> = {
+    [ P in U ]-?: NonNullable<T[ P ]>;
+} & T;
 
 /**
  * RequiredExcludesKeys<Type, KeysUnion>
  *
  * Constructs a type consisting of all properties of `Type` and set all properties not in `KeysUnion` to required.
  */
-export type RequiredExcludesKeys<T, U extends keyof T> = { [ P in Diff<keyof T, U> ]-?: NonNullable<T[ P ]> } & T;
+export type RequiredExcludesKeys<T, U extends keyof T> = {
+    [ P in Diff<keyof T, U> ]-?: NonNullable<T[ P ]>;
+} & {
+    [ P in U ]: T[ P ];
+};
 
 export type Mutable<T> = { -readonly [ P in keyof T ]: T[ P ] }
