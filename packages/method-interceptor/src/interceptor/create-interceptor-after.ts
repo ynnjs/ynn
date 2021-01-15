@@ -10,10 +10,10 @@
 import { InterceptorAfter, Methods, MethodAfter } from './interceptor.interface';
 import extract from './extract';
 
-function createInterceptorAfter<T extends unknown[], V = unknown>(
+function createInterceptorAfter<T extends unknown[]>(
     descriptor: Readonly<PropertyDescriptor>,
     methods?: Methods<MethodAfter<T>> | undefined
-): InterceptorAfter<T, V> {
+): InterceptorAfter<T> {
 
     /**
      * the returns Promsie object should be resolved with the original value as default
@@ -22,7 +22,7 @@ function createInterceptorAfter<T extends unknown[], V = unknown>(
 
     const bound = extract.after( descriptor, methods );
 
-    return async ( value: V, ...args: T ): Promise<unknown> => {
+    return async ( ...args: T ): Promise<unknown> => {
         let res: unknown = await Promise.resolve( value );
 
         /**

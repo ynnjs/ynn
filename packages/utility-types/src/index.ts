@@ -44,9 +44,9 @@ export type Diff<T, U> = T extends U ? never : T;
  * ```
  */
 export type PartialKeys<T, M extends keyof T> = {
-    [ P in Diff<keyof T, M> ]: T[ P ];
-} & {
     [ P in M ]?: T[ P ];
+} & {
+    [ P in Diff<keyof T, M> ]: T[ P ];
 }
 
 /**
@@ -97,4 +97,33 @@ export type RequiredExcludesKeys<T, U extends keyof T> = {
     [ P in U ]: T[ P ];
 };
 
+export type ReadonlyKeys<T, K extends keyof T> = {
+    readonly [ P in K ]: T[ P ];
+} & {
+    [ P in Diff<keyof T, K> ]: T[ P ];
+}
+
+export type ReadonlyExcludesKeys<T, K extends keyof T> = {
+    readonly [ P in Diff<keyof T, K> ]: T[ P ];
+} & {
+    [ P in K ]: T[ P ];
+}
+
+/**
+ * Mutable<Type>
+ *
+ * Constructs a type with all properties of `Type` and make them mutable.
+ */
 export type Mutable<T> = { -readonly [ P in keyof T ]: T[ P ] }
+
+export type MutableKeys<T, K extends keyof T> = {
+    -readonly [ P in K ]: T[ P ];
+} & {
+    [ P in Diff<keyof T, K> ]: T[ P ];
+}
+
+export type MutableExcludesKeys<T, K extends keyof T> = {
+    -readonly [ P in Diff<keyof T, K> ]: T[ P ];
+} & {
+    [ P in K ]: T[ P ];
+}

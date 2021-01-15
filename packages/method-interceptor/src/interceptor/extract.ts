@@ -38,7 +38,7 @@ import {
  * @returns a list of information of extracted methods
  */
 function extractMethods<T extends Metadata, M>(
-    key: keyof Methods,
+    key: keyof Methods<M>,
     descriptor: Readonly<PropertyDescriptor>,
     methods: Readonly<Methods<M>>
 ): MethodInfo<T, M>[] {
@@ -71,16 +71,16 @@ function extractMethods<T extends Metadata, M>(
  *
  * @return a list of information of extracted methods for *BEFORE INTERCEPTOR*.
  */
-function before( ...args: Readonly<ParametersShift<typeof extractMethods>> ): MethodInfo<MetadataBefore>[] {
+function before( ...args: Readonly<ParametersShift<typeof extractMethods>> ): MethodInfo<MetadataBefore, MethodBefore>[] {
     return extractMethods<MetadataBefore, MethodBefore>( KEY_BEFORE, ...args );
 }
 
 
-function after( ...args: Readonly<ParametersShift<typeof extractMethods>> ): MethodInfo<MetadataAfter>[] {
+function after( ...args: Readonly<ParametersShift<typeof extractMethods>> ): MethodInfo<MetadataAfter, MethodAfter>[] {
     return extractMethods<MetadataAfter, MethodAfter>( KEY_AFTER, ...args );
 }
 
-function exception( ...args: Readonly<ParametersShift<typeof extractMethods>> ): MethodInfo<MetadataException>[] {
+function exception( ...args: Readonly<ParametersShift<typeof extractMethods>> ): MethodInfo<MetadataException, MethodException>[] {
     return extractMethods<MetadataException, MethodException>( KEY_EXCEPTION, ...args );
 }
 
@@ -89,7 +89,7 @@ function exception( ...args: Readonly<ParametersShift<typeof extractMethods>> ):
  */
 function parameter(
     constructor: VariadicClass,
-    methodName: keyof Methods,
+    methodName: keyof Methods<MethodParameter>,
     methods: Readonly<Methods<MethodParameter>>
 ): PartialKeys<MethodInfo<MetadataParameter, MethodParameter>, 'method'>[] {
 

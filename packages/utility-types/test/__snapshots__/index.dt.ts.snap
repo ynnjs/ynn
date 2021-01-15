@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> should remove the first item in parameters (type) should match snapshot 1`] = `"any"`;
+
+exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> should return empty parameter list (type) should match snapshot 1`] = `"any"`;
+
+exports[`PartialExcludesKeys<T, M extends keyof T> should make all other keys optional (type) should match snapshot 1`] = `"any"`;
+
+exports[`PartialKeys<T, M extends keyof T> should make all specific keys optional (type) should match snapshot 1`] = `"any"`;
+
 exports[`VariadicClass<P = any[], T = any> default arguments (type) should match snapshot 1`] = `"typeof c1"`;
 
 exports[`VariadicClass<P = any[], T = any> specific arguments (type) should match snapshot 1`] = `"VariadicClass<[string, number], X>"`;
