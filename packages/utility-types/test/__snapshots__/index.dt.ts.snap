@@ -4,15 +4,27 @@ exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> s
 
 exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> should return empty parameter list (type) should match snapshot 1`] = `"any"`;
 
+exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> the return type should be an empty array (type) should match snapshot 1`] = `
+"Type '[any]' is not assignable to type '[]'.
+  Source has 1 element(s) but target allows only 0."
+`;
+
 exports[`PartialExcludesKeys<T, M extends keyof T> should make all other keys optional (type) should match snapshot 1`] = `"any"`;
 
 exports[`PartialKeys<T, M extends keyof T> should make all specific keys optional (type) should match snapshot 1`] = `"any"`;
+
+exports[`RequiredExcludesKeys<T, U extends keyof T> const b: RequiredExcludesKeys<O, 'name' | 'age'> = { name : 'x', age : 1 } (type) should match snapshot 1`] = `
+"Type '{ name: string; age: number; }' is not assignable to type 'RequiredExcludesKeys<O, \\"name\\" | \\"age\\">'.
+  Property 'sex' is missing in type '{ name: string; age: number; }' but required in type 'Required<Pick<O, \\"sex\\">>'."
+`;
 
 exports[`VariadicClass<P = any[], T = any> default arguments (type) should match snapshot 1`] = `"typeof c1"`;
 
 exports[`VariadicClass<P = any[], T = any> specific arguments (type) should match snapshot 1`] = `"VariadicClass<[string, number], X>"`;
 
 exports[`VariadicClass<P = any[], T = any> specific arguments (type) should match snapshot 2`] = `"typeof c2"`;
+
+exports[`VariadicClass<P = any[], T = any> the first arguments should be a type extends from any[] (type) should match snapshot 1`] = `"Type 'string' does not satisfy the constraint 'any[]'."`;
 
 exports[`VariadicClass<P = any[], T = any> variadic arguments and return type (type) should match snapshot 1`] = `"VariadicClass<any[], any>"`;
 
@@ -23,3 +35,9 @@ exports[`VariadicFunction<P = any[], R = any> default arguments (type) should ma
 exports[`VariadicFunction<P = any[], R = any> specific arguments (type) should match snapshot 1`] = `"VariadicFunction<[string, number], number>"`;
 
 exports[`VariadicFunction<P = any[], R = any> specific arguments (type) should match snapshot 2`] = `"(a: string, b: number) => number"`;
+
+exports[`VariadicFunction<P = any[], R = any> the first argument should be a type extends from any[] (type) should match snapshot 1`] = `"Type 'string' does not satisfy the constraint 'any[]'."`;
+
+exports[`WritableExcludesKeys<T, K extends keyof T> a.name = 'y' (type) should match snapshot 1`] = `"Cannot assign to 'name' because it is a read-only property."`;
+
+exports[`WritableKeys<T, K extends keyof T> a.age = 2 (type) should match snapshot 1`] = `"Cannot assign to 'age' because it is a read-only property."`;
