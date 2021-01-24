@@ -17,7 +17,6 @@
  * ```
  */
 export const KEY_BEFORE = Symbol( 'key#before' );
-
 /**
  * metadata key for `after` interceptor.
  *

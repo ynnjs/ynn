@@ -80,10 +80,7 @@ module.exports = {
                         selector: ['variable', 'function']
                     }],
                 '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
-                /**
-                 * disable @typescript-eslint/no-confusing-void-expression cuz of bad performance
-                 */
-                // '@typescript-eslint/no-confusing-void-expression' : [ 'error' ],
+                '@typescript-eslint/no-confusing-void-expression': ['error'],
                 '@typescript-eslint/no-dynamic-delete': ['error'],
                 '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
                 '@typescript-eslint/no-floating-promises': ['error'],
@@ -97,9 +94,6 @@ module.exports = {
                 '@typescript-eslint/non-nullable-type-assertion-style': ['error'],
                 '@typescript-eslint/prefer-nullish-coalescing': ['error'],
                 '@typescript-eslint/prefer-optional-chain': ['error'],
-                /**
-                 * disable @typescript-eslint/prefer-readonly-parameter-types cuz of the bad performance
-                 */
                 // '@typescript-eslint/prefer-readonly-parameter-types' : [ 'error' ],
                 '@typescript-eslint/prefer-reduce-type-parameter': ['error'],
                 '@typescript-eslint/prefer-string-starts-ends-with': ['error'],
@@ -152,7 +146,7 @@ module.exports = {
                 '@typescript-eslint/no-empty-function': 'off',
                 '@typescript-eslint/no-floating-promises': 'off',
                 '@typescript-eslint/explicit-function-return-type': 'off',
-                '@typescript-eslint/prefer-readonly-parameter-types': 'off'
+                '@typescript-eslint/no-non-null-assertion': 'off'
             }
         }]
 };

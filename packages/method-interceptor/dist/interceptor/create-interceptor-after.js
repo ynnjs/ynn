@@ -11,14 +11,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const extract_1 = __importDefault(require("./extract"));
+const constants_1 = require("../constants");
+const extract_methods_1 = __importDefault(require("./extract-methods"));
+/**
+ * @typeparam T
+ * @typeparam V
+ *
+ * @returns
+ */
 function createInterceptorAfter(descriptor, methods) {
     /**
      * the returns Promsie object should be resolved with the original value as default
      */
-    if (!methods)
-        return async (value) => Promise.resolve(value);
-    const bound = extract_1.default.after(descriptor, methods);
+    if (!methods) {
+        return async (value, ...args) => Promise.resolve(value); // eslint-disable-line @typescript-eslint/no-unused-vars
+    }
+    const bound = extract_methods_1.default(constants_1.KEY_AFTER, descriptor, methods);
     return async (value, ...args) => {
         let res = await Promise.resolve(value);
         /**

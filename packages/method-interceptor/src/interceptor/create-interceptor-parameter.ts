@@ -8,18 +8,40 @@
  ******************************************************************/
 
 import { VariadicClass } from '@ynn/utility-types';
-import { InterceptorParameter, Methods } from './interceptor.interface';
-import extract from './extract';
+import { KEY_PARAMETER } from '../constants';
+import { MetadataParameter } from '../metadata.interface';
+import { InterceptorParameter, Methods, MethodParameterInfo, MethodParameter } from './interceptor.interface';
 
-function createInterceptorParameter<T>( constructor: VariadicClass, methodName: string, methods?: Methods | undefined ): InterceptorParameter<T> {
+function createInterceptorParameter<T extends unknown[]>(
+    constructor: VariadicClass,
+    methodName: string,
+    methods?: Readonly<Methods<MethodParameter<T>>>
+): InterceptorParameter<T> {
 
-    const bound = extract.parameter( constructor, methodName, methods );
+    const bound: MethodParameterInfo<MethodParameter<T>>[] = [];
+    const metadatas: ( MetadataParameter | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName ) || [];
 
-    return async ( ...args ): Promise<unknown[]> => {
-        const promises = [];
+    Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName ).forEach( ( paramtype: unknown, i: number ) => {
+        const metadata = metadatas[ i ];
+
+        if( !metadata ) {
+            bound.push( { metadata : { paramtype } } );
+        } else {
+            const method = methods?.[ metadata.type ];
+
+            if( !Object.prototype.hasOwnProperty.call( methods, metadata.type ) ) {
+                throw new Error( `method ${metadata.type} not exists in the method list` );
+            }
+
+            bound.push( { method, metadata : { ...metadata, paramtype } } );
+        }
+    } );
+
+    return async ( ...args: T ): Promise<unknown[]> => {
+        const promises: Promise<unknown>[] = [];
 
         bound.forEach( ( info ) => {
-            promises.push( info.method( info.metadata, ...args ) );
+            promises.push( info.method?.( info.metadata, ...args ) ?? Promise.resolve( null ) );
         } );
 
         return Promise.all( promises );

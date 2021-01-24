@@ -7,29 +7,39 @@
  * Description:
  ******************************************************************/
 
+import { KEY_AFTER } from '../constants';
+import { MetadataAfter } from '../metadata.interface';
 import { InterceptorAfter, Methods, MethodAfter } from './interceptor.interface';
-import extract from './extract';
+import extractMethods from './extract-methods';
 
-function createInterceptorAfter<T extends unknown[]>(
+/**
+ * @typeparam T
+ * @typeparam V
+ *
+ * @returns
+ */
+function createInterceptorAfter<V = unknown, T extends unknown[] = unknown[]>(
     descriptor: Readonly<PropertyDescriptor>,
-    methods?: Methods<MethodAfter<T>> | undefined
-): InterceptorAfter<T> {
+    methods?: Readonly<Methods<MethodAfter<T>>>
+): InterceptorAfter<V, T> {
 
     /**
      * the returns Promsie object should be resolved with the original value as default
      */
-    if( !methods ) return async <P>( value: P ): Promise<P> => Promise.resolve( value );
+    if( !methods ) {
+        return async <P>( value: P, ...args: T ): Promise<P> => Promise.resolve( value ); // eslint-disable-line @typescript-eslint/no-unused-vars
+    }
 
-    const bound = extract.after( descriptor, methods );
+    const bound = extractMethods( KEY_AFTER, descriptor, methods );
 
-    return async ( ...args: T ): Promise<unknown> => {
+    return async ( value: V, ...args: T ): Promise<unknown> => {
         let res: unknown = await Promise.resolve( value );
 
         /**
          * the methods shoule be called in sequence
          */
         for( const info of bound ) {
-            res = await info.method( info.metadata, res, ...args ); // eslint-disable-line no-await-in-loop
+            res = await info.method( info.metadata as MetadataAfter, res, ...args ); // eslint-disable-line no-await-in-loop
         }
 
         return res;

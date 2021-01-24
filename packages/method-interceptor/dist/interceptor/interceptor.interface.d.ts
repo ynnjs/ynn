@@ -16,19 +16,19 @@ export interface MethodBefore<T extends unknown[]> {
      * @param metadaat - {@link MetadataBefore}
      * @param ...args - other arguments for the method
      */
-    (metadata: Readonly<MetadataBefore>, ...args: T): Promise<unknown>;
+    (metadata: Readonly<MetadataBefore>, ...args: T): unknown;
 }
 /**
  * The interface of methods the will be called by `InterceptorAfter`.
  *
  */
-export interface MethodAfter<T extends unknown[]> {
+export interface MethodAfter<V, T extends unknown[]> {
     /**
      * @param value - the return value of the target method.
      * @param metadata - {@link MetadataAfter}
      * @param ...args - other arguments
      */
-    (value: unknown, metadata: Readonly<MetadataAfter>, ...args: T): Promise<unknown>;
+    (metadata: Readonly<MetadataAfter>, value: V, ...args: T): unknown;
 }
 /**
  * the interface of methods for catch exceptions for interceptors.
@@ -44,7 +44,7 @@ export interface MethodException<T extends unknown[]> {
      *
      * @return a Promise object.
      */
-    (e: unknown, metadata: Readonly<MetadataException>, ...args: T): Promise<unknown>;
+    (metadata: Readonly<MetadataException>, e: unknown, ...args: T): unknown;
 }
 export interface MethodParameter<T extends unknown[]> {
     /**
@@ -78,7 +78,7 @@ export interface MethodInfo<T, M> {
 export interface InterceptorBefore<T extends unknown[]> {
     (...args: T): Promise<unknown>;
 }
-export interface InterceptorAfter<T extends unknown[], V> {
+export interface InterceptorAfter<V, T extends unknown[]> {
     (value: V, ...args: T): Promise<unknown>;
 }
 export interface InterceptorException<T extends unknown[]> {

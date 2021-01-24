@@ -7,6 +7,6 @@
  * Description:
  ******************************************************************/
 import { VariadicClass } from '@ynn/utility-types';
-import { InterceptorParameter, Methods } from './interceptor.interface';
-declare function createInterceptorParameter<T>(constructor: VariadicClass, methodName: string, methods?: Methods | undefined): InterceptorParameter<T>;
+import { InterceptorParameter, Methods, MethodParameter } from './interceptor.interface';
+declare function createInterceptorParameter<T>(constructor: VariadicClass, methodName: string, methods?: Readonly<Methods<MethodParameter<T>>>): InterceptorParameter<T>;
 export default createInterceptorParameter;

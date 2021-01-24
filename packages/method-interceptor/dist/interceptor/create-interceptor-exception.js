@@ -11,18 +11,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const extract_1 = __importDefault(require("./extract"));
+const constants_1 = require("../constants");
+const extract_methods_1 = __importDefault(require("./extract-methods"));
 function createInterceptorException(descriptor, methods) {
     /**
      * throw the exception directly if there is no methods provided.
      */
-    if (!methods)
-        return (e) => { throw e; };
-    const bound = extract_1.default.exception(descriptor, methods);
+    if (!methods) {
+        return async (e, ...args) => {
+            throw e;
+        };
+    }
+    const bound = extract_methods_1.default(constants_1.KEY_EXCEPTION, descriptor, methods);
     return async (e, ...args) => {
         for (const info of bound) {
-            if (info.metadata.exceptionType === undefined || e instanceof info.metadata.type) {
-                return info.method(e, info.metadata, ...args);
+            const metadata = info.metadata;
+            if (metadata.exceptionType === undefined || e instanceof metadata.exceptionType) {
+                return info.method(metadata, e, ...args);
             }
         }
         throw e;

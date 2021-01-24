@@ -1987,6 +1987,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/method-interceptor/",
           "packageDependencies": [
             ["@ynn/method-interceptor", "workspace:packages/method-interceptor"],
+            ["@lvchengbin/is", "npm:1.0.5"],
             ["@types/jest", "npm:26.0.19"],
             ["@types/node", "npm:14.14.16"],
             ["@typescript-eslint/eslint-plugin", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.11.1"],
@@ -1994,6 +1995,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@ynn/eslint-plugin", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#workspace:packages/eslint-plugin"],
             ["@ynn/utility-types", "workspace:packages/utility-types"],
             ["eslint", "npm:7.17.0"],
+            ["eslint_d", "npm:9.1.2"],
             ["jest", "npm:26.6.3"],
             ["jest-extended", "npm:0.11.5"],
             ["reflect-metadata", "npm:0.1.13"],
@@ -2031,6 +2033,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.16"],
             ["@typescript-eslint/eslint-plugin", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.11.1"],
             ["@typescript-eslint/parser", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#npm:4.11.1"],
+            ["@ynn/eslint-plugin", "virtual:2b5dd452572f146fa92252869fb8e838a3c16a02baaa0ce5dffffcd8e0f069f3928635a4d8f2654eb27793303caafdeaa0e9f221a7467932286c1f57919e67c7#workspace:packages/eslint-plugin"],
             ["dts-jest", "virtual:b719b908d6b285cdcc4a146e94157a7946ece5bef9b83f6710d01a12642f3b6868b25b1e9044a3dda79be78237bfe11cdf05f4b18c43a6fad36d9bb5c43a4592#npm:23.3.0"],
             ["eslint", "npm:7.17.0"],
             ["jest", "npm:26.6.3"],

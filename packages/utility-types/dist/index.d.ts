@@ -13,15 +13,11 @@ export declare type VariadicFunction<P extends any[] = any[], R = any> = (...arg
 export declare type VariadicClass<P extends any[] = any[], T = any> = new (...args: P) => T;
 export declare type ParametersShift<T extends VariadicFunction> = ((...args: Parameters<T>) => any) extends ((_: any, ...args: infer U) => any) ? U : [];
 /**
- * Diff<Type, UnionTypes>
- */
-export declare type Diff<T, U> = T extends U ? never : T;
-/**
- * PartialKeys<Type, Keys>
+ * PartialKeys<Type, KeysUnion>
  *
- * Constructs a type with all properties of `Type` and setspecific `Keys` to `optional`.
+ * Constructs a type with all properties of `Type` and set keys in `KeysUnion` to `optional`.
  *
- * @example:
+ * @example
  *
  * ```ts
  * interface Example {
@@ -29,19 +25,58 @@ export declare type Diff<T, U> = T extends U ? never : T;
  *     value: number;
  * }
  *
- * type ExampleWithOptionalValue = PartialKeys<Example, 'name'>;
+ * type ExampleWithOptionalValue = PartialKeys<Example, 'value'>;
+ *
+ * const example: ExampleWithOptionalValue = {
+ *     // property "name" is still required but property "value" is optional
+ *     name : 'x'
+ * };
  * ```
  */
-export declare type PartialKeys<T, M extends keyof T> = {
-    [P in Diff<keyof T, M>]: T[P];
-} & {
-    [P in M]?: T[P];
-};
-export declare type PartialExclude<T, M extends keyof T> = {
-    [P in keyof T]?: T[P];
-} & {
-    [P in M]: T[P];
-};
-export declare type Mutable<T> = {
+export declare type PartialKeys<T, M extends keyof T> = Omit<T, M> & Partial<Pick<T, M>>;
+/**
+ * PartialExcludesKeys<Type, KeysUnion>
+ *
+ * Constructs a type with all properties of `Type` and set properties to `optional` except keys in `KeysUnion`.
+ *
+ * @example
+ *
+ * ```ts
+ * interface Example {
+ *     name: string;
+ *     value: number;
+ * }
+ *
+ * type ExampleWithOptionalValue = PartialExcludesKeys<Example, 'name'>;
+ *
+ * const example: ExampleWithOptionalValue = {
+ *     // property "name" is required but property "value" is optional
+ *     name : 'x'
+ * };
+ * ```
+ */
+export declare type PartialExcludesKeys<T, M extends keyof T> = Partial<Omit<T, M>> & Pick<T, M>;
+/**
+ * RequiredKeys<Type, KeysUnion>
+ *
+ * Constructs a type consisting of all properties of `Type` but set properties in `KeysUnion` to required.
+ */
+export declare type RequiredKeys<T, U extends keyof T> = Required<Pick<T, U>> & Omit<T, U>;
+/**
+ * RequiredExcludesKeys<Type, KeysUnion>
+ *
+ * Constructs a type consisting of all properties of `Type` and set all properties not in `KeysUnion` to required.
+ */
+export declare type RequiredExcludesKeys<T, U extends keyof T> = Required<Omit<T, U>> & Pick<T, U>;
+export declare type ReadonlyKeys<T, K extends keyof T> = Readonly<Pick<T, K>> & Omit<T, K>;
+export declare type ReadonlyExcludesKeys<T, K extends keyof T> = Readonly<Omit<T, K>> & Pick<T, K>;
+/**
+ * Writable<Type>
+ *
+ * Constructs a type with all properties of `Type` and make them mutable.
+ */
+export declare type Writable<T> = {
     -readonly [P in keyof T]: T[P];
 };
+export declare type WritableKeys<T, K extends keyof T> = Writable<Pick<T, K>> & Omit<T, K>;
+export declare type WritableExcludesKeys<T, K extends keyof T> = Writable<Omit<T, K>> & Pick<T, K>;

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: test/index.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/27/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 /* eslint @typescript-eslint/no-unused-vars: 'off' */
@@ -24,7 +24,8 @@ import {
 } from '../src';
 
 function testType<T>(): T {
-    return undefined as any;
+    return undefined as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+
 }
 
 // @dts-jest:group VariadicFunction<P = any[], R = any>
@@ -62,7 +63,7 @@ function testType<T>(): T {
 
     interface O {
         c1?: VariadicClass;
-        c2?: VariadicClass<[string, number], X>
+        c2?: VariadicClass<[string, number], X>;
     }
 
     const o: O = {};
@@ -74,21 +75,21 @@ function testType<T>(): T {
     testType<VariadicClass<[string, number], X>>();
 
     // @dts-jest:pass:snap default arguments
-    o.c1 = class {}
+    o.c1 = class {};
 
     // @dts-jest:pass:snap specific arguments
     o.c2 = class {
         constructor( public name: string, public age: number ) {}
-    }
+    };
 
     // @dts-jest:fail:snap the first arguments should be a type extends from any[]
     type A = VariadicClass<string>;
 
     // @dts-jest:pass
-    const b: VariadicClass<any[], Promise<any>> = Promise;
+    const b: VariadicClass<unknown[], Promise<unknown>> = Promise;
 
     // @dts-jest:pass
-    const c: VariadicClass<any[], Promise<string>> = class extends Promise<string> {};
+    const c: VariadicClass<unknown[], Promise<string>> = class extends Promise<string> {};
 }
 
 // @dts-jest:group ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]>
@@ -109,7 +110,7 @@ function testType<T>(): T {
 
     let a: unknown;
     // @dts-jest:fail:snap the return type should be an empty array
-    const b: ParametersShift<()=>any> = [ a as any ];
+    const b: ParametersShift<() => void> = [ a as unknown ];
 }
 
 // @dts-jest:group PartialKeys<T, M extends keyof T>
@@ -121,13 +122,13 @@ function testType<T>(): T {
     }
 
     // @dts-jest:fail
-    const a: PartialKeys<O, 'name' | 'age'> = {}
+    const a: PartialKeys<O, 'name' | 'age'> = {};
 
     // @dts-jest:fail
-    const b: PartialKeys<O, 'name' | 'age'> = { name : 'x' }
+    const b: PartialKeys<O, 'name' | 'age'> = { name : 'x' };
 
     // @dts-jest:pass:snap should make all specific keys optional
-    const c: PartialKeys<O, 'name' | 'age'> = { sex : 1 }
+    const c: PartialKeys<O, 'name' | 'age'> = { sex : 1 };
 
     interface P {
         name?: string;
@@ -148,13 +149,13 @@ function testType<T>(): T {
     }
 
     // @dts-jest:fail
-    const a: PartialExcludesKeys<O, 'name' | 'age'> = {}
+    const a: PartialExcludesKeys<O, 'name' | 'age'> = {};
 
     // @dts-jest:fail
-    const b: PartialExcludesKeys<O, 'name' | 'age'> = { name : 'x' }
+    const b: PartialExcludesKeys<O, 'name' | 'age'> = { name : 'x' };
 
     // @dts-jest:pass:snap should make all other keys optional
-    const c: PartialExcludesKeys<O, 'name' | 'age'> = { name : 'x', age : 1 }
+    const c: PartialExcludesKeys<O, 'name' | 'age'> = { name : 'x', age : 1 };
 
     interface P {
         name?: string;
@@ -175,16 +176,16 @@ function testType<T>(): T {
     }
 
     // @dts-jest:fail should have required properties
-    const a: RequiredKeys<O, 'name' | 'age'> = {}
+    const a: RequiredKeys<O, 'name' | 'age'> = {};
 
     // @dts-jest:fail should have required properties
-    const b: RequiredKeys<O, 'name' | 'age'> = { name : 'x' }
+    const b: RequiredKeys<O, 'name' | 'age'> = { name : 'x' };
 
     // @dts-jest:pass
-    const c: RequiredKeys<O, 'name' | 'age'> = { name : 'x', age : 1 }
+    const c: RequiredKeys<O, 'name' | 'age'> = { name : 'x', age : 1 };
 
     // @dts-jest:pass
-    const d: RequiredKeys<O, 'name' | 'age'> = { name : 'x', age : 1, sex : 1 }
+    const d: RequiredKeys<O, 'name' | 'age'> = { name : 'x', age : 1, sex : 1 };
 }
 
 // @dts-jest:group RequiredExcludesKeys<T, U extends keyof T>
@@ -196,13 +197,13 @@ function testType<T>(): T {
     }
 
     // @dts-jest:fail
-    const a: RequiredExcludesKeys<O, 'name' | 'age'> = {}
+    const a: RequiredExcludesKeys<O, 'name' | 'age'> = {};
 
     // @dts-jest:fail:snap
-    const b: RequiredExcludesKeys<O, 'name' | 'age'> = { name : 'x', age : 1 }
+    const b: RequiredExcludesKeys<O, 'name' | 'age'> = { name : 'x', age : 1 };
 
     // @dts-jest:pass
-    const c: RequiredExcludesKeys<O, 'name' | 'age'> = { sex : 1 }
+    const c: RequiredExcludesKeys<O, 'name' | 'age'> = { sex : 1 };
 }
 
 // @dts-jest:group ReadonlyKeys<T, K extends keyof T>
@@ -230,7 +231,7 @@ function testType<T>(): T {
         readonly age: number;
     }
 
-    const a: Writable<O> = { name : 'x', age : 1 }
+    const a: Writable<O> = { name : 'x', age : 1 };
 
     // @dts-jest:pass
     a.name = 'y'; a.age = 2;
@@ -245,7 +246,7 @@ function testType<T>(): T {
         sex: number;
     }
 
-    const a: WritableKeys<O, 'name'> = { name : 'x', age : 1, sex : 1 }
+    const a: WritableKeys<O, 'name'> = { name : 'x', age : 1, sex : 1 };
 
     // @dts-jest:pass
     a.name = 'y';
@@ -259,14 +260,13 @@ function testType<T>(): T {
 
 // @dts-jest:group WritableExcludesKeys<T, K extends keyof T>
 {
-
     interface O {
         readonly name: string;
         readonly age: number;
         sex: number;
     }
 
-    const a: WritableExcludesKeys<O, 'name'> = { name : 'x', age : 1, sex : 1 }
+    const a: WritableExcludesKeys<O, 'name'> = { name : 'x', age : 1, sex : 1 };
 
     // @dts-jest:fail:snap
     a.name = 'y';

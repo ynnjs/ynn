@@ -5,7 +5,7 @@ exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> s
 exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> should return empty parameter list (type) should match snapshot 1`] = `"any"`;
 
 exports[`ParametersTail<T extends VariadicFunction, M extends any[] = [ any ]> the return type should be an empty array (type) should match snapshot 1`] = `
-"Type '[any]' is not assignable to type '[]'.
+"Type '[unknown]' is not assignable to type '[]'.
   Source has 1 element(s) but target allows only 0."
 `;
 

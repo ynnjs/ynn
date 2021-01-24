@@ -1602,6 +1602,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ynn/method-interceptor@workspace:packages/method-interceptor"
   dependencies:
+    "@lvchengbin/is": ^1.0.5
     "@types/jest": ^26.0.19
     "@types/node": ^14.14.16
     "@typescript-eslint/eslint-plugin": ^4.11.1
@@ -1609,6 +1610,7 @@ __metadata:
     "@ynn/eslint-plugin": "workspace:packages/eslint-plugin"
     "@ynn/utility-types": "workspace:packages/utility-types"
     eslint: ^7.17.0
+    eslint_d: ^9.1.2
     jest: ^26.6.3
     jest-extended: ^0.11.5
     reflect-metadata: ^0.1.13
@@ -1644,6 +1646,7 @@ __metadata:
     "@types/node": ^14.14.16
     "@typescript-eslint/eslint-plugin": ^4.11.1
     "@typescript-eslint/parser": ^4.11.1
+    "@ynn/eslint-plugin": "workspace:packages/eslint-plugin"
     dts-jest: ^23.3.0
     eslint: ^7.17.0
     jest: ^26.6.3

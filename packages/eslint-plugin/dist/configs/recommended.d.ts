@@ -69,9 +69,7 @@ declare const _default: {
                 selector: string[];
             })[];
             '@typescript-eslint/no-confusing-non-null-assertion': string[];
-            /**
-             * disable @typescript-eslint/no-confusing-void-expression cuz of bad performance
-             */
+            '@typescript-eslint/no-confusing-void-expression': string[];
             '@typescript-eslint/no-dynamic-delete': string[];
             '@typescript-eslint/no-empty-interface': (string | {
                 allowSingleExtends: boolean;
@@ -87,9 +85,6 @@ declare const _default: {
             '@typescript-eslint/non-nullable-type-assertion-style': string[];
             '@typescript-eslint/prefer-nullish-coalescing': string[];
             '@typescript-eslint/prefer-optional-chain': string[];
-            /**
-             * disable @typescript-eslint/prefer-readonly-parameter-types cuz of the bad performance
-             */
             '@typescript-eslint/prefer-reduce-type-parameter': string[];
             '@typescript-eslint/prefer-string-starts-ends-with': string[];
             '@typescript-eslint/prefer-ts-expect-error': string[];
@@ -155,7 +150,7 @@ declare const _default: {
             })[];
             'class-methods-use-this'?: undefined;
             '@typescript-eslint/no-empty-function'?: undefined;
-            '@typescript-eslint/prefer-readonly-parameter-types'?: undefined;
+            '@typescript-eslint/no-non-null-assertion'?: undefined;
         };
     } | {
         files: string[];
@@ -164,7 +159,7 @@ declare const _default: {
             '@typescript-eslint/no-empty-function': string;
             '@typescript-eslint/no-floating-promises': string;
             '@typescript-eslint/explicit-function-return-type': string;
-            '@typescript-eslint/prefer-readonly-parameter-types': string;
+            '@typescript-eslint/no-non-null-assertion': string;
             'brace-style'?: undefined;
             'comma-dangle'?: undefined;
             'comma-spacing'?: undefined;
@@ -187,9 +182,7 @@ declare const _default: {
             '@typescript-eslint/method-signature-style'?: undefined;
             '@typescript-eslint/naming-convention'?: undefined;
             '@typescript-eslint/no-confusing-non-null-assertion'?: undefined;
-            /**
-             * disable @typescript-eslint/no-confusing-void-expression cuz of bad performance
-             */
+            '@typescript-eslint/no-confusing-void-expression'?: undefined;
             '@typescript-eslint/no-dynamic-delete'?: undefined;
             '@typescript-eslint/no-empty-interface'?: undefined;
             '@typescript-eslint/no-for-in-array'?: undefined;
@@ -202,9 +195,6 @@ declare const _default: {
             '@typescript-eslint/non-nullable-type-assertion-style'?: undefined;
             '@typescript-eslint/prefer-nullish-coalescing'?: undefined;
             '@typescript-eslint/prefer-optional-chain'?: undefined;
-            /**
-             * disable @typescript-eslint/prefer-readonly-parameter-types cuz of the bad performance
-             */
             '@typescript-eslint/prefer-reduce-type-parameter'?: undefined;
             '@typescript-eslint/prefer-string-starts-ends-with'?: undefined;
             '@typescript-eslint/prefer-ts-expect-error'?: undefined;

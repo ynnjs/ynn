@@ -10,15 +10,9 @@ import { InterceptorBefore, Methods, MethodBefore } from './interceptor.interfac
 /**
  * create an empty interceptor method with methods is undefined.
  *
- * @example
- *
- * ```ts
- * createInterceptorBefore<T>()
- * ```
- *
  * @typeparam T - the type of the arguments that will passed to the generated interceptor methods.
  *
  * @returns a `Promise` object that resolves nothing.
  */
-declare function createInterceptorBefore<T extends unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Methods<MethodBefore<T>> | undefined): InterceptorBefore<T>;
+declare function createInterceptorBefore<T extends unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Readonly<Methods<MethodBefore<T>>>): InterceptorBefore<T>;
 export default createInterceptorBefore;

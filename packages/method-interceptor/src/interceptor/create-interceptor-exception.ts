@@ -7,26 +7,34 @@
  * Description:
  ******************************************************************/
 
+import { KEY_EXCEPTION } from '../constants';
+import { MetadataException } from '../metadata.interface';
 import { InterceptorException, Methods, MethodException } from './interceptor.interface';
-import extract from './extract';
+import extractMethods from './extract-methods';
 
-function createInterceptorException<T>(
+function createInterceptorException<T extends unknown[]>(
     descriptor: Readonly<PropertyDescriptor>,
-    methods?: Readonly<Methods<MethodException>> | undefined
+    methods?: Readonly<Methods<MethodException<T>>>
 ): InterceptorException<T> {
 
     /**
      * throw the exception directly if there is no methods provided.
      */
-    if( !methods ) return ( e: unknown ): void => { throw e };
+    if( !methods ) {
+        return async ( e: unknown, ...args: T ): Promise<unknown> => { // eslint-disable-line @typescript-eslint/no-unused-vars
+            throw e;
+        };
+    }
 
-    const bound = extract.exception( descriptor, methods );
+    const bound = extractMethods( KEY_EXCEPTION, descriptor, methods );
 
     return async ( e, ...args ): Promise<unknown> => {
 
         for( const info of bound ) {
-            if( info.metadata.exceptionType === undefined || e instanceof info.metadata.type ) {
-                return info.method( e, info.metadata, ...args );
+            const metadata = info.metadata as MetadataException;
+
+            if( metadata.exceptionType === undefined || e instanceof metadata.exceptionType ) {
+                return info.method( metadata, e, ...args );
             }
         }
 

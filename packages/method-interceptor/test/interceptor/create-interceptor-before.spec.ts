@@ -10,28 +10,28 @@
 import 'reflect-metadata';
 import { createInterceptorBefore, KEY_BEFORE, MetadataBefore } from '../../src';
 
-describe( 'interceptor/create-method-before', () => {
+describe( 'interceptor/create-interceptor-before', () => {
     it( 'should created a function', () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         expect( createInterceptorBefore<[]>( descriptor, {} ) ).toBeInstanceOf( Function );
     } );
 
     it( 'should return a Promise object by the created function', () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         expect( createInterceptorBefore<[]>( descriptor, {} )() ).toBeInstanceOf( Promise );
     } );
 
     it( 'should return a Promise object which resolves with an empty array by the created function if no methods is given', async () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         return expect( createInterceptorBefore<[]>( descriptor )() ).resolves.toEqual( [] );
     } );
 
     it( 'should have called the corresponding methods', async () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         const fn = jest.fn();
         const methods = { fn };
         const metadata: MetadataBefore[] = [ {
@@ -47,7 +47,7 @@ describe( 'interceptor/create-method-before', () => {
 
     it( 'should have called methods with default arguments', async () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         const fn = jest.fn();
         const methods = { fn };
         const metadata: MetadataBefore[] = [ {
@@ -66,7 +66,7 @@ describe( 'interceptor/create-method-before', () => {
 
     it( 'should have called methods with given arguments', async () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         const fn = jest.fn();
         const methods = { fn };
         const metadata: MetadataBefore[] = [ {
@@ -85,7 +85,7 @@ describe( 'interceptor/create-method-before', () => {
 
     it( 'should return a Promise object with expected values', async () => {
         const o = { x() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' );
+        const descriptor = Reflect.getOwnPropertyDescriptor( o, 'x' )!;
         const methods = {
             fn1 : () => 'fn1',
             fn2 : () => 'fn2',
@@ -97,11 +97,8 @@ describe( 'interceptor/create-method-before', () => {
             { type : 'fn3', interceptorType : 'before' }
         ];
 
-        if( descriptor ) {
-            Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
-            const before = createInterceptorBefore<[]>( descriptor, methods );
-            return expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
-        }
-        throw new TypeError( 'Cannot get descriptor' );
+        Reflect.defineMetadata( KEY_BEFORE, metadata, descriptor.value );
+        const before = createInterceptorBefore<[]>( descriptor, methods );
+        return expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
     } );
 } );

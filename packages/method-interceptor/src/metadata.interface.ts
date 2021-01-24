@@ -115,5 +115,5 @@ export interface MetadataParameter extends Metadata {
     /**
      * the metadata type of the parameter.
      */
-    paramtype: unknown;
+    // paramtype: unknown;
 }

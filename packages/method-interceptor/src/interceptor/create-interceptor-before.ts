@@ -7,17 +7,13 @@
  * Description:
  ******************************************************************/
 
+import { MetadataBefore } from '../metadata.interface';
+import { KEY_BEFORE } from '../constants';
 import { InterceptorBefore, Methods, MethodBefore } from './interceptor.interface';
-import extract from './extract';
+import extractMethods from './extract-methods';
 
 /**
  * create an empty interceptor method with methods is undefined.
- *
- * @example
- *
- * ```ts
- * createInterceptorBefore<T>()
- * ```
  *
  * @typeparam T - the type of the arguments that will passed to the generated interceptor methods.
  *
@@ -25,18 +21,18 @@ import extract from './extract';
  */
 function createInterceptorBefore<T extends unknown[]>(
     descriptor: Readonly<PropertyDescriptor>,
-    methods?: Methods<MethodBefore<T>> | undefined
+    methods?: Readonly<Methods<MethodBefore<T>>>
 ): InterceptorBefore<T> {
 
     if( !methods ) return async (): Promise<[]> => Promise.resolve( [] );
 
-    const bound = extract.before( descriptor, methods );
+    const bound = extractMethods( KEY_BEFORE, descriptor, methods );
 
     return async ( ...args: T ): Promise<unknown[]> => {
-        const promises = [];
+        const promises: unknown[] = [];
 
-        bound.forEach( ( info ) => {
-            promises.push( info.method( info.metadata, ...args ) );
+        bound.forEach( info => {
+            promises.push( info.method( info.metadata as MetadataBefore, ...args ) );
         } );
 
         return Promise.all( promises );
