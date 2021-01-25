@@ -51,7 +51,7 @@ export function createActionDecorator( type: string, propertyOrPipe?: string | P
 
             Reflect.defineMetadata( ACTION_PARAMETER_METADATA_KEY, args, target.constructor, key );
         } else {
-            const args: ActionMethodMetadata[] = Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, indexOrDescriptor.value ) || [];
+            const args: ActionInterceptorMetadata[] = Reflect.getMetadata( ACTION_METHOD_METADATA_KEY, indexOrDescriptor.value ) || [];
             args.push( { type, property, pipe } );
             Reflect.defineMetadata( ACTION_METHOD_METADATA_KEY, args, indexOrDescriptor.value );
         }

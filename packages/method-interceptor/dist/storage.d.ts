@@ -1,0 +1,18 @@
+/******************************************************************
+ * Copyright (C) 2021 LvChengbin
+ *
+ * File: src/storage.ts
+ * Author: LvChengbin<lvchengbin59@gmail.com>
+ * Time: 01/25/2021
+ * Description:
+ ******************************************************************/
+import { VariadicFunction } from '@ynn/utility-types';
+declare type Key = string | number | symbol;
+export default class Storage {
+    private static map;
+    private static n;
+    static set(key: Key, method: VariadicFunction): void;
+    static get(key: Key): VariadicFunction | undefined;
+    static key<T extends 'string' | 'symbol'>(prefix?: string, type?: T): T extends 'string' ? string : symbol;
+}
+export {};

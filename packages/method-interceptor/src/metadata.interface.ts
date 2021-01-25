@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import { VariadicClass } from '@ynn/utility-types';
+
 /**
  * the base metadata interface for Interceptor
  */
@@ -24,8 +25,7 @@ export interface Metadata {
      * {@link https://github.com/microsoft/TypeScript/pull/26797 | Allow any key type as an index signature parameter type}
      * {@link https://www.staging-typescript.org/play?ts=4.2.0-pr-26797-45#code/MYewdgzgLgBBMF4YGUCeBbARiANgChgHIAPQmASgG4Aoa0SWEALhgCUBTUAJwBMAeANbtUIAGYwAhmFQAaSdIB8iGAG8AvrWogA2nBgBdZQEZKQA | Playground}
      */
-    // type: string | symbol | number;
-    type: string | number;
+    type: string | number | symbol;
 
     /**
      * the type of the interceptor
@@ -112,8 +112,4 @@ export interface MetadataException extends Metadata {
  */
 export interface MetadataParameter extends Metadata {
     interceptorType: 'parameter';
-    /**
-     * the metadata type of the parameter.
-     */
-    // paramtype: unknown;
 }

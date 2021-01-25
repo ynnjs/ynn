@@ -1,8 +1,9 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
- * File: src/decorator.interface.ts
+ * File: decorator/create-decorator-before.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/20/2020
+ * Time: 01/25/2021
  * Description:
  ******************************************************************/
+

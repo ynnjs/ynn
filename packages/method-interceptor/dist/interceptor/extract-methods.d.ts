@@ -7,8 +7,9 @@
  * Description:
  ******************************************************************/
 import { VariadicFunction } from '@ynn/utility-types';
-import { Metadata } from '../metadata.interface';
+import { MetadataBefore, MetadataAfter, MetadataException } from '../metadata.interface';
 import { Methods, MethodInfo } from './interceptor.interface';
+declare type Metadata = MetadataBefore | MetadataAfter | MetadataException;
 /**
  * extract all interceptor methods of a descriptor with specific key from a method pool.
  *
@@ -19,3 +20,4 @@ import { Methods, MethodInfo } from './interceptor.interface';
  * @returns a list of information of extracted methods
  */
 export default function extractMethods<T extends Methods<VariadicFunction>>(key: string | number | symbol, descriptor: Readonly<PropertyDescriptor>, methods: Readonly<T>): MethodInfo<Metadata, T[keyof T]>[];
+export {};

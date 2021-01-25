@@ -7,5 +7,5 @@
  * Description:
  ******************************************************************/
 import { InterceptorException, Methods, MethodException } from './interceptor.interface';
-declare function createInterceptorException<T extends unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Readonly<Methods<MethodException>>): InterceptorException<T>;
+declare function createInterceptorException<T extends unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Readonly<Methods<MethodException<T>>>): InterceptorException<T>;
 export default createInterceptorException;

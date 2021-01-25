@@ -104,8 +104,4 @@ export interface MetadataException extends Metadata {
  */
 export interface MetadataParameter extends Metadata {
     interceptorType: 'parameter';
-    /**
-     * the metadata type of the parameter.
-     */
-    paramtype: unknown;
 }

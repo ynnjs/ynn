@@ -13,5 +13,5 @@ import { InterceptorAfter, Methods, MethodAfter } from './interceptor.interface'
  *
  * @returns
  */
-declare function createInterceptorAfter<V = unknown, T extends unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Readonly<Methods<MethodAfter<V, T>>>): InterceptorAfter<V, T>;
+declare function createInterceptorAfter<V = unknown, T extends unknown[] = unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Readonly<Methods<MethodAfter<T>>>): InterceptorAfter<V, T>;
 export default createInterceptorAfter;
