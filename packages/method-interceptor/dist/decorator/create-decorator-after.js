@@ -2,9 +2,9 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: decorator/create-decorator-before.ts
+ * File: decorator/create-decorator-after.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 01/24/2021
+ * Time: 01/26/2021
  * Description:
  ******************************************************************/
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const create_method_decorator_1 = __importDefault(require("./create-method-decorator"));
-function createDecoratorBefore(options) {
-    return create_method_decorator_1.default(constants_1.KEY_BEFORE, 'before', options);
+function createDecoratorAfter(options) {
+    return create_method_decorator_1.default(constants_1.KEY_AFTER, 'after', options);
 }
-exports.default = createDecoratorBefore;
+exports.default = createDecoratorAfter;

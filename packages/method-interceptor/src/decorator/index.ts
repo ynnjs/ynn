@@ -8,7 +8,11 @@
  ******************************************************************/
 
 import createDecoratorBefore from './create-decorator-before';
+import createDecoratorAfter from './create-decorator-after';
+export * from './create-decorator-before';
+export * from './create-decorator-after';
 
 export {
-    createDecoratorBefore
+    createDecoratorBefore,
+    createDecoratorAfter
 };

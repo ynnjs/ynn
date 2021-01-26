@@ -74,4 +74,3 @@ export interface MethodParameterInfo<M> {
     metadata: Partial<MetadataParameter> & { paramtype: unknown };
     method?: M;
 }
-

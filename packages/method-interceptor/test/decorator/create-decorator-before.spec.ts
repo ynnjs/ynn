@@ -11,7 +11,7 @@ import 'reflect-metadata';
 import { KEY_BEFORE, createDecoratorBefore } from '../../src';
 
 describe( 'decorator/create-decorator-before', () => {
-    it( 'should have created a method decorator function', () => {
+    it( 'should have created a method decorator', () => {
         const before = createDecoratorBefore( { method : () => {} } );
         expect( before ).toBeInstanceOf( Function );
     } );
