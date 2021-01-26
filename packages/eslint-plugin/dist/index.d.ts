@@ -47,6 +47,7 @@ declare const _default: {
                     'no-unused-vars': string;
                     'no-use-before-define': string;
                     'no-empty-function': string;
+                    'no-extra-semi': string;
                     '@typescript-eslint/array-type': (string | {
                         default: string;
                         readonly: string;
@@ -85,7 +86,6 @@ declare const _default: {
                     '@typescript-eslint/no-unnecessary-condition': string[];
                     '@typescript-eslint/no-unnecessary-qualifier': string[];
                     '@typescript-eslint/no-unnecessary-type-constraint': string[];
-                    '@typescript-eslint/non-nullable-type-assertion-style': string[];
                     '@typescript-eslint/prefer-nullish-coalescing': string[];
                     '@typescript-eslint/prefer-optional-chain': string[];
                     '@typescript-eslint/prefer-reduce-type-parameter': string[];
@@ -179,6 +179,7 @@ declare const _default: {
                     'no-unused-vars'?: undefined;
                     'no-use-before-define'?: undefined;
                     'no-empty-function'?: undefined;
+                    'no-extra-semi'?: undefined;
                     '@typescript-eslint/array-type'?: undefined;
                     '@typescript-eslint/member-delimiter-style'?: undefined;
                     '@typescript-eslint/member-ordering'?: undefined;
@@ -195,7 +196,6 @@ declare const _default: {
                     '@typescript-eslint/no-unnecessary-condition'?: undefined;
                     '@typescript-eslint/no-unnecessary-qualifier'?: undefined;
                     '@typescript-eslint/no-unnecessary-type-constraint'?: undefined;
-                    '@typescript-eslint/non-nullable-type-assertion-style'?: undefined;
                     '@typescript-eslint/prefer-nullish-coalescing'?: undefined;
                     '@typescript-eslint/prefer-optional-chain'?: undefined;
                     '@typescript-eslint/prefer-reduce-type-parameter'?: undefined;

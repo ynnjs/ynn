@@ -8,36 +8,27 @@
  ******************************************************************/
 
 import 'reflect-metadata';
+import Storage from '../../src/storage';
 import extractMethods from '../../src/interceptor/extract-methods';
 
 describe( 'interceptor/extract-methods', () => {
     it( 'should have extracted all methods have been stored in metadata', () => {
+        const key = Storage.key();
+        const fn = () => {};
+        Storage.set( key, fn );
         class A { action() {} }
-        const methods = { fn() {} };
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'action' )!;
-        const metadata = [ { type : 'fn', interceptorType : 'before' } ];
+        const metadata = [ { type : key, interceptorType : 'before' } ];
         Reflect.defineMetadata( 'key', metadata, descriptor.value );
-        const bound = extractMethods( 'key', descriptor, methods );
-        expect( bound ).toEqual( [ { method : methods.fn, metadata : metadata[ 0 ] } ] );
+        const bound = extractMethods( 'key', descriptor );
+        expect( bound ).toEqual( [ { method : fn, metadata : metadata[ 0 ] } ] );
     } );
 
     it( 'should have thrown an exception if the method not exsits in methods', () => {
         class A { action() {} }
-        const methods = {};
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'action' )!;
         const metadata = [ { type : 'fn', interceptorType : 'before' } ];
         Reflect.defineMetadata( 'key', metadata, descriptor.value );
-        expect( () => extractMethods( 'key', descriptor, methods ) ).toThrow();
-    } );
-
-    it( 'should have support using Symbol as the key for metadata', () => {
-        const KEY = Symbol( 'key' );
-        class A { action() {} }
-        const methods = { fn() {} };
-        const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'action' )!;
-        const metadata = [ { type : 'fn', interceptorType : 'before' } ];
-        Reflect.defineMetadata( KEY, metadata, descriptor.value );
-        const bound = extractMethods( KEY, descriptor, methods );
-        expect( bound ).toEqual( [ { method : methods.fn, metadata : metadata[ 0 ] } ] );
+        expect( () => extractMethods( 'key', descriptor ) ).toThrow();
     } );
 } );

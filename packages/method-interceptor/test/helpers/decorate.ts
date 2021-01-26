@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: decorator/index.ts
+ * File: helpers/decorate.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 01/26/2021
  * Description:
  ******************************************************************/
-import createDecoratorBefore from './create-decorator-before';
-export { createDecoratorBefore };
+
+export default function Decorate( ...args: any[] ): void {} // eslint-disable-line

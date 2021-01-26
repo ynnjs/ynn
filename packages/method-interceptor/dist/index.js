@@ -20,41 +20,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 __exportStar(require("./constants"), exports);
-__exportStar(require("./interceptor"), exports);
 __exportStar(require("./metadata.interface"), exports);
-/* export * from './interceptor.interface';
-   export * from './decorator.interface';
-   export * from './interceptor';
-   export * from './decorator';
-   export * as CONSTANTS from './constants'; */
-/* createBeforeDecorator() {
-   }, */
-/* createParameterDecorator() {
-   }, */
-/* createAfterDecorator() {
-   }, */
-/* createExceptionDecorator() {
-   },
-
-   createDecorator() {
-   },
-
-   createMethods() {
-   },
-
-   createMethodBefore() {
-   },
-
-   createMethodAfter() {
-   },
-
-   createMethodParameters() {
-   },
-
-   createMethodException() {
-   },
-
-   createCompositeMethod() {
-   },
-
-   Constants */
+__exportStar(require("./method.interface"), exports);
+__exportStar(require("./interceptor"), exports);
+__exportStar(require("./decorator"), exports);

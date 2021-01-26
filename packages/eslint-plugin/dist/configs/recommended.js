@@ -54,6 +54,7 @@ module.exports = {
                 'no-unused-vars': 'off',
                 'no-use-before-define': 'off',
                 'no-empty-function': 'off',
+                'no-extra-semi': 'off',
                 '@typescript-eslint/array-type': ['error', { default: 'array', readonly: 'array' }],
                 '@typescript-eslint/explicit-function-return-type': ['error'],
                 '@typescript-eslint/member-delimiter-style': ['error', {
@@ -91,10 +92,8 @@ module.exports = {
                 '@typescript-eslint/no-unnecessary-condition': ['error'],
                 '@typescript-eslint/no-unnecessary-qualifier': ['error'],
                 '@typescript-eslint/no-unnecessary-type-constraint': ['error'],
-                '@typescript-eslint/non-nullable-type-assertion-style': ['error'],
                 '@typescript-eslint/prefer-nullish-coalescing': ['error'],
                 '@typescript-eslint/prefer-optional-chain': ['error'],
-                // '@typescript-eslint/prefer-readonly-parameter-types' : [ 'error' ],
                 '@typescript-eslint/prefer-reduce-type-parameter': ['error'],
                 '@typescript-eslint/prefer-string-starts-ends-with': ['error'],
                 '@typescript-eslint/prefer-ts-expect-error': ['error'],

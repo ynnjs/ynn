@@ -25,9 +25,7 @@ export default class Storage {
         return Storage.map.get( key );
     }
 
-    static key<T extends 'string' | 'symbol'>( prefix = '', type: T = 'symbol' ): T extends 'string' ? string : symbol {
-        const k = `${prefix}${Storage.n++}`;
-        if( type === 'string' ) return k;
-        return Symbol( k );
+    static key( prefix = '' ): symbol { // eslint-disable-line @typescript-eslint/default-param-last
+        return Symbol( `${prefix}${Storage.n++}` );
     }
 }

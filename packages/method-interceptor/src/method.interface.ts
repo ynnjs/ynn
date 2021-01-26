@@ -1,13 +1,13 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
- * File: src/interceptor.interface.ts
+ * File: src/method.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/20/2020
+ * Time: 01/26/2021
  * Description:
  ******************************************************************/
 
-import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from '../metadata.interface';
+import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata.interface';
 
 /**
  * The interface of methods that will be called by `InterceptorBefore`.
@@ -75,32 +75,3 @@ export interface MethodParameterInfo<M> {
     method?: M;
 }
 
-/**
- * The declaration of InterceptorBefore method.
- *
- * @paramtype T - Type of the arguments which will be passed to the generated methods.
- *
- * @example
- *
- * ```ts
- * ( ctx: KoaContext ) => Promise.all( [
- *     fn1( ctx ),
- *     fn2( ctx )
- * ] );
- * ```
- */
-export interface InterceptorBefore<T extends unknown[]> {
-    ( ...args: T ): Promise<unknown>;
-}
-
-export interface InterceptorAfter<V, T extends unknown[]> {
-    ( value: V, ...args: T ): Promise<unknown>;
-}
-
-export interface InterceptorException<T extends unknown[]> {
-    ( e: unknown, ...args: T ): Promise<unknown>;
-}
-
-export interface InterceptorParameter<T extends unknown[]> {
-    ( ...args: T ): Promise<unknown[]>;
-}

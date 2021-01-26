@@ -6,7 +6,7 @@
  * Time: 12/26/2020
  * Description:
  ******************************************************************/
-import { InterceptorBefore, Methods, MethodBefore } from './interceptor.interface';
+import { InterceptorBefore } from './interceptor.interface';
 /**
  * create an empty interceptor method with methods is undefined.
  *
@@ -14,5 +14,5 @@ import { InterceptorBefore, Methods, MethodBefore } from './interceptor.interfac
  *
  * @returns a `Promise` object that resolves nothing.
  */
-declare function createInterceptorBefore<T extends unknown[]>(descriptor: Readonly<PropertyDescriptor>, methods?: Readonly<Methods<MethodBefore<T>>>): InterceptorBefore<T>;
+declare function createInterceptorBefore<T extends unknown[] = unknown[]>(descriptor: Readonly<PropertyDescriptor>): InterceptorBefore<T>;
 export default createInterceptorBefore;

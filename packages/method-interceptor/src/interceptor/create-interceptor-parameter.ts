@@ -10,27 +10,27 @@
 import { VariadicClass } from '@ynn/utility-types';
 import { KEY_PARAMETER } from '../constants';
 import { MetadataParameter } from '../metadata.interface';
-import { InterceptorParameter, Methods, MethodParameterInfo, MethodParameter } from './interceptor.interface';
+import { MethodParameterInfo, MethodParameter } from '../method.interface';
+import Storage from '../storage';
 
 function createInterceptorParameter<T extends unknown[]>(
     constructor: VariadicClass,
-    methodName: string,
-    methods?: Readonly<Methods<MethodParameter<T>>>
-): InterceptorParameter<T> {
+    methodName: string
+): ( ...args: T ) => Promise<unknown[]> {
 
     const bound: MethodParameterInfo<MethodParameter<T>>[] = [];
     const metadatas: ( MetadataParameter | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName ) || [];
 
-    Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName ).forEach( ( paramtype: unknown, i: number ) => {
+    Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName )?.forEach( ( paramtype: unknown, i: number ) => {
         const metadata = metadatas[ i ];
 
         if( !metadata ) {
             bound.push( { metadata : { paramtype } } );
         } else {
-            const method = methods?.[ metadata.type ];
+            const method = Storage.get( metadata.type );
 
-            if( !Object.prototype.hasOwnProperty.call( methods, metadata.type ) ) {
-                throw new Error( `method ${metadata.type} not exists in the method list` );
+            if( !method ) {
+                throw new Error( `method ${metadata.type.toString()} not exists in the method list` );
             }
 
             bound.push( { method, metadata : { ...metadata, paramtype } } );

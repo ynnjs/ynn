@@ -20,10 +20,8 @@ const extract_methods_1 = __importDefault(require("./extract-methods"));
  *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore(descriptor, methods) {
-    if (!methods)
-        return async () => Promise.resolve([]);
-    const bound = extract_methods_1.default(constants_1.KEY_BEFORE, descriptor, methods);
+function createInterceptorBefore(descriptor) {
+    const bound = extract_methods_1.default(constants_1.KEY_BEFORE, descriptor);
     return async (...args) => {
         const promises = [];
         bound.forEach(info => {

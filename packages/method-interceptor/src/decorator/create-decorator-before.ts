@@ -8,16 +8,16 @@
  ******************************************************************/
 
 import { KEY_BEFORE } from '../constants';
+import { MethodBefore } from '../method.interface';
 import { MetadataBefore } from '../metadata.interface';
 import Storage from '../storage';
-import { MethodBefore } from './interceptor/interceptor.interface';
 
-interface CreateBeforeDecoratorOptions {
+interface CreateDecoratorBeforeOptions<T extends unknown[]> {
     parameters?: unknown;
-    method: MethodBefore;
+    method: MethodBefore<T>;
 }
 
-export default function createBeforeDecorator( options: CreateBeforeDecoratorOptions ): MethodDecorator {
+export default function createDecoratorBefore<T extends unknown[]>( options: CreateDecoratorBeforeOptions<T> ): MethodDecorator {
 
     const key = Storage.key();
 

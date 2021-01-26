@@ -9,7 +9,6 @@
 
 import { KEY_AFTER } from '../constants';
 import { MetadataAfter } from '../metadata.interface';
-import { InterceptorAfter, Methods, MethodAfter } from './interceptor.interface';
 import extractMethods from './extract-methods';
 
 /**
@@ -19,18 +18,10 @@ import extractMethods from './extract-methods';
  * @returns
  */
 function createInterceptorAfter<V = unknown, T extends unknown[] = unknown[]>(
-    descriptor: Readonly<PropertyDescriptor>,
-    methods?: Readonly<Methods<MethodAfter<T>>>
-): InterceptorAfter<V, T> {
+    descriptor: Readonly<PropertyDescriptor>
+): ( value: V, ...args: T ) => Promise<unknown> {
 
-    /**
-     * the returns Promsie object should be resolved with the original value as default
-     */
-    if( !methods ) {
-        return async <P>( value: P, ...args: T ): Promise<P> => Promise.resolve( value ); // eslint-disable-line @typescript-eslint/no-unused-vars
-    }
-
-    const bound = extractMethods( KEY_AFTER, descriptor, methods );
+    const bound = extractMethods( KEY_AFTER, descriptor );
 
     return async ( value: V, ...args: T ): Promise<unknown> => {
         let res: unknown = await Promise.resolve( value );

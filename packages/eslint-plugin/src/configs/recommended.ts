@@ -52,7 +52,8 @@ export = {
             'no-unused-expressions' : 'off', // use @typescript-eslint/no-unused-expressions
             'no-unused-vars' : 'off', // use @typescrpt-eslint/no-unused-vars
             'no-use-before-define' : 'off', // use @typescrpt-eslint/no-use-before-define
-            'no-empty-function' : 'off', // use @typescript-eslint/no-empty-function,
+            'no-empty-function' : 'off', // use @typescript-eslint/no-empty-function
+            'no-extra-semi' : 'off', // use @typescript-eslint/no-extra-semi
             '@typescript-eslint/array-type' : [ 'error', { default : 'array', readonly : 'array' } ],
             '@typescript-eslint/explicit-function-return-type' : [ 'error' ],
             '@typescript-eslint/member-delimiter-style' : [ 'error', {
@@ -90,10 +91,8 @@ export = {
             '@typescript-eslint/no-unnecessary-condition' : [ 'error' ],
             '@typescript-eslint/no-unnecessary-qualifier' : [ 'error' ],
             '@typescript-eslint/no-unnecessary-type-constraint' : [ 'error' ],
-            '@typescript-eslint/non-nullable-type-assertion-style' : [ 'error' ],
             '@typescript-eslint/prefer-nullish-coalescing' : [ 'error' ],
             '@typescript-eslint/prefer-optional-chain' : [ 'error' ],
-            // '@typescript-eslint/prefer-readonly-parameter-types' : [ 'error' ],
             '@typescript-eslint/prefer-reduce-type-parameter' : [ 'error' ],
             '@typescript-eslint/prefer-string-starts-ends-with' : [ 'error' ],
             '@typescript-eslint/prefer-ts-expect-error' : [ 'error' ],

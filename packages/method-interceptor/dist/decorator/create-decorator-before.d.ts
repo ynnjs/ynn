@@ -6,9 +6,10 @@
  * Time: 01/24/2021
  * Description:
  ******************************************************************/
-import { MetadataBefore } from '../metadata.interface';
-declare type CreateBeforeDecoratorOptions = Partial<Pick<MetadataBefore, 'type' | 'parameters'>> & {
-    method: (...args: any[]) => any;
-};
-export default function createBeforeDecorator(options: CreateBeforeDecoratorOptions): MethodDecorator;
+import { MethodBefore } from '../methods.interface';
+interface CreateDecoratorBeforeOptions {
+    parameters?: unknown;
+    method: MethodBefore;
+}
+export default function createDecoratorBefore(options: CreateDecoratorBeforeOptions): MethodDecorator;
 export {};

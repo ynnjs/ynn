@@ -85,7 +85,7 @@ export interface MetadataException extends Metadata {
      * the type should be a constructor or undefined.
      * using `undefined` means the interceptor can handle all types of Error object.
      */
-    exceptionType: VariadicClass | undefined;
+    exceptionType?: VariadicClass;
 }
 
 /**

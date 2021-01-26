@@ -9,46 +9,7 @@
 
 import 'reflect-metadata';
 export * from './constants';
-export * from './interceptor';
 export * from './metadata.interface';
-
-/* export * from './interceptor.interface';
-   export * from './decorator.interface';
-   export * from './interceptor';
-   export * from './decorator';
-   export * as CONSTANTS from './constants'; */
-
-/* createBeforeDecorator() {
-   }, */
-
-/* createParameterDecorator() {
-   }, */
-
-/* createAfterDecorator() {
-   }, */
-
-/* createExceptionDecorator() {
-   },
-
-   createDecorator() {
-   },
-
-   createMethods() {
-   },
-
-   createMethodBefore() {
-   },
-
-   createMethodAfter() {
-   },
-
-   createMethodParameters() {
-   },
-
-   createMethodException() {
-   },
-
-   createCompositeMethod() {
-   },
-
-   Constants */
+export * from './method.interface';
+export * from './interceptor';
+export * from './decorator';

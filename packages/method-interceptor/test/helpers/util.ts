@@ -1,10 +1,13 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: decorator/index.ts
+ * File: helpers/util.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 01/26/2021
+ * Time: 01/25/2021
  * Description:
  ******************************************************************/
-import createDecoratorBefore from './create-decorator-before';
-export { createDecoratorBefore };
+
+export function generateDescriptor(): PropertyDescriptor {
+    const o = { x : (): string => 'descriptor' };
+    return Reflect.getOwnPropertyDescriptor( o, 'x' ) as PropertyDescriptor;
+}

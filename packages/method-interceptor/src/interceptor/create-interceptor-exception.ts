@@ -7,37 +7,26 @@
  * Description:
  ******************************************************************/
 
+import { VariadicClass } from '@ynn/utility-types';
 import { KEY_EXCEPTION } from '../constants';
 import { MetadataException } from '../metadata.interface';
-import { InterceptorException, Methods, MethodException } from './interceptor.interface';
 import extractMethods from './extract-methods';
 
-function createInterceptorException<T extends unknown[]>(
-    descriptor: Readonly<PropertyDescriptor>,
-    methods?: Readonly<Methods<MethodException<T>>>
-): InterceptorException<T> {
+function createInterceptorException<T extends unknown[] = unknown[]>(
+    descriptor: Readonly<PropertyDescriptor>
+): ( e: unknown, ...args: T ) => Promise<unknown> {
 
-    /**
-     * throw the exception directly if there is no methods provided.
-     */
-    if( !methods ) {
-        return async ( e: unknown, ...args: T ): Promise<unknown> => { // eslint-disable-line @typescript-eslint/no-unused-vars
-            throw e;
-        };
-    }
-
-    const bound = extractMethods( KEY_EXCEPTION, descriptor, methods );
+    const bound = extractMethods( KEY_EXCEPTION, descriptor );
 
     return async ( e, ...args ): Promise<unknown> => {
 
         for( const info of bound ) {
             const metadata = info.metadata as MetadataException;
 
-            if( metadata.exceptionType === undefined || e instanceof metadata.exceptionType ) {
+            if( !( 'exceptionType' in metadata ) || e instanceof ( metadata.exceptionType as VariadicClass ) ) {
                 return info.method( metadata, e, ...args );
             }
         }
-
         throw e;
     };
 }

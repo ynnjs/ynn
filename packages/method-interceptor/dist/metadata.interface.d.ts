@@ -23,7 +23,7 @@ export interface Metadata {
      * {@link https://github.com/microsoft/TypeScript/pull/26797 | Allow any key type as an index signature parameter type}
      * {@link https://www.staging-typescript.org/play?ts=4.2.0-pr-26797-45#code/MYewdgzgLgBBMF4YGUCeBbARiANgChgHIAPQmASgG4Aoa0SWEALhgCUBTUAJwBMAeANbtUIAGYwAhmFQAaSdIB8iGAG8AvrWogA2nBgBdZQEZKQA | Playground}
      */
-    type: string | number;
+    type: string | number | symbol;
     /**
      * the type of the interceptor
      * such as before, after, parameter and exception, etc.
@@ -78,7 +78,7 @@ export interface MetadataException extends Metadata {
      * the type should be a constructor or undefined.
      * using `undefined` means the interceptor can handle all types of Error object.
      */
-    exceptionType: VariadicClass | undefined;
+    exceptionType?: VariadicClass;
 }
 /**
  * method for parameters of class instance methods

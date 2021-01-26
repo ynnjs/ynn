@@ -15,11 +15,8 @@ class Storage {
     static get(key) {
         return Storage.map.get(key);
     }
-    static key(prefix = '', type = 'symbol') {
-        const k = `${prefix}${Storage.n++}`;
-        if (type === 'string')
-            return k;
-        return Symbol(k);
+    static key(prefix = '') {
+        return Symbol(`${prefix}${Storage.n++}`);
     }
 }
 exports.default = Storage;

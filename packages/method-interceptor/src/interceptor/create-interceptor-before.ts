@@ -9,7 +9,6 @@
 
 import { MetadataBefore } from '../metadata.interface';
 import { KEY_BEFORE } from '../constants';
-import { InterceptorBefore, Methods, MethodBefore } from './interceptor.interface';
 import extractMethods from './extract-methods';
 
 /**
@@ -19,14 +18,11 @@ import extractMethods from './extract-methods';
  *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore<T extends unknown[]>(
-    descriptor: Readonly<PropertyDescriptor>,
-    methods?: Readonly<Methods<MethodBefore<T>>>
-): InterceptorBefore<T> {
+function createInterceptorBefore<T extends unknown[] = unknown[]>(
+    descriptor: Readonly<PropertyDescriptor>
+): ( ...args: T ) => Promise<unknown> {
 
-    if( !methods ) return async (): Promise<[]> => Promise.resolve( [] );
-
-    const bound = extractMethods( KEY_BEFORE, descriptor, methods );
+    const bound = extractMethods( KEY_BEFORE, descriptor );
 
     return async ( ...args: T ): Promise<unknown[]> => {
         const promises: unknown[] = [];
