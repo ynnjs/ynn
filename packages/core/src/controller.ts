@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/controller.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/16/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { KoaContext } from '@ynn/koa';
@@ -18,7 +18,9 @@ export type ControllerOptions = {
 export default class Controller {
 
     public app: Ynn;
+
     public logger: Logger;
+
     public assert = assert;
 
     constructor( public ctx: KoaContext ) {

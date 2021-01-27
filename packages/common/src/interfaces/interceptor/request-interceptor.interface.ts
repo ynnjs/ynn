@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: interceptor/request-interceptor.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/14/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { KoaContext } from '@ynn/koa';

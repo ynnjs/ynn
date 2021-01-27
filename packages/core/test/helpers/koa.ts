@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: helpers/koa.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/03/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Stream from 'stream';
@@ -53,7 +53,7 @@ export class Req extends IncomingMessage {
          * if options.host is set, override the Host item in headers.
          */
         if( options.host ) {
-            this.headers[ 'Host' ] = options.host;
+            this.headers.Host = options.host;
         }
 
         /**
@@ -117,7 +117,7 @@ export function createResponse( resOrOptions?: ServerResponse | ResOptions ) {
 }
 
 export default class extends Koa {
-    $( { req = new Req(), res = new Res() }: { req?: Req, res?: Res } ): Promise<any> {
+    async $( { req = new Req(), res = new Res() }: { req?: Req; res?: Res } ): Promise<any> {
         return this.callback()( req, res );
     }
 }

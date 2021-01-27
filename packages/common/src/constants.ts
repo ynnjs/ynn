@@ -7,10 +7,3 @@
  * Description:
  ******************************************************************/
 
-export const INTERCEPTOR_BEFORE_KEY = Symbol( 'interceptor#after#key' );
-
-export const INTERCEPTOR_AFTER_KEY = Symbol( 'interceptor#after#key' );
-
-export const INTERCEPTOR_PARAMETER_KEY = Symbol( 'interceptor#parameter#key' );
-
-export const INTERCEPTOR_EXCEPTION_KEY = Symbol( 'interceptor#exception#key' );

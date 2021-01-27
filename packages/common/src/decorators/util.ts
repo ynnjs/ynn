@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: decorators/util.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/26/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
@@ -67,5 +67,5 @@ export function createActionResponseDecorator( type: string, args: any ): Method
         const metadata = Reflect.getMetadata( ACTION_RESPONSE_METADATA_KEY, descriptor.value ) || [];
         metadata.push( { type, args } );
         Reflect.defineMetadata( ACTION_RESPONSE_METADATA_KEY, metadata, descriptor.value );
-    }
+    };
 }

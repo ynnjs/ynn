@@ -1,16 +1,16 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/router.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/01/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { pathToRegexp, Key } from 'path-to-regexp';
 import Koa, { compose, KoaMiddleware } from '@ynn/koa';
 
-export type Path = string | RegExp | Array<string | RegExp>;
+export type Path = string | RegExp | ( string | RegExp )[];
 export type Handler = KoaMiddleware | KoaMiddleware[];
 export type Method = ( path: Path, fn: Handler ) => Koa | KoaMiddleware;
 
@@ -18,9 +18,9 @@ export interface Router {
     app?: Koa;
 }
 
-function match( rule: string | RegExp | Array<string |RegExp>, path: string, options = {} ): false | {
-    params: Record<string, string>,
-    matches: string[]
+function match( rule: string | RegExp | ( string |RegExp )[], path: string, options = {} ): false | {
+    params: Record<string, string>;
+    matches: string[];
 } {
     const keys: Key[] = [];
     const matches = pathToRegexp( rule, keys, options ).exec( path );
@@ -42,7 +42,7 @@ function match( rule: string | RegExp | Array<string |RegExp>, path: string, opt
     return { params, matches };
 }
 
-function execute( this: Router, ctx, next, rule, fn, options: any = {} ): Promise<any> {
+async function execute( this: Router, ctx, next, rule, fn, options: any = {} ): Promise<any> {
 
     const res = match( rule, ctx.path, options );
 
@@ -62,23 +62,29 @@ function createMethod( this: Router, method: string ): Method {
     return ( path, fn, options = {} ) => {
         if( Array.isArray( fn ) ) fn = compose( fn );
 
-        const func = ( ctx, next ): Promise<any> => {
+        const func = async ( ctx, next ): Promise<any> => {
             if( method !== ctx.method ) return next();
             return execute.call( this, ctx, next, path, fn, options );
-        }
+        };
 
         return this.app ? this.app.use( func ) : func;
-    }
+    };
 }
 
 export default class implements Router {
 
     get: Method;
+
     put: Method;
+
     head: Method;
+
     post: Method;
+
     patch: Method;
+
     delete: Method;
+
     options: Method;
 
     static match = match;
@@ -110,14 +116,14 @@ export default class implements Router {
             methods = methods.toUpperCase();
         }
 
-        const func = ( ctx, next ): Promise<any> => {
+        const func = async ( ctx, next ): Promise<any> => {
             methodCheck: {
                 if( methods === '*' ) break methodCheck;
                 if( typeof methods === 'string' && methods !== ctx.method ) return next();
                 if( Array.isArray( methods ) && !methods.includes( ctx.method ) ) return next();
             }
             return execute.call( this, ctx, next, ...args );
-        }
+        };
         return this.app ? this.app.use( func ) : func;
     }
 }

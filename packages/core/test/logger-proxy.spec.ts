@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: test/logger-proxy.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/01/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import loggerProxy from '../src/logger-proxy';
@@ -18,8 +18,8 @@ function mock( options: any = {} ) {
     const logger = new Debug;
     debugMethods.forEach( x => debug[ x ] = jest.fn() );
     loggerMethods.forEach( x => logger[ x ] = jest.fn() );
-    const proxy = loggerProxy( { logger, debug, ...options } )
-    return { debug, logger, proxy }
+    const proxy = loggerProxy( { logger, debug, ...options } );
+    return { debug, logger, proxy };
 }
 
 describe( 'logger-proxy', () => {
@@ -64,7 +64,7 @@ describe( 'logger-proxy', () => {
             it( `${x}`, () => {
                 const debug = new Debug;
                 debugMethods.forEach( x => debug[ x ] = jest.fn() );
-                const proxy = loggerProxy( { debug, debugging : true, logging : true } )
+                const proxy = loggerProxy( { debug, debugging : true, logging : true } );
                 const str = new Date().toString();
                 proxy[ x ]( str );
                 expect( debug[ x === 'critical' ? 'log' : x ] ).toHaveBeenCalledTimes( x === 'error' ? 2 : 1 );

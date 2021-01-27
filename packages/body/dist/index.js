@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bytes_1 = __importDefault(require("bytes"));
 const formidable_1 = __importDefault(require("formidable"));
 const co_body_1 = __importDefault(require("co-body"));
-function parseMultipart(ctx, options = {}) {
+async function parseMultipart(ctx, options = {}) {
     const form = formidable_1.default(options);
     return new Promise((resolve, reject) => {
         form.parse(ctx.req, (err, fields, files) => {
@@ -25,8 +25,16 @@ function parseMultipart(ctx, options = {}) {
         });
     });
 }
-function parseBody(ctx, options = {}) {
-    const encoding = options.encoding || 'utf-8';
+/**
+ * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
+ *
+ * @param ctx - the context object conforming the Koa's context object.
+ * @param options - the options object. {@link BodyOptions}
+ *
+ * @returns the parsed body with `fields` and `files`.
+ */
+async function parseBody(ctx, options = {}) {
+    const encoding = options.encoding ?? 'utf-8';
     const limit = '20mb';
     if (ctx.is('multipart')) {
         const { multipartOptions = {} } = options;

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/logger-proxy.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/21/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Logger from './interfaces/logger.interface';
@@ -45,7 +45,7 @@ export default ( options: LoggerProxyOptions ) => {
                 } else if( typeof debug[ method ] === 'undefined' ) {
                     debug.log( msg, ...args );
                 }
-            }
+            };
         }
     } );
-}
+};

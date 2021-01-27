@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: interfaces/metadata.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/02/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Pipe from './pipe.interface';
@@ -41,7 +41,7 @@ export interface ParameterInterceptorMetadata<T extends InterceptorParameters> {
 }
 
 export type ActionInterceptorMetadata = MethodInterceptorMetadata<{
-    property?: Property; 
+    property?: Property;
     pipe?: Pipe;
 }>
 

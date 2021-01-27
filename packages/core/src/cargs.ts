@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/args.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/07/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import path from 'path';

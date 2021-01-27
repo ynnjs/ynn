@@ -1,17 +1,17 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: ynn/controller.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/09/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Controller from '../../src/controller';
 import Ynn, { Req } from '../helpers/ynn';
 
 describe( 'ynn.controllers', () => {
-      
+
     it( 'should have controllers property in Ynn instance', () => {
         const app = new Ynn();
         expect( app ).toHaveProperty( 'controllers', {} );
@@ -38,7 +38,7 @@ describe( 'ynn.controllers', () => {
     } );
 
     it( 'should execute function controller', done => {
-        
+
         const app = new Ynn( {
             controllers : {
                 user : ctx => {

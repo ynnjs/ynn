@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: test/ynn.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/06/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { mockProcessStdout } from 'jest-mock-process';
@@ -17,7 +17,7 @@ import Ynn, { Req } from '../helpers/ynn';
 describe( 'Ynn', () => {
     describe( 'Ynn instance', () => {
         it( 'should extend from @ynn/koa', () => {
-            const app = new Ynn();        
+            const app = new Ynn();
             expect( app ).toBeInstanceOf( Koa );
         } );
     } );
@@ -27,7 +27,7 @@ describe( 'Ynn', () => {
         let mockStdout;
 
         beforeEach( () => {
-            mockStdout = mockProcessStdout()
+            mockStdout = mockProcessStdout();
         } );
 
         afterEach( () => {
@@ -35,30 +35,30 @@ describe( 'Ynn', () => {
         } );
 
         it( 'should be Proxy<{}> is logger is not given in options', () => {
-            const app = new Ynn( { debugging : true } );        
+            const app = new Ynn( { debugging : true } );
             expect( app ).toHaveProperty( 'logger', {} );
             expect( app.logger.log ).toBeInstanceOf( Function );
         } );
 
         it( 'should call method of debug if debugging is true', () => {
-            
+
         } );
     } );
 
     describe( 'Ynn.router', () => {
         it( 'should have instance member router', () => {
-            const app = new Ynn();        
+            const app = new Ynn();
             expect( app ).toHaveProperty( 'router' );
             expect( app.router ).toBeInstanceOf( Router );
         } );
 
         it( 'should have called options.routers if options.routers is a function', () => {
             const routers = jest.fn();
-            const app = new Ynn( { routers } ); 
+            const app = new Ynn( { routers } );
             expect( routers ).toHaveBeenCalledWith( app.router, app );
         } );
 
-        xit( 'should support controller.action', () => {
+        xit( 'should support controller.action', async () => {
 
             const app = new Ynn( {
                 routers : [
@@ -70,7 +70,7 @@ describe( 'Ynn', () => {
                 ],
                 controllers : { user : class extends Controller {
                 } }
-            } ); 
+            } );
 
             return app.$( {
                 req : new Req( { url : '/user/123' } )
@@ -82,7 +82,7 @@ describe( 'Ynn', () => {
 
     describe( 'Ynn.config', () => {
         it( 'should have instance member config', () => {
-            const app = new Ynn();        
+            const app = new Ynn();
             expect( app ).toHaveProperty( 'config' );
         } );
     } );

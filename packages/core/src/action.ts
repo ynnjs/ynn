@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/action.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/02/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import { KoaContext } from '@ynn/koa';
@@ -51,11 +51,11 @@ export function generateExecutor( Controller, actionInfo: ActionInfo ) {
              * to fill all arguments specified with parameter decorators.
              */
 
-            const metadata: (ActionParameterMetadata | undefined)[] = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, Controller, methodName ) as (ActionParameterMetadata | undefined )[];
+            const metadata: ( ActionParameterMetadata | undefined )[] = Reflect.getMetadata( ACTION_PARAMETER_METADATA_KEY, Controller, methodName ) as ( ActionParameterMetadata | undefined )[];
 
             const promises = [];
 
-            metadata?.forEach( ( item: ActionParameterMetadata | undefined ) => {
+            metadata.forEach( ( item: ActionParameterMetadata | undefined ) => {
                 if( item === undefined ) {
                     args.push( undefined );
                     return;
@@ -63,7 +63,7 @@ export function generateExecutor( Controller, actionInfo: ActionInfo ) {
 
                 switch( item.type ) {
                     case 'body' :
-                    case 'query' : 
+                    case 'query' :
                     case 'param' : {
                         const promise = requestInterceptor[ item.type ]( ctx, metadata );
                         promises.push( promise );
@@ -112,7 +112,7 @@ export function scanner( obj: any ) {
              * scan all actions are exposed by @Action() decorator
              */
             Reflect.getMetadata( ACTIONS_METADATA_KEY, descriptor.value )?.forEach( ( name: string ) => {
-                actions[ name ] = { methodName : key, descriptor }
+                actions[ name ] = { methodName : key, descriptor };
             } );
 
             /**

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: request/body.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 12/03/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import parser from '@ynn/body';

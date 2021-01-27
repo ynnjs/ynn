@@ -1,4 +1,0 @@
-# setting ignore files
-point=@ynn
-ignore=node_modules,logs,.*
-editor=vim

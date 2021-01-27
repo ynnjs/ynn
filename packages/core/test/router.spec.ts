@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: test/router.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/02/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import 'jest-extended';
@@ -18,7 +18,7 @@ describe( 'Router', () => {
     for( const method of methods ) {
 
         const m = method.toLowerCase();
-        
+
         describe( `Router.${m}`, () => {
 
             it( 'should execute the callback function as a middleware of Koa', done => {
@@ -35,7 +35,7 @@ describe( 'Router', () => {
             } );
 
             it( 'should compose the list of middleware', done => {
-                
+
                 const app = new Koa();
                 const router = new Router( app );
                 const req = new Req( { url : '/a', method } );
@@ -55,7 +55,7 @@ describe( 'Router', () => {
             } );
 
             it( 'should try matching rest rules if next method was called in the previous middleware', done => {
-                
+
                 const app = new Koa();
                 const router = new Router( app );
                 const req = new Req( { url : '/a', method } );
@@ -78,7 +78,7 @@ describe( 'Router', () => {
             } );
 
             it( 'should not match request with unmatched path', done => {
-                
+
                 const app = new Koa();
                 const router = new Router( app );
                 const req = new Req( { url : '/b', method } );
@@ -95,7 +95,7 @@ describe( 'Router', () => {
                     done();
                 } );
 
-                app.$( { req } )
+                app.$( { req } );
             } );
 
             it( 'should have defined params property to ctx', done => {
@@ -106,7 +106,7 @@ describe( 'Router', () => {
                 router[ m ]( '/user/:id', ctx => {
                     expect( ctx ).toHaveProperty( 'params', { id : '123456' } );
                     done();
-                } )
+                } );
 
                 app.$( { req } );
             } );
@@ -119,7 +119,7 @@ describe( 'Router', () => {
                 router[ m ]( '/user/:id', ctx => {
                     expect( ctx.routerMatches.slice( 0, 2 ) ).toEqual( [ '123456' ] );
                     done();
-                } )
+                } );
 
                 app.$( { req } );
             } );
@@ -127,9 +127,9 @@ describe( 'Router', () => {
             for( const item of methods ) {
 
                 if( item === method ) continue;
-                
+
                 it( 'should not matche request with other methods', done => {
-                    
+
                     const app = new Koa();
                     const router = new Router( app );
                     const req = new Req( { url : '/user/123456', method : item } );
@@ -139,7 +139,7 @@ describe( 'Router', () => {
                     router[ method.toLowerCase() ]( '/user/:id', ( ctx, next ) => {
                         fn();
                         return next();
-                    } )
+                    } );
 
                     app.use( () => {
                         expect( fn ).not.toHaveBeenCalled();
@@ -170,7 +170,7 @@ describe( 'Router', () => {
         }
 
         it( 'should support to give a string as methods list', done => {
-            
+
             const app = new Koa();
             const router = new Router( app );
             const req = new Req( { url : '/a', method : 'POST' } );
@@ -228,11 +228,11 @@ describe( 'Router', () => {
             app.$( { req } );
         } );
     } );
-    
+
     describe( 'static method Router.match', () => {
         it( 'should match a string', () => {
             expect( Router.match( '/a', '/a' ) ).toBeTruthy();
-        } ); 
+        } );
 
         it( 'should match a RegExp', () => {
             expect( Router.match( /^\/a\/\d+/, '/a/123' ) ).toBeTruthy();
@@ -278,10 +278,10 @@ describe( 'Router', () => {
             const { matches, params } = res as any;
             expect( matches ).toBeArray();
             expect( matches ).toBeArrayOfSize( 2 );
-            expect( matches[ 0 ] ).toEqual( '/a/123' );  
-            expect( matches[ 1 ] ).toEqual( '123' );  
-            expect( matches ).toHaveProperty( 'index', 0 );  
-            expect( matches ).toHaveProperty( 'groups', { id : '123' } );  
+            expect( matches[ 0 ] ).toEqual( '/a/123' );
+            expect( matches[ 1 ] ).toEqual( '123' );
+            expect( matches ).toHaveProperty( 'index', 0 );
+            expect( matches ).toHaveProperty( 'groups', { id : '123' } );
             expect( params ).toEqual( { id : '123' } );
         } );
     } );

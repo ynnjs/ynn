@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.0.60",
+    "version": "1.0.0",
     "keywords": [
         "koa",
         "mvc",
@@ -33,11 +33,6 @@
     },
     "homepage": "https://github.com/ynnjs/ynn#readme",
     "main": "index.js",
-    "directories": {
-        "example": "example",
-        "lib": "lib",
-        "test": "test"
-    },
     "config": {
         "commitizen": {
             "path": "cz-conventional-changelog"

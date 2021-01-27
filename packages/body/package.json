@@ -12,7 +12,7 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "prepublish": "yarn make",
-        "lint": "eslint src/**/*.ts test/**/*.ts --fix"
+        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "engines": {
         "node": ">=14.15.0"
@@ -28,6 +28,7 @@
         "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
         "@ynn/utility-types": "workspace:packages/utility-types",
         "eslint": "^7.18.0",
+        "eslint_d": "^9.1.2",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "qs": "^6.9.4",

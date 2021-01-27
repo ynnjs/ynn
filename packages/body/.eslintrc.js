@@ -8,20 +8,9 @@
  ******************************************************************/
 
 module.exports = {
-    parser : '@typescript-eslint/parser',
-    plugins : [ '@typescript-eslint', '@ynn' ],
+    plugins : [ '@ynn' ],
     extends : [
-        'plugin:@ynn/recommended',
-        'plugin:@typescript-eslint/recommended'
+        'plugin:@ynn/recommended'
     ],
-    parserOptions : {
-        sourceType : 'module',
-        ecmaVersion : 2021
-    },
-    root : true,
-    env : {
-        es6 : true,
-        jest : true,
-        node : true
-    }
+    root : true
 };

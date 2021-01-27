@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: decorators/header.decorator.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/09/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Pipe from '../interface/pipe.interface';
@@ -17,7 +17,7 @@ export function Header( property: string ): ParameterDecorator;
 export function Header( pipe: Pipe ): ParameterDecorator & MethodDecorator;
 export function Header( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
-export function Header( ...args: [ (string | Pipe | Record<string, string>)?, (Pipe | string)? ] ): ParameterDecorator & MethodDecorator {
+export function Header( ...args: [ ( string | Pipe | Record<string, string> )?, ( Pipe | string )? ] ): ParameterDecorator & MethodDecorator {
 
     const [ propertyOrPipeOrHeaders, pipeOrValue ] = args;
     const t1 = typeof propertyOrPipeOrHeaders;
@@ -42,5 +42,5 @@ export function Header( ...args: [ (string | Pipe | Record<string, string>)?, (P
         return createActionResponseDecorator( 'header', args );
     }
 
-    return createActionDecorator( 'header', ...args as [ (string | Pipe)?, Pipe? ] );
+    return createActionDecorator( 'header', ...args as [ ( string | Pipe )?, Pipe? ] );
 }

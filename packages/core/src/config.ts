@@ -1,15 +1,16 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/config.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/27/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 export default class Config {
 
     #cache: Map<string, any> = new Map();
+
     #config: any;
 
     constructor( config: any ) {

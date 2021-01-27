@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: decorators/body.decorator.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/16/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import Pipe from '../interfaces/pipe.interface';
@@ -79,6 +79,6 @@ export function Body( pipe: Pipe ): ParameterDecorator & MethodDecorator;
  */
 export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
-export function Body( ...args: [ (string | Pipe)?, Pipe? ] ): ParameterDecorator & MethodDecorator {
+export function Body( ...args: [ ( string | Pipe )?, Pipe? ] ): ParameterDecorator & MethodDecorator {
     return createActionDecorator( 'body', ...args );
 }

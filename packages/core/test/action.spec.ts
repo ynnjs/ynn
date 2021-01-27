@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: utils/action-scanner.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/30/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import 'reflect-metadata';
@@ -17,10 +17,10 @@ describe( 'utils.scanner', () => {
         const controller = {
             indexAction() {},
             fn() {}
-        }
+        };
 
         const actions = scanner( controller );
- 
+
         expect( actions ).not.toHaveProperty( 'fn' );
         expect( actions ).toHaveProperty( 'index' );
         expect( actions.index.methodName ).toEqual( 'indexAction' );
@@ -31,6 +31,7 @@ describe( 'utils.scanner', () => {
         class Controller {
             @Action()
             index() {}
+
             fn() {}
         }
 
@@ -47,6 +48,7 @@ describe( 'utils.scanner', () => {
         class Controller {
             @Action( 'home' )
             index() {}
+
             fn() {}
         }
 
@@ -59,7 +61,7 @@ describe( 'utils.scanner', () => {
     } );
 
     it( 'should support using @Action() decorator multiple times for one method', () => {
-        
+
         class Controller {
             @Action()
             @Action( 'home' )
@@ -83,7 +85,7 @@ describe( 'utils.scanner', () => {
     } );
 
     it( 'should support using @Action() decorator for method has name end with "Action"', () => {
-        
+
         class Controller {
             @Action()
             @Action( 'home' )
@@ -106,7 +108,7 @@ describe( 'utils.scanner', () => {
     } );
 
     it( 'should not override action specified with @Action() by xxxAction method', () => {
-         
+
         class Controller {
             @Action( 'home' )
             indexAction() {}

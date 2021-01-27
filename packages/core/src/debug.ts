@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/debug.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/16/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import util from 'util';
@@ -14,7 +14,7 @@ import Logger from './interfaces/logger.interface';
 type OptionsStyles = Record<keyof Logger, StyleOptions>;
 
 export type DebugLoggerOptions = {
-    levels?: Array<keyof Logger> | boolean;
+    levels?: ( keyof Logger )[] | boolean;
     styles?: Partial<OptionsStyles> | false;
 };
 
@@ -39,7 +39,8 @@ export default class DebugLogger implements Logger {
         return this.#levels.includes( name );
     }
 
-    #levels: Array<keyof Logger> | boolean = true;
+    #levels: ( keyof Logger )[] | boolean = true;
+
     #styles: Record<keyof Logger, StyleOptions> | false = { ...styles };
 
     constructor( options: DebugLoggerOptions = {} ) {
@@ -57,23 +58,23 @@ export default class DebugLogger implements Logger {
     }
 
     log( msg, ...args ) {
-        this.#call( 'log', this.#styles && this.#styles?.log, msg, ...args );
+        this.#call( 'log', this.#styles && this.#styles.log, msg, ...args );
     }
 
     error( msg, ...args ) {
-        this.#call( 'error', this.#styles && this.#styles?.error, msg, ...args );
+        this.#call( 'error', this.#styles && this.#styles.error, msg, ...args );
     }
 
     warn( msg, ...args ) {
-        this.#call( 'warn', this.#styles && this.#styles?.warn, msg, ...args );
+        this.#call( 'warn', this.#styles && this.#styles.warn, msg, ...args );
     }
 
     debug( msg, ...args ) {
-        this.#call( 'debug', this.#styles && this.#styles?.debug, msg, ...args );
+        this.#call( 'debug', this.#styles && this.#styles.debug, msg, ...args );
     }
 
     verbose( msg, ...args ) {
-        this.#call( 'verbose', this.#styles && this.#styles?.verbose, msg, ...args );
+        this.#call( 'verbose', this.#styles && this.#styles.verbose, msg, ...args );
     }
 
     static log( style, msg, ...args ) {

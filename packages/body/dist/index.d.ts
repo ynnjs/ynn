@@ -17,10 +17,10 @@ import { KoaContext } from '@ynn/koa';
  *  - it will be `ReturnType<typeof qs.parse>` while `Content-Type` matches `form`.
  *  - it will be `ReturnType<typeof JSON.parse>` while `Content-Type` matches `json`.
  */
-declare type RawBody = Promise<{
+declare type RawBody = {
     parsed: string | ReturnType<typeof qs.parse> | ReturnType<typeof JSON.parse>;
     raw: string;
-}>;
+};
 /**
  * the `options` for parsing multipart request
  * @see https://github.com/node-formidable/formidable
@@ -64,34 +64,7 @@ declare function parseMultipart(ctx: KoaContext, options?: MultipartOptions): Pr
  * @param ctx - the context object conforming the Koa's context object.
  * @param options - the options object. {@link BodyOptions}
  *
- * @returns the raw body object returns by `co-body`. {@link RawBody}
- */
-export default function parseBody(ctx: KoaContext, options: BodyOptions & {
-    returnRawBody: true;
-}): RawBody;
-/**
- * get body data by setting `options.returnRawBody` to `true`, if the `Content-Type` matches `multipart` type, the function will not return the raw body data, it will return parsed value.
- *
- * @param ctx - the context object conforming the Koa's context object.
- * @param options - the options object. {@link BodyOptions}
- *
  * @returns the parsed body with `fields` and `files`.
  */
-export default function parseBody(ctx: KoaContext, options: BodyOptions & {
-    returnRawBody: true;
-}): ReturnType<typeof parseMultipart>;
-/**
- * get parsed body with default `co-body` options for `json`, `text` and `form` request.
- *
- * @param ctx - the context object conforming the Koa's context object.
- *
- * @returns the parsed body object.
- */
-export default function parseBody(ctx: KoaContext): ReturnType<typeof cobody>;
-export default function parseBody(ctx: KoaContext, options: BodyOptions): ReturnType<typeof cobody>;
-/**
- * parse multipart request body.
- */
-export default function parseBody(ctx: KoaContext): ReturnType<typeof parseMultipart>;
-export default function parseBody(ctx: KoaContext, options?: BodyOptions): ReturnType<typeof parseMultipart>;
+export default function parseBody(ctx: KoaContext, options?: Readonly<BodyOptions>): Promise<RawBody | ReturnType<typeof parseMultipart> | ReturnType<typeof cobody>>;
 export {};

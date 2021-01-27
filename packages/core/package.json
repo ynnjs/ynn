@@ -13,7 +13,7 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "prepublish": "yarn make",
-        "lint": "eslint src/**/*.ts test/**/*.ts --cache"
+        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "devDependencies": {
         "@types/jest": "^26.0.20",
@@ -23,8 +23,10 @@
         "@types/yargs": "^15.0.12",
         "@typescript-eslint/eslint-plugin": "^4.14.1",
         "@typescript-eslint/parser": "^4.14.1",
+        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
         "benny": "^3.6.15",
         "eslint": "^7.18.0",
+        "eslint_d": "^9.1.2",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "jest-mock-process": "^1.4.0",

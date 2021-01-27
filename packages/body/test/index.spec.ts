@@ -26,26 +26,26 @@ interface CreateAppOptions {
         set?: [string, string][];
         field?: [string, string][];
         attach?: [string, string][];
-    }
+    };
 }
 
 function createApp( options: CreateAppOptions ) {
     const app = new Koa();
 
-    app.use( async( ctx ) => {
-        options?.beforeParsing?.( ctx );
+    app.use( async ( ctx ) => {
+        options.beforeParsing?.( ctx );
         try {
-            const parsed = await body( ctx, options?.body || {} );
-            options?.callback?.( parsed, ctx );
-        } catch( e ) {
-            if( !options?.error ) console.log( 'Uncaught Error: ', e );
-            options?.error?.( e );
+            const parsed = await body( ctx, options.body ?? {} );
+            options.callback?.( parsed, ctx );
+        } catch( e: unknown ) {
+            if( !options.error ) console.log( 'Uncaught Error: ', e );
+            options.error?.( e );
         }
     } );
 
     let send = request( app.callback() ).post( '/' );
 
-    options?.request?.send?.forEach( x => {
+    options.request?.send?.forEach( x => {
         send = send.send( x );
     } );
 
@@ -64,7 +64,7 @@ function createApp( options: CreateAppOptions ) {
         send = send.attach( ...args );
     } );
 
-    send.end( () => {} ); // eslint-disable-line @typescript-eslint/no-empty-function
+    send.end( () => {} );
 }
 
 describe( 'body', () => {

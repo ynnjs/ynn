@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
- * 
+ *
  * File: src/ynn.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 10/26/2020
- * Description: 
+ * Description:
  ******************************************************************/
 
 import 'reflect-metadata';
@@ -29,7 +29,7 @@ export type RouterTarget = {
 };
 
 export type RouterRule<
-    M = string | RegExp | (string | RegExp)[],
+    M = string | RegExp | ( string | RegExp )[],
     T = string | RouterTarget | KoaMiddleware
 > = [M, T] | [string | string[], M, T]
 
@@ -47,24 +47,33 @@ export type YnnOptions = KoaOptions & {
     controllers?: Record<string, YnnController>;
     providors?: Record<string, any>;
     modules?: Record<string, Koa>;
-    routers?: RouterRule[] | ( ( ...args ) => void | RouterRule[] ),
+    routers?: RouterRule[] | ( ( ...args ) => void | RouterRule[] );
     isMoudule?: boolean;
     [ key: string ]: any;
 }
 
 export default class Ynn extends Koa {
     static cargs = cargs;
+
     server: Server | null = null;
+
     debug!: Logger;
+
     logger!: Logger | Record<string, any>;
+
     modules: Record<string, Koa>;
+
     router!: Router;
+
     isModule = false;
+
     controllers: NonNullable<YnnOptions[ 'controllers' ]>;
     // public providers: Record<string, any>;
 
     #address: AddressInfo | null = null;
+
     #configs: Config[] = [];
+
     #controllers: {
         controller: any;
         executor: ( ...args: any ) => void;
@@ -100,7 +109,7 @@ export default class Ynn extends Koa {
                 rules = options.routers( router, this );
             }
 
-            rules && rules.forEach( ( rule : RouterRule ) => {
+            rules && rules.forEach( ( rule: RouterRule ) => {
                 if( rule.length === 2 ) {
                     rule = [ '*', ...rule ];
                 }
@@ -119,15 +128,15 @@ export default class Ynn extends Koa {
                     map = { ...( rule[ 2 ] as RouterTarget ) };
                 }
 
-                router.any( rule[ 0 ], rule[ 1 ], ( ctx, next ) => {
+                router.any( rule[ 0 ], rule[ 1 ], async ( ctx, next ) => {
                     return this.execute( map, ctx, next );
                 } );
             } );
         }
 
         this.modules && Object.keys( this.modules ).forEach( ( module: string ) => {
-            const regexp = new RegExp( `^/${escapeRegexp(module)}(/|$)`, 'i' );
-            router.any( '*', `/${module}/.*`, ( ctx, next ) => {
+            const regexp = new RegExp( `^/${escapeRegexp( module )}(/|$)`, 'i' );
+            router.any( '*', `/${module}/.*`, async ( ctx, next ) => {
                 ctx.originalPath = ctx.path || '/';
                 ctx.path = ctx.path.replace( regexp, '/' );
                 const [ , controller, action ] = ctx.path.split( '/', 3 );
@@ -135,16 +144,16 @@ export default class Ynn extends Koa {
             } );
         } );
 
-        router.any( '*', /.*/, ( ctx, next ) => {
-            const [ , controller, action ] = ctx.path.split( '/', 3 ); 
-            return this.execute( { controller, action },  ctx, next );         
+        router.any( '*', /.*/, async ( ctx, next ) => {
+            const [ , controller, action ] = ctx.path.split( '/', 3 );
+            return this.execute( { controller, action }, ctx, next );
         } );
 
         this.router = router;
     }
 
     #setupControllers = ( options: YnnOptions ): void => {
-        const { controllers } = options; 
+        const { controllers } = options;
 
         /**
          * iterate all controllers for looking for actions of each controller.
@@ -202,7 +211,7 @@ export default class Ynn extends Koa {
         return {
             'log-path' : this.#options[ 'log-path' ],
             port : this.#address?.port ?? null
-        }
+        };
     }
 
     config( path: string, defaultValue?: any ): any {
@@ -270,7 +279,7 @@ export default class Ynn extends Koa {
         }
 
         if( is.class( C ) ) {
-            const c = new (C as typeof Controller)( ctx );
+            const c = new ( C as typeof Controller )( ctx );
             const { action = 'index' } = map;
             const fn = c[ action + 'Action' ];
 
@@ -291,7 +300,7 @@ export default class Ynn extends Koa {
                 ctx.throw( 404 );
             }
         } else if( typeof C === 'function' ) {
-            (C as KoaMiddleware)( ctx );
+            ( C as KoaMiddleware )( ctx );
         } else {
             ctx.body = C;
         }

@@ -13,7 +13,7 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "prepublish": "yarn make",
-        "lint": "eslint src/**/*.ts test/**/*.ts --cache"
+        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "engines": {
         "node": ">=14.15.0"
@@ -26,7 +26,9 @@
         "@types/node": "^14.14.22",
         "@typescript-eslint/eslint-plugin": "^4.14.1",
         "@typescript-eslint/parser": "^4.14.1",
+        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
         "eslint": "^7.18.0",
+        "eslint_d": "^9.1.2",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "ts-jest": "^26.4.4",
@@ -35,5 +37,8 @@
     },
     "peerDependencies": {
         "reflect-metadata": "*"
+    },
+    "dependencies": {
+        "@ynn/method-interceptor": "workspace:packages/method-interceptor"
     }
 }

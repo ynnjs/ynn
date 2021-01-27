@@ -31,7 +31,7 @@ export interface GenerateInterceptorOptions {
     beforeMethods: Record<string, any>;
     afterMethods: Record<string, any>;
     parameterMethods: Record<string, any>;
-    exceptionMethods : Record<string, any>;
+    exceptionMethods: Record<string, any>;
 }
 
 export default function generateInterceptorMethods<T extends any[]>(
@@ -73,7 +73,7 @@ export default function generateInterceptorMethods<T extends any[]>(
         } );
     } );
 
-    const before = ( ...args: T ): Promise<any> => {
+    const before = async ( ...args: T ): Promise<any> => {
         const promises = [];
         boundBeforeMethods.forEach( ( interceptor ) => {
             promises.push( interceptor.method( interceptor.metadata, ...args ) );
@@ -84,8 +84,8 @@ export default function generateInterceptorMethods<T extends any[]>(
 
     const after = ( value: any, ...args: T ): any => {
         boundAfterMethods.forEach( ( interceptor ) => {
-        } ); 
-    }
+        } );
+    };
 
     return { before, after, parameters, exception };
 }
