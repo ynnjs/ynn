@@ -8,7 +8,5 @@
  ******************************************************************/
 import { MethodBefore } from '../method.interface';
 import { MetadataBefore } from '../metadata.interface';
-export declare type CreateDecoratorBeforeOptions<T extends unknown[]> = {
-    method: MethodBefore<T>;
-} & Pick<MetadataBefore, 'parameters'>;
-export declare function createDecoratorBefore<T extends unknown[]>(options: Readonly<CreateDecoratorBeforeOptions<T>>): MethodDecorator;
+export declare type CreateDecoratorBeforeOptions = Pick<MetadataBefore, 'parameters'>;
+export declare function createDecoratorBefore<T extends unknown[]>(method: MethodBefore<T>, options?: Readonly<CreateDecoratorBeforeOptions>): MethodDecorator;

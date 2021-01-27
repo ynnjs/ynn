@@ -13,13 +13,12 @@ import { Metadata, MetadataAfter, MetadataBefore, MetadataException } from '../m
 
 type M = MetadataAfter | MetadataBefore | MetadataException;
 
-type CreateMethodDecoratorOptions = {
-    method: VariadicFunction;
-} & Pick<Metadata, 'parameters'> & Pick<MetadataException, 'exceptionType'>;
+type CreateMethodDecoratorOptions = Pick<Metadata, 'parameters'> & Pick<MetadataException, 'exceptionType'>;
 
 export default function createMethodDecorator(
     key: string | symbol,
     interceptorType: 'after' | 'before' | 'exception',
+    method: VariadicFunction,
     options: Readonly<CreateMethodDecoratorOptions>
 ): MethodDecorator {
 
@@ -34,7 +33,7 @@ export default function createMethodDecorator(
         ( metadata as MetadataException ).exceptionType = options.exceptionType;
     }
 
-    Storage.set( type, options.method );
+    Storage.set( type, method );
 
     return ( target: unknown, k: string | symbol, descriptor: PropertyDescriptor ): void => {
         const metadatas: Metadata[] = Reflect.getMetadata( key, descriptor.value ) || [];

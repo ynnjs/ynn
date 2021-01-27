@@ -91,15 +91,13 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         Storage.set( key1, () => 'abc' );
         Storage.set( key2, () => 1 );
 
-        const metadata: MetadataParameter[] = [
-            [
-                { type : key1, interceptorType : 'parameter' },
-                { type : key2, interceptorType : 'parameter' }
-            ]
+        const metadata: MetadataParameter[][] = [
+            [ { type : key1, interceptorType : 'parameter' } ],
+            [ { type : key2, interceptorType : 'parameter' } ]
         ];
 
         Reflect.defineMetadata( KEY_PARAMETER, metadata, A, 'fn' );
         const parameter = createInterceptorParameter( A, 'fn' );
-        expect( parameter() ).resolves.toEqual( [ 'abc', 1 ] );
+        return expect( parameter() ).resolves.toEqual( [ 'abc', 1 ] );
     } );
 } );

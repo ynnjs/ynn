@@ -14,19 +14,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDecoratorParameter = void 0;
 const storage_1 = __importDefault(require("../storage"));
 const constants_1 = require("../constants");
-function createDecoratorParameter(options) {
+function createDecoratorParameter(method, options = {}) {
     const type = storage_1.default.key();
     const metadata = { type, interceptorType: 'parameter' };
     if ('parameters' in options) {
         metadata.parameters = options.parameters;
     }
-    storage_1.default.set(type, options.method);
+    storage_1.default.set(type, method);
     return (target, key, i) => {
         const metadatas = Reflect.getMetadata(constants_1.KEY_PARAMETER, target.constructor, key) || [];
-        if (!metadatas[i]) {
-            metadatas[i] = [];
-        }
-        metadatas[i].push(metadata);
+        if (!metadatas[i])
+            metadatas[i] = [metadata];
+        else
+            metadatas[i].push(metadata);
         Reflect.defineMetadata(constants_1.KEY_PARAMETER, metadatas, target.constructor, key);
     };
 }

@@ -12,12 +12,11 @@ import { KEY_PARAMETER } from '../constants';
 import { MethodParameter } from '../method.interface';
 import { MetadataParameter } from '../metadata.interface';
 
-export type CreateDecoratorParameterOptions<T extends unknown[]> = {
-    method: MethodParameter<T>;
-} & Pick<MetadataParameter, 'parameters'>;
+export type CreateDecoratorParameterOptions = Pick<MetadataParameter, 'parameters'>;
 
-export function createDecoratorParameter<T extends unknown[] = unknown[]>(
-    options: Readonly<CreateDecoratorParameterOptions<T>>
+export function createDecoratorParameter<T extends unknown[]>(
+    method: MethodParameter<T>,
+    options: Readonly<CreateDecoratorParameterOptions> = {}
 ): ParameterDecorator {
 
     const type = Storage.key();
@@ -27,16 +26,14 @@ export function createDecoratorParameter<T extends unknown[] = unknown[]>(
         metadata.parameters = options.parameters;
     }
 
-    Storage.set( type, options.method );
+    Storage.set( type, method );
 
     return ( target, key: string | symbol, i: number ): void => {
+
         const metadatas: MetadataParameter[][] = Reflect.getMetadata( KEY_PARAMETER, target.constructor, key ) || [];
 
-        if( !metadatas[ i ] ) {
-            metadatas[ i ] = [];
-        }
-
-        metadatas[ i ].push( metadata );
+        if( !metadatas[ i ] ) metadatas[ i ] = [ metadata ];
+        else metadatas[ i ].push( metadata );
 
         Reflect.defineMetadata( KEY_PARAMETER, metadatas, target.constructor, key );
     };

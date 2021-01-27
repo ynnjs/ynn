@@ -12,12 +12,12 @@ import { KEY_PARAMETER, createDecoratorParameter } from '../../src';
 
 describe( 'decorator/create-decorator-parameter', () => {
     it( 'should have created a parameter decorator', () => {
-        const parameter = createDecoratorParameter( { method : () => {} } );
+        const parameter = createDecoratorParameter( () => {} );
         expect( parameter ).toBeInstanceOf( Function );
     } );
 
     it( 'the decorator should emit correct metadata', () => {
-        const parameter = createDecoratorParameter( { method : () => {} } );
+        const parameter = createDecoratorParameter( () => {} );
         class A { fn( @parameter name: string ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
         const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
         expect( metadata ).toEqual( [
@@ -29,8 +29,8 @@ describe( 'decorator/create-decorator-parameter', () => {
     } );
 
     it( 'using with multiple arguments', () => {
-        const parameter1 = createDecoratorParameter( { method : () => {} } );
-        const parameter2 = createDecoratorParameter( { method : () => {} } );
+        const parameter1 = createDecoratorParameter( () => {} );
+        const parameter2 = createDecoratorParameter( () => {} );
         class A { fn( @parameter1 name: string, @parameter2 age: number ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
         const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
         expect( metadata ).toEqual( [
@@ -46,8 +46,8 @@ describe( 'decorator/create-decorator-parameter', () => {
     } );
 
     it( 'using multiple decorators', () => {
-        const parameter1 = createDecoratorParameter( { method : () => {} } );
-        const parameter2 = createDecoratorParameter( { method : () => {} } );
+        const parameter1 = createDecoratorParameter( () => {} );
+        const parameter2 = createDecoratorParameter( () => {} );
         class A { fn( @parameter1 @parameter2 name: string ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
         const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
         expect( metadata ).toEqual( [
@@ -62,7 +62,7 @@ describe( 'decorator/create-decorator-parameter', () => {
     } );
 
     it( 'item of array can be undefined', () => {
-        const parameter2 = createDecoratorParameter( { method : () => {} } );
+        const parameter2 = createDecoratorParameter( () => {} );
         class A { fn( name: string, @parameter2 age: number ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
         const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
         expect( metadata ).toEqual( [

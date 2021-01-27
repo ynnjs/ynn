@@ -8,8 +8,6 @@
  ******************************************************************/
 import { VariadicFunction } from '@ynn/utility-types';
 import { Metadata, MetadataException } from '../metadata.interface';
-declare type CreateMethodDecoratorOptions = {
-    method: VariadicFunction;
-} & Pick<Metadata, 'parameters'> & Pick<MetadataException, 'exceptionType'>;
-export default function createMethodDecorator(key: string | symbol, interceptorType: 'after' | 'before' | 'exception', options: Readonly<CreateMethodDecoratorOptions>): MethodDecorator;
+declare type CreateMethodDecoratorOptions = Pick<Metadata, 'parameters'> & Pick<MetadataException, 'exceptionType'>;
+export default function createMethodDecorator(key: string | symbol, interceptorType: 'after' | 'before' | 'exception', method: VariadicFunction, options: Readonly<CreateMethodDecoratorOptions>): MethodDecorator;
 export {};

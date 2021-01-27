@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const storage_1 = __importDefault(require("../storage"));
-function createMethodDecorator(key, interceptorType, options) {
+function createMethodDecorator(key, interceptorType, method, options) {
     const type = storage_1.default.key();
     const metadata = { type, interceptorType };
     if ('parameters' in options) {
@@ -21,7 +21,7 @@ function createMethodDecorator(key, interceptorType, options) {
     if ('exceptionType' in options) {
         metadata.exceptionType = options.exceptionType;
     }
-    storage_1.default.set(type, options.method);
+    storage_1.default.set(type, method);
     return (target, k, descriptor) => {
         const metadatas = Reflect.getMetadata(key, descriptor.value) || [];
         metadatas.push(metadata);

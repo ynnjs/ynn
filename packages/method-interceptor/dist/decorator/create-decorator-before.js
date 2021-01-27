@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDecoratorBefore = void 0;
 const constants_1 = require("../constants");
 const create_method_decorator_1 = __importDefault(require("./create-method-decorator"));
-function createDecoratorBefore(options) {
-    return create_method_decorator_1.default(constants_1.KEY_BEFORE, 'before', options);
+function createDecoratorBefore(method, options = {}) {
+    return create_method_decorator_1.default(constants_1.KEY_BEFORE, 'before', method, options);
 }
 exports.createDecoratorBefore = createDecoratorBefore;

@@ -12,12 +12,11 @@ import { MethodAfter } from '../method.interface';
 import { MetadataAfter } from '../metadata.interface';
 import createMethodDecorator from './create-method-decorator';
 
-export type CreateDecoratorAfterOptions<T extends unknown[]> = {
-    method: MethodAfter<T>;
-} & Pick<MetadataAfter, 'parameters'>;
+export type CreateDecoratorAfterOptions = Pick<MetadataAfter, 'parameters'>;
 
 export function createDecoratorAfter<T extends unknown[]>(
-    options: Readonly<CreateDecoratorAfterOptions<T>>
+    method: MethodAfter<T>,
+    options: Readonly<CreateDecoratorAfterOptions> = {}
 ): MethodDecorator {
-    return createMethodDecorator( KEY_AFTER, 'after', options );
+    return createMethodDecorator( KEY_AFTER, 'after', method, options );
 }

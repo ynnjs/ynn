@@ -12,12 +12,12 @@ import { KEY_EXCEPTION, createDecoratorException } from '../../src';
 
 describe( 'decorator/create-decorator-exception', () => {
     it( 'should have created a method decorator', () => {
-        const exception = createDecoratorException( { method : () => {} } );
+        const exception = createDecoratorException( () => {} );
         expect( exception ).toBeInstanceOf( Function );
     } );
 
     it( 'the decorator should emit metadata', () => {
-        const exception = createDecoratorException( { method : () => {} } );
+        const exception = createDecoratorException( () => {} );
         class A { @exception fn() {} }
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'fn' )!;
         const metadata = Reflect.getMetadata( KEY_EXCEPTION, descriptor.value );
@@ -28,8 +28,8 @@ describe( 'decorator/create-decorator-exception', () => {
     } );
 
     it( 'multiple exception decorators on a method', () => {
-        const exception1 = createDecoratorException( { method : () => {} } );
-        const exception2 = createDecoratorException( { method : () => {} } );
+        const exception1 = createDecoratorException( () => {} );
+        const exception2 = createDecoratorException( () => {} );
         class A { @exception1 @exception2 fn() {} }
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'fn' )!;
         const metadata = Reflect.getMetadata( KEY_EXCEPTION, descriptor.value );
@@ -44,10 +44,7 @@ describe( 'decorator/create-decorator-exception', () => {
 
     it( 'should have added parameters into metadata if it is set', () => {
         const parameters = { x : 1 };
-        const exception = createDecoratorException( {
-            parameters,
-            method : () => {}
-        } );
+        const exception = createDecoratorException( () => {}, { parameters } );
         class A { @exception fn() {} }
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'fn' )!;
         const metadata = Reflect.getMetadata( KEY_EXCEPTION, descriptor.value );
@@ -61,11 +58,7 @@ describe( 'decorator/create-decorator-exception', () => {
     it( 'should have added exceptionType into metadata if it is set', () => {
         const parameters = { x : 1 };
         const exceptionType = Error;
-        const exception = createDecoratorException( {
-            exceptionType,
-            parameters,
-            method : () => {}
-        } );
+        const exception = createDecoratorException( () => {}, { exceptionType, parameters } );
         class A { @exception fn() {} }
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'fn' )!;
         const metadata = Reflect.getMetadata( KEY_EXCEPTION, descriptor.value );

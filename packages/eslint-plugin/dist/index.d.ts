@@ -369,7 +369,6 @@ declare const _default: {
                     })[];
                     'linebreak-style': string[];
                     'lines-between-class-members': string[];
-                    'new-cap': string;
                     'no-mixed-spaces-and-tabs': string;
                     'no-multi-assign': string;
                     'no-multiple-empty-lines': string;

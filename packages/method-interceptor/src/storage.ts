@@ -25,7 +25,7 @@ export default class Storage {
         return Storage.map.get( key );
     }
 
-    static key( prefix = '' ): symbol { // eslint-disable-line @typescript-eslint/default-param-last
+    static key( prefix = '' ): symbol {
         return Symbol( `${prefix}${Storage.n++}` );
     }
 }

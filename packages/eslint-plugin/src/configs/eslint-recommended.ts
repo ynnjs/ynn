@@ -122,7 +122,6 @@ export = {
             } ],
             'linebreak-style' : [ 'error', 'unix' ],
             'lines-between-class-members' : [ 'error', 'always' ],
-            'new-cap' : 'error',
             'no-mixed-spaces-and-tabs' : 'error',
             'no-multi-assign' : 'error',
             'no-multiple-empty-lines' : 'error',

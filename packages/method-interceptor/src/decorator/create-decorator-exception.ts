@@ -12,12 +12,11 @@ import { MethodException } from '../method.interface';
 import { MetadataException } from '../metadata.interface';
 import createMethodDecorator from './create-method-decorator';
 
-export type CreateDecoratorExceptionOptions<T extends unknown[]> = {
-    method: MethodException<T>;
-} & Pick<MetadataException, 'exceptionType' | 'parameters'>;
+export type CreateDecoratorExceptionOptions = Pick<MetadataException, 'exceptionType' | 'parameters'>;
 
 export function createDecoratorException<T extends unknown[]>(
-    options: Readonly<CreateDecoratorExceptionOptions<T>>
+    method: MethodException<T>,
+    options: Readonly<CreateDecoratorExceptionOptions> = {}
 ): MethodDecorator {
-    return createMethodDecorator( KEY_EXCEPTION, 'exception', options );
+    return createMethodDecorator( KEY_EXCEPTION, 'exception', method, options );
 }

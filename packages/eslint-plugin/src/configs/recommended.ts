@@ -76,7 +76,7 @@ export = {
             } ],
             '@typescript-eslint/method-signature-style' : [ 'error', 'property' ],
             '@typescript-eslint/naming-convention' : [ 'error', {
-                format : [ 'camelCase', 'UPPER_CASE' ],
+                format : [ 'camelCase', 'PascalCase', 'UPPER_CASE' ],
                 selector : [ 'variable', 'function' ]
             } ],
             '@typescript-eslint/no-confusing-non-null-assertion' : [ 'error' ],

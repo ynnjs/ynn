@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDecoratorException = void 0;
 const constants_1 = require("../constants");
 const create_method_decorator_1 = __importDefault(require("./create-method-decorator"));
-function createDecoratorException(options) {
-    return create_method_decorator_1.default(constants_1.KEY_EXCEPTION, 'exception', options);
+function createDecoratorException(method, options = {}) {
+    return create_method_decorator_1.default(constants_1.KEY_EXCEPTION, 'exception', method, options);
 }
 exports.createDecoratorException = createDecoratorException;
