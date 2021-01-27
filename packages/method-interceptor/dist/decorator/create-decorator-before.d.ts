@@ -6,10 +6,9 @@
  * Time: 01/24/2021
  * Description:
  ******************************************************************/
-import { MethodBefore } from '../methods.interface';
-interface CreateDecoratorBeforeOptions {
-    parameters?: unknown;
-    method: MethodBefore;
-}
-export default function createDecoratorBefore(options: CreateDecoratorBeforeOptions): MethodDecorator;
-export {};
+import { MethodBefore } from '../method.interface';
+import { MetadataBefore } from '../metadata.interface';
+export declare type CreateDecoratorBeforeOptions<T extends unknown[]> = {
+    method: MethodBefore<T>;
+} & Pick<MetadataBefore, 'parameters'>;
+export declare function createDecoratorBefore<T extends unknown[]>(options: Readonly<CreateDecoratorBeforeOptions<T>>): MethodDecorator;

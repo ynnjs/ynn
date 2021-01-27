@@ -6,6 +6,5 @@
  * Time: 12/28/2020
  * Description:
  ******************************************************************/
-import { InterceptorException } from './interceptor.interface';
-declare function createInterceptorException<T extends unknown[] = unknown[]>(descriptor: Readonly<PropertyDescriptor>): InterceptorException<T>;
+declare function createInterceptorException<T extends unknown[] = unknown[]>(descriptor: Readonly<PropertyDescriptor>): (e: unknown, ...args: T) => Promise<unknown>;
 export default createInterceptorException;

@@ -11,8 +11,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createDecoratorParameter = void 0;
 const storage_1 = __importDefault(require("../storage"));
-const constants_1 = __importDefault(require("../constants"));
+const constants_1 = require("../constants");
 function createDecoratorParameter(options) {
     const type = storage_1.default.key();
     const metadata = { type, interceptorType: 'parameter' };
@@ -21,9 +22,12 @@ function createDecoratorParameter(options) {
     }
     storage_1.default.set(type, options.method);
     return (target, key, i) => {
-        const metadatas = Reflect.getMetadata(constants_1.default, target.constructor, key) || [];
-        metadatas[i] = metadata;
-        Reflect.defineMetadata(constants_1.default, metadatas, target.constructor, key);
+        const metadatas = Reflect.getMetadata(constants_1.KEY_PARAMETER, target.constructor, key) || [];
+        if (!metadatas[i]) {
+            metadatas[i] = [];
+        }
+        metadatas[i].push(metadata);
+        Reflect.defineMetadata(constants_1.KEY_PARAMETER, metadatas, target.constructor, key);
     };
 }
-exports.default = createDecoratorParameter;
+exports.createDecoratorParameter = createDecoratorParameter;

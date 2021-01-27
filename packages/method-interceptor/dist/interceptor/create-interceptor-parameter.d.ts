@@ -7,6 +7,5 @@
  * Description:
  ******************************************************************/
 import { VariadicClass } from '@ynn/utility-types';
-import { InterceptorParameter } from './interceptor.interface';
-declare function createInterceptorParameter<T extends unknown[]>(constructor: VariadicClass, methodName: string): InterceptorParameter<T>;
+declare function createInterceptorParameter<T extends unknown[]>(constructor: VariadicClass, methodName: string): (...args: T) => Promise<unknown[]>;
 export default createInterceptorParameter;

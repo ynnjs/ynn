@@ -18,30 +18,59 @@ function createInterceptorParameter<T extends unknown[]>(
     methodName: string
 ): ( ...args: T ) => Promise<unknown[]> {
 
-    const bound: MethodParameterInfo<MethodParameter<T>>[] = [];
-    const metadatas: ( MetadataParameter | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, constructor.prototype, methodName ) || [];
+    type Info = MethodParameterInfo<MethodParameter<T>>;
+
+    const bound: Info[][] = [];
+    const metadatas: ( MetadataParameter[] | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, constructor, methodName ) || [];
 
     Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName )?.forEach( ( paramtype: unknown, i: number ) => {
         const metadata = metadatas[ i ];
 
         if( !metadata ) {
-            bound.push( { metadata : { paramtype } } );
+            bound.push( [ { metadata : { paramtype } } ] );
         } else {
-            const method = Storage.get( metadata.type );
+            const mds: Info[] = [];
 
-            if( !method ) {
-                throw new Error( `method ${metadata.type.toString()} not exists in the method list` );
-            }
+            /**
+             * added paramtype property to each metadata object
+             */
+            metadata.forEach( m => {
 
-            bound.push( { method, metadata : { ...metadata, paramtype } } );
+                const method = Storage.get( m.type );
+
+                if( !method ) {
+                    throw new Error( `method ${m.type.toString()} not exists in the method list` );
+                }
+
+                mds.push( { method, metadata : { ...m, paramtype } } );
+            } );
+
+            bound.push( mds );
         }
     } );
 
     return async ( ...args: T ): Promise<unknown[]> => {
         const promises: Promise<unknown>[] = [];
 
-        bound.forEach( ( info ) => {
-            promises.push( info.method?.( info.metadata, ...args ) ?? Promise.resolve( null ) );
+        bound.forEach( ( metadata ) => {
+
+            if( !metadata.length ) {
+                promises.push( Promise.resolve( null ) );
+                return;
+            }
+
+            const last = metadata[ metadata.length - 1 ];
+
+            let promise: Promise<unknown> = Promise.resolve( last.method?.( last.metadata, ...args ) ?? null );
+
+            for( let i = metadata.length - 2; i >= 0; i -= 1 ) {
+                const item = metadata[ i ];
+                promise = promise.then( () => {
+                    return item.method?.( item.metadata, ...args ) ?? null;
+                } );
+            }
+
+            promises.push( promise );
         } );
 
         return Promise.all( promises );

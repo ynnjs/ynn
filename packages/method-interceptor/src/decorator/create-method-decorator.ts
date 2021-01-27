@@ -24,11 +24,14 @@ export default function createMethodDecorator(
 ): MethodDecorator {
 
     const type = Storage.key();
-
     const metadata: M = { type, interceptorType };
 
     if( 'parameters' in options ) {
         metadata.parameters = options.parameters;
+    }
+
+    if( 'exceptionType' in options ) {
+        ( metadata as MetadataException ).exceptionType = options.exceptionType;
     }
 
     Storage.set( type, options.method );

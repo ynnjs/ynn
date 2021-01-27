@@ -57,7 +57,7 @@ export interface MethodParameter<T extends unknown[]> {
      * @param metadata - {@link MethodParameter}
      * @param ...args - other arguments
      */
-    ( metadata: Readonly<Partial<MetadataParameter> & { paramtype: unknown }>, ...args: T ): Promise<unknown>;
+    ( metadata: Readonly<Partial<MetadataParameter> & { paramtype: unknown }>, ...args: T ): unknown;
 }
 
 export type Methods<T> = Record<string | number | symbol, T>;

@@ -10,5 +10,4 @@ import createInterceptorBefore from './create-interceptor-before';
 import createInterceptorAfter from './create-interceptor-after';
 import createInterceptorException from './create-interceptor-exception';
 import createInterceptorParameter from './create-interceptor-parameter';
-export * from './interceptor.interface';
 export { createInterceptorBefore, createInterceptorAfter, createInterceptorException, createInterceptorParameter };

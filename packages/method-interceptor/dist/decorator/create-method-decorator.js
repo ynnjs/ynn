@@ -18,6 +18,9 @@ function createMethodDecorator(key, interceptorType, options) {
     if ('parameters' in options) {
         metadata.parameters = options.parameters;
     }
+    if ('exceptionType' in options) {
+        metadata.exceptionType = options.exceptionType;
+    }
     storage_1.default.set(type, options.method);
     return (target, k, descriptor) => {
         const metadatas = Reflect.getMetadata(key, descriptor.value) || [];

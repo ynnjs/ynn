@@ -13,6 +13,6 @@ export default class Storage {
     private static n;
     static set(key: Key, method: VariadicFunction): void;
     static get(key: Key): VariadicFunction | undefined;
-    static key<T extends 'string' | 'symbol'>(prefix?: string, type?: T): T extends 'string' ? string : symbol;
+    static key(prefix?: string): symbol;
 }
 export {};

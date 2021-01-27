@@ -6,18 +6,9 @@
  * Time: 01/26/2021
  * Description:
  ******************************************************************/
-
-import { KEY_AFTER } from '../constants';
 import { MethodAfter } from '../method.interface';
 import { MetadataAfter } from '../metadata.interface';
-import createMethodDecorator from './create-method-decorator';
-
-export type CreateDecoratorAfterOptions<T extends unknown[]> = {
+export declare type CreateDecoratorAfterOptions<T extends unknown[]> = {
     method: MethodAfter<T>;
 } & Pick<MetadataAfter, 'parameters'>;
-
-export function createDecoratorAfter<T extends unknown[]>(
-    options: Readonly<CreateDecoratorAfterOptions<T>>
-): MethodDecorator {
-    return createMethodDecorator( KEY_AFTER, 'after', options );
-}
+export declare function createDecoratorAfter<T extends unknown[]>(options: Readonly<CreateDecoratorAfterOptions<T>>): MethodDecorator;
