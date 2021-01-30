@@ -3,7 +3,7 @@
  *
  * File: src/storage.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 01/25/2021
+ * Time: 01/30/2021
  * Description:
  ******************************************************************/
 
@@ -11,7 +11,7 @@ import { VariadicFunction } from '@ynn/utility-types';
 
 type Key = string | number | symbol;
 
-export default class Storage {
+export class Storage {
 
     private static map: Map<Key, VariadicFunction> = new Map();
 

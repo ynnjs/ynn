@@ -9,9 +9,9 @@
 
 import { VariadicClass } from '@ynn/utility-types';
 import { KEY_PARAMETER } from '../constants';
-import { MetadataParameter } from '../metadata.interface';
+import { MetadataParameter } from '../metadata';
 import { MethodParameterInfo, MethodParameter } from '../method.interface';
-import Storage from '../storage';
+import { Storage } from '../storage';
 
 function createInterceptorParameter<T extends unknown[]>(
     constructor: VariadicClass,
@@ -21,7 +21,7 @@ function createInterceptorParameter<T extends unknown[]>(
     type Info = MethodParameterInfo<MethodParameter<T>>;
 
     const bound: Info[][] = [];
-    const metadatas: ( MetadataParameter[] | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, constructor, methodName ) || [];
+    const metadatas: ( Required<Omit<MetadataParameter, 'paramtype'>>[] | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, constructor, methodName ) || [];
 
     Reflect.getMetadata( 'design:paramtypes', constructor.prototype, methodName )?.forEach( ( paramtype: unknown, i: number ) => {
         const metadata = metadatas[ i ];

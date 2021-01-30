@@ -1,19 +1,23 @@
 {
     "name": "@ynn/waka",
-    "author": "LvChengbin <lvchengbin59@gmail.com>",
     "version": "0.0.0",
+    "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "yarn clean && tsc --desclaration",
-        "build:watch": "tsc --watch",
+        "make": "yarn clean && tsc --desclaration",
+        "make:watch": "tsc --watch",
         "test": "jest",
         "test:watch": "jest --watch",
+        "test:cov": "jest --coverage",
         "prepublish": "yarn build",
-        "lint": "eslint src/**/*.ts --cache"
+        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "engines": {
         "node": ">14.15.0"
+    },
+    "publicConfig": {
+        "access": "public"
     },
     "main": "dist/index.js",
     "files": [
@@ -24,9 +28,12 @@
         "@types/node": "^14.14.22",
         "@typescript-eslint/eslint-plugin": "^4.14.1",
         "@typescript-eslint/parser": "^4.14.1",
+        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
         "benny": "^3.6.15",
         "eslint": "^7.18.0",
+        "eslint_d": "^9.1.2",
         "jest": "^26.6.3",
+        "jest-extended": "^0.11.5",
         "ts-jest": "^26.4.4",
         "ts-node": "^9.1.1",
         "typescript": "^4.1.3"

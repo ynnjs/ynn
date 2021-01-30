@@ -8,49 +8,26 @@
  ******************************************************************/
 
 import 'reflect-metadata';
+import body from '../../src/interceptors/body';
 import { Body } from '../../src';
-import {
-    PARAM_BODY_METADATA,
-    ACTION_BODY_METADATA
-} from '../../src/constants';
 
-describe( 'Ynn Decorator: Body', () => {
+describe( 'interceptor/body', () => {
+    
+} );
 
-    describe( 'Method Decorator', () => {
-
-        it( '', () => {
-
-            class C {
-
+describe( 'decorator/body', () => {
+    describe( 'Method decorator', () => {
+        it( '@Body()', () => {
+            class Controller {
                 @Body()
-                indexAction() {
-                }
+                action() {}
             }
 
-            const descriptor = Reflect.getOwnPropertyDescriptor( C.prototype, 'indexAction' );
-            const metadata = Reflect.getMetadata( ACTION_BODY_METADATA, descriptor!.value );
-
-            console.log( 'Method Decorator: ', metadata );
-
-            Reflect.deleteMetadata( ACTION_BODY_METADATA, descriptor!.value );
-        } );
+            new Controller();
+        } );        
     } );
 
-    describe( 'Parameter Decorator', () => {
-
-        it( '', () => {
-
-            class C {
-                indexAction( @Body() data: any ) {
-                    return data;
-                }
-            }
-
-            const metadata = Reflect.getMetadata( PARAM_BODY_METADATA, C, 'indexAction' );
-            console.log( 'Parameter Decorator: ', metadata );
-            Reflect.deleteMetadata( PARAM_BODY_METADATA, C, 'indexAction' );
-        } );
-
+    describe( 'Parameter decorator', () => {
+        
     } );
-
 } );

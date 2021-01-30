@@ -7,14 +7,12 @@
  * Time: 01/24/2021
  * Description:
  ******************************************************************/
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDecoratorBefore = void 0;
-const constants_1 = require("../constants");
-const create_method_decorator_1 = __importDefault(require("./create-method-decorator"));
+const metadata_1 = require("../metadata");
 function createDecoratorBefore(method, options = {}) {
-    return create_method_decorator_1.default(constants_1.KEY_BEFORE, 'before', method, options);
+    return (target, key, descriptor) => {
+        metadata_1.saveMetadataBefore(descriptor, method, options);
+    };
 }
 exports.createDecoratorBefore = createDecoratorBefore;

@@ -8,8 +8,9 @@
  ******************************************************************/
 
 import 'reflect-metadata';
+export * from './storage';
 export * from './constants';
-export * from './metadata.interface';
+export * from './metadata';
 export * from './method.interface';
 export * from './interceptor';
 export * from './decorator';

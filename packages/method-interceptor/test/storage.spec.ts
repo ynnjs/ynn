@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import Storage from '../src/storage';
+import { Storage } from '../src';
 
 describe( 'Storage', () => {
     describe( 'Storage.key', () => {

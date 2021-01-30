@@ -7,12 +7,9 @@
  * Time: 01/05/2021
  * Description:
  ******************************************************************/
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-const storage_1 = __importDefault(require("../storage"));
+const storage_1 = require("../storage");
 function createInterceptorParameter(constructor, methodName) {
     const bound = [];
     const metadatas = Reflect.getMetadata(constants_1.KEY_PARAMETER, constructor, methodName) || [];
@@ -27,7 +24,7 @@ function createInterceptorParameter(constructor, methodName) {
              * added paramtype property to each metadata object
              */
             metadata.forEach(m => {
-                const method = storage_1.default.get(m.type);
+                const method = storage_1.Storage.get(m.type);
                 if (!method) {
                     throw new Error(`method ${m.type.toString()} not exists in the method list`);
                 }

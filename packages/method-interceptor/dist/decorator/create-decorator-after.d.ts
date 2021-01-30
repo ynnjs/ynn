@@ -7,6 +7,6 @@
  * Description:
  ******************************************************************/
 import { MethodAfter } from '../method.interface';
-import { MetadataAfter } from '../metadata.interface';
+import { MetadataAfter } from '../metadata';
 export declare type CreateDecoratorAfterOptions = Pick<MetadataAfter, 'parameters'>;
 export declare function createDecoratorAfter<T extends unknown[]>(method: MethodAfter<T>, options?: Readonly<CreateDecoratorAfterOptions>): MethodDecorator;

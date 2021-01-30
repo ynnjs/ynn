@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import { KEY_AFTER } from '../constants';
-import { MetadataAfter } from '../metadata.interface';
+import { MetadataAfter } from '../metadata';
 import extractMethods from './extract-methods';
 
 /**

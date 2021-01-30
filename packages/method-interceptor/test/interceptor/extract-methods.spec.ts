@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import Storage from '../../src/storage';
+import { Storage } from '../../src';
 import extractMethods from '../../src/interceptor/extract-methods';
 
 describe( 'interceptor/extract-methods', () => {

@@ -8,8 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import Storage from '../../src/storage';
-import { createInterceptorException, KEY_EXCEPTION, MetadataException } from '../../src';
+import { Storage, createInterceptorException, KEY_EXCEPTION, MetadataException } from '../../src';
 import { generateDescriptor } from '../helpers/util';
 
 describe( 'interceptor/create-interceptor-exception', () => {

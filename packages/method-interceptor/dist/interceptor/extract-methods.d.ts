@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 import { VariadicFunction } from '@ynn/utility-types';
-import { MetadataBefore, MetadataAfter, MetadataException } from '../metadata.interface';
+import { MetadataBefore, MetadataAfter, MetadataException } from '../metadata';
 import { MethodInfo } from '../method.interface';
 declare type Metadata = MetadataBefore | MetadataAfter | MetadataException;
 /**

@@ -8,8 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import Storage from '../../src/storage';
-import { createInterceptorParameter, KEY_PARAMETER, MetadataParameter } from '../../src';
+import { Storage, createInterceptorParameter, KEY_PARAMETER, MetadataParameter } from '../../src';
 import Decorate from '../helpers/decorate';
 
 describe( 'interceptor/create-interceptor-parameter', () => {

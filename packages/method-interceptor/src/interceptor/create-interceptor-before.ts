@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { MetadataBefore } from '../metadata.interface';
+import { MetadataBefore } from '../metadata';
 import { KEY_BEFORE } from '../constants';
 import extractMethods from './extract-methods';
 

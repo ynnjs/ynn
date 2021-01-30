@@ -43,7 +43,7 @@ describe( 'method-interceptor', () => {
             return { name : 'admin', level : 9, password : 'abcdefg' };
         } );
 
-        const User = createDecoratorParameter( async ( metadata: MetadataParameter, ctx: Context ): UserInfo => {
+        const User = createDecoratorParameter( async ( metadata: MetadataParameter, ctx: Context ): Promise<UserInfo> => {
             const { query } = ctx;
             if( !query.uid ) {
                 throw new Error( 'uid is requierd' );
@@ -63,7 +63,7 @@ describe( 'method-interceptor', () => {
             if( ctx.query.forceError ) {
                 throw new CustomError( 'Custom error' );
             }
-            delete value.password;
+            delete ( value as any ).password; // eslint-disable-line @typescript-eslint/no-explicit-any
             return value;
         } );
 
@@ -83,12 +83,12 @@ describe( 'method-interceptor', () => {
         const exception = createInterceptorException( descriptor );
         const parameter = createInterceptorParameter( Controller, 'action' );
 
-        async function execute( context: Context ): Record<string, unknown> {
+        async function execute( context: Context ): Promise<unknown> {
             try {
                 await before( context );
                 const controller = new Controller();
                 const params = await parameter( context );
-                const body = controller.action( ...params );
+                const body = controller.action( ...params as [ UserInfo ] );
                 return await after( body, context );
             } catch( e: unknown ) {
                 return exception( e, context );
@@ -97,7 +97,7 @@ describe( 'method-interceptor', () => {
 
         it( 'all the best', async () => {
             const context: Context = {
-                query : { uid : 123 },
+                query : { uid : '123' },
                 header : { authorization : 'authorization' }
             };
 
@@ -106,11 +106,11 @@ describe( 'method-interceptor', () => {
 
         it( 'throw exception from before interceptor', async () => {
             const context: Context = {
-                query : { uid : 123 },
+                query : { uid : '123' },
                 header : {}
             };
 
-            return expect( execute( context ) ).resolves.toEqual( { status : 1, query : { uid : 123 } } );
+            return expect( execute( context ) ).resolves.toEqual( { status : 1, query : { uid : '123' } } );
         } );
 
         it( 'throw exception from parameter interceptor', async () => {
@@ -124,7 +124,7 @@ describe( 'method-interceptor', () => {
 
         it( 'throw exception from after interceptor', async () => {
             const context: Context = {
-                query : { uid : 123, forceError : 1 },
+                query : { uid : '123', forceError : '1' },
                 header : { authorization : 'authorization' }
             };
 

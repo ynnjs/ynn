@@ -7,11 +7,8 @@
  * Time: 01/23/2021
  * Description:
  ******************************************************************/
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const storage_1 = __importDefault(require("../storage"));
+const storage_1 = require("../storage");
 /**
  * extract all interceptor methods of a descriptor with specific key from a method pool.
  *
@@ -23,7 +20,7 @@ const storage_1 = __importDefault(require("../storage"));
 function extractMethods(key, descriptor) {
     const bound = [];
     Reflect.getMetadata(key, descriptor.value)?.forEach((metadata) => {
-        const method = storage_1.default.get(metadata.type);
+        const method = storage_1.Storage.get(metadata.type);
         if (!method) {
             throw new Error(`method ${metadata.type.toString()} not exists in method list.`);
         }

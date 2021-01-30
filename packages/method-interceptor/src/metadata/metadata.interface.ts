@@ -1,9 +1,9 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
- * File: src/metadata.interface.ts
+ * File: metadata/metadata.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/20/2020
+ * Time: 01/30/2021
  * Description:
  ******************************************************************/
 
@@ -110,6 +110,6 @@ export interface MetadataException extends Metadata {
  * }
  * ```
  */
-export interface MetadataParameter extends Metadata {
-    interceptorType: 'parameter';
+export type MetadataParameter = Partial<Metadata> & {
+    paramtype: unknown;
 }

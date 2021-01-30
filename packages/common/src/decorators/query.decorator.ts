@@ -11,11 +11,6 @@ import Pipe from '../interfaces/pipe.interface';
 import { createActionDecorator } from './util';
 
 /**
- * @returns the parameter decorator or the method decorator
- */
-export function Query(): ParameterDecorator & MethodDecorator;
-
-/**
  * @returns the parameter decorator
  */
 export function Query( property: string ): ParameterDecorator;
@@ -23,7 +18,7 @@ export function Query( property: string ): ParameterDecorator;
 /**
  * @returns the parameter decorator or the method decorator
  */
-export function Query( pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export function Query( pipe?: Pipe ): ParameterDecorator & MethodDecorator;
 
 /**
  * @returns the parameter decorator or the method decorator

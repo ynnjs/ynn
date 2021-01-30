@@ -7,10 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { KEY_AFTER } from '../constants';
 import { MethodAfter } from '../method.interface';
-import { MetadataAfter } from '../metadata.interface';
-import createMethodDecorator from './create-method-decorator';
+import { MetadataAfter, saveMetadataAfter } from '../metadata';
 
 export type CreateDecoratorAfterOptions = Pick<MetadataAfter, 'parameters'>;
 
@@ -18,5 +16,7 @@ export function createDecoratorAfter<T extends unknown[]>(
     method: MethodAfter<T>,
     options: Readonly<CreateDecoratorAfterOptions> = {}
 ): MethodDecorator {
-    return createMethodDecorator( KEY_AFTER, 'after', method, options );
+    return ( targt, key: string | symbol, descriptor: PropertyDescriptor ): void => {
+        saveMetadataAfter( descriptor, method, options );
+    };
 }

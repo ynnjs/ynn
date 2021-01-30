@@ -7,10 +7,8 @@
  * Description:
  ******************************************************************/
 
-import Storage from '../storage';
-import { KEY_PARAMETER } from '../constants';
 import { MethodParameter } from '../method.interface';
-import { MetadataParameter } from '../metadata.interface';
+import { MetadataParameter, saveMetadataParameter } from '../metadata';
 
 export type CreateDecoratorParameterOptions = Pick<MetadataParameter, 'parameters'>;
 
@@ -19,22 +17,7 @@ export function createDecoratorParameter<T extends unknown[]>(
     options: Readonly<CreateDecoratorParameterOptions> = {}
 ): ParameterDecorator {
 
-    const type = Storage.key();
-    const metadata: MetadataParameter = { type, interceptorType : 'parameter' };
-
-    if( 'parameters' in options ) {
-        metadata.parameters = options.parameters;
-    }
-
-    Storage.set( type, method );
-
     return ( target, key: string | symbol, i: number ): void => {
-
-        const metadatas: MetadataParameter[][] = Reflect.getMetadata( KEY_PARAMETER, target.constructor, key ) || [];
-
-        if( !metadatas[ i ] ) metadatas[ i ] = [ metadata ];
-        else metadatas[ i ].push( metadata );
-
-        Reflect.defineMetadata( KEY_PARAMETER, metadatas, target.constructor, key );
+        saveMetadataParameter( target, key, i, method, options );
     };
 }

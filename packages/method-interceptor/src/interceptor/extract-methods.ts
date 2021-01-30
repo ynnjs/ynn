@@ -8,9 +8,9 @@
  ******************************************************************/
 
 import { VariadicFunction } from '@ynn/utility-types';
-import { MetadataBefore, MetadataAfter, MetadataException } from '../metadata.interface';
+import { MetadataBefore, MetadataAfter, MetadataException } from '../metadata';
 import { MethodInfo } from '../method.interface';
-import Storage from '../storage';
+import { Storage } from '../storage';
 
 type Metadata = MetadataBefore | MetadataAfter | MetadataException;
 

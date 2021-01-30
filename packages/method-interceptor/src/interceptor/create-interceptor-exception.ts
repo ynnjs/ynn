@@ -9,7 +9,7 @@
 
 import { VariadicClass } from '@ynn/utility-types';
 import { KEY_EXCEPTION } from '../constants';
-import { MetadataException } from '../metadata.interface';
+import { MetadataException } from '../metadata';
 import extractMethods from './extract-methods';
 
 function createInterceptorException<T extends unknown[] = unknown[]>(

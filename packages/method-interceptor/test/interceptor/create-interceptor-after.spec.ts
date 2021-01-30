@@ -8,8 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import Storage from '../../src/storage';
-import { createInterceptorAfter, KEY_AFTER, MetadataAfter } from '../../src';
+import { Storage, createInterceptorAfter, KEY_AFTER, MetadataAfter } from '../../src';
 import { generateDescriptor } from '../helpers/util';
 
 describe( 'interceptor/create-interceptor-after', () => {

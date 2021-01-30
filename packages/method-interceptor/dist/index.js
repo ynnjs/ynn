@@ -19,8 +19,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+__exportStar(require("./storage"), exports);
 __exportStar(require("./constants"), exports);
-__exportStar(require("./metadata.interface"), exports);
+__exportStar(require("./metadata"), exports);
 __exportStar(require("./method.interface"), exports);
 __exportStar(require("./interceptor"), exports);
 __exportStar(require("./decorator"), exports);

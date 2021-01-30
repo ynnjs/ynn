@@ -7,10 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { KEY_BEFORE } from '../constants';
 import { MethodBefore } from '../method.interface';
-import { MetadataBefore } from '../metadata.interface';
-import createMethodDecorator from './create-method-decorator';
+import { MetadataBefore, saveMetadataBefore } from '../metadata';
 
 export type CreateDecoratorBeforeOptions = Pick<MetadataBefore, 'parameters'>;
 
@@ -18,5 +16,7 @@ export function createDecoratorBefore<T extends unknown[]>(
     method: MethodBefore<T>,
     options: Readonly<CreateDecoratorBeforeOptions> = {}
 ): MethodDecorator {
-    return createMethodDecorator( KEY_BEFORE, 'before', method, options );
+    return ( target, key: string | symbol, descriptor: PropertyDescriptor ): void => {
+        saveMetadataBefore( descriptor, method, options );
+    };
 }

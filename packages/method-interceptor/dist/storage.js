@@ -4,10 +4,11 @@
  *
  * File: src/storage.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 01/25/2021
+ * Time: 01/30/2021
  * Description:
  ******************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Storage = void 0;
 class Storage {
     static set(key, method) {
         Storage.map.set(key, method);
@@ -19,6 +20,6 @@ class Storage {
         return Symbol(`${prefix}${Storage.n++}`);
     }
 }
-exports.default = Storage;
+exports.Storage = Storage;
 Storage.map = new Map();
 Storage.n = 0;
