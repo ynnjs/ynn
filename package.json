@@ -18,13 +18,16 @@
         "packages/*"
     ],
     "devDependencies": {
-        "commitizen": "^4.2.2",
+        "commitizen": "^4.2.3",
         "cz-conventional-changelog": "^3.3.0",
-        "husky": "next"
+        "husky": "next",
+        "pinst": "^2.1.4"
     },
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
-    "scripts": {},
+    "scripts": {
+        "postinstall": "yarn husky install"
+    },
     "engines": {
         "node": ">=14.15.1"
     },
