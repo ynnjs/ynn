@@ -10,7 +10,7 @@
 import { KoaContext } from '@ynn/koa';
 import parser from '@ynn/body';
 import { MetadataBefore, MetadataParameter } from '@ynn/method-interceptor';
-import Pipe from '../interface/pipe.interface';
+import { Pipe } from '../../interfaces';
 
 interface BodyParameters {
     property?: string;
@@ -18,10 +18,17 @@ interface BodyParameters {
 }
 
 /**
+ * function for interceptor before and interceptor parameter
+ *
  * @example
  *
+ * @param metadata
+ * @param ctx
  */
-export default async function body( metadata: Readonly<MetadataBefore> | Readonly<MetadataParameter>, ctx: KoaContext ): Promise<unknown> {
+export async function interceptorBeforeBody(
+    metadata: Readonly<MetadataBefore> | Readonly<MetadataParameter>,
+    ctx: KoaContext
+): Promise<unknown> {
     /**
      * don't parse the body multiple times if it has already been parsed
      */
@@ -29,11 +36,7 @@ export default async function body( metadata: Readonly<MetadataBefore> | Readonl
 
     const body = await ctx.body;
     const parameters = metadata.parameters as BodyParameters;
+    const value = parameters.property ? body[ parameters.property ] : body;
 
-    const value = ( 'property' in parameters ) ? body[ parameters.property ] : body;
-
-    if( 'pipe' in parameters ) {
-        return parameters.pipe( value, ctx, parameters );
-    }
-    return value;
+    return parameters.pipe ? parameters.pipe( value, ctx, parameters ) : value;
 }

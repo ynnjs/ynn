@@ -43,6 +43,8 @@
         "reflect-metadata": "*"
     },
     "dependencies": {
+        "@ynn/body": "workspace:packages/body",
+        "@ynn/koa": "workspace:packages/koa",
         "@ynn/method-interceptor": "workspace:packages/method-interceptor"
     }
 }

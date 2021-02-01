@@ -48,6 +48,7 @@ declare const _default: {
                     'no-use-before-define': string;
                     'no-empty-function': string;
                     'no-extra-semi': string;
+                    semi: string;
                     '@typescript-eslint/array-type': (string | {
                         default: string;
                         readonly: string;
@@ -92,6 +93,9 @@ declare const _default: {
                     '@typescript-eslint/prefer-string-starts-ends-with': string[];
                     '@typescript-eslint/prefer-ts-expect-error': string[];
                     '@typescript-eslint/promise-function-async': string[];
+                    '@typescript-eslint/semi': (string | {
+                        omitLastInOneLineBlock: boolean;
+                    })[];
                     '@typescript-eslint/switch-exhaustiveness-check': string[];
                     '@typescript-eslint/type-annotation-spacing': (string | {
                         before: boolean;
@@ -139,6 +143,7 @@ declare const _default: {
                     '@typescript-eslint/lines-between-class-members': string[];
                     '@typescript-eslint/no-dupe-class-members': string[];
                     '@typescript-eslint/no-duplicate-imports': string[];
+                    '@typescript-eslint/no-extra-semi': string;
                     '@typescript-eslint/no-redeclare': string[];
                     '@typescript-eslint/no-throw-literal': string[];
                     '@typescript-eslint/no-unused-expressions': (string | {
@@ -180,6 +185,7 @@ declare const _default: {
                     'no-use-before-define'?: undefined;
                     'no-empty-function'?: undefined;
                     'no-extra-semi'?: undefined;
+                    semi?: undefined;
                     '@typescript-eslint/array-type'?: undefined;
                     '@typescript-eslint/member-delimiter-style'?: undefined;
                     '@typescript-eslint/member-ordering'?: undefined;
@@ -202,6 +208,7 @@ declare const _default: {
                     '@typescript-eslint/prefer-string-starts-ends-with'?: undefined;
                     '@typescript-eslint/prefer-ts-expect-error'?: undefined;
                     '@typescript-eslint/promise-function-async'?: undefined;
+                    '@typescript-eslint/semi'?: undefined;
                     '@typescript-eslint/switch-exhaustiveness-check'?: undefined;
                     '@typescript-eslint/type-annotation-spacing'?: undefined;
                     '@typescript-eslint/unified-signatures'?: undefined;
@@ -215,6 +222,7 @@ declare const _default: {
                     '@typescript-eslint/lines-between-class-members'?: undefined;
                     '@typescript-eslint/no-dupe-class-members'?: undefined;
                     '@typescript-eslint/no-duplicate-imports'?: undefined;
+                    '@typescript-eslint/no-extra-semi'?: undefined;
                     '@typescript-eslint/no-redeclare'?: undefined;
                     '@typescript-eslint/no-throw-literal'?: undefined;
                     '@typescript-eslint/no-unused-expressions'?: undefined;

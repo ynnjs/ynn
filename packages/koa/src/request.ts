@@ -368,7 +368,7 @@ const Request: KoaRequest = {
      * Return subdomains as an array.
      *
      * Subdomains are the dot-separated parts of the host before the main domain of the app.
-     * By default, the domain of the app is assumed to be tha last two parts of the host.
+     * By default, the domain of the app is assumed to be the last two parts of the host.
      * This can be changed by setting `app.subdomainOffset`.
      *
      * For example, if the domain is "tobi.ferrets.example.com":

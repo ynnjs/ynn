@@ -7,13 +7,17 @@
  * Description:
  ******************************************************************/
 
-import { createDecoratorBefore, createDecoratorParameter } from '@ynn/method-interceptor';
+import { VariadicFunction } from '@ynn/utility-types';
+import { saveMetadataBefore, saveMetadataParameter } from '@ynn/method-interceptor';
 import Pipe from '../interfaces/pipe.interface';
-import {
-    ACTION_RESPONSE_METADATA_KEY
-} from '../constants';
 
-export function createActionDecorator( propertyOrPipe?: string | Pipe, pipeFunction?: Pipe ): MethodDecorator & ParameterDecorator {
+export function createGeneralBeforeAndParameterMetadataParameters(
+    propertyOrPipe?: string | Pipe,
+    pipeFunction?: Pipe
+): ( {
+    property?: string | symbol | number;
+    pipe?: Pipe;
+} ) {
 
     const t1 = typeof propertyOrPipe;
     const t2 = typeof pipeFunction;
@@ -29,21 +33,56 @@ export function createActionDecorator( propertyOrPipe?: string | Pipe, pipeFunct
 
     if( !pipe && t2 === 'function' ) pipe = pipeFunction as Pipe;
 
-    if( typeof indexOrDescriptor === 'number' ) {
-        return createDecoratorParameter( );
-    } else {
-        return createDecoratorBefore();
-    }
+    const parameters: {
+        property?: string | symbol | number;
+        pipe?: Pipe;
+    } = {};
+
+    property && ( parameters.property = property );
+    pipe && ( parameters.pipe = pipe );
+
+    return parameters;
 }
 
-export function createActionRequestDecorator() {
+export interface CreateGeneralBeforeAndParameterActionDecoratorOptions {
+    interceptorParameter: VariadicFunction;
+    interceptorBefore: VariadicFunction;
 }
 
-export function createActionResponseDecorator( type: string, args: any ): MethodDecorator {
+export function createGeneralBeforeAndParameterActionDecorator(
+    options: Readonly<CreateGeneralBeforeAndParameterActionDecoratorOptions>,
+    propertyOrPipe?: string | Pipe,
+    pipeFunction?: Pipe
+): MethodDecorator & ParameterDecorator {
 
-    return ( target: any, key: string | symbol, descriptor: TypedPropertyDescriptor<any> ) => {
-        const metadata = Reflect.getMetadata( ACTION_RESPONSE_METADATA_KEY, descriptor.value ) || [];
-        metadata.push( { type, args } );
-        Reflect.defineMetadata( ACTION_RESPONSE_METADATA_KEY, metadata, descriptor.value );
+    const t1 = typeof propertyOrPipe;
+    const t2 = typeof pipeFunction;
+
+    let property: string | undefined;
+    let pipe: Pipe | undefined;
+
+    /**
+     * both property and pipe can be empty
+     */
+    if( t1 === 'string' ) property = propertyOrPipe as string;
+    else if( t1 === 'function' ) pipe = propertyOrPipe as Pipe;
+
+    if( !pipe && t2 === 'function' ) pipe = pipeFunction as Pipe;
+
+    const parameters: {
+        property?: string | symbol | number;
+        pipe?: Pipe;
+    } = {};
+
+    property && ( parameters.property = property );
+    pipe && ( parameters.pipe = pipe );
+
+    return ( target, key: string | symbol, indexOrDescriptor: PropertyDescriptor | number ): void => {
+        if( typeof indexOrDescriptor === 'number' ) {
+            saveMetadataParameter( target, key, indexOrDescriptor, options.interceptorParameter, { parameters } );
+            return;
+        }
+        saveMetadataBefore( indexOrDescriptor, options.interceptorBefore, { parameters } );
     };
 }
+

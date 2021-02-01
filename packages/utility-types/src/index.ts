@@ -11,11 +11,13 @@
 /**
  * create a type of variadic function
  */
-export type VariadicFunction<P extends any[] = any[], R = any> = ( ...args: P ) => R; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type VariadicFunction<P extends unknown[] = unknown[], R = unknown> = ( ...args: P ) => R;
 
-export type VariadicClass<P extends any[] = any[], T = any> = new ( ...args: P ) => T; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type VariadicClass<P extends unknown[] = unknown[], T = unknown> = new ( ...args: P ) => T;
 
-export type ParametersShift<T extends VariadicFunction> = ( ( ...args: Parameters<T> ) => any ) extends ( ( _: any, ...args: infer U ) => any ) ? U : []; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type Shift<T extends unknown[]> = T extends [ _: unknown, ...args: infer U ] ? U : [];
+
+export type ParametersShift<T extends VariadicFunction> = Shift<Parameters<T>>;
 
 
 /**

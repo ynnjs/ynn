@@ -7,9 +7,4 @@
  * Description:
  ******************************************************************/
 
-import { RequestInterceptor } from '../../interface/interceptor.interface';
-import body from './body';
-
-export const requestInterceptors: Record<string, RequestInterceptor> = {
-    body
-};
+export * from './body';

@@ -7,14 +7,15 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interface/pipe.interface';
-import { createActionDecorator, createActionResponseDecorator } from './util';
+import { createDecoratorAfter } from '@ynn/method-interceptor';
+import { Pipe } from '../interfaces';
+import { interceptorBeforeHeader, interceptorParameterHeader, interceptorAfterHeader } from '../interceptors';
+import { createGeneralBeforeAndParameterActionDecorator } from './util';
 
 export function Header( property: string, value: string ): MethodDecorator;
 export function Header( headers: Record<string, string> ): MethodDecorator;
-export function Header(): ParameterDecorator & MethodDecorator;
 export function Header( property: string ): ParameterDecorator;
-export function Header( pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export function Header( pipe?: Pipe ): ParameterDecorator & MethodDecorator;
 export function Header( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
 export function Header( ...args: [ ( string | Pipe | Record<string, string> )?, ( Pipe | string )? ] ): ParameterDecorator & MethodDecorator {
@@ -29,18 +30,21 @@ export function Header( ...args: [ ( string | Pipe | Record<string, string> )?, 
      */
     if( ( t1 === 'string' && t2 === 'string' ) || ( propertyOrPipeOrHeaders && t1 === 'object' ) ) {
 
-        const args = [];
+        const headers = [];
 
         if( t1 === 'string' ) {
-            args.push( [ propertyOrPipeOrHeaders as string, pipeOrValue as string ] );
+            headers.push( [ propertyOrPipeOrHeaders as string, pipeOrValue as string ] );
         } else {
             Object.keys( propertyOrPipeOrHeaders as Record<string, string> ).forEach( key => {
-                args.push( [ key, propertyOrPipeOrHeaders[ key ] ] );
+                headers.push( [ key, propertyOrPipeOrHeaders[ key ] ] );
             } );
         }
 
-        return createActionResponseDecorator( 'header', args );
+        return createDecoratorAfter( interceptorAfterHeader, { headers } );
     }
 
-    return createActionDecorator( 'header', ...args as [ ( string | Pipe )?, Pipe? ] );
+    return createGeneralBeforeAndParameterActionDecorator( {
+        interceptorParameter : interceptorParameterHeader,
+        interceptorBefore : interceptorBeforeHeader
+    }, ...args as [ ( string | Pipe )?, Pipe? ] );
 }

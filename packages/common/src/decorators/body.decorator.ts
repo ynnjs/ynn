@@ -7,9 +7,9 @@
  * Description:
  ******************************************************************/
 
-import { createDecoratorParameter, createDecoratorBefore } from '@ynn/method-interceptor';
-import Pipe from '../interfaces/pipe.interface';
-import body from '../interceptors';
+import { Pipe } from '../interfaces';
+import { interceptorBeforeBody, interceptorParameterBody } from '../interceptors';
+import { createGeneralBeforeAndParameterActionDecorator } from './util';
 
 /**
  * Function for generating an action parameter decorator or a method decorator.
@@ -73,39 +73,10 @@ export function Body( property: string ): ParameterDecorator;
  */
 export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
 
-export function Body( propertyOrPipe?: string | Pipe, pipeFunction?: Pipe ): MethodDecorator & ParameterDecorator {
+export function Body( ...args: [ ( string | Pipe )?, Pipe? ] ): MethodDecorator & ParameterDecorator {
 
-    const t1 = typeof propertyOrPipe;
-    const t2 = typeof pipeFunction;
-
-    let property: string | undefined;
-    let pipe: Pipe | undefined;
-
-    /**
-     * both property and pipe can be empty
-     */
-    if( t1 === 'string' ) property = propertyOrPipe as string;
-    else if( t1 === 'function' ) pipe = propertyOrPipe as Pipe;
-
-    if( !pipe && t2 === 'function' ) pipe = pipeFunction as Pipe;
-
-    const parameters = {};
-
-    property && ( parameters.property = property );
-    pipe && ( parameters.pipe = pipe );
-
-    if( property && !pipe ) {
-        return createDecoratorParameter( body, { parameters } );
-    }
-
-    return createDecoratorBefore( body, { parameters } );
-
-    if( typeof indexOrDescriptor === 'number' ) {
-        return createDecoratorParameter( body, { parameters } );
-    }
-    return createDecoratorBefore( body, { parameters } );
+    createGeneralBeforeAndParameterActionDecorator( {
+        interceptorParameter : interceptorParameterBody,
+        interceptorBefore : interceptorBeforeBody
+    }, ...args );
 }
-
-// export function Body( ...args: [ ( string | Pipe )?, Pipe? ] ): ParameterDecorator & MethodDecorator {
-//     return createActionDecorator( ...args );
-// }

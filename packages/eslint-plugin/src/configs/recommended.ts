@@ -54,6 +54,7 @@ export = {
             'no-use-before-define' : 'off', // use @typescrpt-eslint/no-use-before-define
             'no-empty-function' : 'off', // use @typescript-eslint/no-empty-function
             'no-extra-semi' : 'off', // use @typescript-eslint/no-extra-semi
+            'semi' : 'off', // use @typescript-eslint/semi
             '@typescript-eslint/array-type' : [ 'error', { default : 'array', readonly : 'array' } ],
             '@typescript-eslint/explicit-function-return-type' : [ 'error' ],
             '@typescript-eslint/member-delimiter-style' : [ 'error', {
@@ -97,6 +98,7 @@ export = {
             '@typescript-eslint/prefer-string-starts-ends-with' : [ 'error' ],
             '@typescript-eslint/prefer-ts-expect-error' : [ 'error' ],
             '@typescript-eslint/promise-function-async' : [ 'error' ],
+            '@typescript-eslint/semi' : [ 'error', 'always', { omitLastInOneLineBlock : true } ],
             '@typescript-eslint/switch-exhaustiveness-check' : [ 'error' ],
             '@typescript-eslint/type-annotation-spacing' : [ 'error', {
                 before : false,
@@ -126,6 +128,7 @@ export = {
             '@typescript-eslint/lines-between-class-members' : [ 'error' ],
             '@typescript-eslint/no-dupe-class-members' : [ 'error' ],
             '@typescript-eslint/no-duplicate-imports' : [ 'error' ],
+            '@typescript-eslint/no-extra-semi' : 'off',
             '@typescript-eslint/no-redeclare' : [ 'error' ],
             '@typescript-eslint/no-throw-literal' : [ 'error' ],
             '@typescript-eslint/no-unused-expressions' : [ 'error', {
@@ -147,4 +150,4 @@ export = {
             '@typescript-eslint/no-non-null-assertion' : 'off'
         }
     } ]
-}
+};

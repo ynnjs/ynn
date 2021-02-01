@@ -9,13 +9,12 @@
 
 import { ACTIONS_METADATA_KEY } from '../constants';
 
-export function Action(): MethodDecorator;
-export function Action( name: string ): MethodDecorator;
+export function Action( name?: string ): MethodDecorator;
 
 export function Action( name?: string ): MethodDecorator {
-    return ( target: any, key: string | symbol, descriptor: TypedPropertyDescriptor<any> ) => {
+    return ( target, key: string | symbol, descriptor: PropertyDescriptor ): void => {
         const metadata = Reflect.getMetadata( ACTIONS_METADATA_KEY, descriptor.value ) || [];
-        metadata.push( name || key );
+        metadata.push( name ?? key );
         Reflect.defineMetadata( ACTIONS_METADATA_KEY, metadata, descriptor.value );
     };
 }

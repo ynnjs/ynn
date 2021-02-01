@@ -55,7 +55,7 @@ export interface KoaResponse {
     remove: ( field: string ) => void;
     req?: IncomingMessage | Http2ServerRequest;
     res?: ServerResponse | Http2ServerResponse;
-    redirect: ( url: string, alt: string ) => void;
+    redirect: ( url: string, alt?: string ) => void;
     set: ( field: string | Record<string, string | string[]>, val?: KoaResponseHeaderValue ) => void;
     socket: Socket | TLSSocket;
     status: number;

@@ -157,4 +157,4 @@ export = {
             'symbol-description' : 'error'
         }
     } ]
-}
+};

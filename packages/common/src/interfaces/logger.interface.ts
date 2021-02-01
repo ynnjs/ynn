@@ -11,9 +11,9 @@
 /**
  * Simple function for logging which has arguments just matches util.format method in nodejs.
  */
-export type LogFunction = ( msg: any, ...args: any[] ) => any;
+export type LogFunction = ( msg: unknown, ...args: unknown[] ) => unknown;
 
-export default interface Logger {
+export interface Logger {
     log: LogFunction;
     error: LogFunction;
     warn: LogFunction;

@@ -13,4 +13,4 @@ module.exports = {
         'plugin:@ynn/recommended'
     ],
     root : true
-}
+};

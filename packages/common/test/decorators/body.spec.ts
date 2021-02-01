@@ -8,12 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import body from '../../src/interceptors/body';
-import { Body } from '../../src';
-
-describe( 'interceptor/body', () => {
-    
-} );
+import { Body } from '../../src/decorators/body.decorator';
 
 describe( 'decorator/body', () => {
     describe( 'Method decorator', () => {
@@ -24,10 +19,9 @@ describe( 'decorator/body', () => {
             }
 
             new Controller();
-        } );        
+        } );
     } );
 
     describe( 'Parameter decorator', () => {
-        
     } );
 } );

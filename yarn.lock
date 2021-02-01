@@ -1356,7 +1356,9 @@ __metadata:
     "@types/node": ^14.14.22
     "@typescript-eslint/eslint-plugin": ^4.14.1
     "@typescript-eslint/parser": ^4.14.1
+    "@ynn/body": "workspace:packages/body"
     "@ynn/eslint-plugin": "workspace:packages/eslint-plugin"
+    "@ynn/koa": "workspace:packages/koa"
     "@ynn/method-interceptor": "workspace:packages/method-interceptor"
     eslint: ^7.18.0
     eslint_d: ^10.0.0
@@ -1557,6 +1559,7 @@ __metadata:
     "@ynn/eslint-plugin": "workspace:packages/eslint-plugin"
     dts-jest: ^23.3.0
     eslint: ^7.18.0
+    eslint_d: ^10.0.0
     jest: ^26.6.3
     jest-extended: ^0.11.5
     ts-jest: ^26.5.0

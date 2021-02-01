@@ -9,9 +9,10 @@
 /**
  * create a type of variadic function
  */
-export declare type VariadicFunction<P extends any[] = any[], R = any> = (...args: P) => R;
-export declare type VariadicClass<P extends any[] = any[], T = any> = new (...args: P) => T;
-export declare type ParametersShift<T extends VariadicFunction> = ((...args: Parameters<T>) => any) extends ((_: any, ...args: infer U) => any) ? U : [];
+export declare type VariadicFunction<P extends unknown[] = unknown[], R = unknown> = (...args: P) => R;
+export declare type VariadicClass<P extends unknown[] = unknown[], T = unknown> = new (...args: P) => T;
+export declare type Shift<T extends unknown[]> = T extends [_: unknown, ...args: infer U] ? U : [];
+export declare type ParametersShift<T extends VariadicFunction> = Shift<Parameters<T>>;
 /**
  * PartialKeys<Type, KeysUnion>
  *

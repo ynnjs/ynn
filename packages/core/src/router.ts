@@ -116,7 +116,7 @@ export default class implements Router {
             methods = methods.toUpperCase();
         }
 
-        const func = async ( ctx, next ): Promise<any> => {
+        const func = async ( ctx, next ): Promise<unknown> => {
             methodCheck: {
                 if( methods === '*' ) break methodCheck;
                 if( typeof methods === 'string' && methods !== ctx.method ) return next();

@@ -17,6 +17,10 @@
     "engines": {
         "node": ">=14.15.0"
     },
+    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
     "devDependencies": {
         "@types/bytes": "^3.1.0",
         "@types/co-body": "^5.1.0",
