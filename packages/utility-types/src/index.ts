@@ -11,7 +11,7 @@
 /**
  * create a type of variadic function
  */
-export type VariadicFunction<P extends unknown[] = unknown[], R = unknown> = ( ...args: P ) => R;
+export type VariadicFunction<P extends any[] = any[], R = any> = ( ...args: P ) => R; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export type VariadicClass<P extends any[] = any[], T = any> = new ( ...args: P ) => T; // eslint-disable-line @typescript-eslint/no-explicit-any
 
