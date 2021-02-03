@@ -13,7 +13,7 @@
  */
 export type VariadicFunction<P extends unknown[] = unknown[], R = unknown> = ( ...args: P ) => R;
 
-export type VariadicClass<P extends unknown[] = unknown[], T = unknown> = new ( ...args: P ) => T;
+export type VariadicClass<P extends any[] = any[], T = any> = new ( ...args: P ) => T; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export type Shift<T extends unknown[]> = T extends [ _: unknown, ...args: infer U ] ? U : [];
 
@@ -89,7 +89,7 @@ export type ReadonlyExcludesKeys<T, K extends keyof T> = Readonly<Omit<T, K>> & 
  *
  * Constructs a type with all properties of `Type` and make them mutable.
  */
-export type Writable<T> = { -readonly [ P in keyof T ]: T[ P ] }
+export type Writable<T> = { -readonly [ P in keyof T ]: T[ P ] };
 
 export type WritableKeys<T, K extends keyof T> = Writable<Pick<T, K>> & Omit<T, K>;
 

@@ -28,7 +28,7 @@ exports[`VariadicClass<P = any[], T = any> the first arguments should be a type 
 
 exports[`VariadicClass<P = any[], T = any> variadic arguments and return type (type) should match snapshot 1`] = `"VariadicClass<any[], any>"`;
 
-exports[`VariadicFunction<P = any[], R = any> default arguments (type) should match snapshot 1`] = `"VariadicFunction<any[], any>"`;
+exports[`VariadicFunction<P = any[], R = any> default arguments (type) should match snapshot 1`] = `"VariadicFunction<unknown[], unknown>"`;
 
 exports[`VariadicFunction<P = any[], R = any> default arguments (type) should match snapshot 2`] = `"() => void"`;
 
@@ -36,7 +36,7 @@ exports[`VariadicFunction<P = any[], R = any> specific arguments (type) should m
 
 exports[`VariadicFunction<P = any[], R = any> specific arguments (type) should match snapshot 2`] = `"(a: string, b: number) => number"`;
 
-exports[`VariadicFunction<P = any[], R = any> the first argument should be a type extends from any[] (type) should match snapshot 1`] = `"Type 'string' does not satisfy the constraint 'any[]'."`;
+exports[`VariadicFunction<P = any[], R = any> the first argument should be a type extends from any[] (type) should match snapshot 1`] = `"Type 'string' does not satisfy the constraint 'unknown[]'."`;
 
 exports[`WritableExcludesKeys<T, K extends keyof T> a.name = 'y' (type) should match snapshot 1`] = `"Cannot assign to 'name' because it is a read-only property."`;
 

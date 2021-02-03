@@ -10,7 +10,7 @@
  * create a type of variadic function
  */
 export declare type VariadicFunction<P extends unknown[] = unknown[], R = unknown> = (...args: P) => R;
-export declare type VariadicClass<P extends unknown[] = unknown[], T = unknown> = new (...args: P) => T;
+export declare type VariadicClass<P extends any[] = any[], T = any> = new (...args: P) => T;
 export declare type Shift<T extends unknown[]> = T extends [_: unknown, ...args: infer U] ? U : [];
 export declare type ParametersShift<T extends VariadicFunction> = Shift<Parameters<T>>;
 /**
