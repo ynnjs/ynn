@@ -1,6 +1,6 @@
 {
     "name": "@ynn/eslint-plugin",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Ynn eslint rules and plugins",
     "main": "dist/index.js",
     "author": "LvChengbin <lvchengbin59@gmail.com>",
@@ -36,7 +36,7 @@
         "@typescript-eslint/eslint-plugin": "^4.14.1",
         "@typescript-eslint/parser": "^4.14.1",
         "cli-style": "^0.1.1",
-        "eslint": "^7.18.0",
+        "eslint": "^7.19.0",
         "jest": "^26.6.3",
         "ts-jest": "^26.5.0",
         "ts-node": "^9.1.1",
