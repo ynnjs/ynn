@@ -10,10 +10,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const storage_1 = require("../storage");
-function createInterceptorParameter(constructor, methodName) {
+function createInterceptorParameter(obj, // eslint-disable-line
+methodName) {
     const bound = [];
-    const metadatas = Reflect.getMetadata(constants_1.KEY_PARAMETER, constructor, methodName) || [];
-    Reflect.getMetadata('design:paramtypes', constructor.prototype, methodName)?.forEach((paramtype, i) => {
+    const metadatas = Reflect.getMetadata(constants_1.KEY_PARAMETER, obj, methodName) || [];
+    Reflect.getMetadata('design:paramtypes', obj, methodName)?.forEach((paramtype, i) => {
         const metadata = metadatas[i];
         if (!metadata) {
             bound.push([{ metadata: { paramtype } }]);
