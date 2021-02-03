@@ -22,12 +22,12 @@ describe( 'interceptor/create-interceptor-parameter', () => {
 
     it( 'should have created a function even if the decorator metadata has not been emitted', () => {
         class A { fn() {} }
-        expect( createInterceptorParameter( A, 'fn' ) ).toBeInstanceOf( Function );
+        expect( createInterceptorParameter( A.prototype, 'fn' ) ).toBeInstanceOf( Function );
     } );
 
     it( 'should return a Promise object by the created function', () => {
         class A { fn() {} }
-        const parameter = createInterceptorParameter( A, 'fn' );
+        const parameter = createInterceptorParameter( A.prototype, 'fn' );
         expect( parameter() ).toBeInstanceOf( Promise );
     } );
 
@@ -40,12 +40,13 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         const metadata: MetadataParameter[][] = [
             [ {
                 type : key,
-                interceptorType : 'parameter'
+                interceptorType : 'parameter',
+                paramtype : undefined
             } ]
         ];
 
-        Reflect.defineMetadata( KEY_PARAMETER, metadata, A, 'fn' );
-        await createInterceptorParameter( A, 'fn' )();
+        Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
+        await createInterceptorParameter( A.prototype, 'fn' )();
         expect( fn ).toHaveBeenCalledTimes( 1 );
     } );
 
@@ -57,8 +58,8 @@ describe( 'interceptor/create-interceptor-parameter', () => {
 
         const metadata: MetadataParameter[][] = [];
 
-        Reflect.defineMetadata( KEY_PARAMETER, metadata, A, 'fn' );
-        await createInterceptorParameter( A, 'fn' )();
+        Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
+        await createInterceptorParameter( A.prototype, 'fn' )();
     } );
 
     it( 'should have called the corresponding methods with correct arguments', async () => {
@@ -70,12 +71,13 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         const metadata: MetadataParameter[][] = [
             [ {
                 type : key,
-                interceptorType : 'parameter'
+                interceptorType : 'parameter',
+                paramtype : undefined
             } ]
         ];
 
-        Reflect.defineMetadata( KEY_PARAMETER, metadata, A, 'fn' );
-        await createInterceptorParameter( A, 'fn' )();
+        Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
+        await createInterceptorParameter( A.prototype, 'fn' )();
         expect( fn ).toHaveBeenCalledWith( {
             ...metadata[ 0 ][ 0 ],
             paramtype : String
@@ -91,12 +93,12 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         Storage.set( key2, () => 1 );
 
         const metadata: MetadataParameter[][] = [
-            [ { type : key1, interceptorType : 'parameter' } ],
-            [ { type : key2, interceptorType : 'parameter' } ]
+            [ { type : key1, interceptorType : 'parameter', paramtype : undefined } ],
+            [ { type : key2, interceptorType : 'parameter', paramtype : undefined } ]
         ];
 
-        Reflect.defineMetadata( KEY_PARAMETER, metadata, A, 'fn' );
-        const parameter = createInterceptorParameter( A, 'fn' );
+        Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
+        const parameter = createInterceptorParameter( A.prototype, 'fn' );
         return expect( parameter() ).resolves.toEqual( [ 'abc', 1 ] );
     } );
 } );

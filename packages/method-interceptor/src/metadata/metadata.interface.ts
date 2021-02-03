@@ -112,4 +112,4 @@ export interface MetadataException extends Metadata {
  */
 export type MetadataParameter = Partial<Metadata> & {
     paramtype: unknown;
-}
+};

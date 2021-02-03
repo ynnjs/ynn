@@ -19,7 +19,7 @@ describe( 'decorator/create-decorator-parameter', () => {
     it( 'the decorator should emit correct metadata', () => {
         const parameter = createDecoratorParameter( () => {} );
         class A { fn( @parameter name: string ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
-        const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
+        const metadata = Reflect.getMetadata( KEY_PARAMETER, A.prototype, 'fn' );
         expect( metadata ).toEqual( [
             [ {
                 type : expect.any( Symbol ),
@@ -32,7 +32,7 @@ describe( 'decorator/create-decorator-parameter', () => {
         const parameter1 = createDecoratorParameter( () => {} );
         const parameter2 = createDecoratorParameter( () => {} );
         class A { fn( @parameter1 name: string, @parameter2 age: number ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
-        const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
+        const metadata = Reflect.getMetadata( KEY_PARAMETER, A.prototype, 'fn' );
         expect( metadata ).toEqual( [
             [ {
                 type : expect.any( Symbol ),
@@ -49,7 +49,7 @@ describe( 'decorator/create-decorator-parameter', () => {
         const parameter1 = createDecoratorParameter( () => {} );
         const parameter2 = createDecoratorParameter( () => {} );
         class A { fn( @parameter1 @parameter2 name: string ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
-        const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
+        const metadata = Reflect.getMetadata( KEY_PARAMETER, A.prototype, 'fn' );
         expect( metadata ).toEqual( [
             [ {
                 type : expect.any( Symbol ),
@@ -64,7 +64,7 @@ describe( 'decorator/create-decorator-parameter', () => {
     it( 'item of array can be undefined', () => {
         const parameter2 = createDecoratorParameter( () => {} );
         class A { fn( name: string, @parameter2 age: number ) {} } // eslint-disable-line @typescript-eslint/no-unused-vars
-        const metadata = Reflect.getMetadata( KEY_PARAMETER, A, 'fn' );
+        const metadata = Reflect.getMetadata( KEY_PARAMETER, A.prototype, 'fn' );
         expect( metadata ).toEqual( [
             undefined,
             [ {

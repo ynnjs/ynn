@@ -81,7 +81,7 @@ describe( 'method-interceptor', () => {
         const before = createInterceptorBefore( descriptor );
         const after = createInterceptorAfter( descriptor );
         const exception = createInterceptorException( descriptor );
-        const parameter = createInterceptorParameter( Controller, 'action' );
+        const parameter = createInterceptorParameter( Controller.prototype, 'action' );
 
         async function execute( context: Context ): Promise<unknown> {
             try {

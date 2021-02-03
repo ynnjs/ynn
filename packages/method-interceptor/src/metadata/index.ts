@@ -120,7 +120,7 @@ export function saveMetadataException<T extends unknown[]>(
  * @param options
  */
 export function saveMetadataParameter<T extends unknown[]>(
-    target: unknown,
+    target: object, // eslint-disable-line
     key: string | symbol,
     i: number,
     method: MethodParameter<T>,
@@ -136,12 +136,10 @@ export function saveMetadataParameter<T extends unknown[]>(
         metadata.parameters = options.parameters;
     }
 
-    const constructor: any = ( target as any ).constructor; // eslint-disable-line
-
-    const metadatas: M[][] = Reflect.getMetadata( KEY_PARAMETER, constructor, key ) || [];
+    const metadatas: M[][] = Reflect.getMetadata( KEY_PARAMETER, target, key ) || [];
 
     if( !metadatas[ i ] ) metadatas[ i ] = [ metadata ];
     else metadatas[ i ].push( metadata );
 
-    Reflect.defineMetadata( KEY_PARAMETER, metadatas, constructor, key );
+    Reflect.defineMetadata( KEY_PARAMETER, metadatas, target, key );
 }
