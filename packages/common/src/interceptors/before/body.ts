@@ -7,9 +7,9 @@
  * Description:
  ******************************************************************/
 
-import { KoaContext } from '@ynn/koa';
 import parser from '@ynn/body';
 import { MetadataBefore, MetadataParameter } from '@ynn/method-interceptor';
+import { Context } from '@ynn/waka';
 import { Pipe } from '../../interfaces';
 
 interface BodyParameters {
@@ -27,7 +27,7 @@ interface BodyParameters {
  */
 export async function interceptorBeforeBody(
     metadata: Readonly<MetadataBefore> | Readonly<MetadataParameter>,
-    ctx: KoaContext
+    ctx: Context
 ): Promise<unknown> {
     /**
      * don't parse the body multiple times if it has already been parsed

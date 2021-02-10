@@ -81,3 +81,4 @@ export declare type Writable<T> = {
 };
 export declare type WritableKeys<T, K extends keyof T> = Writable<Pick<T, K>> & Omit<T, K>;
 export declare type WritableExcludesKeys<T, K extends keyof T> = Writable<Omit<T, K>> & Pick<T, K>;
+export declare type Valueof<T> = T[keyof T];

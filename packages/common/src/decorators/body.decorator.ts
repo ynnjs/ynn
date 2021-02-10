@@ -75,8 +75,9 @@ export function Body( property: string, pipe: Pipe ): ParameterDecorator & Metho
 
 export function Body( ...args: [ ( string | Pipe )?, Pipe? ] ): MethodDecorator & ParameterDecorator {
 
-    createGeneralBeforeAndParameterActionDecorator( {
+    return createGeneralBeforeAndParameterActionDecorator( {
         interceptorParameter : interceptorParameterBody,
         interceptorBefore : interceptorBeforeBody
     }, ...args );
+
 }

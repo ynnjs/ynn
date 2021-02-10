@@ -9,7 +9,7 @@
 
 import { VariadicFunction } from '@ynn/utility-types';
 import { saveMetadataBefore, saveMetadataParameter } from '@ynn/method-interceptor';
-import Pipe from '../interfaces/pipe.interface';
+import { Pipe } from '../interfaces';
 
 export function createGeneralBeforeAndParameterMetadataParameters(
     propertyOrPipe?: string | Pipe,

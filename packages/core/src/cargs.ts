@@ -12,7 +12,7 @@ import yargs from 'yargs';
 import is from '@lvchengbin/is';
 
 const cwd = process.cwd();
-const cargs: Record<string, any> = yargs.argv;
+const cargs: Record<string, unknown> = yargs.argv;
 
 if( 'debugging' in cargs ) {
     cargs.debugging = is.generalizedTrue( cargs.debugging );

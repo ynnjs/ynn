@@ -14,7 +14,7 @@ import { Storage } from '../storage';
 
 function createInterceptorParameter<T extends unknown[]>(
     obj: object, // eslint-disable-line
-    methodName: string
+    methodName: string | symbol
 ): ( ...args: T ) => Promise<unknown[]> {
 
     type Info = MethodParameterInfo<MethodParameter<T>>;

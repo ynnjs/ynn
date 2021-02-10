@@ -8,9 +8,13 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import body from '../../src/interceptors/body';
+import { body } from '../../src/interceptors/before';
 
 
 describe( 'interceptor/body', () => {
+
+    it( '', () => {
+        body( {} );
+    } );
 
 } );

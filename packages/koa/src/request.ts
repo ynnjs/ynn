@@ -51,11 +51,10 @@ export interface KoaRequest {
     hostname: string;
     href: string;
     idempotent: boolean;
-    inspect: () => Record<string, any> | void;
+    inspect: () => Record<string, unknown> | void;
     ip: string;
     ips: string[];
-    is: ( ( ...types: Array<string | string[]> ) => string | false | null )
-        | ( ( types: string[] ) => string | false | null );
+    is: ( ( ...types: ( string | string[] )[] ) => string | false | null ) | ( ( types: string[] ) => string | false | null );
     length: number | void;
     method: string;
     origin: string;
@@ -71,7 +70,7 @@ export interface KoaRequest {
     socket: Socket | TLSSocket;
     stale: boolean;
     subdomains: string[];
-    toJSON: () => Record<string, any>;
+    toJSON: () => Record<string, unknown>;
     type: string;
     url?: string;
 }
@@ -493,7 +492,7 @@ const Request: KoaRequest = {
     },
 
     /**
-     * REturn the request mime type void of parameters such as "charset"
+     * Return the request mime type void of parameters such as "charset"
      */
     get type() {
         return this.get( 'Content-Type' )?.split( ';' )[ 0 ] || '';

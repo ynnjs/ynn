@@ -137,7 +137,9 @@ declare const _default: {
                     };
                 };
             })[];
-            '@typescript-eslint/lines-between-class-members': string[];
+            '@typescript-eslint/lines-between-class-members': (string | {
+                exceptAfterSingleLine: boolean;
+            })[];
             '@typescript-eslint/no-dupe-class-members': string[];
             '@typescript-eslint/no-duplicate-imports': string[];
             '@typescript-eslint/no-extra-semi': string;

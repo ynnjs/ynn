@@ -94,3 +94,5 @@ export type Writable<T> = { -readonly [ P in keyof T ]: T[ P ] };
 export type WritableKeys<T, K extends keyof T> = Writable<Pick<T, K>> & Omit<T, K>;
 
 export type WritableExcludesKeys<T, K extends keyof T> = Writable<Omit<T, K>> & Pick<T, K>;
+
+export type Valueof<T> = T[ keyof T];

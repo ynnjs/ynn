@@ -140,7 +140,9 @@ declare const _default: {
                             };
                         };
                     })[];
-                    '@typescript-eslint/lines-between-class-members': string[];
+                    '@typescript-eslint/lines-between-class-members': (string | {
+                        exceptAfterSingleLine: boolean;
+                    })[];
                     '@typescript-eslint/no-dupe-class-members': string[];
                     '@typescript-eslint/no-duplicate-imports': string[];
                     '@typescript-eslint/no-extra-semi': string;
@@ -376,7 +378,9 @@ declare const _default: {
                         };
                     })[];
                     'linebreak-style': string[];
-                    'lines-between-class-members': string[];
+                    'lines-between-class-members': (string | {
+                        exceptAfterSingleLine: boolean;
+                    })[];
                     'no-mixed-spaces-and-tabs': string;
                     'no-multi-assign': string;
                     'no-multiple-empty-lines': string;

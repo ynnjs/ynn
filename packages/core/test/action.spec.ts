@@ -1,17 +1,16 @@
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  *
- * File: utils/action-scanner.spec.ts
+ * File: utils/action-scan.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 11/30/2020
  * Description:
  ******************************************************************/
 
 import 'reflect-metadata';
-import { scanner } from '../src/action';
-import Action from '../src/decorators/action.decorator';
+import { scan, Action } from '../src/action';
 
-describe( 'utils.scanner', () => {
+describe( 'utils.scan', () => {
 
     it( 'should pick methods whose name ends with "Action"', () => {
         const controller = {
@@ -19,7 +18,7 @@ describe( 'utils.scanner', () => {
             fn() {}
         };
 
-        const actions = scanner( controller );
+        const actions = scan( controller );
 
         expect( actions ).not.toHaveProperty( 'fn' );
         expect( actions ).toHaveProperty( 'index' );
@@ -35,7 +34,7 @@ describe( 'utils.scanner', () => {
             fn() {}
         }
 
-        const actions = scanner( Controller.prototype );
+        const actions = scan( Controller.prototype );
 
         expect( actions ).not.toHaveProperty( 'fn' );
         expect( actions ).toHaveProperty( 'index' );
@@ -52,7 +51,7 @@ describe( 'utils.scanner', () => {
             fn() {}
         }
 
-        const actions = scanner( Controller.prototype );
+        const actions = scan( Controller.prototype );
 
         expect( actions ).not.toHaveProperty( 'index' );
         expect( actions ).toHaveProperty( 'home' );
@@ -69,7 +68,7 @@ describe( 'utils.scanner', () => {
             index() {}
         }
 
-        const actions = scanner( Controller.prototype );
+        const actions = scan( Controller.prototype );
 
         expect( actions ).toHaveProperty( 'home' );
         expect( actions ).toHaveProperty( 'index' );
@@ -92,7 +91,7 @@ describe( 'utils.scanner', () => {
             indexAction() {}
         }
 
-        const actions = scanner( Controller.prototype );
+        const actions = scan( Controller.prototype );
 
         expect( actions ).toHaveProperty( 'home' );
         expect( actions ).toHaveProperty( 'index' );
@@ -117,7 +116,7 @@ describe( 'utils.scanner', () => {
             fn() {}
         }
 
-        const actions = scanner( Controller.prototype );
+        const actions = scan( Controller.prototype );
 
         expect( actions.index.methodName ).toEqual( 'fn' );
         expect( actions.home.methodName ).toEqual( 'indexAction' );

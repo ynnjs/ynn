@@ -7,5 +7,5 @@
  * Description:
  ******************************************************************/
 declare function createInterceptorParameter<T extends unknown[]>(obj: object, // eslint-disable-line
-methodName: string): (...args: T) => Promise<unknown[]>;
+methodName: string | symbol): (...args: T) => Promise<unknown[]>;
 export default createInterceptorParameter;

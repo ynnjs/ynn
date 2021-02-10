@@ -125,7 +125,9 @@ export = {
                     catch : { after : false }
                 }
             } ],
-            '@typescript-eslint/lines-between-class-members' : [ 'error' ],
+            '@typescript-eslint/lines-between-class-members' : [ 'error', 'always', {
+                exceptAfterSingleLine : true
+            } ],
             '@typescript-eslint/no-dupe-class-members' : [ 'error' ],
             '@typescript-eslint/no-duplicate-imports' : [ 'error' ],
             '@typescript-eslint/no-extra-semi' : 'off',

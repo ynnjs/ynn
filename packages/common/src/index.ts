@@ -7,8 +7,5 @@
  * Description:
  ******************************************************************/
 
+export * from './interfaces';
 export * from './decorators';
-
-export async function handler( request, context ): Promise<unknown> {
-
-}

@@ -119,7 +119,9 @@ module.exports = {
                         }
                     }],
                 'linebreak-style': ['error', 'unix'],
-                'lines-between-class-members': ['error', 'always'],
+                'lines-between-class-members': ['error', 'always', {
+                        exceptAfterSingleLine: true
+                    }],
                 'no-mixed-spaces-and-tabs': 'error',
                 'no-multi-assign': 'error',
                 'no-multiple-empty-lines': 'error',
