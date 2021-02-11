@@ -37,23 +37,20 @@ const escape_html_1 = __importDefault(require("escape-html"));
 const cache_content_type_1 = __importDefault(require("cache-content-type"));
 const content_disposition_1 = __importDefault(require("content-disposition"));
 class Response {
-    constructor(options = {}) {
+    constructor(options) {
         _headers.set(this, new Map());
         _body.set(this, null);
         this.statusCode = 200;
         this.EXPLICIT_STATUS = false;
         this.EXPLICIT_NULL_BODY = false;
         this.ctx = options.ctx;
-        options.res ?? (this.res = options.res);
-        options.statusCode ?? (this.statusCode = options.statusCode);
-        options.statusMessage ?? (this.statusMessage = options.statusMessage);
+        options.res && (this.res = options.res);
+        options.statusCode && (this.statusCode = options.statusCode);
         const { headers } = options;
         headers && Object.keys(headers).forEach((name) => {
             this.set(name, headers[name]);
         });
-        if (!this.statusMessage) {
-            this.statusMessage = statuses_1.default[this.statusCode];
-        }
+        this.statusMessage = options.statusMessage === undefined ? (statuses_1.default[this.statusCode] || '') : options.statusMessage;
     }
     get socket() {
         return this.res?.socket ?? null;
@@ -149,12 +146,14 @@ class Response {
                 this.type = 'bin';
             return;
         }
+        this.remove('Content-Length');
+        this.type = 'json';
     }
     /**
      * Set Content-Length field to n
      */
     set length(n) {
-        this.set('Content-Length', n.toString());
+        this.set('Content-Length', n?.toString() ?? undefined);
     }
     /**
      * Return parsed response Content-Length when present.
@@ -182,7 +181,7 @@ class Response {
      * Vary on `field`
      */
     vary() {
-        if (this.headersSent)
+        if (this.headerSent)
             return;
     }
     /**
@@ -190,7 +189,7 @@ class Response {
      */
     redirect(url, alt) {
         if (url === 'back')
-            url = this.ctx.get('Referrer') || alt || '/';
+            url = this.ctx.get('Referrer') || (alt ?? '/');
         this.set('Location', encodeurl_1.default(url));
         if (!statuses_1.default.redirect[this.status])
             this.status = 302;
@@ -305,7 +304,7 @@ class Response {
     append(field, val) {
         const prev = this.get(field);
         if (prev)
-            val = Array.isArray(prev) ? prev.concat(val) : [prev].concat(val);
+            val = Array.isArray(prev) ? prev.concat(val) : [prev].concat(String(val));
         this.set(field, val);
     }
     /**

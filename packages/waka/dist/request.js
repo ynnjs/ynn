@@ -23,10 +23,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _ip, _accept, _headers, _parsedurl, _rawParsedurl, _memoizedURL, _parseurl;
+var _ip, _accept, _headers, _parsedurl, _rawParsedurl, _memoizedURL, _querycache, _parseurl;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Request = void 0;
 const util_1 = __importDefault(require("util"));
+const querystring_1 = __importDefault(require("querystring"));
 const net_1 = require("net");
 const url_1 = require("url");
 const content_type_1 = __importDefault(require("content-type"));
@@ -34,13 +35,14 @@ const type_is_1 = require("type-is");
 const accepts_1 = __importDefault(require("accepts"));
 const parseurl_1 = require("./util/parseurl");
 class Request {
-    constructor(options = {}) {
+    constructor(options) {
         _ip.set(this, void 0);
         _accept.set(this, void 0);
         _headers.set(this, {});
         _parsedurl.set(this, null);
         _rawParsedurl.set(this, null);
-        _memoizedURL.set(this, void 0);
+        _memoizedURL.set(this, null);
+        _querycache.set(this, {});
         this.httpVersionMajor = 1;
         this.proxyIpHeader = 'X-Forwarded-For';
         this.trustXRealIp = false;
@@ -54,15 +56,15 @@ class Request {
         });
         this.ctx = options.ctx;
         this.url = options.url;
-        this.origionalUrl = this.url;
+        this.originalUrl = this.url;
         this.method = options.method;
-        options.ip ?? (__classPrivateFieldSet(this, _ip, options.ip));
-        options.req ?? (this.req = options.req);
-        options.trustXRealIp ?? (this.trustXRealIp = options.trustXRealIp);
-        options.proxyIpHeader ?? (this.proxyIpHeader = options.proxyIpHeader);
-        options.subdomainOffset ?? (this.subdomainOffset = options.subdomainOffset);
-        options.httpVersionMajor ?? (this.httpVersionMajor = options.httpVersionMajor);
-        options.headers ?? (__classPrivateFieldSet(this, _headers, { ...options.headers }));
+        options.ip && (__classPrivateFieldSet(this, _ip, options.ip));
+        options.req && (this.req = options.req);
+        options.proxyIpHeader && (this.proxyIpHeader = options.proxyIpHeader);
+        options.httpVersionMajor && (this.httpVersionMajor = options.httpVersionMajor);
+        options.trustXRealIp === undefined || (this.trustXRealIp = options.trustXRealIp);
+        options.subdomainOffset === undefined || (this.subdomainOffset = options.subdomainOffset);
+        options.headers && (__classPrivateFieldSet(this, _headers, { ...options.headers }));
     }
     get headers() {
         return __classPrivateFieldGet(this, _headers);
@@ -91,37 +93,35 @@ class Request {
         return this.origin + this.originalUrl;
     }
     get path() {
-        return __classPrivateFieldGet(this, _parseurl).call(this, this.url).pathname;
+        return __classPrivateFieldGet(this, _parseurl).call(this).pathname ?? '';
     }
     set path(pathname) {
-        const url = __classPrivateFieldGet(this, _parseurl).call(this, this.url);
+        const url = __classPrivateFieldGet(this, _parseurl).call(this);
         if (url.pathname === pathname)
             return;
         url.pathname = pathname;
-        this.url = url_1.stringify(url);
+        this.url = url_1.format(url);
     }
     get query() {
-        const query = {};
-        for (const pair of __classPrivateFieldGet(this, _parseurl).call(this, this.url).searchParams.entries()) {
-            query[pair[0]] = pair[1];
-        }
-        return query;
+        var _a;
+        const str = this.querystring;
+        return (_a = __classPrivateFieldGet(this, _querycache))[str] ?? (_a[str] = querystring_1.default.parse(str));
     }
     get querystring() {
-        return __classPrivateFieldGet(this, _parseurl).call(this, this.url).searchParams.toString();
+        return __classPrivateFieldGet(this, _parseurl).call(this).query ?? '';
     }
     set querystring(str) {
-        const url = __classPrivateFieldGet(this, _parseurl).call(this, this.url);
+        const url = __classPrivateFieldGet(this, _parseurl).call(this);
         url.search = str;
-        this.url = url_1.stringify(url);
+        this.url = url_1.format(url);
     }
     get search() {
-        return __classPrivateFieldGet(this, _parseurl).call(this, this.url).search;
+        return __classPrivateFieldGet(this, _parseurl).call(this).search ?? '';
     }
     set search(str) {
-        const url = __classPrivateFieldGet(this, _parseurl).call(this, this.url);
+        const url = __classPrivateFieldGet(this, _parseurl).call(this);
         url.search = str;
-        this.url = url_1.stringify(url);
+        this.url = url_1.format(url);
     }
     get host() {
         /**
@@ -152,7 +152,7 @@ class Request {
     get URL() {
         if (!__classPrivateFieldGet(this, _memoizedURL)) {
             try {
-                __classPrivateFieldSet(this, _memoizedURL, new URL(`${this.origin}${this.origionalUrl}`));
+                __classPrivateFieldSet(this, _memoizedURL, new URL(`${this.origin}${this.originalUrl}`));
             }
             catch (e) {
                 __classPrivateFieldSet(this, _memoizedURL, Object.create(null));
@@ -161,7 +161,9 @@ class Request {
         return __classPrivateFieldGet(this, _memoizedURL);
     }
     // @@todo
-    // get fresh() {}
+    get fresh() {
+        return true;
+    }
     get stale() {
         return !this.fresh;
     }
@@ -176,7 +178,7 @@ class Request {
      */
     get charset() {
         try {
-            return content_type_1.default(this.get('Content-Type')).parameters.charset || '';
+            return content_type_1.default.parse(this.get('Content-Type')).parameters.charset || '';
         }
         catch (e) {
             return '';
@@ -192,7 +194,7 @@ class Request {
         return ~~len;
     }
     get protocol() {
-        if (this.socket?.encrypted)
+        if (this.socket && this.socket.encrypted)
             return 'https';
         /**
          * support proxy property of Koa application.
@@ -227,10 +229,10 @@ class Request {
     get ip() {
         if (__classPrivateFieldGet(this, _ip))
             return __classPrivateFieldGet(this, _ip);
-        if (this.truxtXRealIp && this.get('X-Real-IP')) {
+        if (this.trustXRealIp && this.get('X-Real-IP')) {
             return __classPrivateFieldSet(this, _ip, this.get('X-Real-IP'));
         }
-        return __classPrivateFieldSet(this, _ip, (this.ips[0] || this.socket?.remoteAddress ?? ''));
+        return __classPrivateFieldSet(this, _ip, (this.ips[0] || (this.socket?.remoteAddress ?? '')));
     }
     set ip(ip) {
         __classPrivateFieldSet(this, _ip, ip);
@@ -267,7 +269,7 @@ class Request {
         return this.accept.languages(...args);
     }
     is(...args) {
-        if (this.get('Transfer-Encoding') === '' && isNaN(this.get('Content-Length')))
+        if (this.get('Transfer-Encoding') === '' && isNaN(Number(this.get('Content-Length'))))
             return null;
         return type_is_1.is(this.get('Content-Type'), ...args);
     }
@@ -281,7 +283,7 @@ class Request {
         switch (field = field.toLowerCase()) {
             case 'referer':
             case 'referrer':
-                return this.headers.referrer || this.headers.referer ?? '';
+                return this.headers.referrer || (this.headers.referer ?? '');
             default:
                 return this.headers[field] || '';
         }
@@ -296,7 +298,7 @@ class Request {
             headers: this.headers
         };
     }
-    [(_ip = new WeakMap(), _accept = new WeakMap(), _headers = new WeakMap(), _parsedurl = new WeakMap(), _rawParsedurl = new WeakMap(), _memoizedURL = new WeakMap(), _parseurl = new WeakMap(), util_1.default.inspect.custom)]() {
+    [(_ip = new WeakMap(), _accept = new WeakMap(), _headers = new WeakMap(), _parsedurl = new WeakMap(), _rawParsedurl = new WeakMap(), _memoizedURL = new WeakMap(), _querycache = new WeakMap(), _parseurl = new WeakMap(), util_1.default.inspect.custom)]() {
         return this.inspect();
     }
 }

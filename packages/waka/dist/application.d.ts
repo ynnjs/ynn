@@ -9,7 +9,7 @@
 import 'reflect-metadata';
 import { Argv } from 'yargs';
 import { VariadicClass } from '@ynn/utility-types';
-import Context from './context';
+import Context, { ContextOptions } from './context';
 import { ActionInfo } from './action';
 import Router, { RouterRule } from './router';
 export interface Options {
@@ -36,5 +36,5 @@ export default class Application {
     }>>;
     protected parseCargs(cargs: Argv['argv']): Partial<Options>;
     constructor(options?: Readonly<Options>);
-    handler(ctx: Context): Promise<Context>;
+    handle(context: ContextOptions | Context): Promise<Context>;
 }

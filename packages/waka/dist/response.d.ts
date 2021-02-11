@@ -11,22 +11,24 @@ import util from 'util';
 import { Socket } from 'net';
 import { ServerResponse } from 'http';
 import { Options as ContentDispositionOptions } from 'content-disposition';
-import { Context } from './context';
+import Context from './context';
 import { Headers } from './interfaces';
 export interface ResponseOptions {
     ctx: Context;
     res?: ServerResponse;
     headers?: Headers;
     statusCode?: number;
+    statusMessage?: string;
 }
 export declare class Response {
     #private;
+    ctx: Context;
     statusCode: number;
     statusMessage: string;
     res?: ServerResponse;
     EXPLICIT_STATUS: boolean;
     EXPLICIT_NULL_BODY: boolean;
-    constructor(options?: Readonly<ResponseOptions>);
+    constructor(options: Readonly<ResponseOptions>);
     get socket(): Socket | null;
     /**
      * Get all set response headers
@@ -63,7 +65,7 @@ export declare class Response {
     /**
      * Set Content-Length field to n
      */
-    set length(n: number);
+    set length(n: number | undefined);
     /**
      * Return parsed response Content-Length when present.
      */
@@ -95,7 +97,7 @@ export declare class Response {
     /**
      * Set the Last-Modified date using a string or a Date.
      */
-    set lastModified(val: string | Date);
+    set lastModified(val: Date | undefined);
     /**
      * Get the Last-Modified date in Date form, if it exists
      */
@@ -112,7 +114,7 @@ export declare class Response {
      * Check whether the response is one of the listed types.
      * Pretty much the same as `this.request.is()`.
      */
-    is(...args: [string[]] | string[]): string | false | null;
+    is(...args: [...string[]] | string[]): string | false | null;
     /**
      * Return response header.
      */

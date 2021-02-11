@@ -38,7 +38,7 @@ import { createGeneralBeforeAndParameterActionDecorator } from './util';
  *
  * @returns the parameter decorator or the method decorator.
  */
-export function Body( pips?: Pipe ): ParameterDecorator & MethodDecorator;
+export function Body( ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
 /**
  * Function for generating an action parameter decorator.
@@ -71,9 +71,9 @@ export function Body( property: string ): ParameterDecorator;
  *
  * @returns the parameter decorator or the method decorator.
  */
-export function Body( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export function Body( property: string, ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
-export function Body( ...args: [ ( string | Pipe )?, Pipe? ] ): MethodDecorator & ParameterDecorator {
+export function Body( ...args: [ property?: ( string | Pipe ), ...pipes: Pipe[] ] ): MethodDecorator & ParameterDecorator {
 
     return createGeneralBeforeAndParameterActionDecorator( {
         interceptorParameter : interceptorParameterBody,

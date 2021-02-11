@@ -7,5 +7,5 @@
  * Description:
  ******************************************************************/
 /// <reference types="node" />
-import { parse } from 'url';
-export declare function parseurl(url: string): ReturnType<typeof parse>;
+import { UrlWithStringQuery } from 'url';
+export declare function parseurl(url: string): UrlWithStringQuery;

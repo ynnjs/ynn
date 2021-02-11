@@ -8,17 +8,19 @@
  ******************************************************************/
 /// <reference types="node" />
 import { Socket } from 'net';
+import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
-import { Queries, Headers } from './interfaces';
+import { Headers } from './interfaces';
 export interface ContextOptions {
     request: RequestOptions;
     response?: ResponseOptions;
-    app?: Object;
+    app?: any;
 }
 export default class Context {
+    app?: any;
     request: Request;
     response: Response;
     assert: any;
@@ -44,11 +46,11 @@ export default class Context {
     get body(): unknown;
     set body(val: unknown);
     get length(): number | undefined;
-    set length(n: number);
+    set length(n: number | undefined);
     get type(): string;
     set type(type: string);
     get lastModified(): Date | undefined;
-    set lastModified(val: string | Date);
+    set lastModified(val: Date | undefined);
     get etag(): string;
     set etag(val: string);
     get headerSent(): boolean;
@@ -67,7 +69,7 @@ export default class Context {
     set search(str: string);
     get method(): string;
     set method(method: string);
-    get query(): Queries;
+    get query(): ParsedUrlQuery;
     get path(): string;
     set path(pathname: string);
     get url(): string;

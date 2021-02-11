@@ -7,9 +7,9 @@
  * Description:
  ******************************************************************/
 
-import { KoaContext } from '@ynn/koa';
+import { Context } from '@ynn/waka';
 import { ActionMetadata } from './metadata.interface';
 
 export interface Pipe {
-    ( value: unknown, ctx: KoaContext, metadata: ActionMetadata ): unknown;
+    ( value: unknown, ctx: Context, metadata: ActionMetadata ): unknown;
 }

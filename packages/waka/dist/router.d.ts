@@ -31,14 +31,14 @@ export interface MatchResult {
 }
 export default class Router {
     rules: RouterRule[];
-    get(...args: readonly Shift<RouterRule>): void;
-    post(...args: readonly Shift<RouterRule>): void;
-    put(...args: readonly Shift<RouterRule>): void;
-    head(...args: readonly Shift<RouterRule>): void;
-    patch(...args: readonly Shift<RouterRule>): void;
-    delete(...args: readonly Shift<RouterRule>): void;
-    options(...args: readonly Shift<RouterRule>): void;
-    any(...args: readonly RouterRule): void;
+    get(...args: Shift<RouterRule>): void;
+    post(...args: Shift<RouterRule>): void;
+    put(...args: Shift<RouterRule>): void;
+    head(...args: Shift<RouterRule>): void;
+    patch(...args: Shift<RouterRule>): void;
+    delete(...args: Shift<RouterRule>): void;
+    options(...args: Shift<RouterRule>): void;
+    any(...args: RouterRule): void;
     match(context: Readonly<Context>): false | (MatchResult & {
         rule: RouterRule;
     });

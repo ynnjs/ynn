@@ -49,6 +49,7 @@
         "@ynn/koa": "workspace:packages/koa",
         "@ynn/method-interceptor": "workspace:packages/method-interceptor",
         "@ynn/utility-types": "workspace:packages/utility-types",
+        "@ynn/waka": "workspace:packages/waka",
         "content-disposition": "^0.5.3",
         "lru-cache": "^6.0.0"
     }

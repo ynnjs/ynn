@@ -8,14 +8,16 @@
  ******************************************************************/
 
 import util from 'util';
+import qs, { ParsedUrlQuery } from 'querystring';
 import { Socket, isIP } from 'net';
+import { TLSSocket } from 'tls';
 import { IncomingMessage } from 'http';
-import { parse, format as stringify } from 'url';
+import { format as stringify, UrlWithStringQuery } from 'url';
 import contentType from 'content-type';
 import { is } from 'type-is';
 import accepts, { Accepts } from 'accepts';
 import Context from './context';
-import { Queries, Headers } from './interfaces';
+import { Headers } from './interfaces';
 import { parseurl } from './util/parseurl';
 
 export interface RequestOptions {
@@ -25,7 +27,6 @@ export interface RequestOptions {
     req?: IncomingMessage;
     ip?: string;
     headers?: Headers;
-    httpVersionMajor?: number;
     trustXRealIp?: boolean;
     proxyIpHeader?: string;
     subdomainOffset?: number;
@@ -37,13 +38,14 @@ export class Request {
     #ip?: string;
     #accept?: Accepts;
     #headers: Headers = {};
-    #parsedurl: ReturnType<typeof parse> | null = null;
+    #parsedurl: UrlWithStringQuery | null = null;
     #rawParsedurl: string | null = null;
-    #memoizedURL: URL | null;
+    #memoizedURL: URL | null = null;
+    #querycache: Record<string, ParsedUrlQuery> = {};
 
     ctx: Context;
     url: string;
-    origionalUrl: string;
+    originalUrl: string;
     method: string;
     httpVersionMajor = 1;
     proxyIpHeader = 'X-Forwarded-For';
@@ -52,21 +54,21 @@ export class Request {
 
     req?: IncomingMessage;
 
-    constructor( options: Readonly<RequestOptions> = {} ) {
+    constructor( options: Readonly<RequestOptions> ) {
         this.ctx = options.ctx;
         this.url = options.url;
-        this.origionalUrl = this.url;
+        this.originalUrl = this.url;
         this.method = options.method;
-        options.ip ?? ( this.#ip = options.ip );
-        options.req ?? ( this.req = options.req );
-        options.trustXRealIp ?? ( this.trustXRealIp = options.trustXRealIp );
-        options.proxyIpHeader ?? ( this.proxyIpHeader = options.proxyIpHeader );
-        options.subdomainOffset ?? ( this.subdomainOffset = options.subdomainOffset );
-        options.httpVersionMajor ?? ( this.httpVersionMajor = options.httpVersionMajor );
-        options.headers ?? ( this.#headers = { ...options.headers } );
+        options.ip && ( this.#ip = options.ip );
+        options.req && ( this.req = options.req );
+        options.proxyIpHeader && ( this.proxyIpHeader = options.proxyIpHeader );
+        options.httpVersionMajor && ( this.httpVersionMajor = options.httpVersionMajor );
+        options.trustXRealIp === undefined || ( this.trustXRealIp = options.trustXRealIp );
+        options.subdomainOffset === undefined || ( this.subdomainOffset = options.subdomainOffset );
+        options.headers && ( this.#headers = { ...options.headers } );
     }
 
-    #parseurl = (): URL => {
+    #parseurl = (): UrlWithStringQuery => {
         if( !this.#parsedurl || this.url !== this.#rawParsedurl ) {
             this.#rawParsedurl = this.url;
             this.#parsedurl = parseurl( this.url );
@@ -106,7 +108,7 @@ export class Request {
     }
 
     get path(): string {
-        return this.#parseurl().pathname;
+        return this.#parseurl().pathname ?? '';
     }
 
     set path( pathname: string ) {
@@ -116,18 +118,13 @@ export class Request {
         this.url = stringify( url );
     }
 
-    get query(): Queries {
-        const query: Queries = {};
-
-        for( const pair of this.#parseurl().searchParams.entries() ) {
-            query[ pair[ 0 ] ] = pair[ 1 ];
-        }
-
-        return query;
+    get query(): ParsedUrlQuery {
+        const str = this.querystring;
+        return this.#querycache[ str ] ??= qs.parse( str );
     }
 
     get querystring(): string {
-        return this.#parseurl().searchParams.toString();
+        return this.#parseurl().query ?? '';
     }
 
     set querystring( str: string ) {
@@ -137,7 +134,7 @@ export class Request {
     }
 
     get search(): string {
-        return this.#parseurl().search;
+        return this.#parseurl().search ?? '';
     }
 
     set search( str: string ) {
@@ -174,16 +171,18 @@ export class Request {
     get URL(): URL {
         if( !this.#memoizedURL ) {
             try {
-                this.#memoizedURL = new URL( `${this.origin}${this.origionalUrl}` );
+                this.#memoizedURL = new URL( `${this.origin}${this.originalUrl}` );
             } catch( e: unknown ) {
                 this.#memoizedURL = Object.create( null );
             }
         }
-        return this.#memoizedURL;
+        return this.#memoizedURL as URL;
     }
 
     // @@todo
-    // get fresh() {}
+    get fresh(): boolean { // eslint-disable-line class-methods-use-this
+        return true;
+    }
 
     get stale(): boolean {
         return !this.fresh;
@@ -193,7 +192,7 @@ export class Request {
         return [ 'GET', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'TRACE' ].includes( this.method );
     }
 
-    get socket(): Socket | null {
+    get socket(): Socket | TLSSocket | null {
         return this.req?.socket ?? null;
     }
 
@@ -202,7 +201,7 @@ export class Request {
      */
     get charset(): string {
         try {
-            return contentType( this.get( 'Content-Type' ) ).parameters.charset || '';
+            return contentType.parse( this.get( 'Content-Type' ) ).parameters.charset || '';
         } catch( e: unknown ) {
             return '';
         }
@@ -218,7 +217,7 @@ export class Request {
     }
 
     get protocol(): string {
-        if( this.socket?.encrypted ) return 'https';
+        if( this.socket && ( this.socket as TLSSocket ).encrypted ) return 'https';
         /**
          * support proxy property of Koa application.
          */
@@ -252,7 +251,7 @@ export class Request {
      */
     get ip(): string {
         if( this.#ip ) return this.#ip;
-        if( this.truxtXRealIp && this.get( 'X-Real-IP' ) ) {
+        if( this.trustXRealIp && this.get( 'X-Real-IP' ) ) {
             return this.#ip = this.get( 'X-Real-IP' );
         }
         return this.#ip = ( this.ips[ 0 ] || ( this.socket?.remoteAddress ?? '' ) );
@@ -276,31 +275,31 @@ export class Request {
          * accepts needs IncomingMessage
          * but only the headers property is being used.
          */
-        return this.#accept ||= accepts( { headers : this.headers } );
+        return this.#accept ||= accepts( { headers : this.headers } as IncomingMessage );
     }
 
     set accept( accepts: Accepts ) {
         this.#accept = accepts;
     }
 
-    accepts( ...args: [ string[] ] | string[] ): string[] | string | false {
+    accepts( ...args: [ ...string[] ] | string[] ): string[] | string | false {
         return this.accept.types( ...args );
     }
 
-    acceptsEncodings( ...args: [ string[] ] | string[] ): string | false {
+    acceptsEncodings( ...args: [ ...string[] ] | string[] ): string | false {
         return this.accept.encodings( ...args );
     }
 
-    acceptsCharsets( ...args: [ string[] ] | string[] ): string | false {
+    acceptsCharsets( ...args: [ ...string[] ] | string[] ): string | false {
         return this.accept.charsets( ...args );
     }
 
-    acceptsLanguages( ...args: [ string[] ] | string[] ): string | false {
+    acceptsLanguages( ...args: [ ...string[] ] | string[] ): string | false {
         return this.accept.languages( ...args );
     }
 
-    is( ...args: [ string[] ] | string[] ): string | false | null {
-        if( this.get( 'Transfer-Encoding' ) === '' && isNaN( this.get( 'Content-Length' ) ) ) return null;
+    is( ...args: [ ...string[] ] | string[] ): string | false | null {
+        if( this.get( 'Transfer-Encoding' ) === '' && isNaN( Number( this.get( 'Content-Length' ) ) ) ) return null;
         return is( this.get( 'Content-Type' ), ...args );
     }
 
@@ -314,9 +313,9 @@ export class Request {
         switch( field = field.toLowerCase() ) {
             case 'referer' :
             case 'referrer' :
-                return this.headers.referrer as string || ( this.headers.referer ?? '' );
+                return this.headers.referrer || ( this.headers.referer ?? '' );
             default :
-                return this.headers[ field ] as string || '';
+                return this.headers[ field ] || '';
         }
     }
 

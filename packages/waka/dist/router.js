@@ -72,7 +72,13 @@ class Router {
                 if (Array.isArray(methods) && !methods.includes(method))
                     continue;
             }
-            const res = 'pattern' in pattern ? match(pattern.pattern, path, pattern.options) : match(pattern, path);
+            let res;
+            if (typeof pattern === 'object' && 'pattern' in pattern) {
+                res = match(pattern.pattern, path, pattern.options);
+            }
+            else {
+                res = match(pattern, path);
+            }
             if (res === false)
                 break;
             const args = res.matches.slice(1); // .map( v => decodeURIComponent( v ) );

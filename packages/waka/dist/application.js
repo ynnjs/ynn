@@ -22,6 +22,7 @@ require("reflect-metadata");
 const path_1 = __importDefault(require("path"));
 const is_1 = __importDefault(require("@lvchengbin/is"));
 const method_interceptor_1 = require("@ynn/method-interceptor");
+const context_1 = __importDefault(require("./context"));
 const action_1 = require("./action");
 const router_1 = __importDefault(require("./router"));
 const cargs_1 = __importDefault(require("./cargs"));
@@ -125,7 +126,8 @@ class Application {
         // }
         return options;
     }
-    async handler(ctx) {
+    async handle(context) {
+        const ctx = context instanceof context_1.default ? context : new context_1.default(context);
         const match = this.router.match(ctx);
         if (match === false) {
             ctx.status = 404;
@@ -171,7 +173,9 @@ class Application {
                     ctx.status = 404;
                 }
                 else {
-                    action.executor(ctx);
+                    const body = await action.executor.call(this, ctx);
+                    if (body !== undefined)
+                        ctx.body = body;
                 }
             }
         }

@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
+import { KEY_BEFORE } from '@ynn/method-interceptor';
 import { Body } from '../../src/decorators/body.decorator';
 
 describe( 'decorator/body', () => {
@@ -18,7 +19,11 @@ describe( 'decorator/body', () => {
                 action() {}
             }
 
-            new Controller();
+            const descriptor = Reflect.getOwnPropertyDescriptor( Controller.prototype, 'action' )!;
+
+            const metadata = Reflect.getMetadata( KEY_BEFORE, descriptor.value );
+
+            console.log( metadata );
         } );
     } );
 

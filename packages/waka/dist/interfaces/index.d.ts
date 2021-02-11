@@ -1,11 +1,10 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: interfaces/headers.interface.ts
+ * File: interfaces/index.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/06/2021
+ * Time: 02/11/2021
  * Description:
  ******************************************************************/
-export interface Headers {
-    [key: string]: string | undefined;
-}
+export * from './queries.interface';
+export * from './headers.interface';

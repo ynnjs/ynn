@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { parse } from 'url';
+import { parse, UrlWithStringQuery } from 'url';
 import LRU from 'lru-cache';
 
 const cache = new LRU( 10000 );
@@ -16,7 +16,7 @@ const cache = new LRU( 10000 );
  * fastparse function being used in Koa
  * https://github.com/pillarjs/parseurl/blob/master/index.js
  */
-function fastparse( str: string ): ReturnType<typeof parse> {
+function fastparse( str: string ): UrlWithStringQuery {
     /**
      * if url starts with '/'
      */
@@ -64,7 +64,7 @@ function fastparse( str: string ): ReturnType<typeof parse> {
     return url;
 }
 
-export function parseurl( url: string ): ReturnType<typeof parse> {
+export function parseurl( url: string ): UrlWithStringQuery {
     let parsed = cache.get( url );
 
     if( !parsed ) {

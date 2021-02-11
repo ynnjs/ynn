@@ -8,21 +8,24 @@
  ******************************************************************/
 
 import { Socket } from 'net';
+import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
 import httpAssert from 'http-assert';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
-import { Queries, Headers } from './interfaces';
+import { Headers } from './interfaces';
 // import Cookies, { SetOption as CookieOptions } from 'cookies';
 
 export interface ContextOptions {
     request: RequestOptions;
     response?: ResponseOptions;
-    app?: Object; // eslint-disable-line
+    app?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export default class Context {
+
+    app?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     request: Request;
     response: Response;
@@ -116,7 +119,7 @@ export default class Context {
         return this.response.length;
     }
 
-    set length( n: number ) {
+    set length( n: number | undefined ) {
         this.response.length = n;
     }
 
@@ -132,7 +135,7 @@ export default class Context {
         return this.response.lastModified;
     }
 
-    set lastModified( val: string | Date ) {
+    set lastModified( val: Date | undefined ) {
         this.response.lastModified = val;
     }
 
@@ -208,7 +211,7 @@ export default class Context {
         this.request.method = method;
     }
 
-    get query(): Queries {
+    get query(): ParsedUrlQuery {
         return this.request.query;
     }
 

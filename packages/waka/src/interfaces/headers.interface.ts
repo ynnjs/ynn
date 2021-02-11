@@ -8,5 +8,5 @@
  ******************************************************************/
 
 export interface Headers {
-    [ key: string ]: string | string[];
+    [ key: string ]: string | undefined;
 }

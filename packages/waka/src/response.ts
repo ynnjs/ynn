@@ -28,7 +28,7 @@ export interface ResponseOptions {
     res?: ServerResponse;
     headers?: Headers;
     statusCode?: number;
-    statusMesage?: string;
+    statusMessage?: string;
 }
 
 export class Response {
@@ -47,9 +47,8 @@ export class Response {
 
     constructor( options: Readonly<ResponseOptions> ) {
         this.ctx = options.ctx;
-        options.res ?? ( this.res = options.res );
-        options.statusCode ?? ( this.statusCode = options.statusCode );
-        options.statusMessage ?? ( this.statusMessage = options.statusMessage );
+        options.res && ( this.res = options.res );
+        options.statusCode && ( this.statusCode = options.statusCode );
 
         const { headers } = options;
 
@@ -57,9 +56,7 @@ export class Response {
             this.set( name, headers[ name ] );
         } );
 
-        if( !this.statusMessage ) {
-            this.statusMessage = statuses[ this.statusCode ];
-        }
+        this.statusMessage = options.statusMessage === undefined ? ( statuses[ this.statusCode ] || '' ) : options.statusMessage;
     }
 
     get socket(): Socket | null {
@@ -172,8 +169,8 @@ export class Response {
     /**
      * Set Content-Length field to n
      */
-    set length( n: number ) {
-        this.set( 'Content-Length', n.toString() );
+    set length( n: number | undefined ) {
+        this.set( 'Content-Length', n?.toString() ?? undefined );
     }
 
     /**
@@ -254,7 +251,7 @@ export class Response {
     /**
      * Set the Last-Modified date using a string or a Date.
      */
-    set lastModified( val: string | Date ) {
+    set lastModified( val: Date | undefined ) {
         if( typeof val === 'string' ) val = new Date( val );
         this.set( 'Last-Modified', ( val as Date ).toUTCString() );
     }
@@ -287,7 +284,7 @@ export class Response {
      * Check whether the response is one of the listed types.
      * Pretty much the same as `this.request.is()`.
      */
-    is( ...args: [ string[] ] | string[] ): string | false | null {
+    is( ...args: [ ...string[] ] | string[] ): string | false | null {
         return is( this.type, ...args );
     }
 
@@ -318,9 +315,9 @@ export class Response {
                 val = val.map( ( v: string | number ): string => typeof v === 'string' ? v : String( v ) );
             } else if( typeof val !== 'string' ) val = String( val );
 
-            this.#headers.set( field.toLowerCase(), val );
+            this.#headers.set( ( field as string ).toLowerCase(), val as string );
         } else {
-            for( const key in field ) this.set( key, field[ key ] );
+            for( const key in field as Headers ) this.set( key, field[ key ] );
         }
     }
 
@@ -329,7 +326,7 @@ export class Response {
      */
     append( field: string, val: string | number | ( string | number )[] ): void {
         const prev = this.get( field );
-        if( prev ) val = Array.isArray( prev ) ? prev.concat( val ) : [ prev ].concat( val );
+        if( prev ) val = Array.isArray( prev ) ? prev.concat( val ) : [ prev ].concat( String( val ) );
         this.set( field, val );
     }
 

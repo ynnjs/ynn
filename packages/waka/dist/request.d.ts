@@ -8,31 +8,37 @@
  ******************************************************************/
 /// <reference types="node" />
 import util from 'util';
+import { ParsedUrlQuery } from 'querystring';
 import { Socket } from 'net';
+import { TLSSocket } from 'tls';
 import { IncomingMessage } from 'http';
 import { Accepts } from 'accepts';
-import { Context } from './context';
-import { Queries, Headers } from './interfaces';
+import Context from './context';
+import { Headers } from './interfaces';
 export interface RequestOptions {
     ctx: Context;
     url: string;
     method: string;
-    headers?: Headers;
     req?: IncomingMessage;
+    ip?: string;
+    headers?: Headers;
+    trustXRealIp?: boolean;
+    proxyIpHeader?: string;
+    subdomainOffset?: number;
     httpVersionMajor?: number;
 }
 export declare class Request {
     #private;
     ctx: Context;
     url: string;
-    origionalUrl: string;
+    originalUrl: string;
     method: string;
     httpVersionMajor: number;
     proxyIpHeader: string;
     trustXRealIp: boolean;
     subdomainOffset: number;
     req?: IncomingMessage;
-    constructor(options?: Readonly<RequestOptions>);
+    constructor(options: Readonly<RequestOptions>);
     get headers(): Headers;
     set headers(headers: Headers);
     /**
@@ -45,7 +51,7 @@ export declare class Request {
     get href(): string;
     get path(): string;
     set path(pathname: string);
-    get query(): Queries;
+    get query(): ParsedUrlQuery;
     get querystring(): string;
     set querystring(str: string);
     get search(): string;
@@ -56,9 +62,10 @@ export declare class Request {
      * Get WHATWG parsed URL
      */
     get URL(): URL;
+    get fresh(): boolean;
     get stale(): boolean;
     get idempotent(): boolean;
-    get socket(): Socket | null;
+    get socket(): Socket | TLSSocket | null;
     /**
      * Get the charset when present or undefined
      */
@@ -89,11 +96,11 @@ export declare class Request {
     get subdomains(): string[];
     get accept(): Accepts;
     set accept(accepts: Accepts);
-    accepts(...args: [string[]] | string[]): string[] | string | false;
-    acceptsEncodings(...args: [string[]] | string[]): string | false;
-    acceptsCharsets(...args: [string[]] | string[]): string | false;
-    acceptsLanguages(...args: [string[]] | string[]): string | false;
-    is(...args: [string[]] | string[]): string | false | null;
+    accepts(...args: [...string[]] | string[]): string[] | string | false;
+    acceptsEncodings(...args: [...string[]] | string[]): string | false;
+    acceptsCharsets(...args: [...string[]] | string[]): string | false;
+    acceptsLanguages(...args: [...string[]] | string[]): string | false;
+    is(...args: [...string[]] | string[]): string | false | null;
     get type(): string;
     get(field: string): string;
     inspect(): Record<string, unknown>;

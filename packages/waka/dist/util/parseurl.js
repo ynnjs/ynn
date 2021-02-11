@@ -51,7 +51,7 @@ function fastparse(str) {
                 return url_1.parse(str);
         }
     }
-    const url = Url !== undefined ? new Url() : {};
+    const url = url_1.parse('');
     url.path = str;
     url.href = str;
     url.pathname = pathname;
@@ -62,9 +62,9 @@ function fastparse(str) {
     return url;
 }
 function parseurl(url) {
-    const parsed = cache.get(url);
+    let parsed = cache.get(url);
     if (!parsed) {
-        parsed = fastparse();
+        parsed = fastparse(url);
         cache.set(url, parsed);
     }
     return { ...parsed };

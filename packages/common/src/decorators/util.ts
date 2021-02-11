@@ -52,30 +52,25 @@ export interface CreateGeneralBeforeAndParameterActionDecoratorOptions {
 export function createGeneralBeforeAndParameterActionDecorator(
     options: Readonly<CreateGeneralBeforeAndParameterActionDecoratorOptions>,
     propertyOrPipe?: string | Pipe,
-    pipeFunction?: Pipe
+    ...pipes?: Pipe[]
 ): MethodDecorator & ParameterDecorator {
 
     const t1 = typeof propertyOrPipe;
-    const t2 = typeof pipeFunction;
 
     let property: string | undefined;
-    let pipe: Pipe | undefined;
 
     /**
      * both property and pipe can be empty
      */
     if( t1 === 'string' ) property = propertyOrPipe as string;
-    else if( t1 === 'function' ) pipe = propertyOrPipe as Pipe;
-
-    if( !pipe && t2 === 'function' ) pipe = pipeFunction as Pipe;
+    else if( t1 === 'function' ) pipes.unshift( propertyOrPipe as Pipe );
 
     const parameters: {
         property?: string | symbol | number;
-        pipe?: Pipe;
-    } = {};
+        pipes: Pipe[];
+    } = { pipes };
 
     property && ( parameters.property = property );
-    pipe && ( parameters.pipe = pipe );
 
     return ( target, key: string | symbol, indexOrDescriptor: PropertyDescriptor | number ): void => {
         if( typeof indexOrDescriptor === 'number' ) {

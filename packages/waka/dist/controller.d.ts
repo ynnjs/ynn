@@ -1,11 +1,13 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: interfaces/headers.interface.ts
+ * File: src/controller.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/06/2021
+ * Time: 02/11/2021
  * Description:
  ******************************************************************/
-export interface Headers {
-    [key: string]: string | undefined;
+import Context from './context';
+export default class Controller {
+    ctx: Context;
+    constructor(ctx: Context);
 }

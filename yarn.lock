@@ -1478,6 +1478,7 @@ __metadata:
     "@ynn/koa": "workspace:packages/koa"
     "@ynn/method-interceptor": "workspace:packages/method-interceptor"
     "@ynn/utility-types": "workspace:packages/utility-types"
+    "@ynn/waka": "workspace:packages/waka"
     content-disposition: ^0.5.3
     eslint: ^7.19.0
     eslint_d: ^10.0.0
