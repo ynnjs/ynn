@@ -21,6 +21,7 @@ export interface RequestOptions {
     method: string;
     req?: IncomingMessage;
     ip?: string;
+    body?: unknown;
     headers?: Headers;
     trustXRealIp?: boolean;
     proxyIpHeader?: string;
@@ -31,8 +32,9 @@ export declare class Request {
     #private;
     ctx: Context;
     url: string;
-    originalUrl: string;
     method: string;
+    originalUrl: string;
+    body: unknown;
     httpVersionMajor: number;
     proxyIpHeader: string;
     trustXRealIp: boolean;

@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interfaces/pipe.interface';
+import Pipe from '../interfaces';
 import { createActionDecorator } from './util';
 
 export function Ctx(): ParameterDecorator;

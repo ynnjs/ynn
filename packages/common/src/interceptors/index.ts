@@ -7,5 +7,5 @@
  * Description:
  ******************************************************************/
 
-export * from './before';
-export * from './parameter';
+export * as before from './before';
+export * as parameter from './parameter';

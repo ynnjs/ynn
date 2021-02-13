@@ -21,6 +21,8 @@ class Context {
         options.app && (this.app = options.app);
         this.request = new request_1.Request({ ...options.request, ctx: this });
         this.response = new response_1.Response({ ...(options.response ?? {}), ctx: this });
+        this.request.req && (this.req = this.request.req);
+        this.response.res && (this.res = this.response.res);
     }
     /**
      * Throw an error with `status` (default 500) and `msg`.

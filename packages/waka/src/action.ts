@@ -57,7 +57,7 @@ export function scan(
     /**
      * to scan action methods from current object hierarchically.
      */
-    while( proto ) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+    while( proto ) {
 
         ( Reflect.ownKeys( proto ) as ( string | symbol )[] ).forEach( ( key: string | symbol ) => {
             if( hasOwn( key ) || overwritten.has( key ) ) return;

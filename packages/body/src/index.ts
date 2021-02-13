@@ -11,7 +11,7 @@ import qs from 'qs';
 import bytes from 'bytes';
 import formidable, { Fields, Files } from 'formidable';
 import cobody, { Options as CobodyOptions } from 'co-body';
-import { KoaContext } from '@ynn/koa';
+import { Context } from '@ynn/waka';
 
 /**
  * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
@@ -23,7 +23,7 @@ import { KoaContext } from '@ynn/koa';
 type RawBody = {
     parsed: string | ReturnType<typeof qs.parse> | ReturnType<typeof JSON.parse>;
     raw: string;
-}
+};
 
 /**
  * the `options` for parsing multipart request
@@ -60,7 +60,7 @@ export interface BodyOptions extends CobodyOptions {
     multipartOptions?: MultipartOptions;
 }
 
-async function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} ): Promise<{ fields: Fields; files: Files }> {
+async function parseMultipart( ctx: Context, options: MultipartOptions = {} ): Promise<{ fields: Fields; files: Files }> {
 
     const form = formidable( options );
 
@@ -75,15 +75,17 @@ async function parseMultipart( ctx: KoaContext, options: MultipartOptions = {} )
 /**
  * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
  *
- * @param ctx - the context object conforming the Koa's context object.
+ * @param ctx - the context object conforming the @ynn/waka's context object.
  * @param options - the options object. {@link BodyOptions}
  *
  * @returns the parsed body with `fields` and `files`.
  */
 export default async function parseBody(
-    ctx: KoaContext,
+    ctx: Context,
     options: Readonly<BodyOptions> = {}
-): Promise<RawBody | ReturnType<typeof parseMultipart> | ReturnType<typeof cobody>> {
+): Promise<RawBody | ReturnType<typeof parseMultipart> | ReturnType<typeof cobody> | null> {
+
+    if( !ctx.req ) return null;
 
     const encoding = options.encoding ?? 'utf-8';
     const limit = '20mb';

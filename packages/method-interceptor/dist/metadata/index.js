@@ -18,7 +18,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveMetadataParameter = exports.saveMetadataException = exports.saveMetadataAfter = exports.saveMetadataBefore = void 0;
+exports.getMetadataParameter = exports.saveMetadataParameter = exports.getMetadataException = exports.saveMetadataException = exports.getMetadataAfter = exports.saveMetadataAfter = exports.getMetadataBefore = exports.saveMetadataBefore = void 0;
 const constants_1 = require("../constants");
 const storage_1 = require("../storage");
 __exportStar(require("./metadata.interface"), exports);
@@ -57,6 +57,10 @@ function saveMetadataBefore(descriptor, method, options = {}) {
     saveMethodMetadata(constants_1.KEY_BEFORE, descriptor, metadata);
 }
 exports.saveMetadataBefore = saveMetadataBefore;
+function getMetadataBefore(descriptor) {
+    return Reflect.getMetadata(constants_1.KEY_BEFORE, descriptor);
+}
+exports.getMetadataBefore = getMetadataBefore;
 /**
  * save metadata for interceptor after
  *
@@ -75,6 +79,10 @@ function saveMetadataAfter(descriptor, method, options = {}) {
     saveMethodMetadata(constants_1.KEY_AFTER, descriptor, metadata);
 }
 exports.saveMetadataAfter = saveMetadataAfter;
+function getMetadataAfter(descriptor) {
+    return Reflect.getMetadata(constants_1.KEY_AFTER, descriptor);
+}
+exports.getMetadataAfter = getMetadataAfter;
 /**
  * save metadata for interceptor exception
  *
@@ -96,6 +104,10 @@ function saveMetadataException(descriptor, method, options = {}) {
     saveMethodMetadata(constants_1.KEY_EXCEPTION, descriptor, metadata);
 }
 exports.saveMetadataException = saveMetadataException;
+function getMetadataException(descriptor) {
+    return Reflect.getMetadata(constants_1.KEY_EXCEPTION, descriptor);
+}
+exports.getMetadataException = getMetadataException;
 /**
  * save metadata for interceptor parameter
  *
@@ -122,3 +134,8 @@ key, i, method, options = {}) {
     Reflect.defineMetadata(constants_1.KEY_PARAMETER, metadatas, target, key);
 }
 exports.saveMetadataParameter = saveMetadataParameter;
+function getMetadataParameter(target, // eslint-disable-line
+key) {
+    return Reflect.getMetadata(constants_1.KEY_PARAMETER, target, key);
+}
+exports.getMetadataParameter = getMetadataParameter;

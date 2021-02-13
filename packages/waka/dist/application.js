@@ -75,7 +75,7 @@ class Application {
                     Object.keys(actionInfos).forEach((actionName) => {
                         const info = actionInfos[actionName];
                         const { descriptor } = info;
-                        if (!actions[controllerName]) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+                        if (!actions[controllerName]) {
                             actions[controllerName] = {};
                         }
                         const before = method_interceptor_1.createInterceptorBefore(descriptor);
@@ -168,8 +168,8 @@ class Application {
             else {
                 result.controller ?? (result.controller = DEFAULT_CONTROLLER);
                 result.action ?? (result.action = DEFAULT_ACTION);
-                const action = this.actions[result.controller][result.action];
-                if (!action) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+                const action = this.actions[result.controller]?.[result.action];
+                if (!action) {
                     ctx.status = 404;
                 }
                 else {

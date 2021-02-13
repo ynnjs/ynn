@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interfaces/pipe.interface';
+import Pipe from '../interfaces';
 
 
 export function Exception( pipe: Pipe ): MethodDecorator | ClassDecorator;

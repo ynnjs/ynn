@@ -12,9 +12,10 @@ import { VariadicClass } from '@ynn/utility-types';
 import Context, { ContextOptions } from './context';
 import { ActionInfo } from './action';
 import Router, { RouterRule } from './router';
+import { Controller } from './interfaces';
 export interface Options {
     root?: string;
-    controllers?: Record<string, VariadicClass<[Context]>>;
+    controllers?: Record<string, VariadicClass<[Context], Controller>>;
     providers?: Record<string, unknown>;
     routers?: RouterRule[] | ((this: Application, router: Router, app: Application) => void);
 }

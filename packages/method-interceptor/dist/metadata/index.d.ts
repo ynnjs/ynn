@@ -17,6 +17,7 @@ export * from './metadata.interface';
  * @param options
  */
 export declare function saveMetadataBefore<T extends unknown[]>(descriptor: PropertyDescriptor, method: MethodBefore<T>, options?: Readonly<Pick<MetadataBefore, 'parameters'>>): void;
+export declare function getMetadataBefore(descriptor: PropertyDescriptor): MetadataBefore | undefined;
 /**
  * save metadata for interceptor after
  *
@@ -25,6 +26,7 @@ export declare function saveMetadataBefore<T extends unknown[]>(descriptor: Prop
  * @param options
  */
 export declare function saveMetadataAfter<T extends unknown[]>(descriptor: PropertyDescriptor, method: MethodAfter<T>, options?: Pick<MetadataAfter, 'parameters'>): void;
+export declare function getMetadataAfter(descriptor: PropertyDescriptor): MetadataAfter | undefined;
 /**
  * save metadata for interceptor exception
  *
@@ -33,6 +35,7 @@ export declare function saveMetadataAfter<T extends unknown[]>(descriptor: Prope
  * @param options
  */
 export declare function saveMetadataException<T extends unknown[]>(descriptor: PropertyDescriptor, method: MethodException<T>, options?: Pick<MetadataException, 'exceptionType' | 'parameters'>): void;
+export declare function getMetadataException(descriptor: PropertyDescriptor): MetadataException | undefined;
 /**
  * save metadata for interceptor parameter
  *
@@ -44,3 +47,5 @@ export declare function saveMetadataException<T extends unknown[]>(descriptor: P
  */
 export declare function saveMetadataParameter<T extends unknown[]>(target: object, // eslint-disable-line
 key: string | symbol, i: number, method: MethodParameter<T>, options?: Readonly<Pick<MetadataParameter, 'parameters'>>): void;
+export declare function getMetadataParameter(target: object, // eslint-disable-line
+key: string | symbol): MetadataParameter | undefined;

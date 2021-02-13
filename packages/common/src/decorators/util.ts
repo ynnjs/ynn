@@ -45,14 +45,14 @@ export function createGeneralBeforeAndParameterMetadataParameters(
 }
 
 export interface CreateGeneralBeforeAndParameterActionDecoratorOptions {
-    interceptorParameter: VariadicFunction;
-    interceptorBefore: VariadicFunction;
+    interceptorParameter?: VariadicFunction;
+    interceptorBefore?: VariadicFunction;
 }
 
 export function createGeneralBeforeAndParameterActionDecorator(
     options: Readonly<CreateGeneralBeforeAndParameterActionDecoratorOptions>,
     propertyOrPipe?: string | Pipe,
-    ...pipes?: Pipe[]
+    ...pipes: Pipe[]
 ): MethodDecorator & ParameterDecorator {
 
     const t1 = typeof propertyOrPipe;
@@ -74,10 +74,14 @@ export function createGeneralBeforeAndParameterActionDecorator(
 
     return ( target, key: string | symbol, indexOrDescriptor: PropertyDescriptor | number ): void => {
         if( typeof indexOrDescriptor === 'number' ) {
-            saveMetadataParameter( target, key, indexOrDescriptor, options.interceptorParameter, { parameters } );
+            if( options.interceptorParameter ) {
+                saveMetadataParameter( target, key, indexOrDescriptor, options.interceptorParameter, { parameters } );
+            }
             return;
         }
-        saveMetadataBefore( indexOrDescriptor, options.interceptorBefore, { parameters } );
+        if( options.interceptorBefore ) {
+            saveMetadataBefore( indexOrDescriptor, options.interceptorBefore, { parameters } );
+        }
     };
 }
 

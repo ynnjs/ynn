@@ -28,12 +28,14 @@ async function parseMultipart(ctx, options = {}) {
 /**
  * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
  *
- * @param ctx - the context object conforming the Koa's context object.
+ * @param ctx - the context object conforming the @ynn/waka's context object.
  * @param options - the options object. {@link BodyOptions}
  *
  * @returns the parsed body with `fields` and `files`.
  */
 async function parseBody(ctx, options = {}) {
+    if (!ctx.req)
+        return null;
     const encoding = options.encoding ?? 'utf-8';
     const limit = '20mb';
     if (ctx.is('multipart')) {

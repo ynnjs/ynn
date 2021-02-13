@@ -36,7 +36,7 @@ function scan(obj // eslint-disable-line
     /**
      * to scan action methods from current object hierarchically.
      */
-    while (proto) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+    while (proto) {
         Reflect.ownKeys(proto).forEach((key) => {
             if (hasOwn(key) || overwritten.has(key))
                 return;

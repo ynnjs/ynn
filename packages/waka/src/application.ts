@@ -16,6 +16,7 @@ import { createInterceptorBefore, createInterceptorAfter, createInterceptorParam
 import Context, { ContextOptions } from './context';
 import { scan, ActionInfo } from './action';
 import Router, { RouterRule, RouteMap } from './router';
+import { Controller } from './interfaces';
 import cargs from './cargs';
 
 const CWD = process.cwd();
@@ -25,7 +26,7 @@ const DEFAULT_ACTION = 'index';
 
 export interface Options {
     root?: string;
-    controllers?: Record<string, VariadicClass<[ Context ]>>;
+    controllers?: Record<string, VariadicClass<[ Context ], Controller>>;
     providers?: Record<string, unknown>;
     routers?: RouterRule[] | ( ( this: Application, router: Router, app: Application ) => void );
 }
@@ -133,14 +134,14 @@ export default class Application {
                     const info = actionInfos[ actionName ];
                     const { descriptor } = info;
 
-                    if( !actions[ controllerName ] ) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+                    if( !actions[ controllerName ] ) {
                         actions[ controllerName ] = {};
                     }
 
-                    const before = createInterceptorBefore( descriptor );
-                    const after = createInterceptorAfter( descriptor );
-                    const exception = createInterceptorException( descriptor );
-                    const parameter = createInterceptorParameter( info.proto, info.methodName );
+                    const before = createInterceptorBefore<[ Context ]>( descriptor );
+                    const after = createInterceptorAfter<[ Context ]>( descriptor );
+                    const exception = createInterceptorException<[ Context ]>( descriptor );
+                    const parameter = createInterceptorParameter<[ Context ]>( info.proto, info.methodName );
 
                     const executor = async ( context: Context ): Promise<unknown> => {
                         try {
@@ -204,9 +205,9 @@ export default class Application {
                 result.controller ??= DEFAULT_CONTROLLER;
                 result.action ??= DEFAULT_ACTION;
 
-                const action = this.actions[ result.controller ][ result.action ];
+                const action = this.actions[ result.controller ]?.[ result.action ];
 
-                if( !action ) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+                if( !action ) {
                     ctx.status = 404;
                 } else {
                     const body = await action.executor.call( this, ctx );

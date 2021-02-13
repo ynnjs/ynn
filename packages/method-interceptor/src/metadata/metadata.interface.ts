@@ -12,7 +12,7 @@ import { VariadicClass } from '@ynn/utility-types';
 /**
  * the base metadata interface for Interceptor
  */
-export interface Metadata {
+export interface Metadata<T = unknown> {
     /**
      * the type of the interceptor method,
      * it should be defined in decorators and used to find out which interceptor method should be used.
@@ -36,7 +36,7 @@ export interface Metadata {
     /**
      * the parameters which will be passed to interceptor methods.
      */
-    parameters?: unknown;
+    parameters?: T;
 }
 
 /**
@@ -54,11 +54,11 @@ export interface Metadata {
  * }
  * ```
  */
-export interface MetadataBefore extends Metadata {
+export interface MetadataBefore<T = unknown> extends Metadata<T> {
     interceptorType: 'before';
 }
 
-export interface MetadataAfter extends Metadata {
+export interface MetadataAfter<T = unknown> extends Metadata<T> {
     interceptorType: 'after';
 }
 
@@ -79,7 +79,7 @@ export interface MetadataAfter extends Metadata {
  * }
  * ```
  */
-export interface MetadataException extends Metadata {
+export interface MetadataException<T = unknown> extends Metadata<T> {
     interceptorType: 'exception';
     /**
      * the type should be a constructor or undefined.
@@ -110,6 +110,6 @@ export interface MetadataException extends Metadata {
  * }
  * ```
  */
-export type MetadataParameter = Partial<Metadata> & {
+export type MetadataParameter<T = unknown> = Partial<Metadata<T>> & {
     paramtype: unknown;
 };

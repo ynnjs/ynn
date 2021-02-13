@@ -59,6 +59,10 @@ export function saveMetadataBefore<T extends unknown[]>(
     saveMethodMetadata( KEY_BEFORE, descriptor, metadata );
 }
 
+export function getMetadataBefore( descriptor: PropertyDescriptor ): MetadataBefore | undefined {
+    return Reflect.getMetadata( KEY_BEFORE, descriptor );
+}
+
 /**
  * save metadata for interceptor after
  *
@@ -80,6 +84,10 @@ export function saveMetadataAfter<T extends unknown[]>(
         metadata.parameters = options.parameters;
     }
     saveMethodMetadata( KEY_AFTER, descriptor, metadata );
+}
+
+export function getMetadataAfter( descriptor: PropertyDescriptor ): MetadataAfter | undefined {
+    return Reflect.getMetadata( KEY_AFTER, descriptor );
 }
 
 /**
@@ -108,6 +116,10 @@ export function saveMetadataException<T extends unknown[]>(
         metadata.exceptionType = options.exceptionType;
     }
     saveMethodMetadata( KEY_EXCEPTION, descriptor, metadata );
+}
+
+export function getMetadataException( descriptor: PropertyDescriptor ): MetadataException | undefined {
+    return Reflect.getMetadata( KEY_EXCEPTION, descriptor );
 }
 
 /**
@@ -142,4 +154,11 @@ export function saveMetadataParameter<T extends unknown[]>(
     else metadatas[ i ].push( metadata );
 
     Reflect.defineMetadata( KEY_PARAMETER, metadatas, target, key );
+}
+
+export function getMetadataParameter(
+    target: object, // eslint-disable-line
+    key: string | symbol
+): MetadataParameter | undefined {
+    return Reflect.getMetadata( KEY_PARAMETER, target, key );
 }

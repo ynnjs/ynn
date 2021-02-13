@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interface/pipe.interface';
+import Pipe from '../interfaces';
 
 // @todo
 interface KoaCookieOptions {

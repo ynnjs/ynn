@@ -8,3 +8,4 @@
  ******************************************************************/
 export * from './queries.interface';
 export * from './headers.interface';
+export * from './controller.interface';

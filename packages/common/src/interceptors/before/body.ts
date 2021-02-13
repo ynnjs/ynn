@@ -8,13 +8,13 @@
  ******************************************************************/
 
 import parser from '@ynn/body';
-import { MetadataBefore, MetadataParameter } from '@ynn/method-interceptor';
 import { Context } from '@ynn/waka';
+import { MetadataBefore, MetadataParameter } from '@ynn/method-interceptor';
 import { Pipe } from '../../interfaces';
 
 interface BodyParameters {
     property?: string;
-    pipe?: Pipe;
+    pipes: Pipe[];
 }
 
 /**
@@ -25,18 +25,32 @@ interface BodyParameters {
  * @param metadata
  * @param ctx
  */
-export async function interceptorBeforeBody(
-    metadata: Readonly<MetadataBefore> | Readonly<MetadataParameter>,
+export async function body(
+    metadata: MetadataBefore | MetadataParameter,
     ctx: Context
 ): Promise<unknown> {
+
     /**
      * don't parse the body multiple times if it has already been parsed
      */
-    if( !( 'body' in ctx ) ) ctx.body = parser( ctx );
+    if( ctx.request.body === undefined ) ctx.request.body = await parser( ctx );
 
-    const body = await ctx.body;
-    const parameters = metadata.parameters as BodyParameters;
-    const value = parameters.property ? body[ parameters.property ] : body;
+    const body = ctx.request.body;
+    const { property, pipes } = metadata.parameters as BodyParameters;
 
-    return parameters.pipe ? parameters.pipe( value, ctx, parameters ) : value;
+    let res: unknown;
+
+    if( property ) {
+        try {
+            res = ( body as any )[ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
+        } catch( e: unknown ) {
+            res = undefined;
+        }
+    } else res = body;
+
+    for( const pipe of pipes ) {
+        res = await pipe( res, ctx ); // eslint-disable-line no-await-in-loop
+    }
+
+    return res;
 }

@@ -56,7 +56,7 @@ export class Response {
             this.set( name, headers[ name ] );
         } );
 
-        this.statusMessage = options.statusMessage === undefined ? ( statuses[ this.statusCode ] || '' ) : options.statusMessage;
+        this.statusMessage = options.statusMessage === undefined ? ( statuses.message[ this.statusCode ] ?? '' ) : options.statusMessage;
     }
 
     get socket(): Socket | null {
@@ -96,7 +96,7 @@ export class Response {
         assert( code >= 100 && code < 999, `incalid status code: ${code}` );
         this.EXPLICIT_STATUS = true;
         this.statusCode = code;
-        this.statusMessage = statuses[ code ];
+        this.statusMessage = statuses.message[ code ] ?? '';
         if( this.body && statuses.empty[ code ] ) this.body = null;
     }
 
@@ -292,7 +292,7 @@ export class Response {
      * Return response header.
      */
     get( field: string ): string {
-        return this.#headers.get( field.toLowerCase() ) || '';
+        return this.#headers.get( field.toLowerCase() ) ?? '';
     }
 
     /**

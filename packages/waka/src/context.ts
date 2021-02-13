@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import { Socket } from 'net';
+import { IncomingMessage, ServerResponse } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
@@ -18,14 +19,16 @@ import { Headers } from './interfaces';
 // import Cookies, { SetOption as CookieOptions } from 'cookies';
 
 export interface ContextOptions {
-    request: RequestOptions;
-    response?: ResponseOptions;
+    request: Omit<RequestOptions, 'ctx'>;
+    response?: Omit<ResponseOptions, 'ctx'>;
     app?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export default class Context {
 
     app?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    req?: IncomingMessage;
+    res?: ServerResponse;
 
     request: Request;
     response: Response;
@@ -36,6 +39,8 @@ export default class Context {
         options.app && ( this.app = options.app );
         this.request = new Request( { ...options.request, ctx : this } );
         this.response = new Response( { ...( options.response ?? {} ), ctx : this } );
+        this.request.req && ( this.req = this.request.req );
+        this.response.res && ( this.res = this.response.res );
     }
 
     /**

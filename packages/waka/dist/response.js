@@ -50,7 +50,7 @@ class Response {
         headers && Object.keys(headers).forEach((name) => {
             this.set(name, headers[name]);
         });
-        this.statusMessage = options.statusMessage === undefined ? (statuses_1.default[this.statusCode] || '') : options.statusMessage;
+        this.statusMessage = options.statusMessage === undefined ? (statuses_1.default.message[this.statusCode] ?? '') : options.statusMessage;
     }
     get socket() {
         return this.res?.socket ?? null;
@@ -86,7 +86,7 @@ class Response {
         assert_1.default(code >= 100 && code < 999, `incalid status code: ${code}`);
         this.EXPLICIT_STATUS = true;
         this.statusCode = code;
-        this.statusMessage = statuses_1.default[code];
+        this.statusMessage = statuses_1.default.message[code] ?? '';
         if (this.body && statuses_1.default.empty[code])
             this.body = null;
     }
@@ -270,7 +270,7 @@ class Response {
      * Return response header.
      */
     get(field) {
-        return __classPrivateFieldGet(this, _headers).get(field.toLowerCase()) || '';
+        return __classPrivateFieldGet(this, _headers).get(field.toLowerCase()) ?? '';
     }
     /**
      * Returns true if the header identified by name is currently set in the outgoing headers.

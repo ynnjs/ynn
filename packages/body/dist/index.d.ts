@@ -9,7 +9,7 @@
 import qs from 'qs';
 import { Fields, Files } from 'formidable';
 import cobody, { Options as CobodyOptions } from 'co-body';
-import { KoaContext } from '@ynn/koa';
+import { Context } from '@ynn/waka';
 /**
  * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
  * The `parsed` part will be in different types while using different request types.
@@ -54,17 +54,17 @@ export interface BodyOptions extends CobodyOptions {
     textTypes?: string[];
     multipartOptions?: MultipartOptions;
 }
-declare function parseMultipart(ctx: KoaContext, options?: MultipartOptions): Promise<{
+declare function parseMultipart(ctx: Context, options?: MultipartOptions): Promise<{
     fields: Fields;
     files: Files;
 }>;
 /**
  * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
  *
- * @param ctx - the context object conforming the Koa's context object.
+ * @param ctx - the context object conforming the @ynn/waka's context object.
  * @param options - the options object. {@link BodyOptions}
  *
  * @returns the parsed body with `fields` and `files`.
  */
-export default function parseBody(ctx: KoaContext, options?: Readonly<BodyOptions>): Promise<RawBody | ReturnType<typeof parseMultipart> | ReturnType<typeof cobody>>;
+export default function parseBody(ctx: Context, options?: Readonly<BodyOptions>): Promise<RawBody | ReturnType<typeof parseMultipart> | ReturnType<typeof cobody> | null>;
 export {};

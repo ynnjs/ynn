@@ -8,4 +8,3 @@
  ******************************************************************/
 
 export * from './pipe.interface';
-export * from './context.interface';

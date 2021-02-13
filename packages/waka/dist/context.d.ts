@@ -8,6 +8,7 @@
  ******************************************************************/
 /// <reference types="node" />
 import { Socket } from 'net';
+import { IncomingMessage, ServerResponse } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
@@ -15,12 +16,14 @@ import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
 import { Headers } from './interfaces';
 export interface ContextOptions {
-    request: RequestOptions;
-    response?: ResponseOptions;
+    request: Omit<RequestOptions, 'ctx'>;
+    response?: Omit<ResponseOptions, 'ctx'>;
     app?: any;
 }
 export default class Context {
     app?: any;
+    req?: IncomingMessage;
+    res?: ServerResponse;
     request: Request;
     response: Response;
     assert: any;

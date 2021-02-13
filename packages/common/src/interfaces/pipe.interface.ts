@@ -8,8 +8,9 @@
  ******************************************************************/
 
 import { Context } from '@ynn/waka';
-import { ActionMetadata } from './metadata.interface';
+// import { ActionMetadata } from './metadata.interface';
 
 export interface Pipe {
-    ( value: unknown, ctx: Context, metadata: ActionMetadata ): unknown;
+    // ( value: unknown, ctx: Context, metadata: ActionMetadata ): unknown;
+    ( value: unknown, ctx: Context ): unknown;
 }

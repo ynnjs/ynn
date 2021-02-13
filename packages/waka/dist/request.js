@@ -43,6 +43,7 @@ class Request {
         _rawParsedurl.set(this, null);
         _memoizedURL.set(this, null);
         _querycache.set(this, {});
+        this.body = null;
         this.httpVersionMajor = 1;
         this.proxyIpHeader = 'X-Forwarded-For';
         this.trustXRealIp = false;
@@ -60,6 +61,7 @@ class Request {
         this.method = options.method;
         options.ip && (__classPrivateFieldSet(this, _ip, options.ip));
         options.req && (this.req = options.req);
+        options.body === undefined || (this.body = options.body);
         options.proxyIpHeader && (this.proxyIpHeader = options.proxyIpHeader);
         options.httpVersionMajor && (this.httpVersionMajor = options.httpVersionMajor);
         options.trustXRealIp === undefined || (this.trustXRealIp = options.trustXRealIp);
@@ -283,9 +285,9 @@ class Request {
         switch (field = field.toLowerCase()) {
             case 'referer':
             case 'referrer':
-                return this.headers.referrer || (this.headers.referer ?? '');
+                return this.headers.referrer ?? this.headers.referer ?? '';
             default:
-                return this.headers[field] || '';
+                return this.headers[field] ?? '';
         }
     }
     inspect() {

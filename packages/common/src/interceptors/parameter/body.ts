@@ -7,4 +7,4 @@
  * Description:
  ******************************************************************/
 
-export { interceptorBeforeBody as interceptorParameterBody } from '../before';
+export { body as body } from '../before';

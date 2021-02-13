@@ -26,6 +26,7 @@ export interface RequestOptions {
     method: string;
     req?: IncomingMessage;
     ip?: string;
+    body?: unknown;
     headers?: Headers;
     trustXRealIp?: boolean;
     proxyIpHeader?: string;
@@ -45,8 +46,9 @@ export class Request {
 
     ctx: Context;
     url: string;
-    originalUrl: string;
     method: string;
+    originalUrl: string;
+    body: unknown = null;
     httpVersionMajor = 1;
     proxyIpHeader = 'X-Forwarded-For';
     trustXRealIp = false;
@@ -61,6 +63,7 @@ export class Request {
         this.method = options.method;
         options.ip && ( this.#ip = options.ip );
         options.req && ( this.req = options.req );
+        options.body === undefined || ( this.body = options.body );
         options.proxyIpHeader && ( this.proxyIpHeader = options.proxyIpHeader );
         options.httpVersionMajor && ( this.httpVersionMajor = options.httpVersionMajor );
         options.trustXRealIp === undefined || ( this.trustXRealIp = options.trustXRealIp );
@@ -313,9 +316,9 @@ export class Request {
         switch( field = field.toLowerCase() ) {
             case 'referer' :
             case 'referrer' :
-                return this.headers.referrer || ( this.headers.referer ?? '' );
+                return this.headers.referrer ?? this.headers.referer ?? '';
             default :
-                return this.headers[ field ] || '';
+                return this.headers[ field ] ?? '';
         }
     }
 

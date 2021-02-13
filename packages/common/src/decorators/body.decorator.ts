@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import { Pipe } from '../interfaces';
-import { interceptorBeforeBody, interceptorParameterBody } from '../interceptors';
+import { before, parameter } from '../interceptors';
 import { createGeneralBeforeAndParameterActionDecorator } from './util';
 
 /**
@@ -76,8 +76,8 @@ export function Body( property: string, ...pipes: Pipe[] ): ParameterDecorator &
 export function Body( ...args: [ property?: ( string | Pipe ), ...pipes: Pipe[] ] ): MethodDecorator & ParameterDecorator {
 
     return createGeneralBeforeAndParameterActionDecorator( {
-        interceptorParameter : interceptorParameterBody,
-        interceptorBefore : interceptorBeforeBody
+        interceptorParameter : parameter.body,
+        interceptorBefore : before.body
     }, ...args );
 
 }

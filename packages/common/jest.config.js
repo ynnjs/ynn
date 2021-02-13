@@ -1,10 +1,10 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
- * 
- * File: body/jest.config.js
+ * Copyright (C) 2021 LvChengbin
+ *
+ * File: common/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/09/2020
- * Description: 
+ * Time: 02/11/2021
+ * Description:
  ******************************************************************/
 
 module.exports = {
@@ -22,4 +22,4 @@ module.exports = {
         'src/**/*.ts'
     ],
     testEnvironment : 'jsdom'
-}
+};

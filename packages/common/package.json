@@ -32,6 +32,7 @@
         "@typescript-eslint/eslint-plugin": "^4.14.1",
         "@typescript-eslint/parser": "^4.14.1",
         "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
+        "@ynn/testing-library": "workspace:packages/testing-library",
         "eslint": "^7.19.0",
         "eslint_d": "^10.0.0",
         "jest": "^26.6.3",
