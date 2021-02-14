@@ -1,0 +1,102 @@
+/******************************************************************
+ * Copyright (C) 2021 LvChengbin
+ *
+ * File: test/before.spec.ts
+ * Author: LvChengbin<lvchengbin59@gmail.com>
+ * Time: 02/13/2021
+ * Description:
+ ******************************************************************/
+
+import { Action, Context, Controller, Headers } from '@ynn/waka';
+import { createAppWithRequest } from '@ynn/testing-library';
+import { Header } from '../../src';
+
+describe( '@Body()', () => {
+    describe( 'Parameter Decorator', () => {
+        it( '', async () => {
+
+            const fn1 = jest.fn();
+            const fn2 = jest.fn();
+            const res = { status : 0, message : 'OK' };
+
+            class IndexController implements Controller {
+                constructor( public ctx: Context ) {}
+
+                @Action()
+                index( @Header( 'X-Custom-Name' ) name: string, @Header() headers: Headers ) {
+                    fn1( name );
+                    fn2( headers );
+                    return res;
+                }
+            }
+
+            const ctx = await createAppWithRequest( {
+                controllers : { index : IndexController }
+            }, {
+                request : {
+                    method : 'GET',
+                    url : '/',
+                    headers : {
+                        'X-Custom-Name' : 'Achilles'
+                    },
+                    body : { name : 'Achilles' }
+                }
+            } );
+
+            expect( fn1 ).toHaveBeenCalled();
+            expect( fn1 ).toHaveBeenCalledWith( 'Achilles' );
+            expect( fn2 ).toHaveBeenCalled();
+            expect( fn2 ).toHaveBeenCalledWith( { 'x-custom-name' : 'Achilles' } );
+            expect( ctx.body ).toEqual( res );
+            expect( ctx.response.headers ).toEqual( { 'content-type' : 'application/json; charset=utf-8' } );
+            expect( ctx.response.status ).toEqual( 200 );
+            expect( ctx.response.message ).toEqual( 'OK' );
+
+        } );
+    } );
+
+    describe( 'Response Decorator', () => {
+        it( '', async () => {
+            const fn1 = jest.fn();
+            const res = { status : 0, message : 'OK' };
+
+            class IndexController implements Controller {
+                constructor( public ctx: Context ) {}
+
+                @Action()
+                @Header( 'X-Custom-Name', 'NewName' )
+                index( @Header( 'X-Custom-Name' ) name: string ) {
+                    fn1( name );
+                    return res;
+                }
+            }
+
+            const ctx = await createAppWithRequest( {
+                controllers : { index : IndexController }
+            }, {
+                request : {
+                    method : 'GET',
+                    url : '/',
+                    headers : {
+                        'X-Custom-Name' : 'Achilles'
+                    },
+                    body : { name : 'Achilles' }
+                }
+            } );
+
+            console.log( ctx );
+
+            expect( fn1 ).toHaveBeenCalled();
+            expect( fn1 ).toHaveBeenCalledWith( 'Achilles' );
+            expect( ctx.body ).toEqual( res );
+            expect( ctx.response.headers ).toEqual( {
+                'content-type' : 'application/json; charset=utf-8',
+                'x-custom-name' : 'NewName'
+            } );
+            expect( ctx.response.status ).toEqual( 200 );
+            expect( ctx.response.message ).toEqual( 'OK' );
+
+        } );
+    } );
+} );
+

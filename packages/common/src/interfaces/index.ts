@@ -8,3 +8,4 @@
  ******************************************************************/
 
 export * from './pipe.interface';
+export * from './metadata.interface';

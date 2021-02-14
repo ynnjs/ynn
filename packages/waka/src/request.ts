@@ -68,7 +68,7 @@ export class Request {
         options.httpVersionMajor && ( this.httpVersionMajor = options.httpVersionMajor );
         options.trustXRealIp === undefined || ( this.trustXRealIp = options.trustXRealIp );
         options.subdomainOffset === undefined || ( this.subdomainOffset = options.subdomainOffset );
-        options.headers && ( this.#headers = { ...options.headers } );
+        options.headers && ( this.headers = { ...options.headers } );
     }
 
     #parseurl = (): UrlWithStringQuery => {

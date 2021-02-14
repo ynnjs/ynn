@@ -31,7 +31,7 @@ export function createApp( options: Options ): Waka {
 export async function createAppWithRequest(
     options: Options | Waka,
     context: Context | ContextOptions
-): Promise<unknown> {
+): Promise<Context> {
     const app = options instanceof Waka ? options : createApp( options );
     return app.handle( context );
 }

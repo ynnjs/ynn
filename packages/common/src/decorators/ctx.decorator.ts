@@ -7,17 +7,19 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interfaces';
-import { createActionDecorator } from './util';
+import { Pipe } from '../interfaces';
+import { before, parameter } from '../interceptors';
+import { createGeneralBeforeAndParameterActionDecorator } from './util';
 
-export function Ctx(): ParameterDecorator;
+export function Ctx( ...pipes: Pipe[] ): MethodDecorator & ParameterDecorator;
 
 export function Ctx( property: string ): ParameterDecorator;
 
-export function Ctx( pipe: Pipe ): MethodDecorator & ParameterDecorator;
+export function Ctx( property: string, ...pipe: Pipe[] ): MethodDecorator & ParameterDecorator;
 
-export function Ctx( property: string, pipe: Pipe ): MethodDecorator & ParameterDecorator;
-
-export function Ctx( ...args: [ ( string | Pipe )?, Pipe? ] ): MethodDecorator & ParameterDecorator {
-    return createActionDecorator( 'ctx', ...args );
+export function Ctx( ...args: [ property?: ( string | Pipe ), ...pipes: Pipe[] ] ): MethodDecorator & ParameterDecorator {
+    return createGeneralBeforeAndParameterActionDecorator( {
+        interceptorParameter : parameter.ctx,
+        interceptorBefore : before.ctx
+    }, ...args );
 }

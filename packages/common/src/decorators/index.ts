@@ -12,7 +12,7 @@ export * from './body.decorator';
 // export * from './ctx.decorator';
 // export * from './exception.decorator';
 // export * from './file.decorator';
-// export * from './header.decorator';
+export * from './header.decorator';
 // export * from './logger.decorator';
 // export * from './middleware.decorator';
 // export * from './param.decorator';

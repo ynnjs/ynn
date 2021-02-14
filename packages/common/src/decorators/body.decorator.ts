@@ -7,9 +7,43 @@
  * Description:
  ******************************************************************/
 
-import { Pipe } from '../interfaces';
-import { before, parameter } from '../interceptors';
-import { createGeneralBeforeAndParameterActionDecorator } from './util';
+import parser from '@ynn/body';
+import { Context } from '@ynn/waka';
+import { Pipe, CommonRequestMetadata, CommonParameterMetadata } from '../interfaces';
+import { createGeneralDecorator } from './util';
+
+/**
+ * function for interceptor before and interceptor parameter
+ *
+ * @example
+ *
+ * @param metadata
+ * @param ctx
+ */
+export async function requestAndParameterInterceptor( metadata: CommonRequestMetadata | CommonParameterMetadata, ctx: Context ): Promise<unknown> {
+
+    /**
+     * don't parse the body multiple times if it has already been parsed
+     */
+    if( ctx.request.body === undefined ) ctx.request.body = await parser( ctx );
+
+    const body = ctx.request.body;
+    const { property, pipes } = metadata.parameters;
+
+    let res: unknown;
+
+    if( property ) {
+        try {
+            res = ( body as any )[ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
+        } catch( e: unknown ) { res = undefined }
+    } else res = body;
+
+    for( const pipe of pipes ) {
+        res = await pipe( res, ctx ); // eslint-disable-line no-await-in-loop
+    }
+
+    return res;
+}
 
 /**
  * Function for generating an action parameter decorator or a method decorator.
@@ -73,11 +107,11 @@ export function Body( property: string ): ParameterDecorator;
  */
 export function Body( property: string, ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
-export function Body( ...args: [ property?: ( string | Pipe ), ...pipes: Pipe[] ] ): MethodDecorator & ParameterDecorator {
+export function Body( ...args: [ ( string | Pipe )?, ...Pipe[] ] ): MethodDecorator & ParameterDecorator {
 
-    return createGeneralBeforeAndParameterActionDecorator( {
-        interceptorParameter : parameter.body,
-        interceptorBefore : before.body
+    return createGeneralDecorator( {
+        parameterInterceptor : requestAndParameterInterceptor,
+        requestInterceptor : requestAndParameterInterceptor
     }, ...args );
 
 }

@@ -66,7 +66,7 @@ class Request {
         options.httpVersionMajor && (this.httpVersionMajor = options.httpVersionMajor);
         options.trustXRealIp === undefined || (this.trustXRealIp = options.trustXRealIp);
         options.subdomainOffset === undefined || (this.subdomainOffset = options.subdomainOffset);
-        options.headers && (__classPrivateFieldSet(this, _headers, { ...options.headers }));
+        options.headers && (this.headers = { ...options.headers });
     }
     get headers() {
         return __classPrivateFieldGet(this, _headers);
