@@ -7,4 +7,5 @@
  * Description:
  ******************************************************************/
 export * from './pipe.interface';
-export * from './context.interface';
+export * from './metadata.interface';
+export * from './logger.interface';

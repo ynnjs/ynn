@@ -25,7 +25,7 @@ export type ReqOptions = {
     statusMessage?: string;
     host?: string;
     remoteAddress?: string;
-}
+};
 
 export class Req extends IncomingMessage {
     constructor( options: ReqOptions = {} ) {
@@ -69,7 +69,7 @@ export type ResOptions = {
     headers?: Record<string, string>;
     statusCode?: number;
     statusMessage?: string;
-}
+};
 
 export class Res extends ServerResponse {
     constructor( options: ResOptions = {} ) {

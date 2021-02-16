@@ -69,11 +69,11 @@ export default class Koa extends EventEmitter {
 
     constructor( options: KoaOptions = {} ) {
         super();
-        this.proxy = options.proxy || false;
-        this.subdomainOffset = options.subdomainOffset || 2;
-        this.proxyIpHeader = options.proxyIpHeader || 'X-Forwarded-For';
-        this.maxIpsCount = options.maxIpsCount || 0;
-        this.env = options.env || process.env.NODE_ENV || 'development';
+        this.proxy = options.proxy ?? false;
+        this.subdomainOffset = options.subdomainOffset ?? 2;
+        this.proxyIpHeader = options.proxyIpHeader ?? 'X-Forwarded-For';
+        this.maxIpsCount = options.maxIpsCount ?? 0;
+        this.env = options.env ?? process.env.NODE_ENV ?? 'development';
         options.keys && ( this.keys = options.keys );
 
         /* istanbul ignore else */

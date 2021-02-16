@@ -9,3 +9,4 @@
 
 export * from './pipe.interface';
 export * from './metadata.interface';
+export * from './logger.interface';

@@ -31,7 +31,7 @@ export type RouterTarget = {
 export type RouterRule<
     M = string | RegExp | ( string | RegExp )[],
     T = string | RouterTarget | KoaMiddleware
-> = [M, T] | [string | string[], M, T]
+> = [M, T] | [string | string[], M, T];
 
 export type YnnController = KoaMiddleware | typeof Controller;
 
@@ -50,7 +50,7 @@ export type YnnOptions = KoaOptions & {
     routers?: RouterRule[] | ( ( ...args ) => void | RouterRule[] );
     isMoudule?: boolean;
     [ key: string ]: any;
-}
+};
 
 export default class Ynn extends Koa {
     static cargs = cargs;
@@ -86,7 +86,7 @@ export default class Ynn extends Koa {
         };
 
         this.debug = options.debug || new DebugLogger( opts );
-    }
+    };
 
     #setupLogger = ( options: YnnOptions ): void => {
         const { logger, logging = false, debugging = true } = options;
@@ -95,7 +95,7 @@ export default class Ynn extends Koa {
             debug : this.debug,
             logging, debugging, logger
         } );
-    }
+    };
 
     #options!: YnnOptions;
 
@@ -150,7 +150,7 @@ export default class Ynn extends Koa {
         } );
 
         this.router = router;
-    }
+    };
 
     #setupControllers = ( options: YnnOptions ): void => {
         const { controllers } = options;
@@ -176,14 +176,14 @@ export default class Ynn extends Koa {
                 } );
             }
         } );
-    }
+    };
 
     #setup = ( options: YnnOptions ): void => {
         this.#options = { ...options, ...cargs };
         this.#setupDebug( this.#options );
         this.#setupLogger( this.#options );
         this.#setupRouter( this.#options );
-    }
+    };
 
     constructor( options: YnnOptions = {} ) {
         super();

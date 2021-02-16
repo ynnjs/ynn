@@ -43,6 +43,8 @@ class Request {
         _rawParsedurl.set(this, null);
         _memoizedURL.set(this, null);
         _querycache.set(this, {});
+        this.url = '/';
+        this.method = 'GET';
         this.body = null;
         this.httpVersionMajor = 1;
         this.proxyIpHeader = 'X-Forwarded-For';
@@ -55,18 +57,25 @@ class Request {
             }
             return __classPrivateFieldGet(this, _parsedurl);
         });
+        const { req } = options;
         this.ctx = options.ctx;
-        this.url = options.url;
-        this.originalUrl = this.url;
-        this.method = options.method;
+        if (req) {
+            this.req = req;
+            req.headers && (this.headers = req.headers);
+            req.method && (this.method = req.method);
+            req.url && (this.url = req.url);
+            this.httpVersionMajor = req.httpVersionMajor;
+        }
+        options.url && (this.url = options.url);
+        options.method && (this.method = options.method);
         options.ip && (__classPrivateFieldSet(this, _ip, options.ip));
-        options.req && (this.req = options.req);
         options.body === undefined || (this.body = options.body);
         options.proxyIpHeader && (this.proxyIpHeader = options.proxyIpHeader);
         options.httpVersionMajor && (this.httpVersionMajor = options.httpVersionMajor);
         options.trustXRealIp === undefined || (this.trustXRealIp = options.trustXRealIp);
         options.subdomainOffset === undefined || (this.subdomainOffset = options.subdomainOffset);
-        options.headers && (this.headers = { ...options.headers });
+        options.headers && (this.headers = options.headers);
+        this.originalUrl = this.url;
     }
     get headers() {
         return __classPrivateFieldGet(this, _headers);

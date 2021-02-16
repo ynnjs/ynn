@@ -9,9 +9,16 @@
  ******************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Header = void 0;
-const method_interceptor_1 = require("@ynn/method-interceptor");
-const interceptors_1 = require("../interceptors");
 const util_1 = require("./util");
+async function responseInterceptor(metadata, response, ctx) {
+    metadata.parameters.headers.forEach(pair => {
+        ctx.set(...pair);
+    });
+    return response;
+}
+async function requestAndParameterInterceptor(metadata, ctx) {
+    return util_1.executePipes(metadata.parameters.pipes, metadata.parameters.property ? ctx.get(metadata.parameters.property) : ctx.headers, ctx);
+}
 function Header(...args) {
     const [propertyOrPipeOrHeaders, pipeOrValue] = args;
     const t1 = typeof propertyOrPipeOrHeaders;
@@ -20,7 +27,7 @@ function Header(...args) {
      * Method decorator for action method.
      * Setting header(s) to the response data
      */
-    if ((t1 === 'string' && t2 === 'string') || (propertyOrPipeOrHeaders && t1 === 'object')) {
+    if ((t1 === 'string' && t2 === 'string') || (args.length === 1 && t1 !== 'function' && t1 !== 'string')) {
         const headers = [];
         if (t1 === 'string') {
             headers.push([propertyOrPipeOrHeaders, pipeOrValue]);
@@ -30,11 +37,11 @@ function Header(...args) {
                 headers.push([key, propertyOrPipeOrHeaders[key]]);
             });
         }
-        return method_interceptor_1.createDecoratorAfter(interceptors_1.interceptorAfterHeader, { headers });
+        return util_1.createResponseDecorator(responseInterceptor, { headers });
     }
-    return util_1.createGeneralBeforeAndParameterActionDecorator({
-        interceptorParameter: interceptors_1.interceptorParameterHeader,
-        interceptorBefore: interceptors_1.interceptorBeforeHeader
+    return util_1.createGeneralDecorator({
+        parameterInterceptor: requestAndParameterInterceptor,
+        requestInterceptor: requestAndParameterInterceptor
     }, ...args);
 }
 exports.Header = Header;

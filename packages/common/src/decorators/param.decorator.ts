@@ -7,14 +7,29 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interface/pipe.interface';
-import { createActionDecorator } from './util';
+import { Context } from '@ynn/waka';
+import { Pipe, CommonRequestMetadata, CommonParameterMetadata } from '../interfaces';
+import { createGeneralDecorator, executePipes } from './util';
 
-export function Param(): ParameterDecorator & MethodDecorator;
+async function requestAndParameterInterceptor(
+    metadata: CommonRequestMetadata | CommonParameterMetadata,
+    ctx: Context
+): Promise<unknown> {
+    return executePipes(
+        metadata.parameters.pipes,
+        ctx,
+        // metadata.parameters.property ? ctx.params[ metadata.parameters.property ] : ctx.params,
+        ctx
+    );
+}
+
 export function Param( property: string ): ParameterDecorator;
-export function Param( pipe: Pipe ): ParameterDecorator & MethodDecorator;
-export function Param( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export function Param( ...pipe: Pipe[] ): ParameterDecorator & MethodDecorator;
+export function Param( property: string, ...pipe: Pipe[] ): ParameterDecorator & MethodDecorator;
 
-export function Param( ...args: [ ( string | Pipe )?, Pipe ] ): ParameterDecorator & MethodDecorator {
-    return createActionDecorator( 'param', ...args );
+export function Param( ...args: [ ( string | Pipe )?, ...Pipe[] ] ): ParameterDecorator & MethodDecorator {
+    return createGeneralDecorator( {
+        parameterInterceptor : requestAndParameterInterceptor,
+        requestInterceptor : requestAndParameterInterceptor
+    }, ...args );
 }

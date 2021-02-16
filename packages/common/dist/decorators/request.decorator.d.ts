@@ -6,11 +6,7 @@
  * Time: 11/17/2020
  * Description:
  ******************************************************************/
-import Pipe from '../interfaces/pipe.interface';
-/**
- * @returns the parameter decorator or the method decorator
- */
-export declare function Request(): ParameterDecorator & MethodDecorator;
+import { Pipe } from '../interfaces';
 /**
  * @returns the parameter decorator
  */
@@ -18,8 +14,8 @@ export declare function Request(property: string): ParameterDecorator;
 /**
  * @returns the parameter decorator or the method decorator
  */
-export declare function Request(pipe: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Request(...pipes: Pipe[]): ParameterDecorator & MethodDecorator;
 /**
  * @returns the parameter decorator or the method decorator
  */
-export declare function Request(property: string, pipe: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Request(property: string, ...pipes: Pipe[]): ParameterDecorator & MethodDecorator;

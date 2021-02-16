@@ -10,7 +10,7 @@
 import { Context } from '@ynn/waka';
 // import { ActionMetadata } from './metadata.interface';
 
-export interface Pipe {
+export interface Pipe<T = unknown, R = unknown> {
     // ( value: unknown, ctx: Context, metadata: ActionMetadata ): unknown;
-    ( value: unknown, ctx: Context ): unknown;
+    ( value: T, ctx: Context ): R;
 }

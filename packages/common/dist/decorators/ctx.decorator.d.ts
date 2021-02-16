@@ -6,8 +6,7 @@
  * Time: 12/03/2020
  * Description:
  ******************************************************************/
-import Pipe from '../interfaces/pipe.interface';
-export declare function Ctx(): ParameterDecorator;
+import { Pipe } from '../interfaces';
+export declare function Ctx(...pipes: Pipe[]): MethodDecorator & ParameterDecorator;
 export declare function Ctx(property: string): ParameterDecorator;
-export declare function Ctx(pipe: Pipe): MethodDecorator & ParameterDecorator;
-export declare function Ctx(property: string, pipe: Pipe): MethodDecorator & ParameterDecorator;
+export declare function Ctx(property: string, ...pipe: Pipe[]): MethodDecorator & ParameterDecorator;

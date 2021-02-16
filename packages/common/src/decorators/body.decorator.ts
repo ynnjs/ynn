@@ -10,7 +10,7 @@
 import parser from '@ynn/body';
 import { Context } from '@ynn/waka';
 import { Pipe, CommonRequestMetadata, CommonParameterMetadata } from '../interfaces';
-import { createGeneralDecorator } from './util';
+import { createGeneralDecorator, executePipes } from './util';
 
 /**
  * function for interceptor before and interceptor parameter
@@ -20,7 +20,10 @@ import { createGeneralDecorator } from './util';
  * @param metadata
  * @param ctx
  */
-export async function requestAndParameterInterceptor( metadata: CommonRequestMetadata | CommonParameterMetadata, ctx: Context ): Promise<unknown> {
+async function requestAndParameterInterceptor(
+    metadata: CommonRequestMetadata | CommonParameterMetadata,
+    ctx: Context
+): Promise<unknown> {
 
     /**
      * don't parse the body multiple times if it has already been parsed
@@ -28,21 +31,17 @@ export async function requestAndParameterInterceptor( metadata: CommonRequestMet
     if( ctx.request.body === undefined ) ctx.request.body = await parser( ctx );
 
     const body = ctx.request.body;
-    const { property, pipes } = metadata.parameters;
+    const { property } = metadata.parameters;
 
-    let res: unknown;
+    let value: unknown;
 
     if( property ) {
         try {
-            res = ( body as any )[ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
-        } catch( e: unknown ) { res = undefined }
-    } else res = body;
+            value = ( body as any )[ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
+        } catch( e: unknown ) { value = undefined }
+    } else value = body;
 
-    for( const pipe of pipes ) {
-        res = await pipe( res, ctx ); // eslint-disable-line no-await-in-loop
-    }
-
-    return res;
+    return executePipes( metadata.parameters.pipes, value, ctx );
 }
 
 /**
@@ -108,7 +107,6 @@ export function Body( property: string ): ParameterDecorator;
 export function Body( property: string, ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
 export function Body( ...args: [ ( string | Pipe )?, ...Pipe[] ] ): MethodDecorator & ParameterDecorator {
-
     return createGeneralDecorator( {
         parameterInterceptor : requestAndParameterInterceptor,
         requestInterceptor : requestAndParameterInterceptor

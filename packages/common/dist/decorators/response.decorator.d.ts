@@ -6,5 +6,5 @@
  * Time: 11/17/2020
  * Description:
  ******************************************************************/
-import Pipe from '../interfaces/pipe.interface';
-export declare function Response(pipe: Pipe): MethodDecorator | ClassDecorator;
+import { Pipe } from '../interfaces';
+export declare function Response(data: unknown, ...pipes: Pipe[]): MethodDecorator & ClassDecorator;

@@ -10,7 +10,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Request = void 0;
 const util_1 = require("./util");
+async function requestAndParameterInterceptor(metadata, ctx) {
+    return util_1.executePipes(metadata.parameters.pipes, metadata.parameters.property ? ctx.request[metadata.parameters.property] : ctx.request, ctx);
+}
 function Request(...args) {
-    return util_1.createActionDecorator('request', ...args);
+    return util_1.createGeneralDecorator({
+        parameterInterceptor: requestAndParameterInterceptor,
+        requestInterceptor: requestAndParameterInterceptor
+    }, ...args);
 }
 exports.Request = Request;

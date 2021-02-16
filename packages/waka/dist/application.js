@@ -20,17 +20,21 @@ var _setup, _setupRouter, _setupControllers;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const path_1 = __importDefault(require("path"));
+const events_1 = __importDefault(require("events"));
+const http_1 = __importDefault(require("http"));
 const is_1 = __importDefault(require("@lvchengbin/is"));
 const method_interceptor_1 = require("@ynn/method-interceptor");
 const context_1 = __importDefault(require("./context"));
 const action_1 = require("./action");
 const router_1 = __importDefault(require("./router"));
 const cargs_1 = __importDefault(require("./cargs"));
+const respond_1 = __importDefault(require("./util/respond"));
 const CWD = process.cwd();
 const DEFAULT_CONTROLLER = 'index';
 const DEFAULT_ACTION = 'index';
-class Application {
+class Application extends events_1.default {
     constructor(options = {}) {
+        super();
         /**
          * require.main is undefined is such as interactive mode
          */
@@ -74,20 +78,20 @@ class Application {
                     const actionInfos = action_1.scan(Controller.prototype);
                     Object.keys(actionInfos).forEach((actionName) => {
                         const info = actionInfos[actionName];
-                        const { descriptor } = info;
+                        const { descriptor, methodName } = info;
                         if (!actions[controllerName]) {
                             actions[controllerName] = {};
                         }
                         const before = method_interceptor_1.createInterceptorBefore(descriptor);
                         const after = method_interceptor_1.createInterceptorAfter(descriptor);
                         const exception = method_interceptor_1.createInterceptorException(descriptor);
-                        const parameter = method_interceptor_1.createInterceptorParameter(info.proto, info.methodName);
+                        const parameter = method_interceptor_1.createInterceptorParameter(info.proto, methodName);
                         const executor = async (context) => {
                             try {
                                 await before(context);
                                 const controller = new Controller(context);
                                 const params = await parameter(context);
-                                const response = controller[actionName](...params);
+                                const response = controller[methodName](...params);
                                 return await after(response, context);
                             }
                             catch (e) {
@@ -109,6 +113,11 @@ class Application {
     }
     parseCargs(cargs) {
         const options = {};
+        if ('port' in cargs) {
+            if (!is_1.default.integer(cargs.port))
+                throw new TypeError('--port must be a integer');
+            options.port = parseInt(cargs.port);
+        }
         // if( 'debugging' in cargs ) {
         //     options.debuggings = is.generalizedTrue( cargs.debugging );
         // }
@@ -180,6 +189,21 @@ class Application {
             }
         }
         return ctx;
+    }
+    listen(...args) {
+        const server = http_1.default.createServer(async (req, res) => {
+            const ctx = await this.handle({ request: { req }, response: { res }, app: this });
+            respond_1.default(ctx, req, res);
+        });
+        server.listen(...args);
+        const address = server.address();
+        if (address && typeof address !== 'string') {
+            this.logger.log(`Server is running on port ${address.port}.`);
+        }
+        else {
+            this.logger.log(`Server is running on ${address}.`);
+        }
+        return (this.server = server);
     }
 }
 exports.default = Application;

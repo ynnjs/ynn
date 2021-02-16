@@ -16,31 +16,36 @@ import httpAssert from 'http-assert';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
 import { Headers } from './interfaces';
+import Application from './application';
 // import Cookies, { SetOption as CookieOptions } from 'cookies';
 
 export interface ContextOptions {
     request: Omit<RequestOptions, 'ctx'>;
     response?: Omit<ResponseOptions, 'ctx'>;
-    app?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    app: Application;
 }
 
 export default class Context {
 
-    app?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    app: Application;
     req?: IncomingMessage;
     res?: ServerResponse;
 
     request: Request;
     response: Response;
 
+    params: Record<string, string> = {};
+    matches: [ string | undefined ][] = [];
+
     assert = httpAssert;
 
     constructor( options: ContextOptions ) {
-        options.app && ( this.app = options.app );
+        this.app = options.app;
         this.request = new Request( { ...options.request, ctx : this } );
         this.response = new Response( { ...( options.response ?? {} ), ctx : this } );
         this.request.req && ( this.req = this.request.req );
         this.response.res && ( this.res = this.response.res );
+
     }
 
     /**

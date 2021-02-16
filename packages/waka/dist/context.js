@@ -17,6 +17,8 @@ const request_1 = require("./request");
 const response_1 = require("./response");
 class Context {
     constructor(options) {
+        this.params = {};
+        this.matches = [];
         this.assert = http_assert_1.default;
         options.app && (this.app = options.app);
         this.request = new request_1.Request({ ...options.request, ctx: this });

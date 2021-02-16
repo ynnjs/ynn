@@ -10,7 +10,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Req = void 0;
 const util_1 = require("./util");
-function Req(...args) {
-    return util_1.createActionDecorator('req', ...args);
+async function requestAndParameterInterceptor(metadata, ctx) {
+    return util_1.executePipes(metadata.parameters.pipes, ctx.request.req, ctx);
+}
+/**
+ * @returns the parameter decorator or the method decorator
+ */
+function Req(...pipes) {
+    const parameters = { pipes };
+    return util_1.createDecorator({
+        parameterInterceptor: requestAndParameterInterceptor,
+        requestInterceptor: requestAndParameterInterceptor,
+        parameters
+    });
 }
 exports.Req = Req;

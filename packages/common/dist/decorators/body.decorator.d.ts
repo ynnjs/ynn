@@ -34,7 +34,7 @@ import { Pipe } from '../interfaces';
  *
  * @returns the parameter decorator or the method decorator.
  */
-export declare function Body(pips?: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Body(...pipes: Pipe[]): ParameterDecorator & MethodDecorator;
 /**
  * Function for generating an action parameter decorator.
  * The request stream will be parsed and the entire `body` object will be extracted and be bound to ctx as ctx.body.
@@ -65,4 +65,4 @@ export declare function Body(property: string): ParameterDecorator;
  *
  * @returns the parameter decorator or the method decorator.
  */
-export declare function Body(property: string, pipe: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Body(property: string, ...pipes: Pipe[]): ParameterDecorator & MethodDecorator;

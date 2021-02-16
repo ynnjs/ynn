@@ -14,8 +14,8 @@ export declare function Query(property: string): ParameterDecorator;
 /**
  * @returns the parameter decorator or the method decorator
  */
-export declare function Query(pipe?: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Query(...pipes: Pipe[]): ParameterDecorator & MethodDecorator;
 /**
  * @returns the parameter decorator or the method decorator
  */
-export declare function Query(property: string, pipe: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Query(property: string, ...pipes: Pipe[]): ParameterDecorator & MethodDecorator;

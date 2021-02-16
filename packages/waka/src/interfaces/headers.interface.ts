@@ -7,6 +7,6 @@
  * Description:
  ******************************************************************/
 
-export interface Headers {
-    [ key: string ]: string | undefined;
-}
+import { IncomingHttpHeaders } from 'http';
+
+export type Headers = IncomingHttpHeaders;

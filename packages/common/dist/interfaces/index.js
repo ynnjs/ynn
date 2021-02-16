@@ -19,4 +19,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./pipe.interface"), exports);
-__exportStar(require("./context.interface"), exports);
+__exportStar(require("./metadata.interface"), exports);
+__exportStar(require("./logger.interface"), exports);

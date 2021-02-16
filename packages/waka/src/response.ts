@@ -12,7 +12,7 @@ import assert from 'assert';
 import Stream from 'stream';
 import { Socket } from 'net';
 import { extname } from 'path';
-import { ServerResponse } from 'http';
+import { ServerResponse, OutgoingHttpHeaders } from 'http';
 import { is } from 'type-is';
 import statuses from 'statuses';
 import encodeurl from 'encodeurl';
@@ -21,19 +21,18 @@ import getType from 'cache-content-type';
 import contentDisposition, { Options as ContentDispositionOptions } from 'content-disposition';
 import { Valueof } from '@ynn/utility-types';
 import Context from './context';
-import { Headers } from './interfaces';
 
 export interface ResponseOptions {
     ctx: Context;
     res?: ServerResponse;
-    headers?: Headers;
+    headers?: OutgoingHttpHeaders;
     statusCode?: number;
     statusMessage?: string;
 }
 
 export class Response {
 
-    #headers: Map<keyof Headers, Valueof<Headers>>= new Map();
+    #headers: Map<string, Valueof<OutgoingHttpHeaders>>= new Map();
     #body: unknown = null;
 
     ctx: Context;
@@ -46,8 +45,8 @@ export class Response {
     EXPLICIT_NULL_BODY = false;
 
     constructor( options: Readonly<ResponseOptions> ) {
+        const { res } = options;
         this.ctx = options.ctx;
-        options.res && ( this.res = options.res );
         options.statusCode && ( this.statusCode = options.statusCode );
 
         const { headers } = options;
@@ -57,6 +56,14 @@ export class Response {
         } );
 
         this.statusMessage = options.statusMessage === undefined ? ( statuses.message[ this.statusCode ] ?? '' ) : options.statusMessage;
+
+        if( res ) {
+            this.res = options.res;
+            options.headers ?? ( this.headers = res.getHeaders() );
+            options.statusCode ?? ( this.statusCode = res.statusCode );
+            options.statusMessage ?? ( this.message = res.statusMessage );
+        }
+
     }
 
     get socket(): Socket | null {
@@ -66,14 +73,14 @@ export class Response {
     /**
      * Get all set response headers
      */
-    get headers(): Headers {
+    get headers(): OutgoingHttpHeaders {
         return Object.fromEntries( this.#headers );
     }
 
     /**
      * Set response headers
      */
-    set headers( headers: Headers ) {
+    set headers( headers: OutgoingHttpHeaders ) {
         this.#headers.clear();
         Object.keys( headers ).forEach( ( name: string ) => {
             this.set( name, headers[ name ] );
@@ -170,7 +177,7 @@ export class Response {
      * Set Content-Length field to n
      */
     set length( n: number | undefined ) {
-        this.set( 'Content-Length', n?.toString() ?? undefined );
+        this.set( 'Content-Length', n );
     }
 
     /**
@@ -178,7 +185,7 @@ export class Response {
      */
     get length(): number | undefined {
         if( this.has( 'Content-Length' ) ) {
-            return parseInt( this.get( 'Content-Length' ), 10 ) || 0;
+            return parseInt( this.get( 'Content-Length' ) as string, 10 ) || 0;
         }
         const { body } = this;
         if( !body || body instanceof Stream ) return undefined;
@@ -245,7 +252,7 @@ export class Response {
      * Return the response mime type void of parameters such as "charset".
      */
     get type(): string {
-        return this.get( 'Content-Type' ).split( ';', 1 )[ 0 ] || '';
+        return ( this.get( 'Content-Type' ) as string ).split( ';', 1 )[ 0 ] || '';
     }
 
     /**
@@ -261,7 +268,7 @@ export class Response {
      */
     get lastModified(): Date | undefined {
         const date = this.get( 'Last-Modified' );
-        if( date ) return new Date( date );
+        if( date ) return new Date( date as string );
         return undefined;
     }
 
@@ -277,7 +284,7 @@ export class Response {
      * Get the ETag of a response
      */
     get etag(): string {
-        return this.get( 'ETag' );
+        return this.get( 'ETag' ) as string || '';
     }
 
     /**
@@ -291,8 +298,8 @@ export class Response {
     /**
      * Return response header.
      */
-    get( field: string ): string {
-        return this.#headers.get( field.toLowerCase() ) ?? '';
+    get( field: string ): Valueof<OutgoingHttpHeaders> {
+        return this.#headers.get( field.toLowerCase() );
     }
 
     /**
@@ -306,27 +313,30 @@ export class Response {
     /**
      * Set header `field` to `val` or pass an object of header fields
      */
-    set( field: string | Headers, val?: string | number | ( string | number )[] ): void {
+    set( field: string | OutgoingHttpHeaders, val?: Valueof<OutgoingHttpHeaders> ): void {
         if( this.headerSent ) return;
 
         if( arguments.length === 2 ) {
-
-            if( Array.isArray( val ) ) {
-                val = val.map( ( v: string | number ): string => typeof v === 'string' ? v : String( v ) );
-            } else if( typeof val !== 'string' ) val = String( val );
-
-            this.#headers.set( ( field as string ).toLowerCase(), val as string );
+            this.#headers.set( ( field as string ).toLowerCase(), val );
         } else {
-            for( const key in field as Headers ) this.set( key, field[ key ] );
+            for( const key in field as OutgoingHttpHeaders ) this.set( key, field[ key ] );
         }
     }
 
     /**
      * Append additional header `field` with value `val`.
      */
-    append( field: string, val: string | number | ( string | number )[] ): void {
+    append( field: string, val: NonNullable<Valueof<OutgoingHttpHeaders>> ): void {
         const prev = this.get( field );
-        if( prev ) val = Array.isArray( prev ) ? prev.concat( val ) : [ prev ].concat( String( val ) );
+        if( prev !== undefined ) {
+            if( Array.isArray( prev ) ) {
+                val = prev.concat( String( val ) );
+            } else if( typeof prev === 'number' ) {
+                val = [ String( prev ) ].concat( String( val ) );
+            } else {
+                val = [ prev ].concat( String( val ) );
+            }
+        }
         this.set( field, val );
     }
 
@@ -336,6 +346,10 @@ export class Response {
     remove( field: string ): void {
         if( this.headerSent ) return;
         this.#headers.delete( field.toLowerCase() );
+    }
+
+    getHeaderNames(): string[] {
+        return Array.from( this.#headers.keys() );
     }
 
     /**

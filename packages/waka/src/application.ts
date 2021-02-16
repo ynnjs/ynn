@@ -9,15 +9,20 @@
 
 import 'reflect-metadata';
 import path from 'path';
+import Events from 'events';
+import http, { Server } from 'http';
 import { Argv } from 'yargs';
 import is from '@lvchengbin/is';
+import { Logger } from '@ynn/common';
 import { VariadicClass } from '@ynn/utility-types';
 import { createInterceptorBefore, createInterceptorAfter, createInterceptorParameter, createInterceptorException } from '@ynn/method-interceptor';
 import Context, { ContextOptions } from './context';
 import { scan, ActionInfo } from './action';
 import Router, { RouterRule, RouteMap } from './router';
-import { Controller } from './interfaces';
 import cargs from './cargs';
+import loggerProxy from './logger-proxy';
+import respond from './util/respond';
+import Debug, { DebugOptions } from './debug';
 
 const CWD = process.cwd();
 
@@ -26,19 +31,31 @@ const DEFAULT_ACTION = 'index';
 
 export interface Options {
     root?: string;
-    controllers?: Record<string, VariadicClass<[ Context ], Controller>>;
+    controllers?: Record<string, VariadicClass>;
     providers?: Record<string, unknown>;
     routers?: RouterRule[] | ( ( this: Application, router: Router, app: Application ) => void );
+    logger?: Logger;
+    debug?: Logger;
+    debugOptions?: DebugOptions;
+    debugging?: boolean;
+    proxy?: boolean;
+    maxIpsCount?: number;
 }
 
-export default class Application {
+export default class Application extends Events {
     // static cargs = cargs;
 
     options!: Readonly<Options>;
-
+    debug!: Logger;
+    logger!: Logger;
     router!: Router;
+    proxy!: boolean;
+    controllers!: Record<string, VariadicClass<[ Context ]>>;
+    debugging: boolean | string[] = true;
+    logging: boolean | string[] = false;
+    maxIpsCount = 0;
 
-    controllers: Record<string, VariadicClass<[ Context ]>>;
+    server?: Server;
 
     /**
      * require.main is undefined is such as interactive mode
@@ -53,6 +70,10 @@ export default class Application {
     protected parseCargs( cargs: Argv[ 'argv' ] ): Partial<Options> { // eslint-disable-line class-methods-use-this
 
         const options: Partial<Options> = {};
+
+        if( 'port' in cargs ) {
+            if( !is.integer( cargs.port ) ) throw new TypeError( '--port must be a integer' );
+        }
 
         // if( 'debugging' in cargs ) {
         //     options.debuggings = is.generalizedTrue( cargs.debugging );
@@ -78,17 +99,38 @@ export default class Application {
     }
 
     constructor( options: Readonly<Options> = {} ) {
+        super();
         this.#setup( options );
-        this.#setupRouter();
         // this.#setupModules();
-        this.#setupControllers();
         // this.#setupProviders();
         // this.modules = { ...options.modules };
-        this.controllers = { ...options.controllers };
+        // this.controllers = { ...options.controllers };
     }
 
     #setup = ( options: Readonly<Options> ): void => {
+        this.#setupOptions( options );
+        this.#setupDebug();
+        this.#setupLogger();
+        this.#setupRouter();
+        this.#setupControllers();
+        this.#setupActions();
+    };
+
+    #setupOptions = ( options: Readonly<Options> ): void => {
         this.options = { ...options, ...this.parseCargs( cargs ) };
+    };
+
+    #setupDebug = (): void => {
+        const { options } = this;
+
+        this.debug = options.debug ?? new Debug( {
+            levels : options.debugging,
+            ...options.debugOptions
+        } );
+    };
+
+    #setupLogger = (): void => {
+        this.logger = loggerProxy( this );
     };
 
     #setupRouter = (): void => {
@@ -118,9 +160,12 @@ export default class Application {
     };
 
     #setupControllers = (): void => {
+        this.controllers = { ...this.options.controllers };
+    };
 
-        const { controllers } = this.options;
-        const { actions } = this;
+    #setupActions = (): void => {
+
+        const { controllers, actions } = this;
 
         controllers && Object.keys( controllers ).forEach( ( controllerName: string ): void => {
 
@@ -132,7 +177,7 @@ export default class Application {
 
                 Object.keys( actionInfos ).forEach( ( actionName: string ) => {
                     const info = actionInfos[ actionName ];
-                    const { descriptor } = info;
+                    const { descriptor, methodName } = info;
 
                     if( !actions[ controllerName ] ) {
                         actions[ controllerName ] = {};
@@ -141,14 +186,14 @@ export default class Application {
                     const before = createInterceptorBefore<[ Context ]>( descriptor );
                     const after = createInterceptorAfter<[ Context ]>( descriptor );
                     const exception = createInterceptorException<[ Context ]>( descriptor );
-                    const parameter = createInterceptorParameter<[ Context ]>( info.proto, info.methodName );
+                    const parameter = createInterceptorParameter<[ Context ]>( info.proto, methodName );
 
                     const executor = async ( context: Context ): Promise<unknown> => {
                         try {
                             await before( context );
                             const controller = new Controller( context );
                             const params = await parameter( context );
-                            const response = controller[ actionName ]( ...params );
+                            const response = controller[ methodName ]( ...params );
                             return await after( response, context );
                         } catch( e: unknown ) {
                             return exception( e, context );
@@ -200,7 +245,7 @@ export default class Application {
             }
 
             if( result.module ) {
-                console.log( result );
+                console.log( '~~~~~~~~~~~~~~~', result );
             } else {
                 result.controller ??= DEFAULT_CONTROLLER;
                 result.action ??= DEFAULT_ACTION;
@@ -218,5 +263,31 @@ export default class Application {
         }
 
         return ctx;
+    }
+
+    listen( ...args: Parameters<Server[ 'listen' ]> ): Server {
+
+        const server = http.createServer( async ( req, res ) => {
+            const ctx = await this.handle( { request : { req }, response : { res }, app : this } );
+            respond( ctx, req, res );
+        } );
+
+        server.listen( ...args );
+
+        const address = server.address();
+
+        if( address && typeof address !== 'string' ) {
+            this.logger.log( `Server is running on port ${ address.port }.` );
+        } else {
+            this.logger.log( `Server is running on ${address}.` );
+        }
+
+        return ( this.server = server );
+    }
+
+    toJSON(): Record<string, unknown> {
+        return {
+            controllers : this.controllers
+        };
     }
 }

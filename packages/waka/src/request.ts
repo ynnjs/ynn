@@ -11,23 +11,22 @@ import util from 'util';
 import qs, { ParsedUrlQuery } from 'querystring';
 import { Socket, isIP } from 'net';
 import { TLSSocket } from 'tls';
-import { IncomingMessage } from 'http';
+import { IncomingMessage, IncomingHttpHeaders } from 'http';
 import { format as stringify, UrlWithStringQuery } from 'url';
 import contentType from 'content-type';
 import { is } from 'type-is';
 import accepts, { Accepts } from 'accepts';
 import Context from './context';
-import { Headers } from './interfaces';
 import { parseurl } from './util/parseurl';
 
 export interface RequestOptions {
     ctx: Context;
-    url: string;
-    method: string;
+    url?: string;
+    method?: string;
     req?: IncomingMessage;
     ip?: string;
     body?: unknown;
-    headers?: Headers;
+    headers?: IncomingHttpHeaders;
     trustXRealIp?: boolean;
     proxyIpHeader?: string;
     subdomainOffset?: number;
@@ -38,15 +37,15 @@ export class Request {
 
     #ip?: string;
     #accept?: Accepts;
-    #headers: Headers = {};
+    #headers: IncomingHttpHeaders = {};
     #parsedurl: UrlWithStringQuery | null = null;
     #rawParsedurl: string | null = null;
     #memoizedURL: URL | null = null;
     #querycache: Record<string, ParsedUrlQuery> = {};
 
     ctx: Context;
-    url: string;
-    method: string;
+    url = '/';
+    method = 'GET';
     originalUrl: string;
     body: unknown = null;
     httpVersionMajor = 1;
@@ -57,18 +56,28 @@ export class Request {
     req?: IncomingMessage;
 
     constructor( options: Readonly<RequestOptions> ) {
+        const { req } = options;
         this.ctx = options.ctx;
-        this.url = options.url;
-        this.originalUrl = this.url;
-        this.method = options.method;
+
+        if( req ) {
+            this.req = req;
+            req.headers && ( this.headers = req.headers );
+            req.method && ( this.method = req.method );
+            req.url && ( this.url = req.url );
+            this.httpVersionMajor = req.httpVersionMajor;
+        }
+
+        options.url && ( this.url = options.url );
+        options.method && ( this.method = options.method );
         options.ip && ( this.#ip = options.ip );
-        options.req && ( this.req = options.req );
         options.body === undefined || ( this.body = options.body );
         options.proxyIpHeader && ( this.proxyIpHeader = options.proxyIpHeader );
         options.httpVersionMajor && ( this.httpVersionMajor = options.httpVersionMajor );
         options.trustXRealIp === undefined || ( this.trustXRealIp = options.trustXRealIp );
         options.subdomainOffset === undefined || ( this.subdomainOffset = options.subdomainOffset );
-        options.headers && ( this.headers = { ...options.headers } );
+        options.headers && ( this.headers = options.headers );
+
+        this.originalUrl = this.url;
     }
 
     #parseurl = (): UrlWithStringQuery => {
@@ -80,11 +89,11 @@ export class Request {
         return this.#parsedurl;
     };
 
-    get headers(): Headers {
+    get headers(): IncomingHttpHeaders {
         return this.#headers;
     }
 
-    set headers( headers: Headers ) {
+    set headers( headers: IncomingHttpHeaders ) {
         this.#headers = {};
 
         /**
@@ -316,9 +325,9 @@ export class Request {
         switch( field = field.toLowerCase() ) {
             case 'referer' :
             case 'referrer' :
-                return this.headers.referrer ?? this.headers.referer ?? '';
+                return this.headers.referrer as string ?? this.headers.referer ?? '';
             default :
-                return this.headers[ field ] ?? '';
+                return this.headers[ field ] as string ?? '';
         }
     }
 

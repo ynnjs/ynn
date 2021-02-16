@@ -7,10 +7,20 @@
  * Description:
  ******************************************************************/
 
-import { saveMetadataParameter, saveMetadataBefore } from '@ynn/method-interceptor';
-import { Pipe } from '../interfaces';
-import { interceptorBeforeQuery, interceptorParameterQuery } from '../interceptors';
-import { createGeneralMetadataParameters } from './util';
+import { Context } from '@ynn/waka';
+import { Pipe, CommonRequestMetadata, CommonParameterMetadata } from '../interfaces';
+import { createGeneralDecorator, executePipes } from './util';
+
+async function requestAndParameterInterceptor(
+    metadata: CommonRequestMetadata | CommonParameterMetadata,
+    ctx: Context
+): Promise<unknown> {
+    return executePipes(
+        metadata.parameters.pipes,
+        metadata.parameters.property ? ctx.query[ metadata.parameters.property ] : ctx.query,
+        ctx
+    );
+}
 
 /**
  * @returns the parameter decorator
@@ -20,22 +30,16 @@ export function Query( property: string ): ParameterDecorator;
 /**
  * @returns the parameter decorator or the method decorator
  */
-export function Query( pipe?: Pipe ): ParameterDecorator & MethodDecorator;
+export function Query( ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
 /**
  * @returns the parameter decorator or the method decorator
  */
-export function Query( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
+export function Query( property: string, ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
-export function Query( ...args: [ ( string | Pipe )?, Pipe? ] ): ParameterDecorator & MethodDecorator {
-
-    const parameters = createGeneralMetadataParameters( ...args );
-
-    return ( target, key: string | symbol, indexOrDescriptor: PropertyDescriptor | number ): void => {
-        if( typeof indexOrDescriptor === 'number' ) {
-            saveMetadataParameter( target, key, indexOrDescriptor, interceptorParameterQuery, { parameters } );
-        } else {
-            saveMetadataBefore( indexOrDescriptor, interceptorBeforeQuery, { parameters } );
-        }
-    };
+export function Query( ...args: [ ( string | Pipe )?, ...Pipe[] ] ): ParameterDecorator & MethodDecorator {
+    return createGeneralDecorator( {
+        parameterInterceptor : requestAndParameterInterceptor,
+        requestInterceptor : requestAndParameterInterceptor
+    }, ...args );
 }

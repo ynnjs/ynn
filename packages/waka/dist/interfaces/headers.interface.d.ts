@@ -6,6 +6,6 @@
  * Time: 02/06/2021
  * Description:
  ******************************************************************/
-export interface Headers {
-    [key: string]: string | undefined;
-}
+/// <reference types="node" />
+import { IncomingHttpHeaders } from 'http';
+export declare type Headers = IncomingHttpHeaders;

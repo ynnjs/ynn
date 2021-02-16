@@ -43,14 +43,20 @@ class Response {
         this.statusCode = 200;
         this.EXPLICIT_STATUS = false;
         this.EXPLICIT_NULL_BODY = false;
+        const { res } = options;
         this.ctx = options.ctx;
-        options.res && (this.res = options.res);
         options.statusCode && (this.statusCode = options.statusCode);
         const { headers } = options;
         headers && Object.keys(headers).forEach((name) => {
             this.set(name, headers[name]);
         });
         this.statusMessage = options.statusMessage === undefined ? (statuses_1.default.message[this.statusCode] ?? '') : options.statusMessage;
+        if (res) {
+            this.res = options.res;
+            options.headers ?? (this.headers = res.getHeaders());
+            options.statusCode ?? (this.statusCode = res.statusCode);
+            options.statusMessage ?? (this.message = res.statusMessage);
+        }
     }
     get socket() {
         return this.res?.socket ?? null;
@@ -257,7 +263,7 @@ class Response {
      * Get the ETag of a response
      */
     get etag() {
-        return this.get('ETag');
+        return this.get('ETag') || '';
     }
     /**
      * Check whether the response is one of the listed types.
@@ -270,7 +276,7 @@ class Response {
      * Return response header.
      */
     get(field) {
-        return __classPrivateFieldGet(this, _headers).get(field.toLowerCase()) ?? '';
+        return __classPrivateFieldGet(this, _headers).get(field.toLowerCase());
     }
     /**
      * Returns true if the header identified by name is currently set in the outgoing headers.
@@ -286,11 +292,6 @@ class Response {
         if (this.headerSent)
             return;
         if (arguments.length === 2) {
-            if (Array.isArray(val)) {
-                val = val.map((v) => typeof v === 'string' ? v : String(v));
-            }
-            else if (typeof val !== 'string')
-                val = String(val);
             __classPrivateFieldGet(this, _headers).set(field.toLowerCase(), val);
         }
         else {
@@ -303,8 +304,17 @@ class Response {
      */
     append(field, val) {
         const prev = this.get(field);
-        if (prev)
-            val = Array.isArray(prev) ? prev.concat(val) : [prev].concat(String(val));
+        if (prev !== undefined) {
+            if (Array.isArray(prev)) {
+                val = prev.concat(String(val));
+            }
+            else if (typeof prev === 'number') {
+                val = [String(prev)].concat(String(val));
+            }
+            else {
+                val = [prev].concat(String(val));
+            }
+        }
         this.set(field, val);
     }
     /**
@@ -314,6 +324,9 @@ class Response {
         if (this.headerSent)
             return;
         __classPrivateFieldGet(this, _headers).delete(field.toLowerCase());
+    }
+    getHeaderNames() {
+        return Array.from(__classPrivateFieldGet(this, _headers).keys());
     }
     /**
      * Checks if the request if writable.

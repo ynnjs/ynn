@@ -7,30 +7,32 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interfaces/pipe.interface';
-import { createActionDecorator } from './util';
+import { Context } from '@ynn/waka';
+import { RequiredKeys } from '@ynn/utility-types';
+import { Pipe, RequestMetadata, ParameterMetadata } from '../interfaces';
+import { createDecorator, executePipes } from './util';
+
+interface ReqParameters {
+    pipes: Pipe[];
+}
+
+type Metadata = RequiredKeys<RequestMetadata<ReqParameters>, 'parameters'> | RequiredKeys<ParameterMetadata<ReqParameters>, 'parameters'>;
+
+async function requestAndParameterInterceptor( metadata: Metadata, ctx: Context ): Promise<unknown> {
+    return executePipes( metadata.parameters.pipes, ctx.request.req, ctx );
+}
 
 /**
  * @returns the parameter decorator or the method decorator
  */
-export function Req(): ParameterDecorator & MethodDecorator;
 
-/**
- * @returns the parameter decorator
- */
-export function Req( property: string ): ParameterDecorator;
+export function Req( ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator {
 
-/**
- * @returns the parameter decorator or the method decorator
- */
-export function Req( pipe: Pipe ): ParameterDecorator & MethodDecorator;
+    const parameters = { pipes };
 
-/**
- * @returns the parameter decorator or the method decorator
- */
-
-export function Req( property: string, pipe: Pipe ): ParameterDecorator & MethodDecorator;
-
-export function Req( ...args: [ ( string | Pipe )?, Pipe? ] ): ParameterDecorator & MethodDecorator {
-    return createActionDecorator( 'req', ...args );
+    return createDecorator( {
+        parameterInterceptor : requestAndParameterInterceptor,
+        requestInterceptor : requestAndParameterInterceptor,
+        parameters
+    } );
 }

@@ -6,20 +6,8 @@
  * Time: 11/17/2020
  * Description:
  ******************************************************************/
-import Pipe from '../interfaces/pipe.interface';
+import { Pipe } from '../interfaces';
 /**
  * @returns the parameter decorator or the method decorator
  */
-export declare function Req(): ParameterDecorator & MethodDecorator;
-/**
- * @returns the parameter decorator
- */
-export declare function Req(property: string): ParameterDecorator;
-/**
- * @returns the parameter decorator or the method decorator
- */
-export declare function Req(pipe: Pipe): ParameterDecorator & MethodDecorator;
-/**
- * @returns the parameter decorator or the method decorator
- */
-export declare function Req(property: string, pipe: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Req(...pipes: Pipe[]): ParameterDecorator & MethodDecorator;

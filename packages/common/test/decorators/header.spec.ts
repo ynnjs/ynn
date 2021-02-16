@@ -1,9 +1,9 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: test/before.spec.ts
+ * File: decorators/header.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/13/2021
+ * Time: 02/14/2021
  * Description:
  ******************************************************************/
 
@@ -11,7 +11,7 @@ import { Action, Context, Controller, Headers } from '@ynn/waka';
 import { createAppWithRequest } from '@ynn/testing-library';
 import { Header } from '../../src';
 
-describe( '@Body()', () => {
+describe( '@Header()', () => {
     describe( 'Parameter Decorator', () => {
         it( '', async () => {
 
@@ -65,6 +65,9 @@ describe( '@Body()', () => {
 
                 @Action()
                 @Header( 'X-Custom-Name', 'NewName' )
+                @Header( {
+                    'X-Response-Header' : 'X'
+                } )
                 index( @Header( 'X-Custom-Name' ) name: string ) {
                     fn1( name );
                     return res;
@@ -84,14 +87,13 @@ describe( '@Body()', () => {
                 }
             } );
 
-            console.log( ctx );
-
             expect( fn1 ).toHaveBeenCalled();
             expect( fn1 ).toHaveBeenCalledWith( 'Achilles' );
             expect( ctx.body ).toEqual( res );
             expect( ctx.response.headers ).toEqual( {
                 'content-type' : 'application/json; charset=utf-8',
-                'x-custom-name' : 'NewName'
+                'x-custom-name' : 'NewName',
+                'x-response-header' : 'X'
             } );
             expect( ctx.response.status ).toEqual( 200 );
             expect( ctx.response.message ).toEqual( 'OK' );

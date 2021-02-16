@@ -6,24 +6,30 @@
  * Time: 02/10/2021
  * Description:
  ******************************************************************/
+/// <reference types="node" />
 import 'reflect-metadata';
+import Events from 'events';
+import { Server } from 'http';
 import { Argv } from 'yargs';
+import { Logger } from '@ynn/common';
 import { VariadicClass } from '@ynn/utility-types';
 import Context, { ContextOptions } from './context';
 import { ActionInfo } from './action';
 import Router, { RouterRule } from './router';
-import { Controller } from './interfaces';
 export interface Options {
     root?: string;
-    controllers?: Record<string, VariadicClass<[Context], Controller>>;
+    controllers?: Record<string, VariadicClass>;
     providers?: Record<string, unknown>;
     routers?: RouterRule[] | ((this: Application, router: Router, app: Application) => void);
+    port?: number;
 }
-export default class Application {
+export default class Application extends Events {
     #private;
     options: Readonly<Options>;
+    debug?: Logger;
     router: Router;
     controllers: Record<string, VariadicClass<[Context]>>;
+    server?: Server;
     /**
      * require.main is undefined is such as interactive mode
      */
@@ -38,4 +44,5 @@ export default class Application {
     protected parseCargs(cargs: Argv['argv']): Partial<Options>;
     constructor(options?: Readonly<Options>);
     handle(context: ContextOptions | Context): Promise<Context>;
+    listen(...args: Parameters<Server['listen']>): Server;
 }

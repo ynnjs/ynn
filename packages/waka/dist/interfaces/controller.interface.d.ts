@@ -8,5 +8,5 @@
  ******************************************************************/
 import Context from '../context';
 export interface Controller {
-    ctx: Context;
+    ctx?: Context;
 }

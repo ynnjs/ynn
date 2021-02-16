@@ -7,6 +7,29 @@
  * Description:
  ******************************************************************/
 
-import Pipe from '../interfaces/pipe.interface';
+import { Context } from '@ynn/waka';
+import { Pipe, ResponseMetadata } from '../interfaces';
+import { createDecorator, executePipes } from './util';
 
-export function Response( pipe: Pipe ): MethodDecorator | ClassDecorator;
+interface ResponseParameters {
+    data: unknown;
+    pipes: Pipe[];
+};
+
+export function Response( data: unknown, ...pipes: Pipe[] ): MethodDecorator & ClassDecorator {
+
+    if( typeof data === 'function' ) {
+        pipes.unshift( data as Pipe );
+        data = undefined;
+    }
+
+    const parameters: ResponseParameters = { data, pipes };
+
+    return createDecorator( {
+        responseInterceptor : async ( metadata: ResponseMetadata, value: unknown, ctx: Context ) => {
+            const parameters = metadata.parameters as ResponseParameters;
+            return executePipes( parameters.pipes, parameters.data === undefined ? value : parameters.data, ctx );
+        },
+        parameters
+    } );
+}

@@ -6,8 +6,7 @@
  * Time: 11/16/2020
  * Description:
  ******************************************************************/
-import { KoaContext } from '@ynn/koa';
-import { ActionMetadata } from './metadata.interface';
-export interface Pipe {
-    (value: unknown, ctx: KoaContext, metadata: ActionMetadata): unknown;
+import { Context } from '@ynn/waka';
+export interface Pipe<T = unknown, R = unknown> {
+    (value: T, ctx: Context): R;
 }

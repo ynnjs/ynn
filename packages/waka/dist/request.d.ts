@@ -11,18 +11,17 @@ import util from 'util';
 import { ParsedUrlQuery } from 'querystring';
 import { Socket } from 'net';
 import { TLSSocket } from 'tls';
-import { IncomingMessage } from 'http';
+import { IncomingMessage, IncomingHttpHeaders } from 'http';
 import { Accepts } from 'accepts';
 import Context from './context';
-import { Headers } from './interfaces';
 export interface RequestOptions {
     ctx: Context;
-    url: string;
-    method: string;
+    url?: string;
+    method?: string;
     req?: IncomingMessage;
     ip?: string;
     body?: unknown;
-    headers?: Headers;
+    headers?: IncomingHttpHeaders;
     trustXRealIp?: boolean;
     proxyIpHeader?: string;
     subdomainOffset?: number;
@@ -41,8 +40,8 @@ export declare class Request {
     subdomainOffset: number;
     req?: IncomingMessage;
     constructor(options: Readonly<RequestOptions>);
-    get headers(): Headers;
-    set headers(headers: Headers);
+    get headers(): IncomingHttpHeaders;
+    set headers(headers: IncomingHttpHeaders);
     /**
      * Get origin of URL
      */

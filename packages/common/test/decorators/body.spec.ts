@@ -1,9 +1,9 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
  * File: decorators/body.spec.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 11/21/2020
+ * Time: 02/14/2021
  * Description:
  ******************************************************************/
 
@@ -25,7 +25,8 @@ describe( 'decorator/body', () => {
 
             const metadata = Reflect.getMetadata( KEY_BEFORE, descriptor.value );
 
-            console.log( metadata );
+            expect( metadata ).toBeInstanceOf( Array );
+            expect( metadata[ 0 ].interceptorType ).toEqual( 'before' );
         } );
     } );
 

@@ -9,27 +9,23 @@
 
 import { Headers, Context } from '@ynn/waka';
 import { Pipe, CommonRequestMetadata, CommonParameterMetadata, ResponseMetadata } from '../interfaces';
-import { createGeneralDecorator, createResponseDecorator } from './util';
+import { createGeneralDecorator, createResponseDecorator, executePipes } from './util';
 
 type HeaderPair = [ key: string, value: string | undefined | string[] ];
 
-async function responseInterceptor<T>( metadata: ResponseMetadata, response: T, ctx: Context ): T {
-    ( metadata.parameters.headers as HeaderPair[] ).forEach( pair => {
+async function responseInterceptor<T>( metadata: ResponseMetadata, response: T, ctx: Context ): Promise<T> {
+    ( metadata.parameters as { headers: HeaderPair[] } ).headers.forEach( pair => {
         ctx.set( ...pair );
     } );
     return response;
 }
 
 async function requestAndParameterInterceptor( metadata: CommonRequestMetadata | CommonParameterMetadata, ctx: Context ): Promise<unknown> {
-    const { property, pipes } = metadata.parameters;
-
-    let value: unknown = property ? ctx.get( property ) : ctx.headers;
-
-    for( const pipe of pipes ) {
-        value = await pipe( value, ctx ); // eslint-disable-line no-await-in-loop
-    }
-
-    return value;
+    return executePipes(
+        metadata.parameters.pipes,
+        metadata.parameters.property ? ctx.get( metadata.parameters.property ) : ctx.headers,
+        ctx
+    );
 }
 
 /**

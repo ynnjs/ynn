@@ -6,26 +6,11 @@
  * Time: 11/16/2020
  * Description:
  ******************************************************************/
-/**
- *
- * For example:
- *
- * ```typescript
- * @Status( 400 )
- * create() {}
- * ```
- *
- * @returns the method decorator
- */
-export declare function Status(statusCode: number): MethodDecorator;
-/**
- * For example:
- *
- * ```typescript
- * @Status( 400, 'Bad Request' )
- * create() {}
- * ```
- *
- * @returns the method decorator
- */
-export declare function Status(statusCode: number, message: string): MethodDecorator;
+import { Context } from '@ynn/waka';
+declare type Handler = (ctx: Context) => {
+    code: number;
+    message?: string;
+} | number | undefined | void;
+export declare function Status(handler: Handler): MethodDecorator;
+export declare function Status(code: number, message?: string): MethodDecorator;
+export {};

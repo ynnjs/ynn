@@ -9,14 +9,13 @@
 /// <reference types="node" />
 import util from 'util';
 import { Socket } from 'net';
-import { ServerResponse } from 'http';
+import { ServerResponse, OutgoingHttpHeaders } from 'http';
 import { Options as ContentDispositionOptions } from 'content-disposition';
 import Context from './context';
-import { Headers } from './interfaces';
 export interface ResponseOptions {
     ctx: Context;
     res?: ServerResponse;
-    headers?: Headers;
+    headers?: OutgoingHttpHeaders;
     statusCode?: number;
     statusMessage?: string;
 }
@@ -33,11 +32,11 @@ export declare class Response {
     /**
      * Get all set response headers
      */
-    get headers(): Headers;
+    get headers(): OutgoingHttpHeaders;
     /**
      * Set response headers
      */
-    set headers(headers: Headers);
+    set headers(headers: OutgoingHttpHeaders);
     /**
      * Get response status code
      */
@@ -118,7 +117,7 @@ export declare class Response {
     /**
      * Return response header.
      */
-    get(field: string): string;
+    get(field: string): number | string | string[] | undefined;
     /**
      * Returns true if the header identified by name is currently set in the outgoing headers.
      * The header name matching is case-insensitive.
@@ -127,15 +126,16 @@ export declare class Response {
     /**
      * Set header `field` to `val` or pass an object of header fields
      */
-    set(field: string | Headers, val?: string | number | (string | number)[]): void;
+    set(field: string | OutgoingHttpHeaders, val?: number | string | string[]): void;
     /**
      * Append additional header `field` with value `val`.
      */
-    append(field: string, val: string | number | (string | number)[]): void;
+    append(field: string, val: string | number | string[]): void;
     /**
      * Remove header `field`
      */
     remove(field: string): void;
+    getHeaderNames(): string[];
     /**
      * Checks if the request if writable.
      * Tests for the existence of the socket

@@ -9,18 +9,14 @@
  ******************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Query = void 0;
-const method_interceptor_1 = require("@ynn/method-interceptor");
-const interceptors_1 = require("../interceptors");
 const util_1 = require("./util");
+async function requestAndParameterInterceptor(metadata, ctx) {
+    return util_1.executePipes(metadata.parameters.pipes, metadata.parameters.property ? ctx.query[metadata.parameters.property] : ctx.query, ctx);
+}
 function Query(...args) {
-    const parameters = util_1.createGeneralMetadataParameters(...args);
-    return (target, key, indexOrDescriptor) => {
-        if (typeof indexOrDescriptor === 'number') {
-            method_interceptor_1.saveMetadataParameter(target, key, indexOrDescriptor, interceptors_1.interceptorParameterQuery, { parameters });
-        }
-        else {
-            method_interceptor_1.saveMetadataBefore(indexOrDescriptor, interceptors_1.interceptorBeforeQuery, { parameters });
-        }
-    };
+    return util_1.createGeneralDecorator({
+        parameterInterceptor: requestAndParameterInterceptor,
+        requestInterceptor: requestAndParameterInterceptor
+    }, ...args);
 }
 exports.Query = Query;

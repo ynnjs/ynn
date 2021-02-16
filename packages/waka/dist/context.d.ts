@@ -26,6 +26,8 @@ export default class Context {
     res?: ServerResponse;
     request: Request;
     response: Response;
+    params: Record<string, string>;
+    matches: [string | undefined][];
     assert: any;
     constructor(options: ContextOptions);
     /**

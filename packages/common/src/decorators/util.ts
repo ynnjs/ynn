@@ -7,6 +7,7 @@
  * Description:
  ******************************************************************/
 
+import { Context } from '@ynn/waka';
 import { VariadicFunction } from '@ynn/utility-types';
 import { saveMetadataBefore, saveMetadataAfter, saveMetadataException, saveMetadataParameter } from '@ynn/method-interceptor';
 import { Pipe } from '../interfaces';
@@ -104,7 +105,9 @@ export function createResponseDecorator(
 
 export function createExceptionDecorator( interceptor: VariadicFunction, parameters?: unknown ): MethodDecorator & ClassDecorator {
     return ( target, key?: string | symbol, descriptor?: Readonly<PropertyDescriptor> ): void => {
-        saveExceptionDecoratorMetadata( { descriptor, interceptor, parameters } );
+        if( descriptor ) {
+            saveExceptionDecoratorMetadata( descriptor, interceptor, parameters );
+        }
     };
 }
 
@@ -124,24 +127,30 @@ export interface CreateDecoratorOptions {
 
 export function createDecorator( options: CreateDecoratorOptions ): ClassDecorator & MethodDecorator & ParameterDecorator {
     return ( target, key?: string | symbol, indexOrDescriptor?: PropertyDescriptor | number ): void => {
-        if( typeof indexOrDescriptor === 'number' ) {
-            options.parameterInterceptor && saveParameterDecoratorMetadata( target, key, indexOrDescriptor, options.parameterInterceptor, options.parameters );
-            return;
-        }
 
-        if( options.requestInterceptor ) {
-            saveRequestDecoratorMetadata( indexOrDescriptor, options.requestInterceptor, options.parameters );
-            return;
-        }
+        /**
+         * Method decorators and parameter decorators have index/descriptor argument
+         */
+        if( indexOrDescriptor !== undefined ) {
+            if( typeof indexOrDescriptor === 'number' ) {
+                options.parameterInterceptor && saveParameterDecoratorMetadata( target, key as string, indexOrDescriptor, options.parameterInterceptor, options.parameters );
+                return;
+            }
 
-        if( options.responseInterceptor ) {
-            saveResponseDecoratorMetadata( indexOrDescriptor, options.responseInterceptor, options.parameters );
-            return;
-        }
+            if( options.requestInterceptor ) {
+                saveRequestDecoratorMetadata( indexOrDescriptor, options.requestInterceptor, options.parameters );
+                return;
+            }
 
-        if( options.exceptionInterceptor ) {
-            saveExceptionDecoratorMetadata( indexOrDescriptor, options.exceptionInterceptor, options.parameters );
-            return;
+            if( options.responseInterceptor ) {
+                saveResponseDecoratorMetadata( indexOrDescriptor, options.responseInterceptor, options.parameters );
+                return;
+            }
+
+            if( options.exceptionInterceptor ) {
+                saveExceptionDecoratorMetadata( indexOrDescriptor, options.exceptionInterceptor, options.parameters );
+                return;
+            }
         }
     };
 }
@@ -177,4 +186,11 @@ export function createGeneralDecorator(
     property && ( parameters.property = property );
 
     return createDecorator( { ...options, parameters } );
+}
+
+export async function executePipes( pipes: Pipe[], value: unknown, ctx: Context ): Promise<unknown> {
+    for( const pipe of pipes ) {
+        value = await pipe( value, ctx ); // eslint-disable-line no-await-in-loop
+    }
+    return value;
 }

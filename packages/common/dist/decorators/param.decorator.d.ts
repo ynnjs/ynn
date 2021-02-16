@@ -6,8 +6,7 @@
  * Time: 11/17/2020
  * Description:
  ******************************************************************/
-import Pipe from '../interface/pipe.interface';
-export declare function Param(): ParameterDecorator & MethodDecorator;
+import { Pipe } from '../interfaces';
 export declare function Param(property: string): ParameterDecorator;
-export declare function Param(pipe: Pipe): ParameterDecorator & MethodDecorator;
-export declare function Param(property: string, pipe: Pipe): ParameterDecorator & MethodDecorator;
+export declare function Param(...pipe: Pipe[]): ParameterDecorator & MethodDecorator;
+export declare function Param(property: string, ...pipe: Pipe[]): ParameterDecorator & MethodDecorator;
