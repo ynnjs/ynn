@@ -1,10 +1,10 @@
 "use strict";
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
- * File: src/index.ts
+ * File: exceptions/index.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/15/2020
+ * Time: 02/18/2021
  * Description:
  ******************************************************************/
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -18,6 +18,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./interfaces"), exports);
-__exportStar(require("./decorators"), exports);
-__exportStar(require("./exceptions"), exports);
+__exportStar(require("./http.exception"), exports);

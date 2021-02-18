@@ -7,22 +7,23 @@
  * Description:
  ******************************************************************/
 
+import { VariadicObject } from '@ynn/utility-types';
 import { KEY_PARAMETER } from '../constants';
 import { MetadataParameter } from '../metadata';
 import { MethodParameterInfo, MethodParameter } from '../method.interface';
 import { Storage } from '../storage';
 
-function createInterceptorParameter<T extends unknown[]>(
-    obj: object, // eslint-disable-line
-    methodName: string | symbol
-): ( ...args: T ) => Promise<unknown[]> {
+function createInterceptorParameter<T extends unknown[]>( ...args: [
+    obj: VariadicObject,
+    methodName?: string | symbol
+] ): ( ...args: T ) => Promise<unknown[]> {
 
     type Info = MethodParameterInfo<MethodParameter<T>>;
 
     const bound: Info[][] = [];
-    const metadatas: ( Required<Omit<MetadataParameter, 'paramtype'>>[] | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, obj, methodName ) || [];
+    const metadatas: ( MetadataParameter[] | undefined )[] = Reflect.getMetadata( KEY_PARAMETER, ...args as [ VariadicObject ] ) || [];
 
-    Reflect.getMetadata( 'design:paramtypes', obj, methodName )?.forEach( ( paramtype: unknown, i: number ) => {
+    Reflect.getMetadata( 'design:paramtypes', ...args as [ VariadicObject ] )?.forEach( ( paramtype: unknown, i: number ) => {
         const metadata = metadatas[ i ];
 
         if( !metadata ) {

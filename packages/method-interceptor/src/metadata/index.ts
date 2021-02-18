@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { VariadicFunction } from '@ynn/utility-types';
+import { VariadicFunction, VariadicObject } from '@ynn/utility-types';
 import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER } from '../constants';
 import { Storage } from '../storage';
 import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata.interface';
@@ -59,7 +59,7 @@ export function saveMetadataBefore<T extends unknown[]>(
     saveMethodMetadata( KEY_BEFORE, descriptor, metadata );
 }
 
-export function getMetadataBefore( descriptor: PropertyDescriptor ): MetadataBefore | undefined {
+export function getMetadataBefore( descriptor: PropertyDescriptor ): ( MetadataBefore | undefined )[] {
     return Reflect.getMetadata( KEY_BEFORE, descriptor );
 }
 
@@ -86,7 +86,7 @@ export function saveMetadataAfter<T extends unknown[]>(
     saveMethodMetadata( KEY_AFTER, descriptor, metadata );
 }
 
-export function getMetadataAfter( descriptor: PropertyDescriptor ): MetadataAfter | undefined {
+export function getMetadataAfter( descriptor: PropertyDescriptor ): ( MetadataAfter | undefined )[] {
     return Reflect.getMetadata( KEY_AFTER, descriptor );
 }
 
@@ -118,7 +118,7 @@ export function saveMetadataException<T extends unknown[]>(
     saveMethodMetadata( KEY_EXCEPTION, descriptor, metadata );
 }
 
-export function getMetadataException( descriptor: PropertyDescriptor ): MetadataException | undefined {
+export function getMetadataException( descriptor: PropertyDescriptor ): ( MetadataException | undefined )[] {
     return Reflect.getMetadata( KEY_EXCEPTION, descriptor );
 }
 
@@ -138,8 +138,7 @@ export function saveMetadataParameter<T extends unknown[]>(
     method: MethodParameter<T>,
     options: Readonly<Pick<MetadataParameter, 'parameters'>> = {}
 ): void {
-    type M = Omit<MetadataParameter, 'paramtype'>;
-    const metadata: M = {
+    const metadata: MetadataParameter = {
         type : storeMethod( method ),
         interceptorType : 'parameter'
     };
@@ -148,7 +147,7 @@ export function saveMetadataParameter<T extends unknown[]>(
         metadata.parameters = options.parameters;
     }
 
-    const metadatas: M[][] = Reflect.getMetadata( KEY_PARAMETER, target, key ) || [];
+    const metadatas: MetadataParameter[][] = Reflect.getMetadata( KEY_PARAMETER, target, key ) || [];
 
     if( !metadatas[ i ] ) metadatas[ i ] = [ metadata ];
     else metadatas[ i ].push( metadata );
@@ -156,9 +155,9 @@ export function saveMetadataParameter<T extends unknown[]>(
     Reflect.defineMetadata( KEY_PARAMETER, metadatas, target, key );
 }
 
-export function getMetadataParameter(
-    target: object, // eslint-disable-line
-    key: string | symbol
-): MetadataParameter | undefined {
-    return Reflect.getMetadata( KEY_PARAMETER, target, key );
+export function getMetadataParameter( ...args: [
+    target: VariadicObject,
+    key?: string | symbol
+] ): ( MetadataParameter | undefined )[] {
+    return Reflect.getMetadata( KEY_PARAMETER, ...args as [ VariadicObject ] );
 }

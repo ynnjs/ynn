@@ -12,7 +12,5 @@ import { ParameterMetadata, Logger } from '../interfaces';
 import { createParameterDecorator } from './util';
 
 export function Log(): ParameterDecorator {
-    return createParameterDecorator( ( metadata: ParameterMetadata, ctx: Context ): Logger => {
-        return ctx.app.logger;
-    } );
+    return createParameterDecorator( ( metadata: ParameterMetadata, ctx: Context ): Logger => ctx.app.logger );
 }

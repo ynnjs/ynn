@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata';
+import { MetadataBefore, MetadataAfter, MetadataException, SyntheticMetadataParameter } from './metadata';
 
 /**
  * The interface of methods that will be called by `InterceptorBefore`.
@@ -57,7 +57,7 @@ export interface MethodParameter<T extends unknown[]> {
      * @param metadata - {@link MethodParameter}
      * @param ...args - other arguments
      */
-    ( metadata: Readonly<MetadataParameter>, ...args: T ): unknown;
+    ( metadata: Readonly<SyntheticMetadataParameter>, ...args: T ): unknown;
 }
 
 export type Methods<T> = Record<string | number | symbol, T>;
@@ -71,6 +71,6 @@ export interface MethodInfo<T, M> {
 }
 
 export interface MethodParameterInfo<M> {
-    metadata: MetadataParameter;
+    metadata: SyntheticMetadataParameter;
     method?: M;
 }

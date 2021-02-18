@@ -73,4 +73,24 @@ describe( 'decorator/create-decorator-parameter', () => {
             } ]
         ] );
     } );
+
+    it( 'decorators for constructors of classes', () => {
+        const parameter1 = createDecoratorParameter( () => {} );
+        const parameter2 = createDecoratorParameter( () => {} );
+        class A {
+            constructor( @parameter1 name: string, @parameter2 age: number ) {} // eslint-disable-line @typescript-eslint/no-unused-vars
+        }
+        const metadata = Reflect.getMetadata( KEY_PARAMETER, A );;
+
+        expect( metadata ).toEqual( [
+            [ {
+                type : expect.any( Symbol ),
+                interceptorType : 'parameter'
+            } ], [ {
+                type : expect.any( Symbol ),
+                interceptorType : 'parameter'
+            } ]
+        ] );
+        expect( Reflect.getMetadata( 'design:paramtypes', A ) ).toEqual( [ String, Number ] );
+    } );
 } );

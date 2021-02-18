@@ -16,19 +16,33 @@ import { VariadicClass } from '@ynn/utility-types';
 import Context, { ContextOptions } from './context';
 import { ActionInfo } from './action';
 import Router, { RouterRule } from './router';
+import { DebugOptions } from './debug';
+interface Providers {
+    [key: string]: unknown;
+}
 export interface Options {
     root?: string;
     controllers?: Record<string, VariadicClass>;
-    providers?: Record<string, unknown>;
+    providers?: Providers;
     routers?: RouterRule[] | ((this: Application, router: Router, app: Application) => void);
-    port?: number;
+    logger?: Logger;
+    debug?: Logger;
+    debugOptions?: DebugOptions;
+    debugging?: boolean;
+    proxy?: boolean;
+    maxIpsCount?: number;
 }
 export default class Application extends Events {
     #private;
     options: Readonly<Options>;
-    debug?: Logger;
+    debug: Logger;
+    logger: Logger;
     router: Router;
-    controllers: Record<string, VariadicClass<[Context]>>;
+    proxy: boolean;
+    controllers: Record<string, VariadicClass>;
+    debugging: boolean | string[];
+    logging: boolean | string[];
+    maxIpsCount: number;
     server?: Server;
     /**
      * require.main is undefined is such as interactive mode
@@ -45,4 +59,6 @@ export default class Application extends Events {
     constructor(options?: Readonly<Options>);
     handle(context: ContextOptions | Context): Promise<Context>;
     listen(...args: Parameters<Server['listen']>): Server;
+    toJSON(): Record<string, unknown>;
 }
+export {};

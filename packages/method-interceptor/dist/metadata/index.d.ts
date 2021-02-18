@@ -6,6 +6,7 @@
  * Time: 01/30/2021
  * Description:
  ******************************************************************/
+import { VariadicObject } from '@ynn/utility-types';
 import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata.interface';
 import { MethodBefore, MethodAfter, MethodException, MethodParameter } from '../method.interface';
 export * from './metadata.interface';
@@ -17,7 +18,7 @@ export * from './metadata.interface';
  * @param options
  */
 export declare function saveMetadataBefore<T extends unknown[]>(descriptor: PropertyDescriptor, method: MethodBefore<T>, options?: Readonly<Pick<MetadataBefore, 'parameters'>>): void;
-export declare function getMetadataBefore(descriptor: PropertyDescriptor): MetadataBefore | undefined;
+export declare function getMetadataBefore(descriptor: PropertyDescriptor): (MetadataBefore | undefined)[];
 /**
  * save metadata for interceptor after
  *
@@ -26,7 +27,7 @@ export declare function getMetadataBefore(descriptor: PropertyDescriptor): Metad
  * @param options
  */
 export declare function saveMetadataAfter<T extends unknown[]>(descriptor: PropertyDescriptor, method: MethodAfter<T>, options?: Pick<MetadataAfter, 'parameters'>): void;
-export declare function getMetadataAfter(descriptor: PropertyDescriptor): MetadataAfter | undefined;
+export declare function getMetadataAfter(descriptor: PropertyDescriptor): (MetadataAfter | undefined)[];
 /**
  * save metadata for interceptor exception
  *
@@ -35,7 +36,7 @@ export declare function getMetadataAfter(descriptor: PropertyDescriptor): Metada
  * @param options
  */
 export declare function saveMetadataException<T extends unknown[]>(descriptor: PropertyDescriptor, method: MethodException<T>, options?: Pick<MetadataException, 'exceptionType' | 'parameters'>): void;
-export declare function getMetadataException(descriptor: PropertyDescriptor): MetadataException | undefined;
+export declare function getMetadataException(descriptor: PropertyDescriptor): (MetadataException | undefined)[];
 /**
  * save metadata for interceptor parameter
  *
@@ -47,5 +48,7 @@ export declare function getMetadataException(descriptor: PropertyDescriptor): Me
  */
 export declare function saveMetadataParameter<T extends unknown[]>(target: object, // eslint-disable-line
 key: string | symbol, i: number, method: MethodParameter<T>, options?: Readonly<Pick<MetadataParameter, 'parameters'>>): void;
-export declare function getMetadataParameter(target: object, // eslint-disable-line
-key: string | symbol): MetadataParameter | undefined;
+export declare function getMetadataParameter(...args: [
+    target: VariadicObject,
+    key?: string | symbol
+]): (MetadataParameter | undefined)[];

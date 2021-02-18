@@ -134,8 +134,7 @@ key, i, method, options = {}) {
     Reflect.defineMetadata(constants_1.KEY_PARAMETER, metadatas, target, key);
 }
 exports.saveMetadataParameter = saveMetadataParameter;
-function getMetadataParameter(target, // eslint-disable-line
-key) {
-    return Reflect.getMetadata(constants_1.KEY_PARAMETER, target, key);
+function getMetadataParameter(...args) {
+    return Reflect.getMetadata(constants_1.KEY_PARAMETER, ...args);
 }
 exports.getMetadataParameter = getMetadataParameter;

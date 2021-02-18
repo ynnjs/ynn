@@ -24,6 +24,8 @@ export default function loggerProxy<T extends Logger>( options: Readonly<LoggerP
 
         get( target: Logger, method: string ): LogFunction {
 
+            if( typeof target[ method ] !== 'function' ) return target[ method ];
+
             const { debugging, logging, logger, debug } = options;
 
             let fn;

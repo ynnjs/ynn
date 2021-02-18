@@ -7,11 +7,13 @@
  * Description:
  ******************************************************************/
 
-import { Headers, Context } from '@ynn/waka';
+import { OutgoingHttpHeaders } from 'http';
+import { Valueof } from '@ynn/utility-types';
+import { Context } from '@ynn/waka';
 import { Pipe, CommonRequestMetadata, CommonParameterMetadata, ResponseMetadata } from '../interfaces';
 import { createGeneralDecorator, createResponseDecorator, executePipes } from './util';
 
-type HeaderPair = [ key: string, value: string | undefined | string[] ];
+type HeaderPair = [ key: string, value: Valueof<OutgoingHttpHeaders> ];
 
 async function responseInterceptor<T>( metadata: ResponseMetadata, response: T, ctx: Context ): Promise<T> {
     ( metadata.parameters as { headers: HeaderPair[] } ).headers.forEach( pair => {
@@ -65,7 +67,7 @@ export function Header( property: string, value: string ): MethodDecorator;
  *
  * @return a method decorator
  */
-export function Header( headers: Headers ): MethodDecorator;
+export function Header( headers: OutgoingHttpHeaders ): MethodDecorator;
 
 /**
  * Get request header with it's name
@@ -84,7 +86,7 @@ export function Header( property: string ): ParameterDecorator;
 export function Header( ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 export function Header( property: string, ...pipes: Pipe[] ): ParameterDecorator & MethodDecorator;
 
-export function Header( ...args: [ ( string | Pipe | Headers )?, ( Pipe | string )? ] ): ParameterDecorator & MethodDecorator {
+export function Header( ...args: [ ( string | Pipe | OutgoingHttpHeaders )?, ( Pipe | string )? ] ): ParameterDecorator & MethodDecorator {
 
     const [ propertyOrPipeOrHeaders, pipeOrValue ] = args;
     const t1 = typeof propertyOrPipeOrHeaders;
@@ -101,8 +103,8 @@ export function Header( ...args: [ ( string | Pipe | Headers )?, ( Pipe | string
         if( t1 === 'string' ) {
             headers.push( [ propertyOrPipeOrHeaders as string, pipeOrValue as string ] );
         } else {
-            Object.keys( propertyOrPipeOrHeaders as Headers ).forEach( key => {
-                headers.push( [ key, ( propertyOrPipeOrHeaders as Headers )[ key ] ] );
+            Object.keys( propertyOrPipeOrHeaders as OutgoingHttpHeaders ).forEach( key => {
+                headers.push( [ key, ( propertyOrPipeOrHeaders as OutgoingHttpHeaders )[ key ] ] );
             } );
         }
 

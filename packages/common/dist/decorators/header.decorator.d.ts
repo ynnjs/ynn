@@ -6,7 +6,8 @@
  * Time: 11/09/2020
  * Description:
  ******************************************************************/
-import { Headers } from '@ynn/waka';
+/// <reference types="node" />
+import { OutgoingHttpHeaders } from 'http';
 import { Pipe } from '../interfaces';
 /**
  * set response header with property: value
@@ -44,7 +45,7 @@ export declare function Header(property: string, value: string): MethodDecorator
  *
  * @return a method decorator
  */
-export declare function Header(headers: Headers): MethodDecorator;
+export declare function Header(headers: OutgoingHttpHeaders): MethodDecorator;
 /**
  * Get request header with it's name
  *

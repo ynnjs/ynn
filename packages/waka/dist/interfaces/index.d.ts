@@ -6,6 +6,3 @@
  * Time: 02/11/2021
  * Description:
  ******************************************************************/
-export * from './queries.interface';
-export * from './headers.interface';
-export * from './controller.interface';

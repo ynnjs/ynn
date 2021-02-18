@@ -6,6 +6,9 @@
  * Time: 01/05/2021
  * Description:
  ******************************************************************/
-declare function createInterceptorParameter<T extends unknown[]>(obj: object, // eslint-disable-line
-methodName: string | symbol): (...args: T) => Promise<unknown[]>;
+import { VariadicObject } from '@ynn/utility-types';
+declare function createInterceptorParameter<T extends unknown[]>(...args: [
+    obj: VariadicObject,
+    methodName?: string | symbol
+]): (...args: T) => Promise<unknown[]>;
 export default createInterceptorParameter;

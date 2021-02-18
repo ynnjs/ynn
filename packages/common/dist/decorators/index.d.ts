@@ -8,8 +8,11 @@
  ******************************************************************/
 export * from './body.decorator';
 export * from './ctx.decorator';
+export * from './exception.decorator';
 export * from './header.decorator';
 export * from './log.decorator';
 export * from './query.decorator';
+export * from './req.decorator';
+export * from './res.decorator';
 export * from './response.decorator';
 export * from './status.decorator';

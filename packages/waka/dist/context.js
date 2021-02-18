@@ -20,7 +20,7 @@ class Context {
         this.params = {};
         this.matches = [];
         this.assert = http_assert_1.default;
-        options.app && (this.app = options.app);
+        this.app = options.app;
         this.request = new request_1.Request({ ...options.request, ctx: this });
         this.response = new response_1.Response({ ...(options.response ?? {}), ctx: this });
         this.request.req && (this.req = this.request.req);

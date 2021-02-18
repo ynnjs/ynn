@@ -1,10 +1,10 @@
-"use strict";
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: interfaces/headers.interface.ts
+ * File: decorators/exception.decorator.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/06/2021
+ * Time: 02/17/2021
  * Description:
  ******************************************************************/
-Object.defineProperty(exports, "__esModule", { value: true });
+import { Pipe } from '../interfaces';
+export declare function Exception(...pipes: Pipe[]): MethodDecorator;

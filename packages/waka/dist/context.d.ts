@@ -8,20 +8,20 @@
  ******************************************************************/
 /// <reference types="node" />
 import { Socket } from 'net';
-import { IncomingMessage, ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse, IncomingHttpHeaders } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
-import { Headers } from './interfaces';
+import Application from './application';
 export interface ContextOptions {
     request: Omit<RequestOptions, 'ctx'>;
     response?: Omit<ResponseOptions, 'ctx'>;
-    app?: any;
+    app: Application;
 }
 export default class Context {
-    app?: any;
+    app: Application;
     req?: IncomingMessage;
     res?: ServerResponse;
     request: Request;
@@ -87,7 +87,7 @@ export default class Context {
     get host(): string;
     get hostname(): string;
     get URL(): URL;
-    get headers(): Headers;
+    get headers(): IncomingHttpHeaders;
     get secure(): boolean;
     get stale(): boolean;
     get fresh(): boolean;

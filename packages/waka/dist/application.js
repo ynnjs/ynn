@@ -16,25 +16,32 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _setup, _setupRouter, _setupControllers;
+var _setup, _setupOptions, _setupDebug, _setupLogger, _setupRouter, _setupControllers, _setupActions;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const path_1 = __importDefault(require("path"));
 const events_1 = __importDefault(require("events"));
 const http_1 = __importDefault(require("http"));
 const is_1 = __importDefault(require("@lvchengbin/is"));
+const common_1 = require("@ynn/common");
 const method_interceptor_1 = require("@ynn/method-interceptor");
 const context_1 = __importDefault(require("./context"));
 const action_1 = require("./action");
 const router_1 = __importDefault(require("./router"));
 const cargs_1 = __importDefault(require("./cargs"));
+const logger_proxy_1 = __importDefault(require("./logger-proxy"));
 const respond_1 = __importDefault(require("./util/respond"));
+const fill_params_1 = __importDefault(require("./util/fill-params"));
+const debug_1 = __importDefault(require("./debug"));
 const CWD = process.cwd();
 const DEFAULT_CONTROLLER = 'index';
 const DEFAULT_ACTION = 'index';
 class Application extends events_1.default {
     constructor(options = {}) {
         super();
+        this.debugging = true;
+        this.logging = false;
+        this.maxIpsCount = 0;
         /**
          * require.main is undefined is such as interactive mode
          */
@@ -44,7 +51,25 @@ class Application extends events_1.default {
          */
         this.actions = {};
         _setup.set(this, (options) => {
+            __classPrivateFieldGet(this, _setupOptions).call(this, options);
+            __classPrivateFieldGet(this, _setupDebug).call(this);
+            __classPrivateFieldGet(this, _setupLogger).call(this);
+            __classPrivateFieldGet(this, _setupRouter).call(this);
+            __classPrivateFieldGet(this, _setupControllers).call(this);
+            __classPrivateFieldGet(this, _setupActions).call(this);
+        });
+        _setupOptions.set(this, (options) => {
             this.options = { ...options, ...this.parseCargs(cargs_1.default) };
+        });
+        _setupDebug.set(this, () => {
+            const { options } = this;
+            this.debug = options.debug ?? new debug_1.default({
+                levels: options.debugging,
+                ...options.debugOptions
+            });
+        });
+        _setupLogger.set(this, () => {
+            this.logger = logger_proxy_1.default(this);
         });
         _setupRouter.set(this, () => {
             const router = new router_1.default();
@@ -70,27 +95,35 @@ class Application extends events_1.default {
             this.router = router;
         });
         _setupControllers.set(this, () => {
-            const { controllers } = this.options;
-            const { actions } = this;
+            this.controllers = { ...this.options.controllers };
+        });
+        _setupActions.set(this, () => {
+            const { controllers, actions } = this;
             controllers && Object.keys(controllers).forEach((controllerName) => {
                 const Controller = controllers[controllerName];
                 if (is_1.default.class(Controller)) {
                     const actionInfos = action_1.scan(Controller.prototype);
                     Object.keys(actionInfos).forEach((actionName) => {
                         const info = actionInfos[actionName];
-                        const { descriptor, methodName } = info;
+                        const { descriptor, methodName, proto } = info;
                         if (!actions[controllerName]) {
                             actions[controllerName] = {};
                         }
                         const before = method_interceptor_1.createInterceptorBefore(descriptor);
                         const after = method_interceptor_1.createInterceptorAfter(descriptor);
                         const exception = method_interceptor_1.createInterceptorException(descriptor);
-                        const parameter = method_interceptor_1.createInterceptorParameter(info.proto, methodName);
+                        const parameter = method_interceptor_1.createInterceptorParameter(proto, methodName);
+                        const metadataParameter = method_interceptor_1.getMetadataParameter(proto, methodName);
+                        const paramtypes = Reflect.getMetadata('design:paramtypes', proto, methodName);
+                        const constructorParameter = method_interceptor_1.createInterceptorParameter(Controller);
+                        const constructorMetadataParameter = method_interceptor_1.getMetadataParameter(Controller);
+                        const constructorParamtypes = Reflect.getMetadata('design:paramtypes', Controller);
                         const executor = async (context) => {
                             try {
                                 await before(context);
-                                const controller = new Controller(context);
-                                const params = await parameter(context);
+                                const constructorParams = await fill_params_1.default(await constructorParameter(context), constructorMetadataParameter, constructorParamtypes, [context]);
+                                const controller = new Controller(...constructorParams);
+                                const params = await fill_params_1.default(await parameter(context), metadataParameter, paramtypes, [context]);
                                 const response = controller[methodName](...params);
                                 return await after(response, context);
                             }
@@ -104,19 +137,16 @@ class Application extends events_1.default {
             });
         });
         __classPrivateFieldGet(this, _setup).call(this, options);
-        __classPrivateFieldGet(this, _setupRouter).call(this);
         // this.#setupModules();
-        __classPrivateFieldGet(this, _setupControllers).call(this);
         // this.#setupProviders();
         // this.modules = { ...options.modules };
-        this.controllers = { ...options.controllers };
+        // this.controllers = { ...options.controllers };
     }
     parseCargs(cargs) {
         const options = {};
         if ('port' in cargs) {
             if (!is_1.default.integer(cargs.port))
                 throw new TypeError('--port must be a integer');
-            options.port = parseInt(cargs.port);
         }
         // if( 'debugging' in cargs ) {
         //     options.debuggings = is.generalizedTrue( cargs.debugging );
@@ -172,7 +202,7 @@ class Application extends events_1.default {
                 Object.assign(result, dest);
             }
             if (result.module) {
-                console.log(result);
+                console.log('~~~~~~~~~~~~~~~', result);
             }
             else {
                 result.controller ?? (result.controller = DEFAULT_CONTROLLER);
@@ -182,9 +212,34 @@ class Application extends events_1.default {
                     ctx.status = 404;
                 }
                 else {
-                    const body = await action.executor.call(this, ctx);
-                    if (body !== undefined)
-                        ctx.body = body;
+                    try {
+                        const body = await action.executor.call(this, ctx);
+                        if (body !== undefined)
+                            ctx.body = body;
+                    }
+                    catch (e) {
+                        if (typeof e === 'number') {
+                            ctx.status = e;
+                        }
+                        else if (typeof e === 'string') {
+                            ctx.status = 500;
+                            ctx.message = e;
+                        }
+                        else if (e instanceof common_1.HttpException) {
+                            if (e.response) {
+                                ctx.body = e.response;
+                                ctx.status = e.response.status;
+                                ctx.message = e.response.error;
+                            }
+                            else {
+                                ctx.status = e.status;
+                                ctx.message = e.message;
+                            }
+                        }
+                        else {
+                            ctx.status = 500;
+                        }
+                    }
                 }
             }
         }
@@ -205,6 +260,11 @@ class Application extends events_1.default {
         }
         return (this.server = server);
     }
+    toJSON() {
+        return {
+            controllers: this.controllers
+        };
+    }
 }
 exports.default = Application;
-_setup = new WeakMap(), _setupRouter = new WeakMap(), _setupControllers = new WeakMap();
+_setup = new WeakMap(), _setupOptions = new WeakMap(), _setupDebug = new WeakMap(), _setupLogger = new WeakMap(), _setupRouter = new WeakMap(), _setupControllers = new WeakMap(), _setupActions = new WeakMap();

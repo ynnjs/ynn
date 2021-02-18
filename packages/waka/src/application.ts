@@ -13,15 +13,16 @@ import Events from 'events';
 import http, { Server } from 'http';
 import { Argv } from 'yargs';
 import is from '@lvchengbin/is';
-import { Logger } from '@ynn/common';
+import { Logger, HttpException } from '@ynn/common';
 import { VariadicClass } from '@ynn/utility-types';
-import { createInterceptorBefore, createInterceptorAfter, createInterceptorParameter, createInterceptorException } from '@ynn/method-interceptor';
+import { createInterceptorBefore, createInterceptorAfter, createInterceptorParameter, createInterceptorException, getMetadataParameter } from '@ynn/method-interceptor';
 import Context, { ContextOptions } from './context';
 import { scan, ActionInfo } from './action';
 import Router, { RouterRule, RouteMap } from './router';
 import cargs from './cargs';
 import loggerProxy from './logger-proxy';
 import respond from './util/respond';
+import fillParams from './util/fill-params';
 import Debug, { DebugOptions } from './debug';
 
 const CWD = process.cwd();
@@ -29,10 +30,14 @@ const CWD = process.cwd();
 const DEFAULT_CONTROLLER = 'index';
 const DEFAULT_ACTION = 'index';
 
+interface Providers {
+    [ key: string ]: unknown; // VariadicClass | VariadicFunction | Providers;
+}
+
 export interface Options {
     root?: string;
     controllers?: Record<string, VariadicClass>;
-    providers?: Record<string, unknown>;
+    providers?: Providers;
     routers?: RouterRule[] | ( ( this: Application, router: Router, app: Application ) => void );
     logger?: Logger;
     debug?: Logger;
@@ -50,7 +55,7 @@ export default class Application extends Events {
     logger!: Logger;
     router!: Router;
     proxy!: boolean;
-    controllers!: Record<string, VariadicClass<[ Context ]>>;
+    controllers!: Record<string, VariadicClass>;
     debugging: boolean | string[] = true;
     logging: boolean | string[] = false;
     maxIpsCount = 0;
@@ -177,7 +182,7 @@ export default class Application extends Events {
 
                 Object.keys( actionInfos ).forEach( ( actionName: string ) => {
                     const info = actionInfos[ actionName ];
-                    const { descriptor, methodName } = info;
+                    const { descriptor, methodName, proto } = info;
 
                     if( !actions[ controllerName ] ) {
                         actions[ controllerName ] = {};
@@ -186,14 +191,37 @@ export default class Application extends Events {
                     const before = createInterceptorBefore<[ Context ]>( descriptor );
                     const after = createInterceptorAfter<[ Context ]>( descriptor );
                     const exception = createInterceptorException<[ Context ]>( descriptor );
-                    const parameter = createInterceptorParameter<[ Context ]>( info.proto, methodName );
+
+                    const parameter = createInterceptorParameter<[ Context ]>( proto, methodName );
+                    const metadataParameter = getMetadataParameter( proto, methodName );
+                    const paramtypes = Reflect.getMetadata( 'design:paramtypes', proto, methodName );
+
+                    const constructorParameter = createInterceptorParameter<[ Context ]>( Controller );
+                    const constructorMetadataParameter = getMetadataParameter( Controller );
+                    const constructorParamtypes = Reflect.getMetadata( 'design:paramtypes', Controller );
 
                     const executor = async ( context: Context ): Promise<unknown> => {
                         try {
                             await before( context );
-                            const controller = new Controller( context );
-                            const params = await parameter( context );
+
+                            const constructorParams = await fillParams(
+                                await constructorParameter( context ),
+                                constructorMetadataParameter,
+                                constructorParamtypes,
+                                [ context ]
+                            ) ;
+
+                            const controller = new Controller( ...constructorParams );
+
+                            const params = await fillParams(
+                                await parameter( context ),
+                                metadataParameter,
+                                paramtypes,
+                                [ context ]
+                            ) ;
+
                             const response = controller[ methodName ]( ...params );
+
                             return await after( response, context );
                         } catch( e: unknown ) {
                             return exception( e, context );
@@ -255,11 +283,30 @@ export default class Application extends Events {
                 if( !action ) {
                     ctx.status = 404;
                 } else {
-                    const body = await action.executor.call( this, ctx );
-                    if( body !== undefined ) ctx.body = body;
+                    try {
+                        const body = await action.executor.call( this, ctx );
+                        if( body !== undefined ) ctx.body = body;
+                    } catch( e: unknown ) {
+                        if( typeof e === 'number' ) {
+                            ctx.status = e;
+                        } else if( typeof e === 'string' ) {
+                            ctx.status = 500;
+                            ctx.message = e;
+                        } else if( e instanceof HttpException ) {
+                            if( e.response ) {
+                                ctx.body = e.response;
+                                ctx.status = e.response.status;
+                                ctx.message = e.response.error;
+                            } else {
+                                ctx.status = e.status;
+                                ctx.message = e.message;
+                            }
+                        } else {
+                            ctx.status = 500;
+                        }
+                    }
                 }
             }
-
         }
 
         return ctx;

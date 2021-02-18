@@ -159,7 +159,7 @@ class Response {
      * Set Content-Length field to n
      */
     set length(n) {
-        this.set('Content-Length', n?.toString() ?? undefined);
+        this.set('Content-Length', n);
     }
     /**
      * Return parsed response Content-Length when present.

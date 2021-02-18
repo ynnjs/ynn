@@ -1,11 +1,10 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: interfaces/queries.interface.ts
+ * File: exceptions/index.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/07/2021
+ * Time: 02/18/2021
  * Description:
  ******************************************************************/
-export interface Queries {
-    [key: string]: string | string[];
-}
+
+export * from './http.exception';

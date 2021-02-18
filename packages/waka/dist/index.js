@@ -27,7 +27,6 @@ const controller_1 = __importDefault(require("./controller"));
 exports.Controller = controller_1.default;
 const context_1 = __importDefault(require("./context"));
 exports.Context = context_1.default;
-__exportStar(require("./interfaces"), exports);
 __exportStar(require("./application"), exports);
 __exportStar(require("./context"), exports);
 __exportStar(require("./request"), exports);

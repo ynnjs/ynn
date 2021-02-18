@@ -2,15 +2,20 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: decorators/logger.decorator.ts
+ * File: decorators/exception.decorator.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 02/17/2021
  * Description:
  ******************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Log = void 0;
+exports.Exception = void 0;
 const util_1 = require("./util");
-function Log() {
-    return util_1.createParameterDecorator((metadata, ctx) => ctx.app.logger);
+function Exception(...pipes) {
+    const parameters = {
+        pipes: [...pipes]
+    };
+    return util_1.createExceptionDecorator(async (metadata, e, ctx) => {
+        return util_1.executePipes(parameters.pipes, e, ctx);
+    }, parameters);
 }
-exports.Log = Log;
+exports.Exception = Exception;

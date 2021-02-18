@@ -11,6 +11,7 @@ import util from 'util';
 import { Socket } from 'net';
 import { ServerResponse, OutgoingHttpHeaders } from 'http';
 import { Options as ContentDispositionOptions } from 'content-disposition';
+import { Valueof } from '@ynn/utility-types';
 import Context from './context';
 export interface ResponseOptions {
     ctx: Context;
@@ -117,7 +118,7 @@ export declare class Response {
     /**
      * Return response header.
      */
-    get(field: string): number | string | string[] | undefined;
+    get(field: string): Valueof<OutgoingHttpHeaders>;
     /**
      * Returns true if the header identified by name is currently set in the outgoing headers.
      * The header name matching is case-insensitive.
@@ -126,11 +127,11 @@ export declare class Response {
     /**
      * Set header `field` to `val` or pass an object of header fields
      */
-    set(field: string | OutgoingHttpHeaders, val?: number | string | string[]): void;
+    set(field: string | OutgoingHttpHeaders, val?: Valueof<OutgoingHttpHeaders>): void;
     /**
      * Append additional header `field` with value `val`.
      */
-    append(field: string, val: string | number | string[]): void;
+    append(field: string, val: NonNullable<Valueof<OutgoingHttpHeaders>>): void;
     /**
      * Remove header `field`
      */

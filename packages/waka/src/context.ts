@@ -8,14 +8,13 @@
  ******************************************************************/
 
 import { Socket } from 'net';
-import { IncomingMessage, ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse, IncomingHttpHeaders } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
 import httpAssert from 'http-assert';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
-import { Headers } from './interfaces';
 import Application from './application';
 // import Cookies, { SetOption as CookieOptions } from 'cookies';
 
@@ -273,7 +272,7 @@ export default class Context {
         return this.request.URL;
     }
 
-    get headers(): Headers {
+    get headers(): IncomingHttpHeaders {
         return this.request.headers;
     }
 
