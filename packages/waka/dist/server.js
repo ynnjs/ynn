@@ -55,14 +55,20 @@ let Controller = class Controller {
         this.ctx = ctx;
     }
     index(log, catService, id) {
-        console.log(this.ctx);
+        // console.log( this.ctx );
         console.log('catService: ', catService);
         if (!id)
-            throw new common_1.HttpException(401);
+            throw new common_1.HttpException({
+                status: 400,
+                message: [
+                    'id must be a number'
+                ]
+            });
         return { status: 0, id };
     }
 };
 __decorate([
+    common_1.Exception(function (e) { console.log(arguments); }),
     _1.Action('profile'),
     __param(0, common_1.Log()), __param(2, common_1.Query('id')),
     __metadata("design:type", Function),
