@@ -94,6 +94,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["commitizen", "npm:4.2.3"],
             ["cz-conventional-changelog", "npm:3.3.0"],
+            ["eslint", "npm:7.20.0"],
+            ["eslint_d", "npm:10.0.2"],
             ["husky", "npm:5.0.8"],
             ["pinst", "npm:2.1.4"]
           ],
@@ -10169,6 +10171,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ynn", "workspace:."],
             ["commitizen", "npm:4.2.3"],
             ["cz-conventional-changelog", "npm:3.3.0"],
+            ["eslint", "npm:7.20.0"],
+            ["eslint_d", "npm:10.0.2"],
             ["husky", "npm:5.0.8"],
             ["pinst", "npm:2.1.4"]
           ],
