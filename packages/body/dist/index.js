@@ -28,7 +28,7 @@ async function parseMultipart(ctx, options = {}) {
 /**
  * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
  *
- * @param ctx - the context object conforming the @ynn/waka's context object.
+ * @param ctx - the context object conforming the @ynn/core's context object.
  * @param options - the options object. {@link BodyOptions}
  *
  * @returns the parsed body with `fields` and `files`.

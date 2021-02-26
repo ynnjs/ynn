@@ -114,6 +114,6 @@ export interface MetadataParameter<T = unknown> extends Metadata<T> {
     interceptorType: 'parameter';
 }
 
-export type SyntheticMetadataParameter<T = unknown> = Partial<Metadata<T>> & {
+export type MixedMetadataParameter<T = unknown> = Partial<Metadata<T>> & {
     paramtype: unknown;
 };

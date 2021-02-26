@@ -9,7 +9,7 @@
 import qs from 'qs';
 import { Fields, Files } from 'formidable';
 import cobody, { Options as CobodyOptions } from 'co-body';
-import { Context } from '@ynn/waka';
+import { Context } from '@ynn/core';
 /**
  * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
  * The `parsed` part will be in different types while using different request types.
@@ -61,7 +61,7 @@ declare function parseMultipart(ctx: Context, options?: MultipartOptions): Promi
 /**
  * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
  *
- * @param ctx - the context object conforming the @ynn/waka's context object.
+ * @param ctx - the context object conforming the @ynn/core's context object.
  * @param options - the options object. {@link BodyOptions}
  *
  * @returns the parsed body with `fields` and `files`.

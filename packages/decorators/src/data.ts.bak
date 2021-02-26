@@ -1,0 +1,73 @@
+/******************************************************************
+ * Copyright (C) 2021 LvChengbin
+ *
+ * File: decorators/data.decorator.ts
+ * Author: LvChengbin<lvchengbin59@gmail.com>
+ * Time: 02/19/2021
+ * Description:
+ ******************************************************************/
+
+import { Context } from '@ynn/core';
+import { ParameterMetadata } from '../interfaces';
+import { createParameterDecorator } from './util';
+
+type Type = 'json' | 'json5' | 'yaml';
+
+class DataManager<T = unknown> {
+
+    #promise: Promise<T>;
+
+    constructor( public uri: string, public type: Type, ctx: Context ) {
+        this.#promise = new Promise();
+        this.load();
+    }
+
+    load(): Promise<T> {
+    }
+
+    reload(): Promise<T> {
+        return this.load();
+    }
+
+    ready() {
+        return this.#promise;
+    }
+
+    get( path?: string | string[] ): unknown {
+        if( !path ) return this.#data;
+        if( typeof path === 'string' ) path = path.split( '.' );
+    }
+}
+
+interface DataParameters {
+}
+
+const cache: Record<string, DataManager> = {};
+
+interface DataDecoratorOptions {
+    cache?: boolean;
+}
+
+export function Data<T = unknown>( uri: string, type: Type | DataDecoratorOptions = 'json', options?: DataDecoratorOptions ): ParameterDecorator {
+
+    if( typeof type !== 'string' ) {
+        options = type;
+        type = 'json';
+    }
+
+    let data: DataManager<T>;
+
+    if( !options.cache ) {
+        data = new DataManager( uri, type );
+    } else {
+        if( cache[ uri ] ) {
+            data = cache[ uri ];
+        } else {
+            data = new DataManager( uri, type );
+            cache[ uri ] = data;
+        }
+    }
+
+    return createParameterDecorator( async ( metadata: ParameterMetadata, ctx: Context ): Promise<DatraManager<T>> => {
+    } );
+}

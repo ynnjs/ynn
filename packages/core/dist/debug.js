@@ -23,23 +23,24 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _call, _enabled, _levels, _styles;
+var _levels, _styles, _call, _enabled;
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = __importDefault(require("util"));
 const cli_style_1 = __importDefault(require("cli-style"));
 const styles = {
-    log: { color: 'white' },
+    log: { color: 'green' },
     error: { color: 'red' },
     warn: { color: 'orange' },
-    debug: { color: 'cyan' },
-    verbose: { color: 'blue' }
+    debug: { color: 'cyan' }
 };
-class DebugLogger {
+class Debug {
     constructor(options = {}) {
-        _call.set(this, (name, style, msg, ...args) => {
+        _levels.set(this, true);
+        _styles.set(this, { ...styles });
+        _call.set(this, (name, style, ...args) => {
             if (!__classPrivateFieldGet(this, _enabled).call(this, name))
                 return;
-            return DebugLogger[name](style, msg, ...args);
+            Debug[name](style, ...args);
         });
         _enabled.set(this, (name) => {
             if (__classPrivateFieldGet(this, _levels) === false)
@@ -48,8 +49,6 @@ class DebugLogger {
                 return true;
             return __classPrivateFieldGet(this, _levels).includes(name);
         });
-        _levels.set(this, true);
-        _styles.set(this, { ...styles });
         if (typeof options.levels !== 'undefined') {
             __classPrivateFieldSet(this, _levels, options.levels);
         }
@@ -63,39 +62,33 @@ class DebugLogger {
             });
         }
     }
-    log(msg, ...args) {
-        __classPrivateFieldGet(this, _call).call(this, 'log', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles)?.log, msg, ...args);
+    static print(style, ...args) {
+        process.stdout.write(cli_style_1.default(util_1.default.format(...args) + '\n', style));
     }
-    error(msg, ...args) {
-        __classPrivateFieldGet(this, _call).call(this, 'error', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles)?.error, msg, ...args);
+    static log(style, ...args) {
+        this.print(style && { ...styles.log, ...style }, ...args);
     }
-    warn(msg, ...args) {
-        __classPrivateFieldGet(this, _call).call(this, 'warn', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles)?.warn, msg, ...args);
+    static error(style, ...args) {
+        this.print(style && { ...styles.error, ...style }, ...args);
     }
-    debug(msg, ...args) {
-        __classPrivateFieldGet(this, _call).call(this, 'debug', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles)?.debug, msg, ...args);
+    static warn(style, ...args) {
+        this.print(style && { ...styles.warn, ...style }, ...args);
     }
-    verbose(msg, ...args) {
-        __classPrivateFieldGet(this, _call).call(this, 'verbose', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles)?.verbose, msg, ...args);
+    static debug(style, ...args) {
+        this.print(style && { ...styles.debug, ...style }, ...args);
     }
-    static log(style, msg, ...args) {
-        this.print(style && { ...styles.log, ...style }, msg, ...args);
+    log(...args) {
+        __classPrivateFieldGet(this, _call).call(this, 'log', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles).log, ...args);
     }
-    static error(style, msg, ...args) {
-        this.print(style && { ...styles.error, ...style }, msg, ...args);
+    error(...args) {
+        __classPrivateFieldGet(this, _call).call(this, 'error', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles).error, ...args);
     }
-    static warn(style, msg, ...args) {
-        this.print(style && { ...styles.warn, ...style }, msg, ...args);
+    warn(...args) {
+        __classPrivateFieldGet(this, _call).call(this, 'warn', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles).warn, ...args);
     }
-    static debug(style, msg, ...args) {
-        this.print(style && { ...styles.debug, ...style }, msg, ...args);
-    }
-    static verbose(style, msg, ...args) {
-        this.print(style && { ...styles.verbose, ...style }, msg, ...args);
-    }
-    static print(style, msg, ...args) {
-        process.stdout.write(cli_style_1.default(util_1.default.format(msg, ...args) + '\n', style));
+    debug(...args) {
+        __classPrivateFieldGet(this, _call).call(this, 'debug', __classPrivateFieldGet(this, _styles) && __classPrivateFieldGet(this, _styles).debug, ...args);
     }
 }
-exports.default = DebugLogger;
-_call = new WeakMap(), _enabled = new WeakMap(), _levels = new WeakMap(), _styles = new WeakMap();
+exports.default = Debug;
+_levels = new WeakMap(), _styles = new WeakMap(), _call = new WeakMap(), _enabled = new WeakMap();

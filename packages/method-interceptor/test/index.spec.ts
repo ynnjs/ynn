@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import {
-    MetadataBefore, MetadataAfter, MetadataException, MetadataParameter,
+    MetadataBefore, MetadataAfter, MetadataException, SyntheticMetadataParameter,
     createDecoratorAfter, createInterceptorAfter,
     createDecoratorBefore, createInterceptorBefore,
     createDecoratorException, createInterceptorException,
@@ -35,7 +35,7 @@ describe( 'method-interceptor', () => {
 
         class CustomError extends Error {}
 
-        const Authorization = createDecoratorBefore( async ( metadata: MetadataBefore, ctx: Context ): Promise<UserInfo> => {
+        const Authorization = createDecoratorBefore<[ Context ]>( async ( metadata: MetadataBefore, ctx: Context ): Promise<UserInfo> => {
             const { header } = ctx;
             if( !header.authorization ) {
                 throw new Error( 'Not login' );
@@ -43,7 +43,7 @@ describe( 'method-interceptor', () => {
             return { name : 'admin', level : 9, password : 'abcdefg' };
         } );
 
-        const User = createDecoratorParameter( async ( metadata: MetadataParameter, ctx: Context ): Promise<UserInfo> => {
+        const User = createDecoratorParameter<[ Context ]>( async ( metadata: SyntheticMetadataParameter, ctx: Context ): Promise<UserInfo> => {
             const { query } = ctx;
             if( !query.uid ) {
                 throw new Error( 'uid is requierd' );

@@ -7,6 +7,8 @@
  * Description:
  ******************************************************************/
 
+/* eslint no-console: off */
+
 import yargs from 'yargs';
 import cliStyle from 'cli-style';
 

@@ -1,10 +1,10 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
- * 
+ *
  * File: method-interceptor/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 01/02/2021
- * Description: 
+ * Time: 02/24/2021
+ * Description:
  ******************************************************************/
 
 module.exports = {
@@ -22,4 +22,4 @@ module.exports = {
         'src/**/*.ts'
     ],
     testEnvironment : 'jsdom'
-}
+};

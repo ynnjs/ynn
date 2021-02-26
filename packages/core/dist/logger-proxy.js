@@ -8,17 +8,15 @@
  * Description:
  ******************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (options) => {
-    const { debugging = true, logging = false, logger, debug } = options;
-    const blank = () => { };
-    return new Proxy(logger || {}, {
-        get(logger, method) {
-            if (typeof method !== 'string')
-                return logger[method];
-            if (!debugging && (!logging || (logging && !logger)))
-                return blank;
+function loggerProxy(options) {
+    const blank = () => { }; // eslint-disable-line @typescript-eslint/no-empty-function
+    return new Proxy(options.logger ?? options.debug, {
+        get(target, method) {
+            if (typeof target[method] !== 'function')
+                return target[method];
+            const { debugging, logging, logger, debug } = options;
             let fn;
-            if (logging) {
+            if (logging === true || (Array.isArray(logging) && logging.includes(method))) {
                 if (typeof logger?.[method] === 'function') {
                     fn = logger[method].bind(logger);
                 }
@@ -29,17 +27,19 @@ exports.default = (options) => {
             }
             else
                 fn = blank;
-            if (!debugging)
+            if (debugging === false || (Array.isArray(debugging) && !debugging.includes(method)))
                 return fn;
-            return (msg, ...args) => {
-                fn(msg, ...args);
+            return (...args) => {
+                fn(...args);
                 if (typeof debug[method] === 'function') {
-                    debug[method](msg, ...args);
+                    debug[method](...args);
                 }
                 else if (typeof debug[method] === 'undefined') {
-                    debug.log(msg, ...args);
+                    debug.log(...args);
                 }
             };
         }
     });
-};
+}
+exports.default = loggerProxy;
+;

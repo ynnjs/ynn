@@ -7,10 +7,19 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/waka';
-// import { ActionMetadata } from './metadata.interface';
+import { VariadicClass } from '@ynn/utility-types';
+import { Context } from '@ynn/core';
+import { Metadata } from './metadata.interface';
 
-export interface Pipe<T = unknown, R = unknown> {
+export interface PipeFunction<T = any, R = any, M extends Metadata = Metadata> { // eslint-disable-line @typescript-eslint/no-explicit-any
     // ( value: unknown, ctx: Context, metadata: ActionMetadata ): unknown;
-    ( value: T, ctx: Context ): R;
+    ( value: T, ctx: Context, metadata: M ): R;
 }
+
+export interface PipeInterface<T = any, R = any, M extends Metadata = Metadata> { // eslint-disable-line @typescript-eslint/no-explicit-any
+    transform: ( value: T, ctx: Context, metadata: M ) => R;
+}
+
+export type PipeConstructor = VariadicClass<any[], PipeInterface>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+export type Pipe = PipeFunction | PipeInterface | PipeConstructor;

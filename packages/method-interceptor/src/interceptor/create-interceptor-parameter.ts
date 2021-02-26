@@ -61,12 +61,12 @@ function createInterceptorParameter<T extends unknown[]>( ...args: [
 
             const last = metadata[ metadata.length - 1 ];
 
-            let promise: Promise<unknown> = Promise.resolve( last.method?.( last.metadata, ...args ) ?? null );
+            let promise: Promise<unknown> = Promise.resolve( last.method?.( last.metadata, ...[ ...args ] ) ?? null );
 
             for( let i = metadata.length - 2; i >= 0; i -= 1 ) {
                 const item = metadata[ i ];
-                promise = promise.then( () => {
-                    return item.method?.( item.metadata, ...args ) ?? null;
+                promise = promise.then( ( val: unknown ) => {
+                    return item.method?.( item.metadata, ...[ ...args, val ] ) ?? null;
                 } );
             }
 

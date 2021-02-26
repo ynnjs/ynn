@@ -12,7 +12,8 @@ import fs from 'fs';
 import path from 'path';
 import request from 'supertest';
 import formidable from 'formidable';
-import Koa, { KoaContext } from '@ynn/koa';
+import Koa from 'koa';
+import { Context } from '@ynn/core';
 import { VariadicFunction } from '@ynn/utility-types';
 import body, { BodyOptions } from '../src';
 
@@ -20,7 +21,7 @@ interface CreateAppOptions {
     callback?: VariadicFunction;
     error?: VariadicFunction;
     body?: BodyOptions;
-    beforeParsing?: ( ctx: KoaContext ) => void;
+    beforeParsing?: ( ctx: Koa.Context ) => void;
     request?: {
         send?: ( Record<string, string | number> | string | undefined )[];
         set?: [string, string][];
@@ -35,10 +36,12 @@ function createApp( options: CreateAppOptions ) {
     app.use( async ( ctx ) => {
         options.beforeParsing?.( ctx );
         try {
-            const parsed = await body( ctx, options.body ?? {} );
+            const parsed = await body( ctx as unknown as Context, options.body ?? {} );
             options.callback?.( parsed, ctx );
         } catch( e: unknown ) {
-            if( !options.error ) console.log( 'Uncaught Error: ', e );
+            if( !options.error ) {
+                console.error( 'Uncaught Error: ', e ); // eslint-disable-line no-console
+            }
             options.error?.( e );
         }
     } );
@@ -339,7 +342,7 @@ describe( 'body', () => {
                 },
                 error( e ) {
                     expect( e ).toBeInstanceOf( Error );
-                    expect( e.message ).toMatch( /maxFileSize \(\d+ bytes\) exceeded/ );
+                    expect( e.message ).toMatch( /exceeded/ );
                     done();
                 }
             } );
@@ -359,7 +362,7 @@ describe( 'body', () => {
                 },
                 error( e ) {
                     expect( e ).toBeInstanceOf( Error );
-                    expect( e.message ).toMatch( /maxFieldsSize \(\d+ bytes\) exceeded/ );
+                    expect( e.message ).toMatch( /exceeded/ );
                     done();
                 }
             } );

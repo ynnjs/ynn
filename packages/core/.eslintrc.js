@@ -3,7 +3,7 @@
  *
  * File: core/.eslintrc.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/10/2021
+ * Time: 02/18/2021
  * Description:
  ******************************************************************/
 

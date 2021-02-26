@@ -1,0 +1,43 @@
+{
+    "name": "@ynn/pipes",
+    "version": "0.0.0",
+    "description": "Ynn pipes",
+    "main": "dist/index.js",
+    "author": "LvChengbin <lvchengbin59@gmail.com>",
+    "licence": "MIT",
+    "scripts": {
+        "clean": "rm -rf dist",
+        "make": "yarn clean && tsc --declaration",
+        "make:watch": "tsc --watch",
+        "test": "jest",
+        "test:watch": "yarn test --watch",
+        "test:cov": "yarn test --coverage",
+        "prepare": "yarn make",
+        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
+    },
+    "engines": {
+        "node": ">=14.15.0"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist"
+    ],
+    "devDependencies": {
+        "@types/jest": "^26.0.20",
+        "@types/node": "^14.14.31",
+        "@typescript-eslint/eslint-plugin": "^4.15.2",
+        "@typescript-eslint/parser": "^4.15.2",
+        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
+        "eslint": "^7.20.0",
+        "eslint_d": "^10.0.3",
+        "jest": "^26.6.3",
+        "ts-jest": "^26.5.2",
+        "typescript": "4.1.5"
+    },
+    "dependencies": {
+        "@ynn/common": "workspace:packages/common",
+        "@ynn/core": "workspace:packages/core"
+    }
+}

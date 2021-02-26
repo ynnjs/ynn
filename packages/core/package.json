@@ -1,8 +1,6 @@
 {
     "name": "@ynn/core",
     "version": "0.0.0",
-    "description": "Ynn core",
-    "main": "dist/index.js",
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
     "scripts": {
@@ -12,14 +10,31 @@
         "test": "jest",
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
-        "prepublish": "yarn make",
+        "prepublish": "yarn build",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
+    "engines": {
+        "node": ">14.15.0"
+    },
+    "publicConfig": {
+        "access": "public"
+    },
+    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
     "devDependencies": {
+        "@types/accepts": "^1.3.5",
+        "@types/content-disposition": "^0.5.3",
+        "@types/encodeurl": "^1.0.0",
+        "@types/escape-html": "^1.0.0",
+        "@types/http-assert": "^1.5.1",
+        "@types/http-errors": "^1.8.0",
         "@types/jest": "^26.0.20",
-        "@types/node": "^14.14.28",
+        "@types/lru-cache": "^5.1.0",
+        "@types/node": "^14.14.31",
         "@types/statuses": "^2.0.0",
-        "@types/supertest": "^2.0.10",
+        "@types/type-is": "^1.6.3",
         "@types/yargs": "^16.0.0",
         "@typescript-eslint/eslint-plugin": "^4.15.1",
         "@typescript-eslint/parser": "^4.15.1",
@@ -29,26 +44,33 @@
         "eslint_d": "^10.0.2",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
-        "jest-mock-process": "^1.4.0",
-        "qs": "^6.9.6",
-        "statuses": "^2.0.1",
-        "supertest": "^6.1.3",
+        "reflect-metadata": "^0.1.13",
         "ts-jest": "^26.5.1",
         "ts-node": "^9.1.1",
         "typescript": "^4.1.5"
     },
+    "peerDependencies": {
+        "reflect-metadata": "*"
+    },
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
+        "@types/content-type": "^1.1.3",
         "@ynn/common": "workspace:packages/common",
-        "@ynn/http-assert": "^0.0.0",
-        "@ynn/koa": "^0.0.0",
+        "@ynn/method-interceptor": "workspace:packages/method-interceptor",
+        "@ynn/utility-types": "workspace:packages/utility-types",
+        "accepts": "^1.3.7",
+        "cache-content-type": "^1.0.1",
         "cli-style": "^0.1.1",
-        "escape-string-regexp": "^4.0.0",
+        "content-disposition": "^0.5.3",
+        "content-type": "^1.0.4",
+        "encodeurl": "^1.0.2",
+        "escape-html": "^1.0.3",
+        "http-assert": "^1.4.1",
+        "http-errors": "^1.8.0",
+        "lru-cache": "^6.0.0",
         "path-to-regexp": "^6.2.0",
-        "reflect-metadata": "^0.1.13",
+        "statuses": "^2.0.1",
+        "type-is": "^1.6.18",
         "yargs": "^16.2.0"
-    },
-    "engines": {
-        "node": ">=14.15.0"
     }
 }

@@ -8,6 +8,7 @@
  ******************************************************************/
 
 import 'reflect-metadata';
+import 'jest-extended';
 import { Storage, createInterceptorParameter, KEY_PARAMETER, MetadataParameter } from '../../src';
 import Decorate from '../helpers/decorate';
 
@@ -40,8 +41,7 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         const metadata: MetadataParameter[][] = [
             [ {
                 type : key,
-                interceptorType : 'parameter',
-                paramtype : undefined
+                interceptorType : 'parameter'
             } ]
         ];
 
@@ -71,8 +71,7 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         const metadata: MetadataParameter[][] = [
             [ {
                 type : key,
-                interceptorType : 'parameter',
-                paramtype : undefined
+                interceptorType : 'parameter'
             } ]
         ];
 
@@ -93,12 +92,60 @@ describe( 'interceptor/create-interceptor-parameter', () => {
         Storage.set( key2, () => 1 );
 
         const metadata: MetadataParameter[][] = [
-            [ { type : key1, interceptorType : 'parameter', paramtype : undefined } ],
-            [ { type : key2, interceptorType : 'parameter', paramtype : undefined } ]
+            [ { type : key1, interceptorType : 'parameter' } ],
+            [ { type : key2, interceptorType : 'parameter' } ]
         ];
 
         Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
         const parameter = createInterceptorParameter( A.prototype, 'fn' );
         return expect( parameter() ).resolves.toEqual( [ 'abc', 1 ] );
+    } );
+
+    it( 'should called multiple decorators for single parameter in order', async () => {
+        class A { @Decorate fn( name: string ) {} } // eslint-disable-line
+        const fn1 = jest.fn();
+        const fn2 = jest.fn();
+        const key1 = Storage.key();
+        const key2 = Storage.key();
+
+        Storage.set( key1, fn1 );
+        Storage.set( key2, fn2 );
+
+        const metadata: MetadataParameter[][] = [ [
+            { type : key2, interceptorType : 'parameter' },
+            { type : key1, interceptorType : 'parameter' }
+        ] ];
+
+        Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
+        const parameter = createInterceptorParameter( A.prototype, 'fn' );
+        await parameter();
+        expect( fn1 ).toHaveBeenCalledBefore( fn2 );
+        expect( fn1 ).toHaveBeenCalled();
+        expect( fn2 ).toHaveBeenCalled();
+    } );
+
+    it( 'should pass return value through decorators of parameter', async () => {
+        class A { @Decorate fn( name: string ) {} } // eslint-disable-line
+        const fn1 = () => 'ynn';
+        const fn2 = jest.fn();
+        const key1 = Storage.key();
+        const key2 = Storage.key();
+
+        Storage.set( key1, fn1 );
+        Storage.set( key2, fn2 );
+
+        const metadata: MetadataParameter[][] = [ [
+            { type : key2, interceptorType : 'parameter' },
+            { type : key1, interceptorType : 'parameter' }
+        ] ];
+
+        Reflect.defineMetadata( KEY_PARAMETER, metadata, A.prototype, 'fn' );
+        const parameter = createInterceptorParameter( A.prototype, 'fn' );
+        await parameter( 'nny' );
+        expect( fn2 ).toHaveBeenCalledWith( {
+            interceptorType : 'parameter',
+            paramtype : String,
+            type : expect.any( Symbol )
+        }, 'nny', 'ynn' );
     } );
 } );

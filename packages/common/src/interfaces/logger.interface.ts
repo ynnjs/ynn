@@ -17,6 +17,5 @@ export interface Logger {
     log: LogFunction;
     error: LogFunction;
     warn: LogFunction;
-    debug?: LogFunction;
-    verbose?: LogFunction;
+    debug: LogFunction;
 }

@@ -341,6 +341,7 @@ declare const _default: {
                     'no-await-in-loop': string;
                     'no-compare-neg-zero': string;
                     'no-cond-assign': string;
+                    'no-console': string;
                     'no-constant-condition': string;
                     'no-control-regex': string;
                     'no-debugger': string;

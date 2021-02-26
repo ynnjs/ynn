@@ -9,7 +9,6 @@
 
 module.exports = {
     preset : 'ts-jest',
-    setupFilesAfterEnv : [ 'jest-extended' ],
     testMatch : [
         '**/test/**/*.spec.ts'
     ],
@@ -21,5 +20,5 @@ module.exports = {
     collectCoverageFrom : [
         'src/**/*.ts'
     ],
-    testEnvironment : 'jsdom'
+    testEnvironment : 'node'
 }
