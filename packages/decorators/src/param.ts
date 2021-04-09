@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { runPipesInSequence, Pipe, CommonRequestMetadata, CommonParameterMetadata } from '@ynn/common';
+import { Context, Pipe, CommonRequestMetadata, CommonParameterMetadata } from '@ynn/core';
+import { runPipesInSequence } from '@ynn/util';
 import { createGeneralDecorator } from './util';
 
 async function requestAndParameterInterceptor(

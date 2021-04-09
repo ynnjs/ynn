@@ -9,4 +9,4 @@
 import { MethodParameter } from '../method.interface';
 import { MetadataParameter } from '../metadata';
 export declare type CreateDecoratorParameterOptions = Pick<MetadataParameter, 'parameters'>;
-export declare function createDecoratorParameter<T extends unknown[]>(method: MethodParameter<T>, options?: Readonly<CreateDecoratorParameterOptions>): ParameterDecorator;
+export declare function createDecoratorParameter<T extends unknown[]>( method: MethodParameter<T>, options?: Readonly<CreateDecoratorParameterOptions> ): ParameterDecorator;

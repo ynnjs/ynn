@@ -49,3 +49,14 @@ export const KEY_PARAMETER = Symbol( 'key#parameter' );
  * ```
  */
 export const KEY_EXCEPTION = Symbol( 'key#exception' );
+
+/**
+ * metadata key from `finally` interceptor.
+ *
+ * @example:
+ *
+ * ```ts
+ * Reflect.defineMetadata( KEY_FINALLY, metadataValue, descriptor.value );
+ * ```
+ */
+export const KEY_FINALLY = Symbol( 'key#finally' );

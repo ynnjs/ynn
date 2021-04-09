@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
@@ -7,17 +7,19 @@
  * Time: 01/30/2021
  * Description:
  ******************************************************************/
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty( exports, '__esModule', { value : true } );
 exports.Storage = void 0;
 class Storage {
-    static set(key, method) {
-        Storage.map.set(key, method);
+    static set( key, method ) {
+        Storage.map.set( key, method );
     }
-    static get(key) {
-        return Storage.map.get(key);
+
+    static get( key ) {
+        return Storage.map.get( key );
     }
-    static key(prefix = '') {
-        return Symbol(`${prefix}${Storage.n++}`);
+
+    static key( prefix = '' ) {
+        return Symbol( `${prefix}${Storage.n++}` );
     }
 }
 exports.Storage = Storage;

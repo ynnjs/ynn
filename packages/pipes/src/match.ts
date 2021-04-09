@@ -7,9 +7,16 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { PipeFunction, HttpException, Metadata } from '@ynn/common';
+import { Context, HttpException, Metadata, PipeFunction } from '@ynn/core';
 
+/**
+ * @example
+ *
+ * ```ts
+ * @Action()
+ * fn( @Query( 'domain', Match( /\.google\.com$/ ) ) domain: string ) {}
+ * ```
+ */
 export function Match( pattern: string | RegExp | ( string | RegExp )[] ): PipeFunction {
     const t = typeof pattern;
     const isRegexp = pattern instanceof RegExp;

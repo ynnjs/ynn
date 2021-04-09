@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { Action, Context, Controller } from '@ynn/core';
-import { createAppWithRequest } from '@ynn/testing-library';
+import { Action, Context } from '@ynn/core';
+import { createAppWithRequest } from '@ynn/testing';
 import { Response } from '../src';
 
 describe( '@Response()', () => {
@@ -16,7 +16,7 @@ describe( '@Response()', () => {
     it( 'overwrite the response data', async () => {
         const res = { status : 0, message : 'OK' };
 
-        class IndexController implements Controller {
+        class IndexController {
             constructor( public ctx: Context ) {}
 
             @Action()
@@ -36,7 +36,7 @@ describe( '@Response()', () => {
     it( 'transform response data with Pipes', async () => {
         const res = { name : 'Achilles' };
 
-        class IndexController implements Controller {
+        class IndexController {
             constructor( public ctx: Context ) {}
 
             @Action()

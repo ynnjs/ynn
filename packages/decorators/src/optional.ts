@@ -7,8 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { ParameterMetadata } from '@ynn/common';
+import { Context, ParameterMetadata } from '@ynn/core';
 import { createParameterDecorator } from './util';
 
 export function Optional<T>( defaultValue?: T ): ParameterDecorator {

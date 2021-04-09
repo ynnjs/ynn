@@ -13,10 +13,14 @@ import { MetadataParameter } from '../metadata';
 import { MethodParameterInfo, MethodParameter } from '../method.interface';
 import { Storage } from '../storage';
 
-function createInterceptorParameter<T extends unknown[]>( ...args: [
+export interface InterceptorParameter<T extends unknown[] = unknown[]> {
+    ( ...args: T ): Promise<unknown[]>;
+}
+
+export function createInterceptorParameter<T extends unknown[]>( ...args: [
     obj: VariadicObject,
     methodName?: string | symbol
-] ): ( ...args: T ) => Promise<unknown[]> {
+] ): InterceptorParameter<T> {
 
     type Info = MethodParameterInfo<MethodParameter<T>>;
 
@@ -76,5 +80,3 @@ function createInterceptorParameter<T extends unknown[]>( ...args: [
         return Promise.all( promises );
     };
 }
-
-export default createInterceptorParameter;

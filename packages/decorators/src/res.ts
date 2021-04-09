@@ -7,9 +7,9 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
 import { RequiredKeys } from '@ynn/utility-types';
-import { runPipesInSequence, Pipe, RequestMetadata, ParameterMetadata } from '@ynn/common';
+import { Context, Pipe, RequestMetadata, ParameterMetadata } from '@ynn/core';
+import { runPipesInSequence } from '@ynn/util';
 import { createDecorator } from './util';
 
 interface ResParameters {

@@ -9,8 +9,8 @@
 
 import { OutgoingHttpHeaders } from 'http';
 import { Valueof } from '@ynn/utility-types';
-import { Context } from '@ynn/core';
-import { runPipesInSequence, Pipe, CommonRequestMetadata, CommonParameterMetadata, ResponseMetadata } from '@ynn/common';
+import { Context, Pipe, CommonRequestMetadata, CommonParameterMetadata, ResponseMetadata } from '@ynn/core';
+import { runPipesInSequence } from '@ynn/util';
 import { createGeneralDecorator, createResponseDecorator } from './util';
 
 type HeaderPair = [ key: string, value: Valueof<OutgoingHttpHeaders> ];

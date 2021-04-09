@@ -6,6 +6,9 @@
  * Time: 12/02/2020
  * Description:
  ******************************************************************/
+import { VariadicClass } from '@ynn/utility-types';
+import { Ynn } from './ynn';
+import { Context } from './context';
 export interface ActionInfo {
     /**
      * the method name, parameter decorators save metadata based on method name and prototype
@@ -27,5 +30,10 @@ export interface ActionInfo {
  *
  * @return a method decorator
  */
-export declare function Action(name?: string): MethodDecorator;
-export declare function scan(obj: object): Record<string, ActionInfo>;
+export declare function Action( name?: string ): MethodDecorator;
+export declare function scan( obj: object ): Record<string, ActionInfo>;
+export declare type Executor = ( context: Context ) => unknown;
+/**
+ * create action executor functions for every action function in specific controller.
+ */
+export declare function createExecutors( mountingPath: Ynn[], Controller: VariadicClass ): Record<string, Executor>;

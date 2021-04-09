@@ -7,7 +7,13 @@
  * Description:
  ******************************************************************/
 
+import { VariadicClass } from '@ynn/utility-types';
+import { createInterceptorParameter, getMetadataParameter, InterceptorAfter, InterceptorBefore, InterceptorException } from '@ynn/method-interceptor';
 import { ACTION_METADATA_KEY, ACTION_METHOD_SUFFIX } from './constants';
+import { Ynn } from './ynn';
+import { Context } from './context';
+import { fillParams } from './util/fill-params';
+import { createABEInterceptors } from './util/create-abe-interceptors';
 
 export interface ActionInfo {
     /**
@@ -104,4 +110,71 @@ export function scan(
     }
 
     return actions;
+}
+
+export type Executor = ( context: Context ) => unknown;
+
+
+/**
+ * create action executor functions for every action function in specific controller.
+ */
+export function createExecutors( mountingPath: Ynn[], Controller: VariadicClass ): Record<string, Executor> {
+
+    const executors: Record<string, Executor> = {};
+    const actionInfos = scan( Controller.prototype );
+
+    const afters: InterceptorAfter<[ Context ]>[] = [];
+    const befores: InterceptorBefore<[ Context ]>[] = [];
+    const exceptions: InterceptorException<[ Context ]>[] = [];
+
+    for( const item of mountingPath ) {
+        const Constructor = item.module ?? item.constructor;
+        const [ after, before, exception ] = createABEInterceptors( Constructor );
+        afters.push( after );
+        befores.push( before );
+        exceptions.push( exception );
+    }
+
+    const [ controllerAfter, controllerBefore, controllerException ] = createABEInterceptors( Controller );
+    afters.push( controllerAfter );
+    befores.push( controllerBefore );
+    exceptions.push( controllerException );
+
+    Object.keys( actionInfos ).forEach( ( actionName: string ) => {
+        const info = actionInfos[ actionName ];
+        const { descriptor, methodName, proto } = info;
+
+        const [ after, before, exception ] = createABEInterceptors( descriptor );
+
+        const parameter = createInterceptorParameter<[ Context ]>( proto, methodName );
+        const metadataParameter = getMetadataParameter( proto, methodName );
+        const paramtypes = Reflect.getMetadata( 'design:paramtypes', proto, methodName );
+
+        const controllerParameter = createInterceptorParameter<[ Context ]>( Controller );
+        const controllerMetadataParameter = getMetadataParameter( Controller );
+        const controllerParamtypes = Reflect.getMetadata( 'design:paramtypes', Controller );
+
+        executors[ actionName ] = async ( context: Context ): Promise<unknown> => {
+
+            return Promise.all( [ before( context ), ...befores.map( async item => item( context ) ) ] ).then( async () => {
+
+                const controllerParams = await fillParams( await controllerParameter( context ), controllerMetadataParameter, controllerParamtypes, [ context ] );
+                const params = await fillParams( await parameter( context ), metadataParameter, paramtypes, [ context ] );
+                const response = new Controller( ...controllerParams )[ methodName ]( ...params );
+
+                let res = after( response, context );
+                for( let i = afters.length - 1; i > 0; i -= 1 ) {
+                    res = res.then( async val => afters[ i ]( val, context ) );
+                }
+                return res;
+            } ).catch( async ( e: unknown ) => {
+                let promise = exception( e, context );
+                for( let i = exceptions.length - 1; i > 0; i -= 1 ) {
+                    promise = promise.catch( async ( e: unknown ) => exceptions[ i ]( e, context ) );
+                }
+                return promise;
+            } );
+        };
+    } );
+    return executors;
 }

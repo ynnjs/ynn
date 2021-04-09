@@ -6,13 +6,8 @@
     "license": "MIT",
     "scripts": {
         "clean": "rm -rf dist",
-        "make": "yarn clean && tsc --declaration",
-        "make:watch": "tsc --watch",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "test:cov": "jest --coverage",
-        "prepublish": "yarn make",
-        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
+        "make": "yarn clean && tsc -b -v",
+        "test": "jest"
     },
     "engines": {
         "node": ">=14.15.0"
@@ -24,24 +19,21 @@
     "devDependencies": {
         "@types/bytes": "^3.1.0",
         "@types/co-body": "^5.1.0",
-        "@types/jest": "^26.0.20",
-        "@types/koa": "^2.13.0",
-        "@types/node": "^14.14.31",
-        "@types/supertest": "^2.0.10",
-        "@typescript-eslint/eslint-plugin": "^4.15.1",
-        "@typescript-eslint/parser": "^4.15.1",
-        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
+        "@types/jest": "^26.0.22",
+        "@types/koa": "^2.13.1",
+        "@types/node": "^14.14.37",
+        "@types/supertest": "^2.0.11",
+        "@typescript-eslint/eslint-plugin": "^4.20.0",
+        "@typescript-eslint/parser": "^4.20.0",
         "@ynn/utility-types": "workspace:packages/utility-types",
-        "eslint": "^7.20.0",
-        "eslint_d": "^10.0.2",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "koa": "^2.13.1",
         "qs": "^6.9.6",
         "supertest": "^6.1.3",
-        "ts-jest": "^26.5.1",
+        "ts-jest": "^26.5.4",
         "ts-node": "^9.1.1",
-        "typescript": "^4.1.5"
+        "typescript": "^4.2.3"
     },
     "dependencies": {
         "@ynn/core": "workspace:packages/core",

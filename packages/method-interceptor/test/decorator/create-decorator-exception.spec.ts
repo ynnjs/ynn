@@ -69,4 +69,22 @@ describe( 'decorator/create-decorator-exception', () => {
             parameters
         } ] );
     } );
+
+    it( 'should support to create class decorator', () => {
+        const parameters = { x : 1 };
+        const exceptionType = Error;
+        const exception = createDecoratorException( () => {}, { exceptionType, parameters } );
+
+        @exception
+        class A {}
+
+        const metadata = Reflect.getMetadata( KEY_EXCEPTION, A );
+
+        expect( metadata ).toEqual( [ {
+            type : expect.any( Symbol ),
+            interceptorType : 'exception',
+            exceptionType,
+            parameters
+        } ] );
+    } );
 } );

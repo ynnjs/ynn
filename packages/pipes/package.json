@@ -7,37 +7,30 @@
     "licence": "MIT",
     "scripts": {
         "clean": "rm -rf dist",
-        "make": "yarn clean && tsc --declaration",
-        "make:watch": "tsc --watch",
+        "make": "yarn clean && tsc -b -v",
         "test": "jest",
-        "test:watch": "yarn test --watch",
-        "test:cov": "yarn test --coverage",
-        "prepare": "yarn make",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "engines": {
         "node": ">=14.15.0"
     },
-    "publicConfig": {
-        "access": "public"
-    },
     "files": [
         "dist"
     ],
     "devDependencies": {
-        "@types/jest": "^26.0.20",
-        "@types/node": "^14.14.31",
-        "@typescript-eslint/eslint-plugin": "^4.15.2",
-        "@typescript-eslint/parser": "^4.15.2",
-        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
-        "eslint": "^7.20.0",
-        "eslint_d": "^10.0.3",
+        "@types/jest": "^26.0.22",
+        "@types/node": "^14.14.37",
+        "@typescript-eslint/eslint-plugin": "^4.20.0",
+        "@typescript-eslint/parser": "^4.20.0",
+        "eslint": "^7.23.0",
+        "eslint_d": "^10.0.4",
         "jest": "^26.6.3",
-        "ts-jest": "^26.5.2",
-        "typescript": "4.1.5"
+        "jest-extended": "^0.11.5",
+        "ts-jest": "^26.5.4",
+        "typescript": "^4.2.3"
     },
     "dependencies": {
-        "@ynn/common": "workspace:packages/common",
+        "@lvchengbin/is": "^1.0.5",
         "@ynn/core": "workspace:packages/core"
     }
 }

@@ -8,8 +8,8 @@
  ******************************************************************/
 
 import parser from '@ynn/body';
-import { Context } from '@ynn/core';
-import { runPipesInSequence, Pipe, CommonRequestMetadata, CommonParameterMetadata } from '@ynn/common';
+import { Context, Pipe, CommonRequestMetadata, CommonParameterMetadata } from '@ynn/core';
+import { runPipesInSequence } from '@ynn/util';
 import { createGeneralDecorator } from './util';
 
 /**
@@ -38,7 +38,7 @@ async function requestAndParameterInterceptor(
 
     if( property ) {
         try {
-            value = ( body as any )[ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
+            value = body as any [ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
         } catch( e: unknown ) { value = undefined }
     } else value = body;
 

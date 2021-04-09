@@ -6,5 +6,6 @@
  * Time: 11/09/2020
  * Description:
  ******************************************************************/
-export declare const ACTION_METHOD_SUFFIX = "Action";
+export declare const ACTION_METHOD_SUFFIX = 'Action';
 export declare const ACTION_METADATA_KEY: unique symbol;
+export declare const MODULE_METADATA_KEY: unique symbol;

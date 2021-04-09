@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Logger, LogFunction } from '@ynn/common';
+import { Logger, LogFunction } from './interfaces';
 
 export type LoggerProxyOptions<T = Logger> = {
     debugging: boolean | string[];
@@ -19,6 +19,7 @@ export type LoggerProxyOptions<T = Logger> = {
 export default function loggerProxy<T extends Logger>( options: Readonly<LoggerProxyOptions<T>> ): T {
 
     const blank = (): void => {}; // eslint-disable-line @typescript-eslint/no-empty-function
+    const isArray = Array.isArray;
 
     return new Proxy<T>( options.logger ?? options.debug, {
 
@@ -30,7 +31,7 @@ export default function loggerProxy<T extends Logger>( options: Readonly<LoggerP
 
             let fn;
 
-            if( logging === true || ( Array.isArray( logging ) && logging.includes( method ) ) ) {
+            if( logging === true || isArray( logging ) && logging.includes( method ) ) {
                 if( typeof logger?.[ method ] === 'function' ) {
                     fn = logger[ method ].bind( logger );
                 } else {
@@ -39,7 +40,7 @@ export default function loggerProxy<T extends Logger>( options: Readonly<LoggerP
                 }
             } else fn = blank;
 
-            if( debugging === false || ( Array.isArray( debugging ) && !debugging.includes( method ) ) ) return fn;
+            if( debugging === false || isArray( debugging ) && !debugging.includes( method ) ) return fn;
 
             return ( ...args: Parameters<LogFunction> ): void => {
                 fn( ...args );

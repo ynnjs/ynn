@@ -12,7 +12,7 @@ import { Socket } from 'net';
 import { ServerResponse, OutgoingHttpHeaders } from 'http';
 import { Options as ContentDispositionOptions } from 'content-disposition';
 import { Valueof } from '@ynn/utility-types';
-import Context from './context';
+import { Context } from './context';
 export interface ResponseOptions {
     ctx: Context;
     res?: ServerResponse;
@@ -28,7 +28,7 @@ export declare class Response {
     res?: ServerResponse;
     EXPLICIT_STATUS: boolean;
     EXPLICIT_NULL_BODY: boolean;
-    constructor(options: Readonly<ResponseOptions>);
+    constructor( options: Readonly<ResponseOptions> );
     get socket(): Socket | null;
     /**
      * Get all set response headers
@@ -37,7 +37,7 @@ export declare class Response {
     /**
      * Set response headers
      */
-    set headers(headers: OutgoingHttpHeaders);
+    set headers( headers: OutgoingHttpHeaders );
     /**
      * Get response status code
      */
@@ -45,7 +45,7 @@ export declare class Response {
     /**
      * Set response status code
      */
-    set status(code: number);
+    set status( code: number );
     /**
      * Get response status message
      */
@@ -53,7 +53,7 @@ export declare class Response {
     /**
      * Set response status message
      */
-    set message(msg: string);
+    set message( msg: string );
     /**
      * Get response body
      */
@@ -61,11 +61,11 @@ export declare class Response {
     /**
      * Set response body
      */
-    set body(val: unknown);
+    set body( val: unknown );
     /**
      * Set Content-Length field to n
      */
-    set length(n: number | undefined);
+    set length( n: number | undefined );
     /**
      * Return parsed response Content-Length when present.
      */
@@ -81,15 +81,15 @@ export declare class Response {
     /**
      * Perform a 302 redirect to `url`.
      */
-    redirect(url: string, alt?: string): void;
+    redirect( url: string, alt?: string ): void;
     /**
      * Set Content-Disposition header to "attachment" with optional `filename`( ...args );
      */
-    attachment(filename?: string, options?: ContentDispositionOptions): void;
+    attachment( filename?: string, options?: ContentDispositionOptions ): void;
     /**
      * Set Content-Type response header with `type` through `mime.lookup()`
      */
-    set type(type: string);
+    set type( type: string );
     /**
      * Return the response mime type void of parameters such as "charset".
      */
@@ -97,7 +97,7 @@ export declare class Response {
     /**
      * Set the Last-Modified date using a string or a Date.
      */
-    set lastModified(val: Date | undefined);
+    set lastModified( val: Date | undefined );
     /**
      * Get the Last-Modified date in Date form, if it exists
      */
@@ -105,7 +105,7 @@ export declare class Response {
     /**
      * Set the ETag of a response
      */
-    set etag(val: string);
+    set etag( val: string );
     /**
      * Get the ETag of a response
      */
@@ -114,28 +114,28 @@ export declare class Response {
      * Check whether the response is one of the listed types.
      * Pretty much the same as `this.request.is()`.
      */
-    is(...args: [...string[]] | string[]): string | false | null;
+    is( ...args: [...string[]] | string[] ): string | false | null;
     /**
      * Return response header.
      */
-    get(field: string): Valueof<OutgoingHttpHeaders>;
+    get( field: string ): Valueof<OutgoingHttpHeaders>;
     /**
      * Returns true if the header identified by name is currently set in the outgoing headers.
      * The header name matching is case-insensitive.
      */
-    has(field: string): boolean;
+    has( field: string ): boolean;
     /**
      * Set header `field` to `val` or pass an object of header fields
      */
-    set(field: string | OutgoingHttpHeaders, val?: Valueof<OutgoingHttpHeaders>): void;
+    set( field: string | OutgoingHttpHeaders, val?: Valueof<OutgoingHttpHeaders> ): void;
     /**
      * Append additional header `field` with value `val`.
      */
-    append(field: string, val: NonNullable<Valueof<OutgoingHttpHeaders>>): void;
+    append( field: string, val: NonNullable<Valueof<OutgoingHttpHeaders>> ): void;
     /**
      * Remove header `field`
      */
-    remove(field: string): void;
+    remove( field: string ): void;
     getHeaderNames(): string[];
     /**
      * Checks if the request if writable.
@@ -155,5 +155,5 @@ export declare class Response {
      * Flush any set headers and begin the body
      */
     flushHeaders(): void;
-    [util.inspect.custom](): Record<string, unknown>;
+    [ util.inspect.custom ](): Record<string, unknown>;
 }

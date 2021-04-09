@@ -20,7 +20,7 @@ import escapehtml from 'escape-html';
 import getType from 'cache-content-type';
 import contentDisposition, { Options as ContentDispositionOptions } from 'content-disposition';
 import { Valueof } from '@ynn/utility-types';
-import Context from './context';
+import { Context } from './context';
 
 export interface ResponseOptions {
     ctx: Context;
@@ -36,8 +36,8 @@ export class Response {
     #body: unknown = null;
 
     ctx: Context;
-    statusCode = 200;
-    statusMessage: string;
+    statusCode = 404;
+    statusMessage!: string;
 
     res?: ServerResponse;
 
@@ -47,21 +47,20 @@ export class Response {
     constructor( options: Readonly<ResponseOptions> ) {
         const { res } = options;
         this.ctx = options.ctx;
-        options.statusCode && ( this.statusCode = options.statusCode );
-
-        const { headers } = options;
-
-        headers && Object.keys( headers ).forEach( ( name: string ) => {
-            this.set( name, headers[ name ] );
-        } );
-
-        this.statusMessage = options.statusMessage === undefined ? ( statuses.message[ this.statusCode ] ?? '' ) : options.statusMessage;
 
         if( res ) {
             this.res = options.res;
-            options.headers ?? ( this.headers = res.getHeaders() );
-            options.statusCode ?? ( this.statusCode = res.statusCode );
-            options.statusMessage ?? ( this.message = res.statusMessage );
+            this.headers = res.getHeaders();
+            this.status = res.statusCode;
+            res.statusMessage && ( this.message = res.statusMessage );
+        } else {
+            options.headers && Object.keys( options.headers ).forEach( ( name: string ) => {
+                this.set( name, ( options.headers as OutgoingHttpHeaders )[ name ] );
+            } );
+
+            options.statusCode && ( this.status = options.statusCode );
+
+            this.message = options.statusMessage === undefined ? ( statuses.message[ this.status ] ?? '' ) : options.statusMessage;
         }
 
     }

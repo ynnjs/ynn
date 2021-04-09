@@ -9,4 +9,4 @@
 import { MethodException } from '../method.interface';
 import { MetadataException } from '../metadata';
 export declare type CreateDecoratorExceptionOptions = Pick<MetadataException, 'exceptionType' | 'parameters'>;
-export declare function createDecoratorException<T extends unknown[]>(method: MethodException<T>, options?: Readonly<CreateDecoratorExceptionOptions>): MethodDecorator;
+export declare function createDecoratorException<T extends unknown[]>( method: MethodException<T>, options?: Readonly<CreateDecoratorExceptionOptions> ): MethodDecorator & ClassDecorator;

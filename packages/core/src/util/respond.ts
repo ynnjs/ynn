@@ -10,7 +10,7 @@
 import Stream from 'stream';
 import { IncomingMessage, ServerResponse, OutgoingHttpHeaders } from 'http';
 import statuses from 'statuses';
-import Context from '../context';
+import { Context } from '../context';
 
 function setHeaders( headers: OutgoingHttpHeaders, res: ServerResponse ): void {
     Object.keys( headers ).forEach( ( field: string ) => {

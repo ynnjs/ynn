@@ -7,28 +7,30 @@
  * Description:
  ******************************************************************/
 
-import { VariadicClass } from '@ynn/utility-types';
+import { GlobalFunction } from '@ynn/utility-types';
 import { KEY_EXCEPTION } from '../constants';
 import { MetadataException } from '../metadata';
 import extractMethods from './extract-methods';
 
-function createInterceptorException<T extends unknown[] = unknown[]>(
-    descriptor: Readonly<PropertyDescriptor>
-): ( e: unknown, ...args: T ) => Promise<unknown> {
+export interface InterceptorException<T extends unknown[] = unknown[]> {
+    ( e: unknown, ...args: T ): Promise<unknown>;
+}
 
-    const bound = extractMethods( KEY_EXCEPTION, descriptor );
+export function createInterceptorException<T extends unknown[] = unknown[]>(
+    descriptorOrConstructor: Readonly<PropertyDescriptor> | GlobalFunction
+): InterceptorException<T> {
+
+    const bound = extractMethods( KEY_EXCEPTION, descriptorOrConstructor );
 
     return async ( e, ...args ): Promise<unknown> => {
 
         for( const info of bound ) {
             const metadata = info.metadata as MetadataException;
 
-            if( !( 'exceptionType' in metadata ) || e instanceof ( metadata.exceptionType as VariadicClass ) ) {
+            if( !( 'exceptionType' in metadata ) || e instanceof ( metadata.exceptionType as GlobalFunction ) ) {
                 return info.method( metadata, e, ...args );
             }
         }
         throw e;
     };
 }
-
-export default createInterceptorException;

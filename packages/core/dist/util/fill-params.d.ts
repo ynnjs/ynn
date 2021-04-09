@@ -8,4 +8,4 @@
  ******************************************************************/
 import { VariadicClass } from '@ynn/utility-types';
 import { MetadataParameter } from '@ynn/method-interceptor';
-export declare function fillParams<T extends unknown[]>(params: unknown[], metadatas: (MetadataParameter | undefined)[], paramtypes: VariadicClass[], ...args: T): Promise<unknown[]>;
+export declare function fillParams<T extends unknown[]>( params: unknown[], metadatas: ( MetadataParameter | undefined )[], paramtypes: VariadicClass[], ...args: T ): Promise<unknown[]>;

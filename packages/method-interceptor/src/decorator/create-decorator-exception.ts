@@ -15,8 +15,8 @@ export type CreateDecoratorExceptionOptions = Pick<MetadataException, 'exception
 export function createDecoratorException<T extends unknown[]>(
     method: MethodException<T>,
     options: Readonly<CreateDecoratorExceptionOptions> = {}
-): MethodDecorator {
-    return ( target, key: string | symbol, descriptor: PropertyDescriptor ): void => {
-        saveMetadataException( descriptor, method, options );
+): MethodDecorator & ClassDecorator {
+    return ( target, key?: string | symbol, descriptor?: PropertyDescriptor ): void => {
+        saveMetadataException( descriptor ?? target, method, options );
     };
 }

@@ -7,8 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { ParameterMetadata, Logger } from '@ynn/common';
+import { Context, Logger, ParameterMetadata } from '@ynn/core';
 import { createParameterDecorator } from './util';
 
 export function Debug(): ParameterDecorator {

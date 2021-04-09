@@ -8,8 +8,8 @@
  ******************************************************************/
 
 import 'reflect-metadata';
-import { Action, Context, Controller } from '@ynn/core';
-import { createAppWithRequest } from '@ynn/testing-library';
+import { Action, Context } from '@ynn/core';
+import { createAppWithRequest } from '@ynn/testing';
 import { Body, Optional } from '../src';
 
 describe( 'decorator/body', () => {
@@ -19,7 +19,7 @@ describe( 'decorator/body', () => {
             const fn1 = jest.fn();
             const res = { status : 0, message : 'OK' };
 
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()

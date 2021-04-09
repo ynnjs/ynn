@@ -13,7 +13,7 @@ import { Socket } from 'net';
 import { TLSSocket } from 'tls';
 import { IncomingMessage, IncomingHttpHeaders } from 'http';
 import { Accepts } from 'accepts';
-import Context from './context';
+import { Context } from './context';
 export interface RequestOptions {
     ctx: Context;
     url?: string;
@@ -43,9 +43,9 @@ export declare class Request {
     proxy: boolean;
     maxIpsCount?: number;
     req?: IncomingMessage;
-    constructor(options: Readonly<RequestOptions>);
+    constructor( options: Readonly<RequestOptions> );
     get headers(): IncomingHttpHeaders;
-    set headers(headers: IncomingHttpHeaders);
+    set headers( headers: IncomingHttpHeaders );
     /**
      * Get origin of URL
      */
@@ -55,12 +55,12 @@ export declare class Request {
      */
     get href(): string;
     get path(): string;
-    set path(pathname: string);
+    set path( pathname: string );
     get query(): ParsedUrlQuery;
     get querystring(): string;
-    set querystring(str: string);
+    set querystring( str: string );
     get search(): string;
-    set search(str: string);
+    set search( str: string );
     get host(): string;
     get hostname(): string;
     /**
@@ -94,21 +94,21 @@ export declare class Request {
      * support `proxy` property like Koa, and use `X-Real-IP` if `trustXRealIp` is true.
      */
     get ip(): string;
-    set ip(ip: string);
+    set ip( ip: string );
     /**
      * Return subdomains as an array
      */
     get subdomains(): string[];
     get accept(): Accepts;
-    set accept(accepts: Accepts);
-    accepts(...args: [...string[]] | string[]): string[] | string | false;
-    acceptsEncodings(...args: [...string[]] | string[]): string | false;
-    acceptsCharsets(...args: [...string[]] | string[]): string | false;
-    acceptsLanguages(...args: [...string[]] | string[]): string | false;
-    is(...args: [...string[]] | string[]): string | false | null;
+    set accept( accepts: Accepts );
+    accepts( ...args: [...string[]] | string[] ): string[] | string | false;
+    acceptsEncodings( ...args: [...string[]] | string[] ): string | false;
+    acceptsCharsets( ...args: [...string[]] | string[] ): string | false;
+    acceptsLanguages( ...args: [...string[]] | string[] ): string | false;
+    is( ...args: [...string[]] | string[] ): string | false | null;
     get type(): string;
-    get(field: string): string;
+    get( field: string ): string;
     inspect(): Record<string, unknown>;
     toJSON(): Record<string, unknown>;
-    [util.inspect.custom](): Record<string, unknown>;
+    [ util.inspect.custom ](): Record<string, unknown>;
 }

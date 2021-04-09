@@ -13,7 +13,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
 import httpAssert from 'http-assert';
-import { Logger } from '@ynn/common';
+import { Logger } from './interfaces';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
 export interface ContextOptions {
@@ -22,7 +22,8 @@ export interface ContextOptions {
     logger?: Logger;
     debug?: Logger;
 }
-export default class Context {
+export declare class Context {
+    [key: string]: any;
     req?: IncomingMessage;
     res?: ServerResponse;
     request: Request;
@@ -33,57 +34,57 @@ export default class Context {
     logger: Logger;
     debug: Logger;
     startTime: bigint;
-    constructor(options: ContextOptions);
+    constructor( options: ContextOptions );
     /**
      * Throw an error with `status` (default 500) and `msg`.
      * Note that these are user-level errors, and the message may be exposed to the client.
      */
-    throw(...args: Parameters<typeof httpErrors>): void;
+    throw( ...args: Parameters<typeof httpErrors> ): void;
     inspect(): Record<string, unknown>;
     toJSON(): Record<string, unknown>;
-    attachment(...args: Parameters<Response['attachment']>): void;
-    redirect(...args: Parameters<Response['redirect']>): void;
-    remove(...args: Parameters<Response['remove']>): void;
-    has(...args: Parameters<Response['has']>): ReturnType<Response['has']>;
-    set(...args: Parameters<Response['set']>): void;
-    append(...args: Parameters<Response['append']>): void;
+    attachment( ...args: Parameters<Response['attachment']> ): void;
+    redirect( ...args: Parameters<Response['redirect']> ): void;
+    remove( ...args: Parameters<Response['remove']> ): void;
+    has( ...args: Parameters<Response['has']> ): ReturnType<Response['has']>;
+    set( ...args: Parameters<Response['set']> ): void;
+    append( ...args: Parameters<Response['append']> ): void;
     flushHeaders(): void;
     get status(): number;
-    set status(code: number);
+    set status( code: number );
     get message(): string;
-    set message(msg: string);
+    set message( msg: string );
     get body(): unknown;
-    set body(val: unknown);
+    set body( val: unknown );
     get length(): number | undefined;
-    set length(n: number | undefined);
+    set length( n: number | undefined );
     get type(): string;
-    set type(type: string);
+    set type( type: string );
     get lastModified(): Date | undefined;
-    set lastModified(val: Date | undefined);
+    set lastModified( val: Date | undefined );
     get etag(): string;
-    set etag(val: string);
+    set etag( val: string );
     get headerSent(): boolean;
     get writable(): boolean;
-    acceptsLanguages(...args: Parameters<Request['acceptsLanguages']>): ReturnType<Request['acceptsLanguages']>;
-    acceptsEncodings(...args: Parameters<Request['acceptsEncodings']>): ReturnType<Request['acceptsEncodings']>;
-    acceptsCharsets(...args: Parameters<Request['acceptsCharsets']>): ReturnType<Request['acceptsCharsets']>;
-    accepts(...args: Parameters<Request['accepts']>): ReturnType<Request['accepts']>;
-    get(field: string): string;
-    is(...args: Parameters<Request['is']>): ReturnType<Request['is']>;
+    acceptsLanguages( ...args: Parameters<Request['acceptsLanguages']> ): ReturnType<Request['acceptsLanguages']>;
+    acceptsEncodings( ...args: Parameters<Request['acceptsEncodings']> ): ReturnType<Request['acceptsEncodings']>;
+    acceptsCharsets( ...args: Parameters<Request['acceptsCharsets']> ): ReturnType<Request['acceptsCharsets']>;
+    accepts( ...args: Parameters<Request['accepts']> ): ReturnType<Request['accepts']>;
+    get( field: string ): string;
+    is( ...args: Parameters<Request['is']> ): ReturnType<Request['is']>;
     get querystring(): string;
-    set querystring(str: string);
+    set querystring( str: string );
     get idempotent(): boolean;
     get socket(): Socket | null;
     get search(): string;
-    set search(str: string);
+    set search( str: string );
     get method(): string;
-    set method(method: string);
+    set method( method: string );
     get query(): ParsedUrlQuery;
     get path(): string;
-    set path(pathname: string);
+    set path( pathname: string );
     get url(): string;
     get accept(): Accepts;
-    set accept(accepts: Accepts);
+    set accept( accepts: Accepts );
     get origin(): string;
     get href(): string;
     get subdomains(): string[];

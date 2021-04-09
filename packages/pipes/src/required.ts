@@ -7,8 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { HttpException, Metadata } from '@ynn/common';
+import { Context, HttpException, Metadata } from '@ynn/core';
 
 export function Required<T>( value: T, ctx: Context, metadata: Metadata ): T {
 

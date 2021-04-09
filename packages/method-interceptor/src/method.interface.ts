@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { MetadataBefore, MetadataAfter, MetadataException, MixedMetadataParameter } from './metadata';
+import { MetadataBefore, MetadataAfter, MetadataException, MixedMetadataParameter, MetadataFinally } from './metadata';
 
 /**
  * The interface of methods that will be called by `InterceptorBefore`.
@@ -40,16 +40,24 @@ export interface MethodAfter<T extends unknown[]> {
  */
 export interface MethodException<T extends unknown[]> {
     /**
-     * the method that will be called by `InterceptorException`, the method should return a Promise object.
-     * if the Promise object resolved, the value will be treated as the new return value of the target method, otherwise, the new reject error will be thrown out.
+     * the method which will be called by `InterceptorException` and should return a Promise object.
+     * if the Promise object resolved, the value will be treated as the new return value of the target method, otherwise, a new error will be thrown out.
      *
      * @param e - the thrown error object
      * @param metadata - {@link MethodException}
      * @param ...args - other arguments
-     *
-     * @return a Promise object.
      */
     ( metadata: Readonly<MetadataException>, e: unknown, ...args: T ): unknown;
+}
+
+export interface MethodFinally<T extends unknown[]> {
+    /**
+     * the method which will be called by `InterceptorFinally` and should return a Promise object.
+     *
+     * @param metadata - {@link MetadataFinally}
+     * @param ...args - rest arguments
+     */
+    ( metadata: Readonly<MetadataFinally>, ...args: T ): unknown;
 }
 
 export interface MethodParameter<T extends unknown[]> {

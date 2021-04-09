@@ -46,3 +46,13 @@ export declare const KEY_PARAMETER: unique symbol;
  * ```
  */
 export declare const KEY_EXCEPTION: unique symbol;
+/**
+ * metadata key from `finally` interceptor.
+ *
+ * @example:
+ *
+ * ```ts
+ * Reflect.defineMetadata( KEY_FINALLY, metadataValue, descriptor.value );
+ * ```
+ */
+export declare const KEY_FINALLY: unique symbol;

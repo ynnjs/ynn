@@ -5,19 +5,12 @@
     "license": "MIT",
     "scripts": {
         "clean": "rm -rf dist",
-        "make": "yarn clean && tsc --declaration",
-        "make:watch": "tsc --watch",
+        "make": "yarn clean && tsc -b -v",
         "test": "jest",
-        "test:watch": "jest --watch",
-        "test:cov": "jest --coverage",
-        "prepublish": "yarn build",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
     "engines": {
         "node": ">14.15.0"
-    },
-    "publicConfig": {
-        "access": "public"
     },
     "main": "dist/index.js",
     "files": [
@@ -30,24 +23,23 @@
         "@types/escape-html": "^1.0.0",
         "@types/http-assert": "^1.5.1",
         "@types/http-errors": "^1.8.0",
-        "@types/jest": "^26.0.20",
+        "@types/jest": "^26.0.22",
         "@types/lru-cache": "^5.1.0",
-        "@types/node": "^14.14.31",
+        "@types/node": "^14.14.37",
         "@types/statuses": "^2.0.0",
         "@types/type-is": "^1.6.3",
-        "@types/yargs": "^16.0.0",
-        "@typescript-eslint/eslint-plugin": "^4.15.1",
-        "@typescript-eslint/parser": "^4.15.1",
-        "@ynn/eslint-plugin": "workspace:packages/eslint-plugin",
+        "@types/yargs": "^16.0.1",
+        "@typescript-eslint/eslint-plugin": "^4.20.0",
+        "@typescript-eslint/parser": "^4.20.0",
         "benny": "^3.6.15",
-        "eslint": "^7.20.0",
-        "eslint_d": "^10.0.2",
+        "eslint": "^7.23.0",
+        "eslint_d": "^10.0.4",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "reflect-metadata": "^0.1.13",
-        "ts-jest": "^26.5.1",
+        "ts-jest": "^26.5.4",
         "ts-node": "^9.1.1",
-        "typescript": "^4.1.5"
+        "typescript": "^4.2.3"
     },
     "peerDependencies": {
         "reflect-metadata": "*"
@@ -55,7 +47,6 @@
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
         "@types/content-type": "^1.1.3",
-        "@ynn/common": "workspace:packages/common",
         "@ynn/method-interceptor": "workspace:packages/method-interceptor",
         "@ynn/utility-types": "workspace:packages/utility-types",
         "accepts": "^1.3.7",
@@ -65,6 +56,7 @@
         "content-type": "^1.0.4",
         "encodeurl": "^1.0.2",
         "escape-html": "^1.0.3",
+        "escape-string-regexp": "^4.0.0",
         "http-assert": "^1.4.1",
         "http-errors": "^1.8.0",
         "lru-cache": "^6.0.0",

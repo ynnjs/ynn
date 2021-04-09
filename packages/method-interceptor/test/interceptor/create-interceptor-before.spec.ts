@@ -92,4 +92,25 @@ describe( 'interceptor/create-interceptor-before', () => {
         const before = createInterceptorBefore( descriptor );
         return expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
     } );
+
+    it( 'should support creating interceptor functions for class constructor', async () => {
+
+        class A {};
+
+        const [ key1, key2, key3 ] = [ Storage.key(), Storage.key(), Storage.key() ];
+
+        Storage.set( key1, () => 'fn1' );
+        Storage.set( key2, () => 'fn2' );
+        Storage.set( key3, async () => Promise.resolve( 'fn3' ) );
+
+        const metadata: MetadataBefore[] = [
+            { type : key1, interceptorType : 'before' },
+            { type : key2, interceptorType : 'before' },
+            { type : key3, interceptorType : 'before' }
+        ];
+
+        Reflect.defineMetadata( KEY_BEFORE, metadata, A );
+        const before = createInterceptorBefore( A );
+        return expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
+    } );
 } );

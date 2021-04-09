@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /******************************************************************
  * Copyright (C) 2020 LvChengbin
  *
@@ -7,4 +7,4 @@
  * Time: 12/27/2020
  * Description:
  ******************************************************************/
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty( exports, '__esModule', { value : true } );

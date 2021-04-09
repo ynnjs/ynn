@@ -11,8 +11,8 @@ declare type Key = string | number | symbol;
 export declare class Storage {
     private static map;
     private static n;
-    static set(key: Key, method: VariadicFunction): void;
-    static get(key: Key): VariadicFunction | undefined;
-    static key(prefix?: string): symbol;
+    static set( key: Key, method: VariadicFunction ): void;
+    static get( key: Key ): VariadicFunction | undefined;
+    static key( prefix?: string ): symbol;
 }
 export {};

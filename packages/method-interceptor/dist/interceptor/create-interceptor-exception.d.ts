@@ -6,5 +6,8 @@
  * Time: 12/28/2020
  * Description:
  ******************************************************************/
-declare function createInterceptorException<T extends unknown[] = unknown[]>(descriptor: Readonly<PropertyDescriptor>): (e: unknown, ...args: T) => Promise<unknown>;
-export default createInterceptorException;
+import { GlobalFunction } from '@ynn/utility-types';
+export interface InterceptorException<T extends unknown[] = unknown[]> {
+    ( e: unknown, ...args: T ): Promise<unknown>;
+}
+export declare function createInterceptorException<T extends unknown[] = unknown[]>( descriptorOrConstructor: Readonly<PropertyDescriptor> | GlobalFunction ): InterceptorException<T>;

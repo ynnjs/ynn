@@ -6,11 +6,13 @@
  * Time: 12/27/2020
  * Description:
  ******************************************************************/
+import { GlobalFunction } from '@ynn/utility-types';
+export interface InterceptorAfter<T extends unknown[] = unknown[]> {
+    ( value: unknown, ...args: T ): Promise<unknown>;
+}
 /**
  * @typeparam T
- * @typeparam V
  *
  * @returns
  */
-declare function createInterceptorAfter<V = unknown, T extends unknown[] = unknown[]>(descriptor: Readonly<PropertyDescriptor>): (value: V, ...args: T) => Promise<unknown>;
-export default createInterceptorAfter;
+export declare function createInterceptorAfter<T extends unknown[] = unknown[]>( descriptorOrConstructor: Readonly<PropertyDescriptor> | GlobalFunction ): InterceptorAfter<T>;

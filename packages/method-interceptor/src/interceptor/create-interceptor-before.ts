@@ -7,22 +7,29 @@
  * Description:
  ******************************************************************/
 
+import { GlobalFunction } from '@ynn/utility-types';
 import { MetadataBefore } from '../metadata';
 import { KEY_BEFORE } from '../constants';
 import extractMethods from './extract-methods';
+
+export interface InterceptorBefore<T extends unknown[] = unknown[]> {
+    ( ...args: T ): Promise<unknown>;
+}
 
 /**
  * create an empty interceptor method with methods is undefined.
  *
  * @typeparam T - the type of the arguments that will passed to the generated interceptor methods.
  *
+ * @param descriptorOrConstructor - the descriptor of class method or the constructor of the class
+ *
  * @returns a `Promise` object that resolves nothing.
  */
-function createInterceptorBefore<T extends unknown[] = unknown[]>(
-    descriptor: Readonly<PropertyDescriptor>
-): ( ...args: T ) => Promise<unknown> {
+export function createInterceptorBefore<T extends unknown[] = unknown[]>(
+    descriptorOrConstructor: Readonly<PropertyDescriptor> | GlobalFunction
+): InterceptorBefore<T> {
 
-    const bound = extractMethods( KEY_BEFORE, descriptor );
+    const bound = extractMethods( KEY_BEFORE, descriptorOrConstructor );
 
     return async ( ...args: T ): Promise<unknown[]> => {
         const promises: unknown[] = [];
@@ -34,5 +41,3 @@ function createInterceptorBefore<T extends unknown[] = unknown[]>(
         return Promise.all( promises );
     };
 }
-
-export default createInterceptorBefore;

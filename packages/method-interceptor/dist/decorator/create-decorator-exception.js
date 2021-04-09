@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
@@ -7,12 +7,12 @@
  * Time: 01/26/2021
  * Description:
  ******************************************************************/
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty( exports, '__esModule', { value : true } );
 exports.createDecoratorException = void 0;
-const metadata_1 = require("../metadata");
-function createDecoratorException(method, options = {}) {
-    return (target, key, descriptor) => {
-        metadata_1.saveMetadataException(descriptor, method, options);
+const metadata_1 = require( '../metadata' );
+function createDecoratorException( method, options = {} ) {
+    return ( target, key, descriptor ) => {
+        metadata_1.saveMetadataException( descriptor ?? target, method, options );
     };
 }
 exports.createDecoratorException = createDecoratorException;

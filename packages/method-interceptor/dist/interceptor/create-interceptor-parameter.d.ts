@@ -7,8 +7,10 @@
  * Description:
  ******************************************************************/
 import { VariadicObject } from '@ynn/utility-types';
-declare function createInterceptorParameter<T extends unknown[]>(...args: [
+export interface InterceptorParameter<T extends unknown[] = unknown[]> {
+    ( ...args: T ): Promise<unknown[]>;
+}
+export declare function createInterceptorParameter<T extends unknown[]>( ...args: [
     obj: VariadicObject,
     methodName?: string | symbol
-]): (...args: T) => Promise<unknown[]>;
-export default createInterceptorParameter;
+] ): InterceptorParameter<T>;

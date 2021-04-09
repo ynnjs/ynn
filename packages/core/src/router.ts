@@ -9,12 +9,9 @@
 
 import { pathToRegexp, Key, ParseOptions } from 'path-to-regexp';
 import { Shift } from '@ynn/utility-types';
-import Context from './context';
+import { Context } from './context';
 
-export type Pattern = string | RegExp | ( string | RegExp )[] | {
-    pattern: string | RegExp | ( string | RegExp )[];
-    options: ParseOptions;
-};
+export type Pattern = string | RegExp | ( string | RegExp )[];
 
 export interface RouteMap {
     module?: string;
@@ -23,12 +20,13 @@ export interface RouteMap {
     path?: string;
 }
 
-export type RouterHandler = ( this: Router, ctx: Context, params: Record<string, string>, matches: string[] ) => RouteMap | string | Promise<RouteMap | string> | void;
+export type RouterHandler = ( ctx: Context, params: Record<string, string>, matches: string[] ) => RouteMap | string | Context | Promise<RouteMap | string | Context> | void;
 
 export type RouterRule = [
     methods: string | string[],
     pattern: Pattern,
-    dest: RouterHandler | RouterHandler[] | RouteMap | string
+    dest: RouterHandler | RouteMap | string,
+    options?: ParseOptions
 ];
 
 export interface MatchResult {
@@ -36,10 +34,11 @@ export interface MatchResult {
     matches: string[];
 }
 
-function match( pattern: Pattern, path: string, options?: ParseOptions ): false | MatchResult {
+export type Matches = MatchResult & { rule: RouterRule };
 
-    const keys: Key[] = [];
-    const matches = pathToRegexp( pattern as string, keys, options ).exec( path );
+function match( pattern: RegExp, path: string, keys: Key[] ): false | MatchResult {
+
+    const matches = pattern.exec( path );
 
     if( !matches ) return false;
 
@@ -60,36 +59,44 @@ function match( pattern: Pattern, path: string, options?: ParseOptions ): false 
     return { params, matches };
 }
 
-export default class Router {
+export class Router {
 
-    rules: RouterRule[] = [];
+    rules: ( { rule: RouterRule; keys?: Key[]; pattern: RegExp } )[] = [];
+
+    #cache: Record<string, Matches | false> = {};
+
+    #push = ( rule: RouterRule ): void => {
+        const keys: Key[] = [];
+        const pattern = pathToRegexp( rule[ 1 ], keys, rule[ 3 ] );
+        this.rules.push( { rule, keys, pattern } );
+    };
 
     get( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'GET', ...args ] );
+        this.#push( [ 'GET', ...args ] );
     }
 
     post( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'POST', ...args ] );
+        this.#push( [ 'POST', ...args ] );
     }
 
     put( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'PUT', ...args ] );
+        this.#push( [ 'PUT', ...args ] );
     }
 
     head( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'HEAD', ...args ] );
+        this.#push( [ 'HEAD', ...args ] );
     }
 
     patch( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'PATCH', ...args ] );
+        this.#push( [ 'PATCH', ...args ] );
     }
 
     delete( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'DELETE', ...args ] );
+        this.#push( [ 'DELETE', ...args ] );
     }
 
     options( ...args: Shift<RouterRule> ): void {
-        this.rules.push( [ 'OPTIONS', ...args ] );
+        this.#push( [ 'OPTIONS', ...args ] );
     }
 
     any( ...args: RouterRule ): void {
@@ -99,45 +106,43 @@ export default class Router {
          * Uppercase the method(s) before appending in to the rules list, in order to avoid uppercasing the strings everytime in every request.
          */
         if( typeof methods === 'string' ) {
-            this.rules.push( [ methods.toUpperCase(), ...rest ] );
+            this.#push( [ methods.toUpperCase(), ...rest ] );
             return;
         }
 
-        this.rules.push( [ methods.map( m => m.toUpperCase() ), ...rest ] );
+        this.#push( [ methods.map( m => m.toUpperCase() ), ...rest ] );
     }
 
-    match( context: Readonly<Context> ): false | ( MatchResult & { rule: RouterRule } ) {
+    match( context: Context ): Matches | false {
 
         const { path, method } = context;
+        const cacheKey = path + '\x0B' + method;
 
-        for( const rule of this.rules ) {
+        if( this.#cache[ cacheKey ] !== undefined ) return this.#cache[ cacheKey ];
 
-            const [ methods, pattern ] = rule;
+        for( const item of this.rules ) {
+
+            const { keys = [], pattern, rule } = item;
+            const [ methods ] = rule;
 
             if( methods !== '*' ) {
                 if( typeof methods === 'string' && methods !== method ) continue;
                 if( Array.isArray( methods ) && !methods.includes( method ) ) continue;
             }
 
-            let res;
+            const res = match( pattern, path, keys );
 
-            if( typeof pattern === 'object' && 'pattern' in pattern ) {
-                res = match( pattern.pattern, path, pattern.options );
-            } else {
-                res = match( pattern, path );
-            }
-
-            if( res === false ) break;
+            if( res === false ) continue;
 
             const args = res.matches.slice( 1 ); // .map( v => decodeURIComponent( v ) );
 
-            return {
+            return this.#cache[ cacheKey ] = {
                 params : res.params,
                 matches : args,
                 rule
             };
         }
 
-        return false;
+        return this.#cache[ cacheKey ] = false;
     }
 }

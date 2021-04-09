@@ -1,13 +1,15 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
- * 
- * File: body/jest.config.js
+ * Copyright (C) 2021 LvChengbin
+ *
+ * File: utility-types/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 12/09/2020
- * Description: 
+ * Time: 04/07/2021
+ * Description:
  ******************************************************************/
 
 module.exports = {
+    name : '@ynn/utility-types',
+    displayName : '@ynn/utility-types',
     setupFilesAfterEnv : [ 'jest-extended' ],
     testMatch : [
         '**/test/**/*.spec.ts',
@@ -25,4 +27,4 @@ module.exports = {
         'src/**/*.ts'
     ],
     testEnvironment : 'node'
-}
+};

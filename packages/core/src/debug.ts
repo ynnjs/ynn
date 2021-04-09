@@ -9,7 +9,7 @@
 
 import util from 'util';
 import clistyle, { StyleOptions } from 'cli-style';
-import { Logger } from '@ynn/common';
+import { Logger } from './interfaces';
 
 type OptionsStyles = Record<keyof Logger, StyleOptions>;
 
@@ -61,8 +61,8 @@ export default class Debug implements Logger {
             this.#styles = false;
         } else {
             this.#styles = {
-                ...( this.#styles as OptionsStyles ),
-                ...( options.styles as Exclude<DebugOptions[ 'styles' ], false> )
+                ...this.#styles as OptionsStyles,
+                ...options.styles as Exclude<DebugOptions[ 'styles' ], false>
             };
         }
     }

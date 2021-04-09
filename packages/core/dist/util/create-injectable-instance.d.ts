@@ -7,5 +7,5 @@
  * Description:
  ******************************************************************/
 import { VariadicClass } from '@ynn/utility-types';
-export declare function createInjectableInstance<T, M extends unknown[]>(constructor: VariadicClass<any[], T>, // eslint-disable-line @typescript-eslint/no-explicit-any
-...args: M): Promise<T>;
+export declare function createInjectableInstance<T, M extends unknown[]>( constructor: VariadicClass<any[], T>, // eslint-disable-line @typescript-eslint/no-explicit-any
+...args: M ): Promise<T>;

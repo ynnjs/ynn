@@ -7,8 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { ResponseMetadata } from '@ynn/common';
+import { Context, ResponseMetadata } from '@ynn/core';
 import { createDecorator } from './util';
 
 type Result = { code: number; message?: string } | number | undefined;

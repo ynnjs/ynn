@@ -16,7 +16,7 @@ import { format as stringify, UrlWithStringQuery } from 'url';
 import contentType from 'content-type';
 import { is } from 'type-is';
 import accepts, { Accepts } from 'accepts';
-import Context from './context';
+import { Context } from './context';
 import { parseurl } from './util/parseurl';
 
 export interface RequestOptions {
@@ -69,19 +69,20 @@ export class Request {
             req.method && ( this.method = req.method );
             req.url && ( this.url = req.url );
             this.httpVersionMajor = req.httpVersionMajor;
+        } else {
+            options.headers && ( this.headers = options.headers );
+            options.method && ( this.method = options.method );
+            options.url && ( this.url = options.url );
+            options.httpVersionMajor && ( this.httpVersionMajor = options.httpVersionMajor );
         }
 
         options.maxIpsCount !== undefined && ( this.maxIpsCount = options.maxIpsCount );
         options.proxy && ( this.proxy = options.proxy );
-        options.url && ( this.url = options.url );
-        options.method && ( this.method = options.method );
         options.ip && ( this.#ip = options.ip );
         options.body === undefined || ( this.body = options.body );
         options.proxyIpHeader && ( this.proxyIpHeader = options.proxyIpHeader );
-        options.httpVersionMajor && ( this.httpVersionMajor = options.httpVersionMajor );
         options.trustXRealIp === undefined || ( this.trustXRealIp = options.trustXRealIp );
         options.subdomainOffset === undefined || ( this.subdomainOffset = options.subdomainOffset );
-        options.headers && ( this.headers = options.headers );
 
         this.originalUrl = this.url;
     }
@@ -232,7 +233,7 @@ export class Request {
     }
 
     get protocol(): string {
-        if( this.socket && ( this.socket as TLSSocket ).encrypted ) return 'https';
+        if( ( this.socket as TLSSocket )?.encrypted ) return 'https';
         if( !this.proxy ) return 'http';
         return this.get( 'X-Forwarded-Proto' ).split( /\s*,\s*/, 1 )[ 0 ] ?? 'http';
     }
@@ -266,7 +267,7 @@ export class Request {
         if( this.trustXRealIp && this.get( 'X-Real-IP' ) ) {
             return this.#ip = this.get( 'X-Real-IP' );
         }
-        return this.#ip = ( this.ips[ 0 ] || ( this.socket?.remoteAddress ?? '' ) );
+        return this.#ip = this.ips[ 0 ] || ( this.socket?.remoteAddress ?? '' ) ;
     }
 
     set ip( ip: string ) {

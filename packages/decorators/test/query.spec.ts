@@ -9,8 +9,8 @@
 
 import 'reflect-metadata';
 import { KEY_BEFORE } from '@ynn/method-interceptor';
-import { Action, Context, Controller } from '@ynn/core';
-import { createAppWithRequest } from '@ynn/testing-library';
+import { Action, Context } from '@ynn/core';
+import { createAppWithRequest } from '@ynn/testing';
 import { Query } from '../src';
 
 describe( 'decorator/query', () => {
@@ -38,7 +38,7 @@ describe( 'decorator/query', () => {
             const fn3 = jest.fn();
             const res = { status : 0, message : 'OK' };
 
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()

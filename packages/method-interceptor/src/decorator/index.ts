@@ -11,3 +11,4 @@ export * from './create-decorator-before';
 export * from './create-decorator-after';
 export * from './create-decorator-exception';
 export * from './create-decorator-parameter';
+export * from './create-decorator-finally';

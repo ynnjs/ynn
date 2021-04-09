@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import {
-    MetadataBefore, MetadataAfter, MetadataException, SyntheticMetadataParameter,
+    MetadataBefore, MetadataAfter, MetadataException, MixedMetadataParameter,
     createDecoratorAfter, createInterceptorAfter,
     createDecoratorBefore, createInterceptorBefore,
     createDecoratorException, createInterceptorException,
@@ -43,7 +43,7 @@ describe( 'method-interceptor', () => {
             return { name : 'admin', level : 9, password : 'abcdefg' };
         } );
 
-        const User = createDecoratorParameter<[ Context ]>( async ( metadata: SyntheticMetadataParameter, ctx: Context ): Promise<UserInfo> => {
+        const User = createDecoratorParameter<[ Context ]>( async ( metadata: MixedMetadataParameter, ctx: Context ): Promise<UserInfo> => {
             const { query } = ctx;
             if( !query.uid ) {
                 throw new Error( 'uid is requierd' );
@@ -63,7 +63,7 @@ describe( 'method-interceptor', () => {
             if( ctx.query.forceError ) {
                 throw new CustomError( 'Custom error' );
             }
-            delete ( value as any ).password; // eslint-disable-line @typescript-eslint/no-explicit-any
+            delete ( value as any ).password;
             return value;
         } );
 

@@ -10,8 +10,8 @@
 import 'reflect-metadata';
 import { IncomingHttpHeaders } from 'http';
 import { KEY_BEFORE } from '@ynn/method-interceptor';
-import { Action, Context, Controller } from '@ynn/core';
-import { createAppWithRequest } from '@ynn/testing-library';
+import { Action, Context } from '@ynn/core';
+import { createAppWithRequest } from '@ynn/testing';
 import { Ctx } from '../src';
 
 describe( 'decorator/ctx', () => {
@@ -38,7 +38,7 @@ describe( 'decorator/ctx', () => {
             const fn2 = jest.fn();
             const res = { status : 0, message : 'OK' };
 
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()

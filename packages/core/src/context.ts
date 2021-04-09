@@ -13,10 +13,9 @@ import { ParsedUrlQuery } from 'querystring';
 import { Accepts } from 'accepts';
 import httpErrors from 'http-errors';
 import httpAssert from 'http-assert';
-import { Logger } from '@ynn/common';
+import { Logger } from './interfaces';
 import { Request, RequestOptions } from './request';
 import { Response, ResponseOptions } from './response';
-// import Application from './application';
 // import Cookies, { SetOption as CookieOptions } from 'cookies';
 
 export interface ContextOptions {
@@ -24,12 +23,12 @@ export interface ContextOptions {
     response?: Omit<ResponseOptions, 'ctx'>;
     logger?: Logger;
     debug?: Logger;
-    // app: Application;
 }
 
-export default class Context {
+export class Context {
 
-    // app: Application;
+    [ key: string ]: any; // eslint-disable-line
+
     req?: IncomingMessage;
     res?: ServerResponse;
 
@@ -52,7 +51,7 @@ export default class Context {
         options.debug && ( this.debug = options.debug );
         // this.app = options.app;
         this.request = new Request( { ...options.request, ctx : this } );
-        this.response = new Response( { ...( options.response ?? {} ), ctx : this } );
+        this.response = new Response( { ...options.response ?? {}, ctx : this } );
         this.request.req && ( this.req = this.request.req );
         this.response.res && ( this.res = this.response.res );
     }

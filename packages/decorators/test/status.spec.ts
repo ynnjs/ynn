@@ -8,14 +8,14 @@
  ******************************************************************/
 
 import statuses from 'statuses';
-import { Action, Context, Controller } from '@ynn/core';
-import { createAppWithRequest } from '@ynn/testing-library';
+import { Action, Context } from '@ynn/core';
+import { createAppWithRequest } from '@ynn/testing';
 import { Status } from '../src';
 
 describe( '@Status()', () => {
     describe( 'Response Decorator', () => {
         it( 'only set status code', async () => {
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -37,7 +37,7 @@ describe( '@Status()', () => {
         } );
 
         it( 'set both status code and status message', async () => {
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -59,7 +59,7 @@ describe( '@Status()', () => {
         } );
 
         it( 'set status code with handler function returns a status code', async () => {
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -81,7 +81,7 @@ describe( '@Status()', () => {
         } );
 
         it( 'set status code with handler function returns an object', async () => {
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -103,7 +103,7 @@ describe( '@Status()', () => {
         } );
 
         it( 'set both status code and status message with handler function returns an object', async () => {
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -126,7 +126,7 @@ describe( '@Status()', () => {
 
         it( 'should pass the Context object to the handler function', async () => {
             const fn = jest.fn();
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -147,7 +147,7 @@ describe( '@Status()', () => {
         } );
 
         it( 'should allow the handler function returns a Promise object', async () => {
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()

@@ -7,8 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { ParameterMetadata, Logger as LoggerInterface } from '@ynn/common';
+import { Context, ParameterMetadata, Logger as LoggerInterface } from '@ynn/core';
 import { createParameterDecorator } from './util';
 
 export function Logger(): ParameterDecorator {

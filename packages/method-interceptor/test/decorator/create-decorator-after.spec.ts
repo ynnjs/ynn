@@ -54,4 +54,20 @@ describe( 'decorator/create-decorator-after', () => {
             parameters
         } ] );
     } );
+
+    it( 'should support to create class decorator', () => {
+        const parameters = { x : 1 };
+        const after = createDecoratorAfter( () => {}, { parameters } );
+
+        @after
+        class A {}
+
+        const metadata = Reflect.getMetadata( KEY_AFTER, A );
+
+        expect( metadata ).toEqual( [ {
+            type : expect.any( Symbol ),
+            interceptorType : 'after',
+            parameters
+        } ] );
+    } );
 } );

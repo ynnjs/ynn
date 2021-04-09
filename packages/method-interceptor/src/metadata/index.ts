@@ -7,11 +7,11 @@
  * Description:
  ******************************************************************/
 
-import { VariadicFunction, VariadicObject } from '@ynn/utility-types';
-import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER } from '../constants';
+import { VariadicFunction, GlobalFunction, VariadicObject } from '@ynn/utility-types';
+import { KEY_BEFORE, KEY_AFTER, KEY_EXCEPTION, KEY_PARAMETER, KEY_FINALLY } from '../constants';
 import { Storage } from '../storage';
-import { MetadataBefore, MetadataAfter, MetadataException, MetadataParameter } from './metadata.interface';
-import { MethodBefore, MethodAfter, MethodException, MethodParameter } from '../method.interface';
+import { Metadata, MetadataBefore, MetadataAfter, MetadataException, MetadataParameter, MetadataFinally } from './metadata.interface';
+import { MethodBefore, MethodAfter, MethodException, MethodParameter, MethodFinally } from '../method.interface';
 export * from './metadata.interface';
 
 
@@ -28,10 +28,21 @@ function storeMethod( method: VariadicFunction ): symbol {
     return key;
 }
 
-function saveMethodMetadata<T>( key: symbol | string, descriptor: PropertyDescriptor, metadata: T ): void {
-    const metadatas: T[] = Reflect.getMetadata( key, descriptor.value ) || [];
+function saveMethodMetadata<T>(
+    key: symbol | string,
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction,
+    metadata: T
+): void {
+    const target = typeof descriptorOrConstructor === 'function' ? descriptorOrConstructor : descriptorOrConstructor.value;
+    const metadatas: T[] = Reflect.getMetadata( key, target ) || [];
     metadatas.push( metadata );
-    Reflect.defineMetadata( key, metadatas, descriptor.value );
+    Reflect.defineMetadata( key, metadatas, target );
+}
+
+function getMethodMetadata<T = Metadata>(
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction
+): ( T | undefined )[] {
+    return Reflect.getMetadata( KEY_BEFORE, typeof descriptorOrConstructor === 'function' ? descriptorOrConstructor : descriptorOrConstructor.value );
 }
 
 /**
@@ -42,7 +53,7 @@ function saveMethodMetadata<T>( key: symbol | string, descriptor: PropertyDescri
  * @param options
  */
 export function saveMetadataBefore<T extends unknown[]>(
-    descriptor: PropertyDescriptor,
+    descriptor: PropertyDescriptor | GlobalFunction,
     method: MethodBefore<T>,
     options: Readonly<Pick<MetadataBefore, 'parameters'>> = {}
 ): void {
@@ -59,8 +70,10 @@ export function saveMetadataBefore<T extends unknown[]>(
     saveMethodMetadata( KEY_BEFORE, descriptor, metadata );
 }
 
-export function getMetadataBefore( descriptor: PropertyDescriptor ): ( MetadataBefore | undefined )[] {
-    return Reflect.getMetadata( KEY_BEFORE, descriptor );
+export function getMetadataBefore(
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction
+): ( MetadataBefore | undefined )[] {
+    return getMethodMetadata<MetadataBefore>( descriptorOrConstructor );
 }
 
 /**
@@ -71,7 +84,7 @@ export function getMetadataBefore( descriptor: PropertyDescriptor ): ( MetadataB
  * @param options
  */
 export function saveMetadataAfter<T extends unknown[]>(
-    descriptor: PropertyDescriptor,
+    descriptor: PropertyDescriptor | GlobalFunction,
     method: MethodAfter<T>,
     options: Pick<MetadataAfter, 'parameters'> = {}
 ): void {
@@ -86,8 +99,10 @@ export function saveMetadataAfter<T extends unknown[]>(
     saveMethodMetadata( KEY_AFTER, descriptor, metadata );
 }
 
-export function getMetadataAfter( descriptor: PropertyDescriptor ): ( MetadataAfter | undefined )[] {
-    return Reflect.getMetadata( KEY_AFTER, descriptor );
+export function getMetadataAfter(
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction
+): ( MetadataAfter | undefined )[] {
+    return getMethodMetadata<MetadataAfter>( descriptorOrConstructor );
 }
 
 /**
@@ -98,7 +113,7 @@ export function getMetadataAfter( descriptor: PropertyDescriptor ): ( MetadataAf
  * @param options
  */
 export function saveMetadataException<T extends unknown[]>(
-    descriptor: PropertyDescriptor,
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction,
     method: MethodException<T>,
     options: Pick<MetadataException, 'exceptionType' | 'parameters'> = {}
 ): void {
@@ -115,12 +130,44 @@ export function saveMetadataException<T extends unknown[]>(
     if( 'exceptionType' in options ) {
         metadata.exceptionType = options.exceptionType;
     }
-    saveMethodMetadata( KEY_EXCEPTION, descriptor, metadata );
+    saveMethodMetadata( KEY_EXCEPTION, descriptorOrConstructor, metadata );
 }
 
-export function getMetadataException( descriptor: PropertyDescriptor ): ( MetadataException | undefined )[] {
-    return Reflect.getMetadata( KEY_EXCEPTION, descriptor );
+export function getMetadataException(
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction
+): ( MetadataException | undefined )[] {
+    return getMethodMetadata<MetadataException>( descriptorOrConstructor );
 }
+
+/**
+ * save metadata for interceptor finally
+ *
+ * @param descriptorOrConstructor
+ */
+export function saveMetadataFinally<T extends unknown[]>(
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction,
+    method: MethodFinally<T>,
+    options: Pick<MetadataFinally, 'parameters'> = {}
+): void {
+
+    const metadata: MetadataFinally = {
+        type : storeMethod( method ),
+        interceptorType : 'finally'
+    };
+
+    if( 'parameters' in options ) {
+        metadata.parameters = options.parameters;
+    }
+
+    saveMethodMetadata( KEY_FINALLY, descriptorOrConstructor, metadata );
+}
+
+export function getMetadataFinally(
+    descriptorOrConstructor: PropertyDescriptor | GlobalFunction
+): ( MetadataFinally | undefined )[] {
+    return getMethodMetadata<MetadataFinally>( descriptorOrConstructor );
+}
+
 
 /**
  * save metadata for interceptor parameter

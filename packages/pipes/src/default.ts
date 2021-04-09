@@ -7,8 +7,16 @@
  * Description:
  ******************************************************************/
 
-import { PipeFunction } from '@ynn/common';
+import { PipeFunction } from '@ynn/core';
 
+/**
+ * @example
+ *
+ * ```ts
+ * @Action()
+ * fn( @Query( 'id', Default( 'defaultid' ) ) id: string ) {}
+ * ```
+ */
 export function Default<T>( defaultValue: T ): PipeFunction {
     return ( value: T ): T => {
         if( value === undefined || value === null ) return defaultValue;

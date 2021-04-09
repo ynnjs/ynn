@@ -1,24 +1,14 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
- * 
- * File: koa/jest.config.js
+ * Copyright (C) 2021 LvChengbin
+ *
+ * File: core/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 09/29/2020
- * Description: 
+ * Time: 04/07/2021
+ * Description:
  ******************************************************************/
 
 module.exports = {
-    preset : 'ts-jest',
-    testMatch : [
-        '**/test/**/*.spec.ts'
-    ],
-    coverageReporters : [
-        'text-summary',
-        'text',
-        'lcov'
-    ],
-    collectCoverageFrom : [
-        'src/**/*.ts'
-    ],
-    testEnvironment : 'node'
-}
+    ...require( '../../jest.config.js' ),
+    name : '@ynn/core',
+    displayName : '@ynn/core'
+};

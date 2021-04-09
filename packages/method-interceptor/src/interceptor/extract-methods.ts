@@ -7,29 +7,30 @@
  * Description:
  ******************************************************************/
 
-import { VariadicFunction } from '@ynn/utility-types';
-import { MetadataBefore, MetadataAfter, MetadataException } from '../metadata';
+import { VariadicFunction, GlobalFunction } from '@ynn/utility-types';
+import { MetadataBefore, MetadataAfter, MetadataException, MetadataFinally } from '../metadata';
 import { MethodInfo } from '../method.interface';
 import { Storage } from '../storage';
 
-type Metadata = MetadataBefore | MetadataAfter | MetadataException;
+type Metadata = MetadataBefore | MetadataAfter | MetadataException | MetadataFinally;
 
 /**
  * extract all interceptor methods of a descriptor with specific key from a method pool.
  *
  * @param key - the key for metadata
- * @param descriptor - the target descriptor of the class instance method.
+ * @param descriptorOrConstructor - the target descriptor of the class instance method.
  *
  * @returns a list of information of extracted methods
  */
 export default function extractMethods(
     key: string | number | symbol,
-    descriptor: Readonly<PropertyDescriptor>
+    descriptorOrConstructor: Readonly<PropertyDescriptor> | GlobalFunction
 ): MethodInfo<Metadata, VariadicFunction>[] {
 
     const bound: MethodInfo<Metadata, VariadicFunction>[] = [];
+    const target = typeof descriptorOrConstructor === 'function' ? descriptorOrConstructor : descriptorOrConstructor.value;
 
-    Reflect.getMetadata( key, descriptor.value )?.forEach( ( metadata: Metadata ) => {
+    Reflect.getMetadata( key, target )?.forEach( ( metadata: Metadata ) => {
 
         const method = Storage.get( metadata.type );
 

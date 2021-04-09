@@ -6,8 +6,8 @@
  * Time: 12/24/2020
  * Description:
  ******************************************************************/
-import createInterceptorBefore from './create-interceptor-before';
-import createInterceptorAfter from './create-interceptor-after';
-import createInterceptorException from './create-interceptor-exception';
-import createInterceptorParameter from './create-interceptor-parameter';
-export { createInterceptorBefore, createInterceptorAfter, createInterceptorException, createInterceptorParameter };
+export * from './create-interceptor-before';
+export * from './create-interceptor-after';
+export * from './create-interceptor-exception';
+export * from './create-interceptor-finally';
+export * from './create-interceptor-parameter';

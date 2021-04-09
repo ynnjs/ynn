@@ -7,9 +7,9 @@
  * Description:
  ******************************************************************/
 
-import { VariadicFunction } from '@ynn/utility-types';
+import { VariadicFunction, VariadicClass } from '@ynn/utility-types';
 import { saveMetadataBefore, saveMetadataAfter, saveMetadataException, saveMetadataParameter } from '@ynn/method-interceptor';
-import { Pipe } from '@ynn/common';
+import { Pipe } from '@ynn/core';
 
 /**
  * Save metadata for request method decorator and class decorator
@@ -19,15 +19,11 @@ import { Pipe } from '@ynn/common';
  * @param parameters
  */
 export function saveRequestDecoratorMetadata(
-    constructorOrDescriptor: Function | Readonly<PropertyDescriptor>, // eslint-disable-line
+    constructorOrDescriptor: VariadicClass | Readonly<PropertyDescriptor>,
     interceptor: VariadicFunction,
     parameters?: unknown
 ): void {
-    if( typeof constructorOrDescriptor === 'function' ) {
-        console.log( '....' );
-    } else {
-        saveMetadataBefore( constructorOrDescriptor, interceptor, { parameters } );
-    }
+    saveMetadataBefore( constructorOrDescriptor, interceptor, { parameters } );
 }
 
 /**
@@ -43,27 +39,19 @@ export function saveRequestDecoratorMetadata(
  * @param parameters
  */
 export function saveResponseDecoratorMetadata(
-    constructorOrDescriptor: Function | Readonly<PropertyDescriptor>, // eslint-disable-line
+    constructorOrDescriptor: VariadicClass | Readonly<PropertyDescriptor>,
     interceptor: VariadicFunction,
     parameters?: unknown
 ): void {
-    if( typeof constructorOrDescriptor === 'function' ) {
-        console.log( '....' );
-    } else {
-        saveMetadataAfter( constructorOrDescriptor, interceptor, { parameters } );
-    }
+    saveMetadataAfter( constructorOrDescriptor, interceptor, { parameters } );
 }
 
 export function saveExceptionDecoratorMetadata(
-    constructorOrDescriptor: Function | Readonly<PropertyDescriptor>, // eslint-disable-line
+    constructorOrDescriptor: VariadicClass | Readonly<PropertyDescriptor>,
     interceptor: VariadicFunction,
     parameters?: unknown
 ): void {
-    if( typeof constructorOrDescriptor === 'function' ) {
-        console.log( '....' );
-    } else {
-        saveMetadataException( constructorOrDescriptor, interceptor, { parameters } );
-    }
+    saveMetadataException( constructorOrDescriptor, interceptor, { parameters } );
 }
 
 export function saveParameterDecoratorMetadata(

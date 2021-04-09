@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { runPipesInSequence, Pipe, ResponseMetadata } from '@ynn/common';
+import { Context, Pipe, ResponseMetadata } from '@ynn/core';
+import { runPipesInSequence } from '@ynn/util';
 import { createDecorator } from './util';
 
 interface ResponseParameters {

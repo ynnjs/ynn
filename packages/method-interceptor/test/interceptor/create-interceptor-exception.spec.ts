@@ -110,4 +110,29 @@ describe( 'interceptor/create-interceptor-exception', () => {
         expect( fn1 ).toHaveBeenCalledTimes( 0 );
         expect( fn2 ).toHaveBeenCalledTimes( 1 );
     } );
+
+    it( 'should support creating interceptor functions for class constructor', async () => {
+        class CustomError {}
+        class A {}
+        const [ key1, key2 ] = [ Storage.key(), Storage.key() ];
+        const [ fn1, fn2 ] = [ jest.fn(), jest.fn() ];
+
+        Storage.set( key1, fn1 );
+        Storage.set( key2, fn2 );
+
+        const metadata: MetadataException[] = [ {
+            type : key1,
+            interceptorType : 'exception',
+            exceptionType : TypeError
+        }, {
+            type : key2,
+            interceptorType : 'exception',
+            exceptionType : CustomError
+        } ];
+
+        Reflect.defineMetadata( KEY_EXCEPTION, metadata, A );
+        await createInterceptorException( A )( new CustomError );
+        expect( fn1 ).toHaveBeenCalledTimes( 0 );
+        expect( fn2 ).toHaveBeenCalledTimes( 1 );
+    } );
 } );

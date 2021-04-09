@@ -15,8 +15,8 @@ export type CreateDecoratorAfterOptions = Pick<MetadataAfter, 'parameters'>;
 export function createDecoratorAfter<T extends unknown[]>(
     method: MethodAfter<T>,
     options: Readonly<CreateDecoratorAfterOptions> = {}
-): MethodDecorator {
-    return ( targt, key: string | symbol, descriptor: PropertyDescriptor ): void => {
-        saveMetadataAfter( descriptor, method, options );
+): MethodDecorator & ClassDecorator {
+    return ( target, key?: string | symbol, descriptor?: PropertyDescriptor ): void => {
+        saveMetadataAfter( descriptor ?? target, method, options );
     };
 }

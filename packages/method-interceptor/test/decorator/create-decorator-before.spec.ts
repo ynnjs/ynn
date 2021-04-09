@@ -11,6 +11,7 @@ import 'reflect-metadata';
 import { KEY_BEFORE, createDecoratorBefore } from '../../src';
 
 describe( 'decorator/create-decorator-before', () => {
+
     it( 'should have created a method decorator', () => {
         const before = createDecoratorBefore( () => {} );
         expect( before ).toBeInstanceOf( Function );
@@ -48,6 +49,22 @@ describe( 'decorator/create-decorator-before', () => {
         class A { @before fn() {} }
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'fn' )!;
         const metadata = Reflect.getMetadata( KEY_BEFORE, descriptor.value );
+        expect( metadata ).toEqual( [ {
+            type : expect.any( Symbol ),
+            interceptorType : 'before',
+            parameters
+        } ] );
+    } );
+
+    it( 'should support to create class decorator', () => {
+        const parameters = { x : 1 };
+        const before = createDecoratorBefore( () => {}, { parameters } );
+
+        @before
+        class A {}
+
+        const metadata = Reflect.getMetadata( KEY_BEFORE, A );
+
         expect( metadata ).toEqual( [ {
             type : expect.any( Symbol ),
             interceptorType : 'before',

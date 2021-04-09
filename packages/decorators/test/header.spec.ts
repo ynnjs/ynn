@@ -8,8 +8,8 @@
  ******************************************************************/
 
 import { IncomingHttpHeaders } from 'http';
-import { Action, Context, Controller } from '@ynn/core';
-import { createAppWithRequest } from '@ynn/testing-library';
+import { Action, Context } from '@ynn/core';
+import { createAppWithRequest } from '@ynn/testing';
 import { Header } from '../src';
 
 describe( '@Header()', () => {
@@ -20,7 +20,7 @@ describe( '@Header()', () => {
             const fn2 = jest.fn();
             const res = { status : 0, message : 'OK' };
 
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()
@@ -61,7 +61,7 @@ describe( '@Header()', () => {
             const fn1 = jest.fn();
             const res = { status : 0, message : 'OK' };
 
-            class IndexController implements Controller {
+            class IndexController {
                 constructor( public ctx: Context ) {}
 
                 @Action()

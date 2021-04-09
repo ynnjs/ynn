@@ -3,23 +3,12 @@
  *
  * File: method-interceptor/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/24/2021
+ * Time: 04/06/2021
  * Description:
  ******************************************************************/
 
 module.exports = {
-    preset : 'ts-jest',
-    setupFilesAfterEnv : [ 'jest-extended' ],
-    testMatch : [
-        '**/test/**/*.spec.ts'
-    ],
-    coverageReporters : [
-        'text-summary',
-        'text',
-        'lcov'
-    ],
-    collectCoverageFrom : [
-        'src/**/*.ts'
-    ],
-    testEnvironment : 'jsdom'
+    ...require( '../../jest.config.js' ),
+    name : '@ynn/method-interceptor',
+    displayName : '@ynn/method-interceptor'
 };

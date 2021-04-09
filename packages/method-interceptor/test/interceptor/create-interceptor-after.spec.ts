@@ -114,4 +114,24 @@ describe( 'interceptor/create-interceptor-after', () => {
         await createInterceptorAfter( descriptor )( 'x' );
         expect( fn ).toHaveBeenCalledWith( metadata[ 1 ], 'fn1' );
     } );
+
+    it( 'should support creating interceptor functions for class constructor', async () => {
+
+        class A {}
+
+        const [ key1, key2 ] = [ Storage.key(), Storage.key() ];
+        const fn = jest.fn();
+
+        Storage.set( key1, () => 'fn1' );
+        Storage.set( key2, fn );
+
+        const metadata: MetadataAfter[] = [
+            { type : key1, interceptorType : 'after' },
+            { type : key2, interceptorType : 'after' }
+        ];
+
+        Reflect.defineMetadata( KEY_AFTER, metadata, A );
+        await createInterceptorAfter( A )( 'x' );
+        expect( fn ).toHaveBeenCalledWith( metadata[ 1 ], 'fn1' );
+    } );
 } );

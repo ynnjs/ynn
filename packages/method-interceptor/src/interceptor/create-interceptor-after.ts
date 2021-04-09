@@ -7,23 +7,27 @@
  * Description:
  ******************************************************************/
 
+import { GlobalFunction } from '@ynn/utility-types';
 import { KEY_AFTER } from '../constants';
 import { MetadataAfter } from '../metadata';
 import extractMethods from './extract-methods';
 
+export interface InterceptorAfter<T extends unknown[] = unknown[]> {
+    ( value: unknown, ...args: T ): Promise<unknown>;
+}
+
 /**
  * @typeparam T
- * @typeparam V
  *
  * @returns
  */
-function createInterceptorAfter<V = unknown, T extends unknown[] = unknown[]>(
-    descriptor: Readonly<PropertyDescriptor>
-): ( value: V, ...args: T ) => Promise<unknown> {
+export function createInterceptorAfter<T extends unknown[] = unknown[]>(
+    descriptorOrConstructor: Readonly<PropertyDescriptor> | GlobalFunction
+): InterceptorAfter<T> {
 
-    const bound = extractMethods( KEY_AFTER, descriptor );
+    const bound = extractMethods( KEY_AFTER, descriptorOrConstructor );
 
-    return async ( value: V, ...args: T ): Promise<unknown> => {
+    return async ( value: unknown, ...args: T ): Promise<unknown> => {
         let res: unknown = await Promise.resolve( value );
 
         /**
@@ -36,5 +40,3 @@ function createInterceptorAfter<V = unknown, T extends unknown[] = unknown[]>(
         return res;
     };
 }
-
-export default createInterceptorAfter;

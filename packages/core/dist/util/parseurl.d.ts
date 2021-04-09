@@ -8,4 +8,4 @@
  ******************************************************************/
 /// <reference types="node" />
 import { UrlWithStringQuery } from 'url';
-export declare function parseurl(url: string): UrlWithStringQuery;
+export declare function parseurl( url: string ): UrlWithStringQuery;

@@ -8,5 +8,5 @@
  ******************************************************************/
 /// <reference types="node" />
 import { IncomingMessage, ServerResponse } from 'http';
-import Context from '../context';
-export declare function respond(ctx: Context, req: IncomingMessage, res: ServerResponse): void;
+import { Context } from '../context';
+export declare function respond( ctx: Context, req: IncomingMessage, res: ServerResponse ): void;
