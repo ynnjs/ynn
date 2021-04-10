@@ -9,6 +9,7 @@
 
 module.exports = {
     ...require( '../../jest.config.js' ),
+    rootDir : __dirname,
     name : '@ynn/pipes',
     displayName : '@ynn/pipes'
 };

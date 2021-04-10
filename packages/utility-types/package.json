@@ -2,12 +2,12 @@
     "name": "@ynn/utility-types",
     "version": "0.0.1",
     "description": "Typescript utility types",
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "clean": "rm -rf dist",
-        "make": "yarn clean && tsc -b -v",
+        "clean": "rm -rf lib",
+        "build": "yarn clean && tsc -b -v",
         "test": "jest",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
     },
@@ -15,20 +15,19 @@
         "node": ">=12"
     },
     "files": [
-        "dist"
+        "lib"
     ],
     "devDependencies": {
         "@types/jest": "^26.0.22",
         "@types/node": "^14.14.37",
-        "@typescript-eslint/eslint-plugin": "^4.20.0",
-        "@typescript-eslint/parser": "^4.20.0",
+        "@typescript-eslint/eslint-plugin": "^4.21.0",
+        "@typescript-eslint/parser": "^4.21.0",
         "dts-jest": "^23.3.0",
-        "eslint": "^7.23.0",
+        "eslint": "^7.24.0",
         "eslint_d": "^10.0.4",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "ts-jest": "^26.5.4",
-        "ts-node": "^9.1.1",
-        "typescript": "^4.2.3"
+        "typescript": "^4.2.4"
     }
 }

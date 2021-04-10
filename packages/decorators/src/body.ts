@@ -38,7 +38,7 @@ async function requestAndParameterInterceptor(
 
     if( property ) {
         try {
-            value = body as any [ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
+            value = ( body as any )[ property ]; // eslint-disable-line @typescript-eslint/no-explicit-any
         } catch( e: unknown ) { value = undefined }
     } else value = body;
 

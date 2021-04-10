@@ -63,7 +63,9 @@ describe( 'method-interceptor', () => {
             if( ctx.query.forceError ) {
                 throw new CustomError( 'Custom error' );
             }
-            delete ( value as any ).password;
+            if( 'password' in value ) {
+                delete value.password;
+            }
             return value;
         } );
 

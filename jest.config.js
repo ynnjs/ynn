@@ -8,7 +8,6 @@
  ******************************************************************/
 
 module.exports = {
-    rootDir : __dirname,
     preset : 'ts-jest',
     setupFilesAfterEnv : [ 'jest-extended' ],
     testMatch : [
@@ -20,7 +19,8 @@ module.exports = {
         'lcov'
     ],
     collectCoverageFrom : [
-        'src/**/*.ts'
+        '**/src/**/*.ts',
+        '!**/*.d.ts'
     ],
     testEnvironment : 'node',
     globals : {
@@ -29,6 +29,6 @@ module.exports = {
         }
     },
     moduleNameMapper : {
-        '@ynn/(.*)' : '<rootDir>/packages/$1/src/index.ts'
+        '@ynn/(.*)' : `${__dirname}/packages/$1/src/index.ts`
     }
 };

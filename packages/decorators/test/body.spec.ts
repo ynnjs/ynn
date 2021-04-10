@@ -31,7 +31,7 @@ describe( 'decorator/body', () => {
     } );
 
     describe( 'Parameter Decorator', () => {
-        it( '', async () => {
+        it.only( 'should get the value of the given property', async () => {
 
             const fn1 = jest.fn();
             const res = { status : 0, message : 'OK' };

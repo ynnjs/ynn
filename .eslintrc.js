@@ -1,3 +1,5 @@
+const path = require( 'path' );
+
 module.exports = {
     extends : [
         'eslint:recommended'
@@ -108,7 +110,7 @@ module.exports = {
             'plugin:@typescript-eslint/recommended'
         ],
         parserOptions : {
-            project : 'tsconfig.json',
+            project : path.join( __dirname, 'tsconfig.json' ),
             sourceType : 'module',
             ecmaVersion : 2021,
             createDefaultProgram : true

@@ -15,7 +15,7 @@ exports[`PartialKeys<T, M extends keyof T> should make all specific keys optiona
 
 exports[`RequiredExcludesKeys<T, U extends keyof T> const b: RequiredExcludesKeys<O, 'name' | 'age'> = { name : 'x', age : 1 } (type) should match snapshot 1`] = `
 "Type '{ name: string; age: number; }' is not assignable to type 'RequiredExcludesKeys<O, \\"name\\" | \\"age\\">'.
-  Property 'sex' is missing in type '{ name: string; age: number; }' but required in type 'Required<Pick<O, \\"sex\\">>'."
+  Property 'sex' is missing in type '{ name: string; age: number; }' but required in type 'Required<Omit<O, \\"name\\" | \\"age\\">>'."
 `;
 
 exports[`VariadicClass<P = any[], T = any> default arguments (type) should match snapshot 1`] = `"typeof c1"`;
