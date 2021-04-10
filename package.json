@@ -37,11 +37,9 @@
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "test": "yarn workspaces foreach run test",
-        "test:coverage": "jest --coverage",
+        "test": "jest",
         "lint:all": "eslint ./**/*.{ts,js} --cache --fix",
-        "lint:staged": "lint-staged",
-        "postinstall": "yarn husky install"
+        "lint:staged": "lint-staged"
     },
     "engines": {
         "node": ">=14.15.0"
