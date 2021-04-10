@@ -11,5 +11,9 @@ module.exports = {
     ...require( '../../jest.config.js' ),
     rootDir : __dirname,
     name : '@ynn/body',
-    displayName : '@ynn/body'
+    displayName : '@ynn/body',
+    collectCoverageFrom : [
+        'src/**/*.ts',
+        '!**/*.d.ts'
+    ]
 };

@@ -71,6 +71,12 @@ function createApp( options: CreateAppOptions ) {
 }
 
 describe( 'body', () => {
+
+    it( 'should return null is ctx.req is nullish', async () => {
+        const parsed = await body( new Context( { request : {} } ) );
+        expect( parsed ).toEqual( null );
+    } );
+
     describe( 'json', () => {
         it( 'application/json', done => {
             createApp( {

@@ -60,7 +60,7 @@ export interface BodyOptions extends CobodyOptions {
     multipartOptions?: MultipartOptions;
 }
 
-async function parseMultipart( ctx: Context, options: MultipartOptions = {} ): Promise<{ fields: Fields; files: Files }> {
+async function parseMultipart( ctx: Context, options: MultipartOptions ): Promise<{ fields: Fields; files: Files }> {
 
     const form = formidable( options );
 

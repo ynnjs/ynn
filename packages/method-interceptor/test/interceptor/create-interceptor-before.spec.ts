@@ -94,9 +94,7 @@ describe( 'interceptor/create-interceptor-before', () => {
     } );
 
     it( 'should support creating interceptor functions for class constructor', async () => {
-
         class A {};
-
         const [ key1, key2, key3 ] = [ Storage.key(), Storage.key(), Storage.key() ];
 
         Storage.set( key1, () => 'fn1' );
@@ -112,5 +110,14 @@ describe( 'interceptor/create-interceptor-before', () => {
         Reflect.defineMetadata( KEY_BEFORE, metadata, A );
         const before = createInterceptorBefore( A );
         return expect( before() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
+    } );
+
+    it( 'should have thrown an exception if methods in metadata not exists', () => {
+        class A {};
+        const key = Symbol( 'key' );
+        Reflect.defineMetadata( KEY_BEFORE, [
+            { type : key, interceptorType : 'before' }
+        ], A );
+        expect( () => createInterceptorBefore( A ) ).toThrow( `method ${key.toString()} not exists in method list` );
     } );
 } );

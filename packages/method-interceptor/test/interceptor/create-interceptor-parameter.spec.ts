@@ -148,4 +148,36 @@ describe( 'interceptor/create-interceptor-parameter', () => {
             type : expect.any( Symbol )
         }, 'nny', 'ynn' );
     } );
+
+    it( 'should have thrown an exception if the method not exists', () => {
+        class A {
+            @Decorate
+            fn( name: string ): string {
+                return name;
+            }
+        }
+
+        const key = Symbol( 'some#key' );
+
+        Reflect.defineMetadata( KEY_PARAMETER, [ [
+            { type : key, interceptorType : 'parameter' }
+        ] ], A.prototype, 'fn' );
+
+        expect( () => createInterceptorParameter( A.prototype, 'fn' ) ).toThrow( `method ${key.toString()} not exists in method list` );
+    } );
+
+    it( 'shoule return Promise<null> if some parameters have not decorators', async () => {
+        class A {
+            @Decorate
+            fn( name: string ): string {
+                return name;
+            }
+        }
+
+        Reflect.defineMetadata( KEY_PARAMETER, [ [] ], A.prototype, 'fn' );
+
+        const parameter = createInterceptorParameter( A.prototype, 'fn' );
+        const res = await parameter();
+        expect( res ).toEqual( [ null ] );
+    } );
 } );

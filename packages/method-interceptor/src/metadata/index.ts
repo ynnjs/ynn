@@ -40,9 +40,10 @@ function saveMethodMetadata<T>(
 }
 
 function getMethodMetadata<T = Metadata>(
+    key: string | symbol,
     descriptorOrConstructor: PropertyDescriptor | GlobalFunction
 ): ( T | undefined )[] {
-    return Reflect.getMetadata( KEY_BEFORE, typeof descriptorOrConstructor === 'function' ? descriptorOrConstructor : descriptorOrConstructor.value );
+    return Reflect.getMetadata( key, typeof descriptorOrConstructor === 'function' ? descriptorOrConstructor : descriptorOrConstructor.value );
 }
 
 /**
@@ -73,7 +74,7 @@ export function saveMetadataBefore<T extends unknown[]>(
 export function getMetadataBefore(
     descriptorOrConstructor: PropertyDescriptor | GlobalFunction
 ): ( MetadataBefore | undefined )[] {
-    return getMethodMetadata<MetadataBefore>( descriptorOrConstructor );
+    return getMethodMetadata<MetadataBefore>( KEY_BEFORE, descriptorOrConstructor );
 }
 
 /**
@@ -102,7 +103,7 @@ export function saveMetadataAfter<T extends unknown[]>(
 export function getMetadataAfter(
     descriptorOrConstructor: PropertyDescriptor | GlobalFunction
 ): ( MetadataAfter | undefined )[] {
-    return getMethodMetadata<MetadataAfter>( descriptorOrConstructor );
+    return getMethodMetadata<MetadataAfter>( KEY_AFTER, descriptorOrConstructor );
 }
 
 /**
@@ -136,7 +137,7 @@ export function saveMetadataException<T extends unknown[]>(
 export function getMetadataException(
     descriptorOrConstructor: PropertyDescriptor | GlobalFunction
 ): ( MetadataException | undefined )[] {
-    return getMethodMetadata<MetadataException>( descriptorOrConstructor );
+    return getMethodMetadata<MetadataException>( KEY_EXCEPTION, descriptorOrConstructor );
 }
 
 /**
@@ -165,7 +166,7 @@ export function saveMetadataFinally<T extends unknown[]>(
 export function getMetadataFinally(
     descriptorOrConstructor: PropertyDescriptor | GlobalFunction
 ): ( MetadataFinally | undefined )[] {
-    return getMethodMetadata<MetadataFinally>( descriptorOrConstructor );
+    return getMethodMetadata<MetadataFinally>( KEY_FINALLY, descriptorOrConstructor );
 }
 
 

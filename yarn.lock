@@ -634,7 +634,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/reporters@npm:^26.6.2":
+"@jest/reporters@npm:^26.0.0, @jest/reporters@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/reporters@npm:26.6.2"
   dependencies:
@@ -703,7 +703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/test-result@npm:^26.6.2":
+"@jest/test-result@npm:^26.0.0, @jest/test-result@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/test-result@npm:26.6.2"
   dependencies:
@@ -762,7 +762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/types@npm:^26.6.2":
+"@jest/types@npm:^26.0.0, @jest/types@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/types@npm:26.6.2"
   dependencies:
@@ -1058,7 +1058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^26.0.22":
+"@types/jest@npm:^26.0.12, @types/jest@npm:^26.0.22":
   version: 26.0.22
   resolution: "@types/jest@npm:26.0.22"
   dependencies:
@@ -1374,6 +1374,7 @@ __metadata:
     formidable: canary
     jest: ^26.6.3
     jest-extended: ^0.11.5
+    jest-stare: ^2.2.1
     koa: ^2.13.1
     qs: ^6.10.1
     supertest: ^6.1.3
@@ -1701,6 +1702,13 @@ __metadata:
   dependencies:
     type-fest: ^0.21.3
   checksum: 93111c42189c0a6bed9cdb4d7f2829548e943827ee8479c74d6e0b22ee127b2a21d3f8b5ca57723b8ef78ce011fbfc2784350eb2bde3ccfccf2f575fa8489815
+  languageName: node
+  linkType: hard
+
+"ansi-parser@npm:^3.2.10":
+  version: 3.2.10
+  resolution: "ansi-parser@npm:3.2.10"
+  checksum: f89da454827dd17aecc6d276838eb331298265c9f36d29a6748e84a583942534c17f9da11fc89eb8e9694977180437276f03a0131fde2a54978843590c8e88c8
   languageName: node
   linkType: hard
 
@@ -2064,6 +2072,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bootstrap@npm:^4.5.2":
+  version: 4.6.0
+  resolution: "bootstrap@npm:4.6.0"
+  peerDependencies:
+    jquery: 1.9.1 - 3
+    popper.js: ^1.16.1
+  checksum: 998a21691a54113afda3354357338930e86e64c3a29514f342dde11100937f5f3b64248e49fd31b7c4fcce332b730baa9a68cbe553366febcbdd80dae21bd78f
+  languageName: node
+  linkType: hard
+
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
   resolution: "brace-expansion@npm:1.1.11"
@@ -2303,6 +2321,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chart.js@npm:^2.9.3":
+  version: 2.9.4
+  resolution: "chart.js@npm:2.9.4"
+  dependencies:
+    chartjs-color: ^2.1.0
+    moment: ^2.10.2
+  checksum: cbdc7abe2fa65e4838848e68b035ae6048ebcc512b9057d7cdb6d361e728400d39e3fde75e0b4da815ab43f7890c31787d8f80d4e6ab75a3e80fc75b47cd173c
+  languageName: node
+  linkType: hard
+
+"chartjs-color-string@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "chartjs-color-string@npm:0.6.0"
+  dependencies:
+    color-name: ^1.0.0
+  checksum: 2355bc8e9514b779d0dc057c5ee6707e8166f270531c27287a399d6bfeb0d891b00a6f6c20e764453a062de0de8b298b11d3850fc94c323df66efb4720ece4c7
+  languageName: node
+  linkType: hard
+
+"chartjs-color@npm:^2.1.0":
+  version: 2.4.1
+  resolution: "chartjs-color@npm:2.4.1"
+  dependencies:
+    chartjs-color-string: ^0.6.0
+    color-convert: ^1.9.3
+  checksum: 254d7b2f103980417703331c49fba18877ac797fd9056d79f0d566dc4fd8d41f91b7f63d4b19602462b91110bee2fe0c9fd57266ce871e498ac1c25742fffb11
+  languageName: node
+  linkType: hard
+
 "chownr@npm:^2.0.0":
   version: 2.0.0
   resolution: "chownr@npm:2.0.0"
@@ -2463,7 +2510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-convert@npm:^1.9.0":
+"color-convert@npm:^1.9.0, color-convert@npm:^1.9.3":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
   dependencies:
@@ -2488,7 +2535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-name@npm:~1.1.4":
+"color-name@npm:^1.0.0, color-name@npm:~1.1.4":
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: b0445859521eb4021cd0fb0cc1a75cecf67fceecae89b63f62b201cca8d345baf8b952c966862a9d9a2632987d4f6581f0ec8d957dfacece86f0a7919316f610
@@ -2937,6 +2984,27 @@ __metadata:
   version: 26.6.2
   resolution: "diff-sequences@npm:26.6.2"
   checksum: 79af871776ef149a7ff3345d6b1bf37fe6e81f68632aa5542787851f6f60fba19b0be22fdd1e06046f56ae7382763ccfe94a982c39ee72bd107aef435ecbc0cf
+  languageName: node
+  linkType: hard
+
+"diff2html@npm:^3.1.18":
+  version: 3.4.3
+  resolution: "diff2html@npm:3.4.3"
+  dependencies:
+    diff: 5.0.0
+    highlight.js: 10.7.2
+    hogan.js: 3.0.2
+  dependenciesMeta:
+    highlight.js:
+      optional: true
+  checksum: 1298a1165b60b619c27e1c13c050634052a7ebaa80cfeab48a05844aab7e978d23ccd5d273f2b1e289420d94ba4550b4152c32451fa6d5466e1b6a0026a554a8
+  languageName: node
+  linkType: hard
+
+"diff@npm:5.0.0":
+  version: 5.0.0
+  resolution: "diff@npm:5.0.0"
+  checksum: f19fe29284b633afdb2725c2a8bb7d25761ea54d321d8e67987ac851c5294be4afeab532bd84531e02583a3fe7f4014aa314a3eda84f5590e7a9e6b371ef3b46
   languageName: node
   linkType: hard
 
@@ -4150,6 +4218,32 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"highlight.js@npm:10.7.2":
+  version: 10.7.2
+  resolution: "highlight.js@npm:10.7.2"
+  checksum: af09b434070c81ed154b4c990bee61a8c1295887554abc7884eb2544c48bff208e237e7ce1b324ebe94abe0f942e15e2c11dff1b1ed22a79a3c4a0d8a900a921
+  languageName: node
+  linkType: hard
+
+"hogan.js@npm:3.0.2":
+  version: 3.0.2
+  resolution: "hogan.js@npm:3.0.2"
+  dependencies:
+    mkdirp: 0.3.0
+    nopt: 1.0.10
+  bin:
+    hulk: ./bin/hulk
+  checksum: c7bbff84faa9ca265c39f4a2100546ba0388fcc9c5bac8526f488592ce3fcaa042eba6ac25db277f4478ec3855b9bc28ce59acffbf6e8a28d45a17df7590c6aa
+  languageName: node
+  linkType: hard
+
+"holderjs@npm:^2.9.7":
+  version: 2.9.9
+  resolution: "holderjs@npm:2.9.9"
+  checksum: 18e6c42355fa82b99a6bdcb23900dc16abe2885e239cb53e432751359607e912e073dd8357509596b28b93e05eb7eeb502b646b061f9afde0b1df924eeb0fabf
+  languageName: node
+  linkType: hard
+
 "homedir-polyfill@npm:^1.0.1":
   version: 1.0.3
   resolution: "homedir-polyfill@npm:1.0.3"
@@ -5273,6 +5367,32 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"jest-stare@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "jest-stare@npm:2.2.1"
+  dependencies:
+    "@jest/reporters": ^26.0.0
+    "@jest/test-result": ^26.0.0
+    "@jest/types": ^26.0.0
+    "@types/jest": ^26.0.12
+    ansi-parser: ^3.2.10
+    bootstrap: ^4.5.2
+    chalk: ^4.1.0
+    chart.js: ^2.9.3
+    diff2html: ^3.1.18
+    holderjs: ^2.9.7
+    jquery: ^3.5.1
+    moment: ^2.27.0
+    mustache: ^4.0.0
+    pkg-up: ^3.0.0
+    popper.js: ^1.16.1
+    yargs: ^16.0.0
+  bin:
+    jest-stare: lib/jest-stare.js
+  checksum: a0aa21e495f580d34a83296199a0e790325ec0dc804af3f243e53aa9a5f63de240fe77569c82b77e2a87261296c8c6e818049849867d3f4973e842f387d57a5d
+  languageName: node
+  linkType: hard
+
 "jest-util@npm:^26.1.0, jest-util@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-util@npm:26.6.2"
@@ -5337,6 +5457,13 @@ fsevents@^2.1.2:
   bin:
     jest: bin/jest.js
   checksum: 3a9b4c70e9bd5391e7367a0036045c1d3545c2a39e1439a71fb4b59b1748bc34e2ccb324faa1046b99bffc8dc2ed7b3c59016c462255b2646f5fa9300351f914
+  languageName: node
+  linkType: hard
+
+"jquery@npm:^3.5.1":
+  version: 3.6.0
+  resolution: "jquery@npm:3.6.0"
+  checksum: 8fd5fef4aa48fd374ec716dd1c1df1af407814a228e15c1260ca140de3a697c2a77c30c54ff1d238b6a3ab4ddc445ddeef9adce6c6d28e4869d85eb9d3951c0e
   languageName: node
   linkType: hard
 
@@ -6094,12 +6221,26 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"mkdirp@npm:0.3.0":
+  version: 0.3.0
+  resolution: "mkdirp@npm:0.3.0"
+  checksum: 3ec9cda8bd89b64892728e5092bc79e88382e444d4bbde040c2fb8d7034dc70682cfdd729e93241fd5243d2397324c420ef68c717d806db51bf96c0fc80f4b1d
+  languageName: node
+  linkType: hard
+
 "mkdirp@npm:1.x, mkdirp@npm:^1.0.3, mkdirp@npm:^1.0.4":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
   bin:
     mkdirp: bin/cmd.js
   checksum: a96865108c6c3b1b8e1d5e9f11843de1e077e57737602de1b82030815f311be11f96f09cce59bd5b903d0b29834733e5313f9301e3ed6d6f6fba2eae0df4298f
+  languageName: node
+  linkType: hard
+
+"moment@npm:^2.10.2, moment@npm:^2.27.0":
+  version: 2.29.1
+  resolution: "moment@npm:2.29.1"
+  checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
   languageName: node
   linkType: hard
 
@@ -6121,6 +6262,15 @@ fsevents@^2.1.2:
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
   checksum: aa92de608021b242401676e35cfa5aa42dd70cbdc082b916da7fb925c542173e36bce97ea3e804923fe92c0ad991434e4a38327e15a1b5b5f945d66df615ae6d
+  languageName: node
+  linkType: hard
+
+"mustache@npm:^4.0.0":
+  version: 4.2.0
+  resolution: "mustache@npm:4.2.0"
+  bin:
+    mustache: bin/mustache
+  checksum: 928fcb63e3aa44a562bfe9b59ba202cccbe40a46da50be6f0dd831b495be1dd7e38ca4657f0ecab2c1a89dc7bccba0885eab7ee7c1b215830da765758c7e0506
   languageName: node
   linkType: hard
 
@@ -6230,6 +6380,17 @@ fsevents@^2.1.2:
   version: 1.1.71
   resolution: "node-releases@npm:1.1.71"
   checksum: a6ab18069e43d70b811fa7f12b397619f2003f78ac2ed0affa30876880ca3036a191d33679d93baac166afa12a7b1b1716e13f3c82c0f0fa09e2c83db3f91faf
+  languageName: node
+  linkType: hard
+
+"nopt@npm:1.0.10":
+  version: 1.0.10
+  resolution: "nopt@npm:1.0.10"
+  dependencies:
+    abbrev: 1
+  bin:
+    nopt: ./bin/nopt.js
+  checksum: f62575aceaa3be43f365bf37a596b89bbac2e796b001b6d2e2a85c2140a4e378ff919e2753ccba959c4fd344776fc88c29b393bc167fa939fb1513f126f4cd45
   languageName: node
   linkType: hard
 
@@ -6668,6 +6829,15 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"pkg-up@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "pkg-up@npm:3.1.0"
+  dependencies:
+    find-up: ^3.0.0
+  checksum: 5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
+  languageName: node
+  linkType: hard
+
 "platform@npm:^1.3.3":
   version: 1.3.6
   resolution: "platform@npm:1.3.6"
@@ -6681,6 +6851,13 @@ fsevents@^2.1.2:
   dependencies:
     semver-compare: ^1.0.0
   checksum: d87c41581a2a022fbe25965a97006238cd9b8cbbf49b39f78d262548149a9d30bd2bdf35fec3d810e0001e630cd46ef13c7e19c389dea8de7e64db271a2381bb
+  languageName: node
+  linkType: hard
+
+"popper.js@npm:^1.16.1":
+  version: 1.16.1
+  resolution: "popper.js@npm:1.16.1"
+  checksum: c56ae5001ec50a77ee297a8061a0221d99d25c7348d2e6bcd3e45a0d0f32a1fd81bca29d46cb0d4bdf13efb77685bd6a0ce93f9eb3c608311a461f945fffedbe
   languageName: node
   linkType: hard
 
@@ -8703,7 +8880,7 @@ typescript@^4.2.4:
   languageName: node
   linkType: hard
 
-"yargs@npm:^16.2.0":
+"yargs@npm:^16.0.0, yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
   dependencies:

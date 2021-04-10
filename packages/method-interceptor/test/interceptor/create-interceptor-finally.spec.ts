@@ -113,4 +113,13 @@ describe( 'interceptor/create-interceptor-finally', () => {
         const f = createInterceptorFinally( A );
         return expect( f() ).resolves.toEqual( [ 'fn1', 'fn2', 'fn3' ] );
     } );
+
+    it( 'should have thrown an exception if methods in metadata not exists', () => {
+        class A {};
+        const key = Symbol( 'key' );
+        Reflect.defineMetadata( KEY_FINALLY, [
+            { type : key, interceptorType : 'finally' }
+        ], A );
+        expect( () => createInterceptorFinally( A ) ).toThrow( `method ${key.toString()} not exists in method list` );
+    } );
 } );

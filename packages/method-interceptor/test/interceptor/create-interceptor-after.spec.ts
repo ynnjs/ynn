@@ -116,9 +116,7 @@ describe( 'interceptor/create-interceptor-after', () => {
     } );
 
     it( 'should support creating interceptor functions for class constructor', async () => {
-
         class A {}
-
         const [ key1, key2 ] = [ Storage.key(), Storage.key() ];
         const fn = jest.fn();
 
@@ -133,5 +131,14 @@ describe( 'interceptor/create-interceptor-after', () => {
         Reflect.defineMetadata( KEY_AFTER, metadata, A );
         await createInterceptorAfter( A )( 'x' );
         expect( fn ).toHaveBeenCalledWith( metadata[ 1 ], 'fn1' );
+    } );
+
+    it( 'should have thrown an exception if the method not exists', () => {
+        class A {}
+        const key = Symbol( 'key' );
+        Reflect.defineMetadata( KEY_AFTER, [
+            { type : key, interceptorType : 'after' }
+        ], A );
+        expect( () => createInterceptorAfter( A ) ).toThrow( `method ${key.toString()} not exists in method list` );
     } );
 } );

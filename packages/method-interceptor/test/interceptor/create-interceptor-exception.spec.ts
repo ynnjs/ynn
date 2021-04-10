@@ -135,4 +135,13 @@ describe( 'interceptor/create-interceptor-exception', () => {
         expect( fn1 ).toHaveBeenCalledTimes( 0 );
         expect( fn2 ).toHaveBeenCalledTimes( 1 );
     } );
+
+    it( 'should have thrown an exception if methods in metadata not exists', () => {
+        class A {};
+        const key = Symbol( 'key' );
+        Reflect.defineMetadata( KEY_EXCEPTION, [
+            { type : key, interceptorType : 'exception' }
+        ], A );
+        expect( () => createInterceptorException( A ) ).toThrow( `method ${key.toString()} not exists in method list` );
+    } );
 } );

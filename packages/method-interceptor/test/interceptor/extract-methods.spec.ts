@@ -26,9 +26,10 @@ describe( 'interceptor/extract-methods', () => {
 
     it( 'should have thrown an exception if the method not exsits in methods', () => {
         class A { action() {} }
+        const key = Symbol( 'the#key' );
         const descriptor = Reflect.getOwnPropertyDescriptor( A.prototype, 'action' )!;
-        const metadata = [ { type : 'fn', interceptorType : 'before' } ];
+        const metadata = [ { type : key, interceptorType : 'before' } ];
         Reflect.defineMetadata( 'key', metadata, descriptor.value );
-        expect( () => extractMethods( 'key', descriptor ) ).toThrow();
+        expect( () => extractMethods( 'key', descriptor ) ).toThrow( `method ${key.toString()} not exists in method list` );
     } );
 } );

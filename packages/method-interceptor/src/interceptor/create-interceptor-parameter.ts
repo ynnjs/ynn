@@ -43,7 +43,7 @@ export function createInterceptorParameter<T extends unknown[]>( ...args: [
                 const method = Storage.get( m.type );
 
                 if( !method ) {
-                    throw new Error( `method ${m.type.toString()} not exists in the method list` );
+                    throw new Error( `method ${m.type.toString()} not exists in method list` );
                 }
 
                 mds.push( { method, metadata : { ...m, paramtype } } );
