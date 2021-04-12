@@ -13,7 +13,7 @@ import { ACTION_METADATA_KEY, ACTION_METHOD_SUFFIX } from './constants';
 import { Ynn } from './ynn';
 import { Context } from './context';
 import { fillParams } from './util/fill-params';
-import { createABEInterceptors } from './util/create-abe-interceptors';
+import { createABEFInterceptors } from './util/create-abef-interceptors';
 
 export interface ActionInfo {
     /**
@@ -129,13 +129,13 @@ export function createExecutors( mountingPath: Ynn[], Controller: VariadicClass 
 
     for( const item of mountingPath ) {
         const Constructor = item.module ?? item.constructor;
-        const [ after, before, exception ] = createABEInterceptors( Constructor );
+        const [ after, before, exception ] = createABEFInterceptors( Constructor );
         afters.push( after );
         befores.push( before );
         exceptions.push( exception );
     }
 
-    const [ controllerAfter, controllerBefore, controllerException ] = createABEInterceptors( Controller );
+    const [ controllerAfter, controllerBefore, controllerException ] = createABEFInterceptors( Controller );
     afters.push( controllerAfter );
     befores.push( controllerBefore );
     exceptions.push( controllerException );
@@ -144,7 +144,7 @@ export function createExecutors( mountingPath: Ynn[], Controller: VariadicClass 
         const info = actionInfos[ actionName ];
         const { descriptor, methodName, proto } = info;
 
-        const [ after, before, exception ] = createABEInterceptors( descriptor );
+        const [ after, before, exception ] = createABEFInterceptors( descriptor );
 
         const parameter = createInterceptorParameter<[ Context ]>( proto, methodName );
         const metadataParameter = getMetadataParameter( proto, methodName );
