@@ -7,17 +7,38 @@
  * Description:
  ******************************************************************/
 
-import { Context, HttpException, Metadata, PipeFunction } from '@ynn/core';
+import { Context, Metadata, PipeFunction } from '@ynn/core';
+import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 
 /**
+ *
+ * @param pattern - the match pattern, it can be a sting or a regexp or list of strings/regexps
+ * @param exception - the exception will be thrown if match failed, the function will throw a HttpException instance by default
+ *
  * @example
  *
  * ```ts
- * @Action()
- * fn( @Query( 'domain', Match( /\.google\.com$/ ) ) domain: string ) {}
+ * fn( @Query( 'domain', Match( /\.google\.com$/ ) ) domain: string ) {
+ *     return { domain };
+ * }
+ *
+ * fn(
+ *     @Query( 'domain', Match( /\.google\.com$/, new Error( 'server error' ) ) ) domain: string
+ * ) {
+ *     return { domain };
+ * }
+ *
+ * fn(
+ *     @Query( 'domain', Match( [ 'example1.com', 'example2.com' ], { status : 400, message : 'message' } ) ) domain: string
+ * ) {
+ *     return { domain };
+ * }
  * ```
  */
-export function Match( pattern: string | RegExp | ( string | RegExp )[] ): PipeFunction {
+export function Match(
+    pattern: string | RegExp | ( string | RegExp )[],
+    exception?: HttpExceptionResponse | Error
+): PipeFunction {
     const t = typeof pattern;
     const isRegexp = pattern instanceof RegExp;
 
@@ -44,9 +65,12 @@ export function Match( pattern: string | RegExp | ( string | RegExp )[] ): PipeF
             }
         }
 
+        if( exception instanceof Error ) throw exception;
+
         throw new HttpException( {
             status : 400,
-            message : [ message ]
+            message : [ message ],
+            ...( exception || {} )
         } );
     };
 }

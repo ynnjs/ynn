@@ -7,21 +7,29 @@
  * Description:
  ******************************************************************/
 
-import { Context, HttpException, Metadata } from '@ynn/core';
+import { Context, Metadata } from '@ynn/core';
+import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 
-export function Required<T>( value: T, ctx: Context, metadata: Metadata ): T {
 
-    if( value === undefined || value === null ) {
+export function Required( exception?: HttpExceptionResponse | Error ): PipeFunction {
 
-        const property = ( metadata.parameters as any )?.property; // eslint-disable-line @typescript-eslint/no-explicit-any
+    return <T>( value: T, ctx: Context, metadata: Metadata ): T => {
 
-        throw new HttpException( {
-            status : 400,
-            message : [
-                property ? `${property} is required` : 'missing parameter'
-            ]
-        } );
-    }
+        if( value === undefined || value === null ) {
 
-    return value;
+            if( exception instanceof Error ) throw exception;
+
+            const property = ( metadata.parameters as any )?.property; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+            throw new HttpException( {
+                status : 400,
+                message : [
+                    property ? `${property} is required` : 'missing parameter'
+                ],
+                ...( exception || {} )
+            } );
+        }
+
+        return value;
+    };
 }

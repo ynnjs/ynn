@@ -7,8 +7,6 @@
         "tsBuildInfoFile": "./lib/tsconfig.tsbuildinfo"
     },
     "references" : [
-        { "path" : "../method-interceptor" },
-        { "path" : "../http-exception" },
         { "path" : "../utility-types" }
     ],
     "include" : [ "src/**/*" ]

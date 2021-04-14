@@ -35,6 +35,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/decorators"
       },
       {
+        "name": "@ynn/http-exception",
+        "reference": "workspace:packages/http-exception"
+      },
+      {
         "name": "@ynn/method-interceptor",
         "reference": "workspace:packages/method-interceptor"
       },
@@ -61,6 +65,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@ynn/body", ["workspace:packages/body"]],
       ["@ynn/core", ["virtual:6006150af266ac1744d448cbd3e8b29dc6dd7c83ae7a46bd169a0b1378c5005414f58f066b83818df6a38d4849c157f094466c02bfb17a35a7427e5113b4081c#workspace:packages/core", "workspace:packages/core"]],
       ["@ynn/decorators", ["workspace:packages/decorators"]],
+      ["@ynn/http-exception", ["workspace:packages/http-exception"]],
       ["@ynn/method-interceptor", ["virtual:33ec4b952642929f602db8ef596cd95317052c35c66d8da325d39eb4b3998a991d866ccc90f52a95daf9c1cfbfa5ef08035f0395fa82bdedb44bfadbebeded25#workspace:packages/method-interceptor", "workspace:packages/method-interceptor"]],
       ["@ynn/monorepo", ["workspace:."]],
       ["@ynn/pipes", ["workspace:packages/pipes"]],
@@ -1935,6 +1940,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"],
             ["statuses", "npm:2.0.1"],
             ["ts-jest", "virtual:16a6ce342b3ec1f786f8b7b9c5c40f75d37a963f0175ef86936e0ff82884fab9baf0e9435c53e824dd9a6fac637d68f3b38c57a53329a0b496f6239c35b094cb#npm:26.5.4"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@ynn/http-exception", [
+        ["workspace:packages/http-exception", {
+          "packageLocation": "./packages/http-exception/",
+          "packageDependencies": [
+            ["@ynn/http-exception", "workspace:packages/http-exception"],
+            ["@types/statuses", "npm:2.0.0"],
+            ["@ynn/utility-types", "workspace:packages/utility-types"],
+            ["eslint", "npm:7.24.0"],
+            ["jest", "npm:26.6.3"],
+            ["jest-extended", "npm:0.11.5"],
+            ["ts-jest", "virtual:0b1dbd0a40021e72fac70dba24ed13ffbac12bff627f991d5188cd8864edb36d6b72f0b4e7a97077dc2d2b058840afded9729d5db635f09894b6d781b4480a8d#npm:26.5.4"],
             ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"]
           ],
           "linkType": "SOFT",
@@ -9614,6 +9635,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-jest", "npm:26.5.4"]
           ],
           "linkType": "SOFT",
+        }],
+        ["virtual:0b1dbd0a40021e72fac70dba24ed13ffbac12bff627f991d5188cd8864edb36d6b72f0b4e7a97077dc2d2b058840afded9729d5db635f09894b6d781b4480a8d#npm:26.5.4", {
+          "packageLocation": "./.yarn/__virtual__/ts-jest-virtual-1c3ffc04d2/0/cache/ts-jest-npm-26.5.4-d44a800654-908ddfeb89.zip/node_modules/ts-jest/",
+          "packageDependencies": [
+            ["ts-jest", "virtual:0b1dbd0a40021e72fac70dba24ed13ffbac12bff627f991d5188cd8864edb36d6b72f0b4e7a97077dc2d2b058840afded9729d5db635f09894b6d781b4480a8d#npm:26.5.4"],
+            ["@types/jest", null],
+            ["@types/typescript", null],
+            ["bs-logger", "npm:0.2.6"],
+            ["buffer-from", "npm:1.1.1"],
+            ["fast-json-stable-stringify", "npm:2.1.0"],
+            ["jest", "npm:26.6.3"],
+            ["jest-util", "npm:26.6.2"],
+            ["json5", "npm:2.2.0"],
+            ["lodash", "npm:4.17.21"],
+            ["make-error", "npm:1.3.6"],
+            ["mkdirp", "npm:1.0.4"],
+            ["semver", "npm:7.3.5"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"],
+            ["yargs-parser", "npm:20.2.7"]
+          ],
+          "packagePeers": [
+            "@types/jest",
+            "@types/typescript",
+            "jest",
+            "typescript"
+          ],
+          "linkType": "HARD",
         }],
         ["virtual:16a6ce342b3ec1f786f8b7b9c5c40f75d37a963f0175ef86936e0ff82884fab9baf0e9435c53e824dd9a6fac637d68f3b38c57a53329a0b496f6239c35b094cb#npm:26.5.4", {
           "packageLocation": "./.yarn/__virtual__/ts-jest-virtual-ef4f4952e1/0/cache/ts-jest-npm-26.5.4-d44a800654-908ddfeb89.zip/node_modules/ts-jest/",

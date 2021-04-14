@@ -1455,6 +1455,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ynn/http-exception@workspace:packages/http-exception":
+  version: 0.0.0-use.local
+  resolution: "@ynn/http-exception@workspace:packages/http-exception"
+  dependencies:
+    "@types/statuses": ^2.0.0
+    "@ynn/utility-types": "workspace:packages/utility-types"
+    eslint: ^7.24.0
+    jest: ^26.6.3
+    jest-extended: ^0.11.5
+    ts-jest: ^26.5.4
+    typescript: ^4.2.4
+  languageName: unknown
+  linkType: soft
+
 "@ynn/method-interceptor@workspace:packages/method-interceptor":
   version: 0.0.0-use.local
   resolution: "@ynn/method-interceptor@workspace:packages/method-interceptor"
