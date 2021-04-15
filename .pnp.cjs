@@ -1955,6 +1955,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:7.24.0"],
             ["jest", "npm:26.6.3"],
             ["jest-extended", "npm:0.11.5"],
+            ["statuses", "npm:2.0.1"],
             ["ts-jest", "virtual:0b1dbd0a40021e72fac70dba24ed13ffbac12bff627f991d5188cd8864edb36d6b72f0b4e7a97077dc2d2b058840afded9729d5db635f09894b6d781b4480a8d#npm:26.5.4"],
             ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"]
           ],

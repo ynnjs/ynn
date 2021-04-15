@@ -25,6 +25,7 @@
         "typescript": "^4.2.4"
     },
     "dependencies": {
-        "@ynn/utility-types": "workspace:packages/utility-types"
+        "@ynn/utility-types": "workspace:packages/utility-types",
+        "statuses": "^2.0.1"
     }
 }
