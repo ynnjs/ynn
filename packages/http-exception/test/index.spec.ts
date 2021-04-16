@@ -12,7 +12,7 @@ import { HttpException } from '../src';
 describe( '@ynn/http-exception', () => {
     it( 'should be extended from Error', () => {
         expect( new HttpException( 500 ) ).toBeInstanceOf( Error );
-    } ); 
+    } );
 
     it( 'should have a propery named message', () => {
         expect( new HttpException( 500 ) ).toHaveProperty( 'message' );
@@ -24,5 +24,13 @@ describe( '@ynn/http-exception', () => {
 
     it( 'should have a property named response', () => {
         expect( new HttpException( 500 ) ).toHaveProperty( 'response' );
+    } );
+
+    it( 'set status directly', () => {
+        expect( new HttpException( 400 ).status ).toEqual( 400 );
+    } );
+
+    it( 'set status with object', () => {
+        expect( new HttpException( { status : 400 } ).status ).toEqual( 400 );
     } );
 } );

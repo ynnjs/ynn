@@ -16,6 +16,11 @@ export interface HttpExceptionResponse {
     error: string;
 }
 
+/**
+ * 
+ */
+export type HttpExceptionOptions = PartialKeys<HttpExceptionResponse, 'message' | 'error'>;
+
 export class HttpException extends Error {
 
     #status = 500;
@@ -23,7 +28,7 @@ export class HttpException extends Error {
     #response?: HttpExceptionResponse;
 
     constructor(
-        status: number | string | Readonly<PartialKeys<HttpExceptionResponse, 'message' | 'error'>>,
+        status: number | string | Readonly<HttpExceptionOptions>,
         message?: string
     ) {
         super();
