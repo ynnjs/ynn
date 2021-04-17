@@ -8,71 +8,58 @@
  ******************************************************************/
 
 import statuses from 'statuses';
-import { PartialKeys } from '@ynn/utility-types';
 
-export interface HttpExceptionResponse {
-    status: number;
-    message: unknown;
-    error: string;
-}
-
-/**
- * 
- */
-export type HttpExceptionOptions = PartialKeys<HttpExceptionResponse, 'message' | 'error'>;
+export type HttpExceptionResponse = number
+    | string
+    | Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export class HttpException extends Error {
 
-    #status = 500;
-    #message: string = statuses.message[ 500 ] ?? '';
-    #response?: HttpExceptionResponse;
+    static DEFAULT_STATUS = 500;
 
-    constructor(
-        status: number | string | Readonly<HttpExceptionOptions>,
-        message?: string
-    ) {
+    #status: number = HttpException.DEFAULT_STATUS;
+    #error: string = statuses.message[ HttpException.DEFAULT_STATUS ] ?? '';
+    #response: HttpExceptionResponse;
+
+    constructor( response: HttpExceptionResponse, error?: string ) {
         super();
-        if( typeof status === 'string' ) {
-            this.message = status;
-        } else if( typeof status === 'number' ) {
-            this.status = status;
-            message && ( this.message = message );
+
+        this.#response = response;
+
+        if( typeof response === 'number' ) {
+            this.status = response;
+            error && ( this.error = error );
+        } else if( typeof response === 'string' ) {
+            this.error = response;
         } else {
-            const response = { ...status };
-            if( !response.error ) {
-                response.error = statuses.message[ response.status ] ?? '';
+            if( typeof response.status === 'number' ) {
+                this.status = response.status;
             }
-            if( !response.message ) response.message = '';
-            this.response = response as HttpExceptionResponse;
+
+            if( typeof response.error === 'string' ) {
+                this.error = response.error;
+            }
         }
     }
 
     set status( status: number ) {
         this.#status = status;
-        this.message = statuses.message[ status ] ?? '';
+        this.error = statuses.message[ status ] ?? '';
     }
 
     get status(): number {
         return this.#status;
     }
 
-    set message( message: string ) {
-        this.#message = message;
+    set error( error: string ) {
+        this.#error = error;
     }
 
-    get message(): string {
-        return this.#message;
+    get error(): string {
+        return this.#error;
     }
 
-    get response(): HttpExceptionResponse | undefined {
+    get response(): HttpExceptionResponse {
         return this.#response;
-    }
-
-    set response( response: HttpExceptionResponse | undefined ) {
-        this.#response = response;
-        if( response ) {
-            this.status = response.status;
-            this.message = response.error;
-        }
     }
 }

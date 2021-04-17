@@ -1953,6 +1953,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/statuses", "npm:2.0.0"],
             ["@ynn/utility-types", "workspace:packages/utility-types"],
             ["eslint", "npm:7.24.0"],
+            ["eslint_d", "npm:10.0.4"],
             ["jest", "npm:26.6.3"],
             ["jest-extended", "npm:0.11.5"],
             ["statuses", "npm:2.0.1"],
