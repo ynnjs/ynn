@@ -1842,6 +1842,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/statuses", "npm:2.0.0"],
             ["@types/type-is", "npm:1.6.3"],
             ["@types/yargs", "npm:16.0.1"],
+            ["@ynn/http-exception", "workspace:packages/http-exception"],
             ["@ynn/method-interceptor", "virtual:33ec4b952642929f602db8ef596cd95317052c35c66d8da325d39eb4b3998a991d866ccc90f52a95daf9c1cfbfa5ef08035f0395fa82bdedb44bfadbebeded25#workspace:packages/method-interceptor"],
             ["@ynn/utility-types", "workspace:packages/utility-types"],
             ["accepts", "npm:1.3.7"],
@@ -1890,6 +1891,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/statuses", "npm:2.0.0"],
             ["@types/type-is", "npm:1.6.3"],
             ["@types/yargs", "npm:16.0.1"],
+            ["@ynn/http-exception", "workspace:packages/http-exception"],
             ["@ynn/method-interceptor", "virtual:33ec4b952642929f602db8ef596cd95317052c35c66d8da325d39eb4b3998a991d866ccc90f52a95daf9c1cfbfa5ef08035f0395fa82bdedb44bfadbebeded25#workspace:packages/method-interceptor"],
             ["@ynn/utility-types", "workspace:packages/utility-types"],
             ["accepts", "npm:1.3.7"],
@@ -13676,7 +13678,6 @@ class ZipFS extends BasePortableFakeFS {
   readFileBuffer(p, opts = {
     asyncDecompress: false
   }) {
-    if (typeof p !== `string`) throw EBADF(`read`);
     const resolvedP = this.resolveFilename(`open '${p}'`, p);
     if (!this.entries.has(resolvedP) && !this.listings.has(resolvedP)) throw ENOENT(`open '${p}'`); // Ensures that the last component is a directory, if the user said so (even if it is we'll throw right after with EISDIR anyway)
 
