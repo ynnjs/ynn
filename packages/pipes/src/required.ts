@@ -10,12 +10,17 @@
 import { Context, Metadata } from '@ynn/core';
 import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 
+interface RequiredCallback<R> {
+    ( value: null | undefined, ctx: Context, metadata: Metadata ): R;
+}
 
-export function Required( exception?: HttpExceptionResponse | Error ): PipeFunction {
+export function Required<R>( exception?: HttpExceptionResponse | Error | RequiredCallback<R> ): PipeFunction {
 
-    return <T>( value: T, ctx: Context, metadata: Metadata ): T => {
+    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
 
         if( value === undefined || value === null ) {
+
+            if( typeof exception === 'function' ) return await exception( value, ctx, metadata );
 
             if( exception instanceof Error ) throw exception;
 

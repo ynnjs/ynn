@@ -2038,6 +2038,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:26.0.22"],
             ["@types/node", "npm:14.14.37"],
             ["@ynn/core", "virtual:6006150af266ac1744d448cbd3e8b29dc6dd7c83ae7a46bd169a0b1378c5005414f58f066b83818df6a38d4849c157f094466c02bfb17a35a7427e5113b4081c#workspace:packages/core"],
+            ["@ynn/http-exception", "workspace:packages/http-exception"],
+            ["@ynn/testing", "workspace:packages/testing"],
             ["eslint", "npm:7.24.0"],
             ["jest", "npm:26.6.3"],
             ["jest-extended", "npm:0.11.5"],

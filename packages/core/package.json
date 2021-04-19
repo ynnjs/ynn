@@ -43,6 +43,7 @@
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
         "@types/content-type": "^1.1.3",
+        "@ynn/http-exception": "workspace:packages/http-exception",
         "@ynn/method-interceptor": "workspace:packages/method-interceptor",
         "@ynn/utility-types": "workspace:packages/utility-types",
         "accepts": "^1.3.7",

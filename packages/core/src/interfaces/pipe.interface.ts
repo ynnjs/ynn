@@ -15,10 +15,10 @@ export interface PipeFunction<T = any, R = any, M extends Metadata = Metadata> {
     ( value: T, ctx: Context, metadata: M ): R;
 }
 
-export interface PipeInterface<T = any, R = any, M extends Metadata = Metadata> { // eslint-disable-line @typescript-eslint/no-explicit-any
+export interface PipeTransform<T = any, R = any, M extends Metadata = Metadata> { // eslint-disable-line @typescript-eslint/no-explicit-any
     transform: ( value: T, ctx: Context, metadata: M ) => R;
 }
 
-export type PipeConstructor = VariadicClass<any[], PipeInterface>; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type PipeConstructor = VariadicClass<any[], PipeTransform>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-export type Pipe = PipeFunction | PipeInterface | PipeConstructor;
+export type Pipe = PipeFunction | PipeTransform | PipeConstructor;

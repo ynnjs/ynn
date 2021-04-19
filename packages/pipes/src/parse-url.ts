@@ -8,7 +8,8 @@
  ******************************************************************/
 
 import { URL } from 'url';
-import { Context, HttpException, Metadata } from '@ynn/core';
+import { Context, Metadata } from '@ynn/core';
+import { HttpException } from '@ynn/http-exception';
 
 export function ParseURL( url: string, ctx: Context, metadata: Metadata ): URL {
     try { return new URL( url ) } catch( e: unknown ) {

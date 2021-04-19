@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Ynn, Options, Context, ContextOptions } from '@ynn/core';
+import { Ynn, Options, Context, ContextOptions, ParameterMetadata } from '@ynn/core';
 
 export function createContext(
     request?: Readonly<Partial<ContextOptions[ 'request' ]>>,
@@ -34,4 +34,16 @@ export async function createAppWithRequest(
 ): Promise<Context> {
     const app = options instanceof Ynn ? options : createApp( options );
     return app.handle( context );
+}
+
+export function createParameterMetadata( options?: Partial<ParameterMetadata> ): ParameterMetadata {
+    const metadata: ParameterMetadata = {
+        interceptorType : 'parameter',
+        parameters : {
+            pipes : []
+        },
+        ...options
+    };
+
+    return metadata;
 }
