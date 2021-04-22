@@ -37,14 +37,14 @@ describe( 'Required Pipe', () => {
         } );
 
         it( 'should have thrown an error if the given value is null', () => {
-            expect( fn( null, context, meta ) ).rejects( HttpException );
+            expect( fn( null, context, meta ) ).rejects.toThrow( HttpException );
         } );
 
-        xit( 'should have thrown an error if the given value is undefined', () => {
-            expect( async () => { await fn( undefined, context, meta ) } ).toThrow( HttpException );
+        it( 'should have thrown an error if the given value is undefined', () => {
+            expect( fn( undefined, context, meta ) ).rejects.toThrow( HttpException );
         } );
 
-        xit( 'should have thrown HttpException with correct response', async () => {
+        it( 'should have thrown HttpException with correct response', async () => {
             expect.assertions( 1 );
 
             try { await fn( undefined, context, meta ) } catch( e: unknown ) {
@@ -55,7 +55,7 @@ describe( 'Required Pipe', () => {
             }
         } );
 
-        xit( 'should thrown HttpException with correct message if metadata.parameter.property is empty', async () => {
+        it( 'should thrown HttpException with correct message if metadata.parameter.property is empty', async () => {
             expect.assertions( 1 );
 
             try { await fn( undefined, context, createParameterMetadata() ) } catch( e: unknown ) {
@@ -67,18 +67,18 @@ describe( 'Required Pipe', () => {
         } );
     } );
 
-    xdescribe( 'custom exception', () => {
+    describe( 'custom exception', () => {
         const fn = Required( new Error( 'something error' ) );
         const meta = metadata();
 
         it( 'should have thrown an error if the given value is null', () => {
-            expect( async () => { await fn( null, context, meta ) } ).toThrow( Error );
-            expect( async () => { await fn( null, context, meta ) } ).toThrow( 'something error' );
+            expect( fn( null, context, meta ) ).rejects.toThrow( Error );
+            expect( fn( null, context, meta ) ).rejects.toThrow( 'something error' );
         } );
 
         it( 'should have thrown an error if the given value is undefined', () => {
-            expect( async () => { await fn( undefined, context, meta ) } ).toThrow( Error );
-            expect( async () => { await fn( undefined, context, meta ) } ).toThrow( 'something error' );
+            expect( fn( undefined, context, meta ) ).rejects.toThrow( Error );
+            expect( fn( undefined, context, meta ) ).rejects.toThrow( 'something error' );
         } );
 
         it( 'should use the options for creating HttpException', async () => {
@@ -98,7 +98,7 @@ describe( 'Required Pipe', () => {
         } );
     } );
 
-    xdescribe( 'callback function', () => {
+    describe( 'callback function', () => {
         const meta = metadata();
 
         it( 'should have called the callback function', async () => {
@@ -113,16 +113,27 @@ describe( 'Required Pipe', () => {
             expect( fn ).toHaveBeenCalledWith( undefined, context, meta );
         } );
 
-        it( 'should throw the exception that thrown from the callback function', async () => {
+        it( 'should throw the exception which was thrown from the callback function', async () => {
             const fn = Required( () => { throw new Error( 'E' ) } );
-            expect( fn( undefined, context, meta ) ).rejects( 'E' );
+            expect( fn( undefined, context, meta ) ).rejects.toThrow( 'E' );
         } );
 
-        it( 'should throw the exception', () => {
-            // const fn = Required( () => Promise.reject( 'X' ) );
-            // try {
-            //     fn( undefined, context, meta );
-            // } catch( e ) {}
+        it( 'should return the rejected promise object', () => {
+            const fn = Required( async () => Promise.reject( new Error( 'E' ) ) );
+            expect( fn( undefined, context, meta ) ).rejects.toThrow( 'E' );
+        } );
+
+        it( 'should overwrite information of the thrown exception with given options', async () => {
+            const fn = Required( { status : 401, message : [ 'something error' ] } );
+
+            try {
+                await fn( undefined, context, meta );
+            } catch( e: HttpException ) {
+                expect( e.response ).toEqual( {
+                    status : 401,
+                    message : [ 'something error' ]
+                } );
+            }
         } );
     } );
 } );

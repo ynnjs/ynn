@@ -62,4 +62,8 @@ export class HttpException extends Error {
     get response(): HttpExceptionResponse {
         return this.#response;
     }
+
+    toJSON(): HttpExceptionResponse {
+        return this.response;
+    }
 }
