@@ -8,7 +8,27 @@
  ******************************************************************/
 
 import { Context, Metadata, PipeFunction } from '@ynn/core';
-import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
+import { HttpExceptionResponse } from '@ynn/http-exception';
+import { handleValidationException } from './shared/handle-validation-exception';
+
+function handleException<R>(
+    value: string | number,
+    ctx: Context,
+    metadata: Metadata,
+    pattern: string,
+    exception?: HttpExceptionResponse | Error | ExceptionCallback<R>
+): R {
+
+    const property = ( metadata.parameters as any )?.property; // eslint-disable-line @typescript-eslint/no-explicit-any
+    return handleValidationException(
+        value, ctx, metadata, {
+            status : 400,
+            message : [
+                property ? `${property} should match ${pattern}` : `parameter does not match ${pattern}`
+            ]
+        }, exception
+    );
+}
 
 /**
  *
@@ -35,42 +55,33 @@ import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
  * }
  * ```
  */
-export function Match(
+export function Match<R>(
     pattern: string | RegExp | ( string | RegExp )[],
-    exception?: HttpExceptionResponse | Error
+    exception?: HttpExceptionResponse | Error | ExceptionCallback<R>
 ): PipeFunction {
-    const t = typeof pattern;
-    const isRegexp = pattern instanceof RegExp;
 
-    return <T extends string | number>( value: T, ctx: Context, metadata: Metadata ): T => {
+    if( typeof pattern === 'string' ) {
+        return async <T extends string | number>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
+            if( pattern === String( value ) ) return value;
+            handleException( value, ctx, metadata, `"${pattern}"`, exception );
+        };
+    }
 
-        const property = ( metadata.parameters as any )?.property; // eslint-disable-line @typescript-eslint/no-explicit-any
+    if( pattern instanceof RegExp ) {
+        return async <T extends string | number>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
+            if( ( pattern as RegExp ).test( String( value ) ) ) return value;
+            handleException( value, ctx, metadata, `"${pattern.toString()}"`, exception );
+        };
+    }
 
-        const str = typeof value === 'string' ? value : String( value );
+    return async <T extends string | number>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
 
-        let message = '';
+        const str = String( value );
 
-        if( t === 'string' ) {
-            if( pattern === str ) return value;
-            message = property ? `${property} should equal to ${pattern}` : `paramater does't match ${pattern}`;
-        } else if( isRegexp ) {
-            if( ( pattern as RegExp ).test( str ) ) return value;
-            message = property ? `${property} should match ${pattern.toString()}` : `paramater does't match ${pattern.toString()}`;
-        } else {
-
-            for( const item of pattern as ( string | RegExp )[] ) {
-                if( typeof item === 'string' && item === str ) return value;
-                if( item instanceof RegExp && item.test( str ) ) return value;
-                message = property ? `${property} should match patterns` : 'paramater does\'t match patterns';
-            }
+        for( const item of pattern as ( string | RegExp )[] ) {
+            if( ( typeof item === 'string' && item === str ) || ( item instanceof RegExp && item.test( str ) ) ) return value;
         }
 
-        if( exception instanceof Error ) throw exception;
-
-        throw new HttpException( {
-            status : 400,
-            message : [ message ],
-            ...( exception || {} )
-        } );
+        handleException( value, ctx, metadata, 'patterns', exception );
     };
 }

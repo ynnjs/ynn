@@ -15,7 +15,7 @@ export function Required<R>( exception?: HttpExceptionResponse | Error | Excepti
 
     return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
 
-        if( value === undefined || value === null ) {
+        if( value === '' || value === undefined || value === null ) {
 
             if( typeof exception === 'function' ) return exception( value, ctx, metadata );
 
