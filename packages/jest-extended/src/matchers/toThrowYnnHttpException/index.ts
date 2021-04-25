@@ -47,6 +47,9 @@ export default function toThrowYnnHttpException(
     response?: number | string | HttpExceptionResponse | HttpException,
     error?: string
 ): CustomMatcherResult {
+
+    console.log( 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', callback );
+
     if( !callback || typeof callback !== 'function' ) {
         return {
             pass : false,
