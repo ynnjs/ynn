@@ -1555,6 +1555,7 @@ __metadata:
     "@types/node": ^14.14.37
     "@ynn/core": "workspace:packages/core"
     "@ynn/http-exception": "workspace:packages/http-exception"
+    "@ynn/jest-extended": "workspace:packages/jest-extended"
     "@ynn/testing": "workspace:packages/testing"
     eslint: ^7.24.0
     jest: ^26.6.3

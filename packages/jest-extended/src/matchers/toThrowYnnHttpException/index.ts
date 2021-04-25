@@ -1,7 +1,7 @@
 /******************************************************************
  * Copyright (C) 2021 LvChengbin
  *
- * File: toThrowHttpException/index.ts
+ * File: toThrowYnnHttpException/index.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
  * Time: 04/25/2021
  * Description:
@@ -14,7 +14,7 @@ import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 import predicate from './predicate';
 
 const passMessage = ( received: unknown, expected: unknown ): ( () => string ) => (): string => {
-    return matcherHint( '.toThrowHttpException', 'function', 'type' ) +
+    return matcherHint( '.toThrowYnnHttpException', 'function', 'type' ) +
         '\n\n' +
         'Expected not to throw:\n' +
         `  ${printExpected( expected?.toJSON?.() ?? expected )}\n` +
@@ -23,7 +23,7 @@ const passMessage = ( received: unknown, expected: unknown ): ( () => string ) =
 };
 
 const failMessage = ( received: unknown, expected: unknown ): ( () => string ) => (): string => {
-    return matcherHint( '.not.toThrowHttpException', 'function', 'type' ) +
+    return matcherHint( '.not.toThrowYnnHttpException', 'function', 'type' ) +
         '\n\n' +
         'Expected to throw:\n' +
         `  ${printExpected( expected?.toJSON?.() ?? expected )}\n` +
@@ -35,14 +35,14 @@ const failMessage = ( received: unknown, expected: unknown ): ( () => string ) =
  *
  * @example
  * ```ts
- * expect( () => { throw new HttpException( 400 ) } ).toThrowHttpException()
+ * expect( () => { throw new HttpException( 400 ) } ).toThrowYnnHttpException()
  * ```
  *
  * @param callback - the callback function which will throw exception
  * @param response - status, message, response or HttpException instance
  * @param message - error message of HttpException instance.
  */
-export default function toThrowHttpException(
+export default function toThrowYnnHttpException(
     callback: VariadicFunction,
     response?: number | string | HttpExceptionResponse | HttpException,
     error?: string
@@ -89,26 +89,25 @@ export default function toThrowHttpException(
                 return {
                     pass : true,
                     message : passMessage( exception, { status : response } )
-                }
+                };
             }
 
             return {
                 pass : false,
                 message : failMessage( exception, { status : response } )
-            }
-        } else {
-            if( exception.status === response && exception.error === error ) {
-                return {
-                    pass : true,
-                    message : passMessage( exception, { status : response, error } )
-                }
-            }
-
-            return {
-                pass : false,
-                message : failMessage( exception, { status : response, error } )
-            }
+            };
         }
+        if( exception.status === response && exception.error === error ) {
+            return {
+                pass : true,
+                message : passMessage( exception, { status : response, error } )
+            };
+        }
+
+        return {
+            pass : false,
+            message : failMessage( exception, { status : response, error } )
+        };
     }
 
     if( typeof response === 'string' ) {
@@ -116,12 +115,12 @@ export default function toThrowHttpException(
             return {
                 pass : true,
                 message : passMessage( exception, { error : response } )
-            }
+            };
         }
         return {
             pass : false,
             message : failMessage( exception, { error : response } )
-        }
+        };
     }
 
     let httpException: HttpException;

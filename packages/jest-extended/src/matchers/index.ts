@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-import toThrowHttpException from './toThrowHttpException';
+import toThrowYnnHttpException from './toThrowYnnHttpException';
 
 export default {
-    toThrowHttpException
+    toThrowYnnHttpException
 };
