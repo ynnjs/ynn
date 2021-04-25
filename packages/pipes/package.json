@@ -22,7 +22,6 @@
         "@types/node": "^14.14.37",
         "@ynn/testing": "workspace:packages/testing",
         "eslint": "^7.24.0",
-        "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
         "ts-jest": "^26.5.4",
         "typescript": "^4.2.4"
@@ -30,6 +29,7 @@
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
         "@ynn/core": "workspace:packages/core",
-        "@ynn/http-exception": "workspace:packages/http-exception"
+        "@ynn/http-exception": "workspace:packages/http-exception",
+        "jest": "^26.6.3"
     }
 }

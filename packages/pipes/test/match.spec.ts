@@ -7,14 +7,6 @@
  * Description:
  ******************************************************************/
 
-const mockedErrorMessage = 'Mocked Error';
-
-jest.mock( '../src/shared/handle-validation-exception', () => ( {
-    handleValidationException() {
-        throw new Error( mockedErrorMessage );
-    }
-} ) );
-
 import { ParameterMetadata, Pipe } from '@ynn/core';
 import { HttpException } from '@ynn/http-exception';
 import { createParameterMetadata, createContext } from '@ynn/testing';
@@ -25,6 +17,13 @@ import { Match } from '../src';
  */
 import { handleValidationException } from '../src/shared/handle-validation-exception';
 
+const mockedErrorMessage = 'Mocked Error';
+
+jest.mock( '../src/shared/handle-validation-exception', () => ( {
+    handleValidationException : jest.fn( () => {
+        throw new Error( mockedErrorMessage );
+    } )
+} ) );
 
 describe( 'Match Pipe', () => {
 
@@ -35,6 +34,10 @@ describe( 'Match Pipe', () => {
             parameters : { property, pipes }
         } );
     };
+
+    afterEach( () => {
+        jest.clearAllMocks();
+    } );
 
     describe( 'pass validation', () => {
         it( 'matches a string', async () => {
@@ -64,52 +67,94 @@ describe( 'Match Pipe', () => {
         const meta = metadata();
 
         it( 'string pattern', async () => {
-            const r1 = fn1( 'xstring', context, meta );
-            try {
-                expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
-            } catch( e: unknown ) { console.log( e ) };
+            const defaultExceptionResponse = {
+                status : 400,
+                message : [ 'id should match "string"' ]
+            };
+
+            const args1 = [ 'xstring', context, meta ];
+            const r1 = fn1( ...args1 );
             await expect( r1 ).rejects.toThrow( mockedErrorMessage );
-            const r2 = fn1( 'stringx', context, meta );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args1, defaultExceptionResponse, undefined ] );
+
+            const args2 = [ 'stringx', context, meta ];
+            const r2 = fn1( ...args2 );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 2 );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args2, defaultExceptionResponse, undefined ] );
             await expect( r2 ).rejects.toThrow( Error );
-            const r3 = fn1( 'abc', context, meta );
+
+            const args3 = [ 'abc', context, meta ];
+            const r3 = fn1( ...args3 );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 3 );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args3, defaultExceptionResponse, undefined ] );
             await expect( r3 ).rejects.toThrow( Error );
         } );
 
-        xit( 'regexp pattern', async () => {
-            await expect( fn2( 'abc', context, meta ) ).rejects.toThrow( HttpException );
-            await expect( fn2( 2, context, meta ) ).rejects.toThrow( HttpException );
+        it( 'regexp pattern', async () => {
+
+            const defaultExceptionResponse = {
+                status : 400,
+                message : [ `id should match "${/regexp/.toString()}"` ]
+            };
+
+            const args1 = [ 'abc', context, meta ];
+            await expect( fn2( ...args1 ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args1, defaultExceptionResponse, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
+
+            const args2 = [ 2, context, meta ];
+            await expect( fn2( ...args2 ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args2, defaultExceptionResponse, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 2 );
         } );
 
-        xit( 'mixed patterns', async () => {
-            await expect( fn3( 'abc', context, meta ) ).rejects.toThrow( HttpException );
-            await expect( fn3( 2, context, meta ) ).rejects.toThrow( HttpException );
+        it( 'mixed patterns', async () => {
+
+            const defaultExceptionResponse = {
+                status : 400,
+                message : [ 'id should match the given patterns' ]
+            };
+
+            const args1 = [ 'abc', context, meta ];
+            await expect( fn3( ...args1 ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args1, defaultExceptionResponse, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
+
+            const args2 = [ 2, context, meta ];
+            await expect( fn3( ...args2 ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args2, defaultExceptionResponse, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 2 );
         } );
 
-        xit( 'correct error message while metadata.property is not empty', async () => {
-            expect.assertions( 2 );
+        it( 'correct error message while metadata.property is not empty', async () => {
 
-            try { await fn1( 'abc', context, meta ) } catch( e: unknown ) {
-                expect( e ).toHaveProperty( 'response', {
-                    status : 400,
-                    message : [ 'id should match "string"' ]
-                } );
-            }
+            const args1 = [ 'abc', context, meta ];
 
-            try { await fn2( 'abc', context, meta ) } catch( e: unknown ) {
-                expect( e ).toHaveProperty( 'response', {
-                    status : 400,
-                    message : [ `id should match "${/regexp/.toString()}"` ]
-                } );
-            }
+            await expect( fn1( ...args1 ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args1, {
+                status : 400,
+                message : [ 'id should match "string"' ]
+            }, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
+
+            const args2 = [ 'abc', context, meta ];
+            await expect( fn2( ...args2 ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args1, {
+                status : 400,
+                message : [ `id should match "${/regexp/.toString()}"` ]
+            }, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 2 );
         } );
 
-        xit( 'correct error message while metadata.property is empty', async () => {
-            try { await fn1( 'a', context, createParameterMetadata() ) } catch( e: unknown ) {
-                expect( e ).toHaveProperty( 'response', {
-                    status : 400,
-                    message : [ 'parameter does not match "string"' ]
-                } );
-            }
+        it( 'correct error message while metadata.property is empty', async () => {
+            const args = [ 'a', context, createParameterMetadata() ];
+            await expect( fn1( ...args ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args, {
+                status : 400,
+                message : [ 'parameter does not match "string"' ]
+            }, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
         } );
 
     } );

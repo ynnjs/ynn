@@ -82,6 +82,6 @@ export function Match<R>(
             if( ( typeof item === 'string' && item === str ) || ( item instanceof RegExp && item.test( str ) ) ) return value;
         }
 
-        handleException( value, ctx, metadata, 'patterns', exception );
+        handleException( value, ctx, metadata, 'the given patterns', exception );
     };
 }
