@@ -9,7 +9,7 @@
 
 module.exports = {
     preset : 'ts-jest',
-    setupFilesAfterEnv : [ 'jest-extended' ],
+    setupFilesAfterEnv : [ 'jest-extended', '@ynn/jest-extended/src/index.ts' ],
     testMatch : [
         '**/test/**/*.spec.ts'
     ],

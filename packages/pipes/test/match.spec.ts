@@ -12,19 +12,6 @@ import { HttpException } from '@ynn/http-exception';
 import { createParameterMetadata, createContext } from '@ynn/testing';
 import { Match } from '../src';
 
-/**
- * mocked module
- */
-import { handleValidationException } from '../src/shared/handle-validation-exception';
-
-const mockedErrorMessage = 'Mocked Error';
-
-jest.mock( '../src/shared/handle-validation-exception', () => ( {
-    handleValidationException : jest.fn( () => {
-        throw new Error( mockedErrorMessage );
-    } )
-} ) );
-
 describe( 'Match Pipe', () => {
 
     const context = createContext();
@@ -34,10 +21,6 @@ describe( 'Match Pipe', () => {
             parameters : { property, pipes }
         } );
     };
-
-    afterEach( () => {
-        jest.clearAllMocks();
-    } );
 
     describe( 'pass validation', () => {
         it( 'matches a string', async () => {
@@ -74,21 +57,15 @@ describe( 'Match Pipe', () => {
 
             const args1 = [ 'xstring', context, meta ];
             const r1 = fn1( ...args1 );
-            await expect( r1 ).rejects.toThrow( mockedErrorMessage );
-            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
-            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args1, defaultExceptionResponse, undefined ] );
+            await expect( r1 ).rejects.toThrow( new HttpException( defaultExceptionResponse ) );
 
             const args2 = [ 'stringx', context, meta ];
             const r2 = fn1( ...args2 );
-            expect( handleValidationException ).toHaveBeenCalledTimes( 2 );
-            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args2, defaultExceptionResponse, undefined ] );
-            await expect( r2 ).rejects.toThrow( Error );
+            await expect( r2 ).rejects.toThrow( HttpException );
 
             const args3 = [ 'abc', context, meta ];
             const r3 = fn1( ...args3 );
-            expect( handleValidationException ).toHaveBeenCalledTimes( 3 );
-            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args3, defaultExceptionResponse, undefined ] );
-            await expect( r3 ).rejects.toThrow( Error );
+            await expect( r3 ).rejects.toThrow( HttpException );
         } );
 
         it( 'regexp pattern', async () => {
@@ -159,15 +136,20 @@ describe( 'Match Pipe', () => {
 
     } );
 
-    xdescribe( 'callback function', () => {
+    describe( 'callback function', () => {
         const meta = metadata();
         it( 'should have called the callback function', async () => {
             const fn = jest.fn();
-            await Match( 'string', fn )( 'x', context, meta );
-            expect( fn ).toHaveBeenCalledTimes( 1 );
+            const args = [ 'x', context, meta ];
+            await expect( Match( 'string', fn )( ...args ) ).rejects.toThrow( mockedErrorMessage );
+            expect( handleValidationException ).toHaveBeenCalledWith( ...[ ...args, {
+                status : 400,
+                message : [ 'parameter does not match "string"' ]
+            }, undefined ] );
+            expect( handleValidationException ).toHaveBeenCalledTimes( 1 );
         } );
 
-        it( 'should have called the callback function with correct arguments', async () => {
+        xit( 'should have called the callback function with correct arguments', async () => {
             const fn = jest.fn();
             await Match( 'string', fn )( 'x', context, meta );
             expect( fn ).toHaveBeenCalledWith( 'x', context, meta );

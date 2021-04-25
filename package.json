@@ -22,6 +22,7 @@
         "@types/node": "^14.14.37",
         "@typescript-eslint/eslint-plugin": "^4.21.0",
         "@typescript-eslint/parser": "^4.21.0",
+        "@ynn/jest-extended": "workspace:packages/jest-extended",
         "commitizen": "^4.2.3",
         "cz-conventional-changelog": "^3.3.0",
         "eslint": "^7.24.0",

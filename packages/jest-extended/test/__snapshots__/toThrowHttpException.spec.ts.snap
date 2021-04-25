@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`.toThrowHttpException fails when not thrown HttpException 1`] = `
+"Expect the function to throw an HttpException.
+ But Error was thrown"
+`;
+
+exports[`.toThrowHttpException fails when not thrown any exception 1`] = `
+"Expect the fucntion to throw an HttpException.
+ But it didn't throw anything"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException and not matched the given error message 1`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"error\\": \\"Something Error\\"}[39m
+Thrown:
+  [31m{\\"error\\": \\"Bad Request\\", \\"response\\": 400, \\"status\\": 400}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException and not matched the given error message 2`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"error\\": \\"Bad Request\\", \\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"something error\\", \\"response\\": 400, \\"status\\": 400}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException and not matched the given error message 3`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"error\\": \\"Bad Request\\", \\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"something error\\", \\"response\\": {\\"error\\": \\"something error\\", \\"status\\": 401}, \\"status\\": 401}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException and not matched the given status 1`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"Unauthorized\\", \\"response\\": 401, \\"status\\": 401}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException and not matched the given status 2`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"something error\\", \\"response\\": 401, \\"status\\": 401}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException and not matched the given status 3`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"something error\\", \\"response\\": {\\"error\\": \\"something error\\", \\"status\\": 401}, \\"status\\": 401}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException but not matched the given HttpException instance 1`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"error\\": \\"Bad Request\\", \\"response\\": 400, \\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"Unauthorized\\", \\"response\\": 401, \\"status\\": 401}[39m
+"
+`;
+
+exports[`.toThrowHttpException fails when thrown an HttpException but not matched the given HttpException instance 2`] = `
+"[2mexpect([22m[31mfunction[39m[2m).not.toThrowHttpException([22m[32mtype[39m[2m)[22m
+
+Expected to throw:
+  [32m{\\"error\\": \\"Bad Request\\", \\"response\\": 400, \\"status\\": 400}[39m
+Thrown:
+  [31m{\\"error\\": \\"Something Error\\", \\"response\\": 400, \\"status\\": 400}[39m
+"
+`;

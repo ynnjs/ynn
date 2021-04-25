@@ -1,8 +1,8 @@
 {
-    "name": "@ynn/pipes",
+    "name": "@ynn/jest-extended",
     "version": "0.0.0",
-    "description": "Ynn pipes",
-    "main": "lib/index.js",
+    "description": "Jest extended library for ynn",
+    "main": "src/index.js",
     "author": "LvChengbin <lvchengbin59@gmail.com>",
     "licence": "MIT",
     "scripts": {
@@ -18,18 +18,17 @@
         "lib"
     ],
     "devDependencies": {
+        "@types/deep-equal": "^1.0.1",
         "@types/jest": "^26.0.22",
-        "@types/node": "^14.14.37",
-        "@ynn/testing": "workspace:packages/testing",
-        "eslint": "^7.24.0",
+        "@types/node": "^14.14.41",
+        "eslint": "^7.25.0",
         "jest": "^26.6.3",
         "jest-extended": "^0.11.5",
-        "ts-jest": "^26.5.4",
+        "ts-jest": "^26.5.5",
         "typescript": "^4.2.4"
     },
     "dependencies": {
-        "@lvchengbin/is": "^1.0.5",
-        "@ynn/core": "workspace:packages/core",
-        "@ynn/http-exception": "workspace:packages/http-exception"
+        "deep-equal": "^2.0.5",
+        "jest-matcher-utils": "^26.6.2"
     }
 }

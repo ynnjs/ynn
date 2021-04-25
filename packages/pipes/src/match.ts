@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import { Context, Metadata, PipeFunction } from '@ynn/core';
-import { HttpExceptionResponse } from '@ynn/http-exception';
+import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 import { handleValidationException } from './shared/handle-validation-exception';
 
 function handleException<R>(
@@ -19,15 +19,19 @@ function handleException<R>(
     exception?: HttpExceptionResponse | Error | ExceptionCallback<R>
 ): R {
 
+    if( typeof exception === 'function' ) return exception( value, ctx, metadata );
+
+    if( exception instanceof Error ) throw exception;
+
     const property = ( metadata.parameters as any )?.property; // eslint-disable-line @typescript-eslint/no-explicit-any
-    return handleValidationException(
-        value, ctx, metadata, {
-            status : 400,
-            message : [
-                property ? `${property} should match ${pattern}` : `parameter does not match ${pattern}`
-            ]
-        }, exception
-    );
+
+    throw new HttpException( {
+        status : 400,
+        message : [
+            property ? `${property} should match ${pattern}` : `parameter does not match ${pattern}`
+        ],
+        ...( exception || {} )
+    } );
 }
 
 /**
