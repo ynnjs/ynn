@@ -105,6 +105,11 @@ describe( '.rejects.toThrowYnnHttpException', () => {
         expect( Promise.reject( new HttpException( args ) ) ).rejects.toThrowYnnHttpException( new HttpException( args ) );
     } );
 
+    it( 'passes when thrown a HttpException and matched the HttpException created with given object', () => {
+        const args = { status : 400, message : [ 'Something Error' ] };
+        expect( Promise.reject( new HttpException( args ) ) ).rejects.toThrowYnnHttpException( args );
+    } );
+
     it( 'fails when the promise object not rejected with a HttpException instance', () => {
         expect( () => {
             return expect( Promise.reject( new Error() ) ).rejects.toThrowYnnHttpException();
@@ -142,6 +147,7 @@ describe( '.not.toThrowYnnHttpException', () => {
             message : [ 'Something Error' ]
         } ) );
     } );
+
 } );
 
 describe( '.rejects.not.toThrowYnnHttpException', () => {

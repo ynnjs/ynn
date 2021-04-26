@@ -1,21 +1,22 @@
 /******************************************************************
- * Copyright (C) 2021 Ynn
+ * Copyright (C) 2021 LvChengbin
  *
- * File: src/required.ts
+ * File: src/parse-url.pipe.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 02/24/2021
+ * Time: 04/26/2021
  * Description:
  ******************************************************************/
 
-import { Context, Metadata } from '@ynn/core';
+import { URL } from 'url';
+import { Context, Metadata, PipeFunction } from '@ynn/core';
 import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 import { ExceptionCallback } from './interfaces';
 
-export function Required<R>( exception?: HttpExceptionResponse | Error | ExceptionCallback<R> ): PipeFunction {
+export function ParseURL( exception?: HttpExceptionResponse | Error | ExceptionCallback<R> ): PipeFunction {
 
-    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
+    return async ( value: string, ctx: Context, metadata: Metadata ): URL => {
 
-        if( value === '' || value === undefined || value === null ) {
+        try { return new URL( url ) } catch( e: unknown ) {
 
             if( typeof exception === 'function' ) return exception( value, ctx, metadata );
 
@@ -26,12 +27,10 @@ export function Required<R>( exception?: HttpExceptionResponse | Error | Excepti
             throw new HttpException( {
                 status : 400,
                 message : [
-                    property ? `${property} is required` : 'missing parameter'
+                    property ? `Parameter ${property} must be a valid URL` : 'Invalid URL'
                 ],
                 ...( exception || {} )
             } );
         }
-
-        return value;
     };
 }

@@ -9,7 +9,6 @@
 
 import { Context, Metadata, PipeFunction } from '@ynn/core';
 import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
-import { handleValidationException } from './shared/handle-validation-exception';
 
 function handleException<R>(
     value: string | number,
@@ -67,14 +66,14 @@ export function Match<R>(
     if( typeof pattern === 'string' ) {
         return async <T extends string | number>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
             if( pattern === String( value ) ) return value;
-            handleException( value, ctx, metadata, `"${pattern}"`, exception );
+            return handleException( value, ctx, metadata, `"${pattern}"`, exception );
         };
     }
 
     if( pattern instanceof RegExp ) {
         return async <T extends string | number>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
             if( ( pattern as RegExp ).test( String( value ) ) ) return value;
-            handleException( value, ctx, metadata, `"${pattern.toString()}"`, exception );
+            return handleException( value, ctx, metadata, `"${pattern.toString()}"`, exception );
         };
     }
 
@@ -86,6 +85,6 @@ export function Match<R>(
             if( ( typeof item === 'string' && item === str ) || ( item instanceof RegExp && item.test( str ) ) ) return value;
         }
 
-        handleException( value, ctx, metadata, 'the given patterns', exception );
+        return handleException( value, ctx, metadata, 'the given patterns', exception );
     };
 }

@@ -8,7 +8,6 @@
  ******************************************************************/
 
 import { ParameterMetadata, Pipe } from '@ynn/core';
-import { HttpException } from '@ynn/http-exception';
 import { createParameterMetadata, createContext } from '@ynn/testing';
 import { Required } from '../src';
 
@@ -22,7 +21,7 @@ describe( 'Required Pipe', () => {
         } );
     };
 
-    it( 'should have returned a function', async () => {
+    it( 'should have returned a function', () => {
         expect( Required() ).toBeInstanceOf( Function );
     } );
 
@@ -42,37 +41,29 @@ describe( 'Required Pipe', () => {
         const meta = metadata();
 
         it( 'should have thrown an error if the given value is null', async () => {
-            await expect( fn( null, context, meta ) ).rejects.toThrow( HttpException );
+            await expect( fn( null, context, meta ) ).rejects.toThrowYnnHttpException();
         } );
 
         it( 'should have thrown an error if the given value is undefined', async () => {
-            await expect( fn( undefined, context, meta ) ).rejects.toThrow( HttpException );
+            await expect( fn( undefined, context, meta ) ).rejects.toThrowYnnHttpException();
         } );
 
         it( 'should have thrown exception if the given value is an empty string', async () => {
-            await expect( fn( '', context, meta ) ).rejects.toThrow( HttpException );
+            await expect( fn( '', context, meta ) ).rejects.toThrowYnnHttpException();
         } );
 
         it( 'should have thrown HttpException with correct response', async () => {
-            expect.assertions( 1 );
-
-            try { await fn( undefined, context, meta ) } catch( e: unknown ) {
-                expect( e ).toHaveProperty( 'response', {
-                    status : 400,
-                    message : [ 'id is required' ]
-                } );
-            }
+            return expect( fn( undefined, context, meta ) ).rejects.toThrowYnnHttpException( {
+                status : 400,
+                message : [ 'id is required' ]
+            } );
         } );
 
         it( 'should thrown HttpException with correct message if metadata.parameter.property is empty', async () => {
-            expect.assertions( 1 );
-
-            try { await fn( undefined, context, createParameterMetadata() ) } catch( e: unknown ) {
-                expect( e ).toHaveProperty( 'response', {
-                    status : 400,
-                    message : [ 'missing parameter' ]
-                } );
-            }
+            return expect( fn( undefined, context, createParameterMetadata() ) ).rejects.toThrowYnnHttpException( {
+                status : 400,
+                message : [ 'missing parameter' ]
+            } );
         } );
     } );
 
@@ -91,19 +82,11 @@ describe( 'Required Pipe', () => {
         } );
 
         it( 'should use the options for creating HttpException', async () => {
-            expect.assertions( 1 );
-
-            try {
-                await Required( {
-                    status : 401,
-                    message : [ 'error message' ]
-                } )( undefined, context, meta );
-            } catch( e: unknown ) {
-                expect( e ).toHaveProperty( 'response', {
-                    status : 401,
-                    message : [ 'error message' ]
-                } );
-            }
+            const args = {
+                status : 401,
+                message : [ 'error message' ]
+            };
+            return expect( Required( args )( undefined, context, meta ) ).rejects.toThrowYnnHttpException( args );
         } );
     } );
 
@@ -134,15 +117,10 @@ describe( 'Required Pipe', () => {
 
         it( 'should overwrite information of the thrown exception with given options', async () => {
             const fn = Required( { status : 401, message : [ 'something error' ] } );
-
-            try {
-                await fn( undefined, context, meta );
-            } catch( e: HttpException ) {
-                expect( e.response ).toEqual( {
-                    status : 401,
-                    message : [ 'something error' ]
-                } );
-            }
+            return expect( fn( undefined, context, meta ) ).rejects.toThrowYnnHttpException( {
+                status : 401,
+                message : [ 'something error' ]
+            } );
         } );
     } );
 } );

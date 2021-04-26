@@ -66,8 +66,6 @@ export default function toThrowYnnHttpException(
         try { callback() } catch( e: unknown ) { exception = e }
     }
 
-
-
     if( !exception ) {
         return {
             pass : false,
@@ -140,7 +138,7 @@ export default function toThrowYnnHttpException(
         httpException = new HttpException( response, error );
     }
 
-    if( !predicate( exception, response, error ) ) {
+    if( !predicate( exception, httpException ) ) {
         return {
             pass : false,
             message : failMessage( exception, httpException )

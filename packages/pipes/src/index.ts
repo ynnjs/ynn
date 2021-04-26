@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-export * from './required';
-export * from './parse-url';
-export * from './default';
-export * from './match';
+export * from './required.pipe';
+export * from './parse-url.pipe';
+export * from './default.pipe';
+export * from './match.pipe';
