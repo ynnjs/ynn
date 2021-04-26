@@ -48,18 +48,25 @@ export default function toThrowYnnHttpException(
     error?: string
 ): CustomMatcherResult {
 
-    console.log( 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', callback );
-
-    if( !callback || typeof callback !== 'function' ) {
-        return {
-            pass : false,
-            message : (): string => `Recevied value must be a function but instead "${callback}" was found`
-        };
-    }
-
     let exception: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-    try { callback() } catch( e: unknown ) { exception = e }
+    /**
+     * expect( Promise.reject( new HttpException( 400 ) ) ).rejects.toThrowYnnHttpException();
+     */
+    if( this.promise ) {
+        exception = callback;
+    } else {
+        if( !callback || typeof callback !== 'function' ) {
+            return {
+                pass : false,
+                message : (): string => `Recevied value must be a function but instead "${callback}" was found`
+            };
+        }
+
+        try { callback() } catch( e: unknown ) { exception = e }
+    }
+
+
 
     if( !exception ) {
         return {
@@ -71,7 +78,6 @@ export default function toThrowYnnHttpException(
     if( !( exception instanceof HttpException ) ) {
         return {
             pass : false,
-            // message : failMessage( error, HttpException )
             message : (): string => `Expect the function to throw an HttpException.\n But ${exception} was thrown`
         };
     }
