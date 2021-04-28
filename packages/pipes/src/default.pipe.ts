@@ -9,6 +9,10 @@
 
 import { PipeFunction } from '@ynn/core';
 
+export interface DefaultCallback<T> {
+    ( value: null | undefined, ctx: Context, metadata: Metadata ): T | Promise<T>;
+}
+
 /**
  * @example
  *
@@ -17,9 +21,11 @@ import { PipeFunction } from '@ynn/core';
  * fn( @Query( 'id', Default( 'defaultid' ) ) id: string ) {}
  * ```
  */
-export function Default<T>( defaultValue: T ): PipeFunction {
-    return ( value: T ): T => {
-        if( value === undefined || value === null ) return defaultValue;
+export function Default<D>( defaultValue: DefaultCallback<D> | D ): PipeFunction {
+    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | D> => {
+        if( value === '' || value === undefined || value === null ) {
+            return typeof defaultValue === 'function' ? defaultValue( value, ctx, metadata ) : defaultValue;
+        }
         return value;
     };
 }

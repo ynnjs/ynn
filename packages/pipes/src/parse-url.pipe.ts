@@ -12,13 +12,13 @@ import { Context, Metadata, PipeFunction } from '@ynn/core';
 import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
 import { ExceptionCallback } from './interfaces';
 
-export function ParseURL( exception?: HttpExceptionResponse | Error | ExceptionCallback<R> ): PipeFunction {
+export function ParseURL( exception?: HttpExceptionResponse | Error | ExceptionCallback<URL | Promise<URL>> ): PipeFunction {
 
-    return async ( value: string, ctx: Context, metadata: Metadata ): URL => {
+    return async ( url: string, ctx: Context, metadata: Metadata ): Promise<URL> => {
 
         try { return new URL( url ) } catch( e: unknown ) {
 
-            if( typeof exception === 'function' ) return exception( value, ctx, metadata );
+            if( typeof exception === 'function' ) return exception( url, ctx, metadata );
 
             if( exception instanceof Error ) throw exception;
 
