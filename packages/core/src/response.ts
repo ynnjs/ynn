@@ -20,7 +20,7 @@ import escapehtml from 'escape-html';
 import getType from 'cache-content-type';
 import contentDisposition, { Options as ContentDispositionOptions } from 'content-disposition';
 import { Valueof } from '@ynn/utility-types';
-import { Context } from './context';
+import { Context, Response as ResponseInterface } from '@ynn/common';
 
 export interface ResponseOptions {
     ctx: Context;
@@ -30,7 +30,7 @@ export interface ResponseOptions {
     statusMessage?: string;
 }
 
-export class Response {
+export class Response implements ResponseInterface {
 
     #headers: Map<string, Valueof<OutgoingHttpHeaders>>= new Map();
     #body: unknown = null;
@@ -211,12 +211,12 @@ export class Response {
      * Perform a 302 redirect to `url`.
      */
     redirect( url: string, alt?: string ): void {
-        if( url === 'back' ) url = this.ctx.get( 'Referrer' ) || ( alt ?? '/' );
+        if( url === 'back' ) url = this.ctx.request.get( 'Referrer' ) || ( alt ?? '/' );
         this.set( 'Location', encodeurl( url ) );
 
         if( !statuses.redirect[ this.status ] ) this.status = 302;
 
-        if( this.ctx.accepts( 'html' ) ) {
+        if( this.ctx.request.accepts( 'html' ) ) {
             url = escapehtml( url );
             this.type = 'text/html; charset=utf-8';
             this.body = `Redirecting to <a href="${url}">${url}</a>`;

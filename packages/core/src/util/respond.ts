@@ -22,21 +22,22 @@ function setHeaders( headers: OutgoingHttpHeaders, res: ServerResponse ): void {
 
 export function respond( ctx: Context, req: IncomingMessage, res: ServerResponse ): void {
 
-    const { status, message, response } = ctx;
+    const { request, response } = ctx;
+    const { status, message } = response;
     res.statusCode = status;
     res.statusMessage = message;
 
     if( statuses.empty[ status ] ) {
-        ctx.body = null;
+        response.body = null;
         setHeaders( response.headers, res );
         res.end();
         return;
     }
 
-    if( ctx.method === 'HEAD' ) {
-        if( !res.headersSent && !ctx.response.has( 'Content-Length' ) ) {
-            const { length } = ctx.response;
-            if( Number.isInteger( length ) ) ctx.length = length;
+    if( request.method === 'HEAD' ) {
+        if( !res.headersSent && !response.has( 'Content-Length' ) ) {
+            const { length } = response;
+            if( Number.isInteger( length ) ) response.length = length;
         }
         setHeaders( response.headers, res );
         res.end();
@@ -46,9 +47,9 @@ export function respond( ctx: Context, req: IncomingMessage, res: ServerResponse
     let { body } = ctx;
 
     if( body === null ) {
-        if( ctx.response.EXPLICIT_NULL_BODY ) {
-            ctx.response.remove( 'Content-Type' );
-            ctx.response.remove( 'Transfer-Encoding' );
+        if( response.EXPLICIT_NULL_BODY ) {
+            response.remove( 'Content-Type' );
+            response.remove( 'Transfer-Encoding' );
             setHeaders( response.headers, res );
             res.end();
             return;
@@ -61,8 +62,8 @@ export function respond( ctx: Context, req: IncomingMessage, res: ServerResponse
         }
 
         if( !res.headersSent ) {
-            ctx.type = 'text';
-            ctx.length = Buffer.byteLength( body as string );
+            request.type = 'text';
+            response.length = Buffer.byteLength( body as string );
         }
         setHeaders( response.headers, res );
         res.end( body );
@@ -81,7 +82,7 @@ export function respond( ctx: Context, req: IncomingMessage, res: ServerResponse
 
     body = JSON.stringify( body );
     if( !res.headersSent ) {
-        ctx.length = Buffer.byteLength( body as string );
+        response.length = Buffer.byteLength( body as string );
     }
     setHeaders( response.headers, res );
     res.end( body );

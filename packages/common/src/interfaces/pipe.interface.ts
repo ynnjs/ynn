@@ -1,9 +1,9 @@
 /******************************************************************
- * Copyright (C) 2020 LvChengbin
+ * Copyright (C) 2021 LvChengbin
  *
  * File: interfaces/pipe.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 11/16/2020
+ * Time: 04/29/2021
  * Description:
  ******************************************************************/
 
@@ -16,6 +16,7 @@ export interface PipeFunction<T = any, R = any, M extends Metadata = Metadata> {
 }
 
 export interface PipeTransform<T = any, R = any, M extends Metadata = Metadata> { // eslint-disable-line @typescript-eslint/no-explicit-any
+
     transform: ( value: T, ctx: Context, metadata: M ) => R;
 }
 

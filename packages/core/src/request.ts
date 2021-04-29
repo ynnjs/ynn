@@ -10,13 +10,12 @@
 import util from 'util';
 import qs, { ParsedUrlQuery } from 'querystring';
 import { Socket, isIP } from 'net';
-import { TLSSocket } from 'tls';
 import { IncomingMessage, IncomingHttpHeaders } from 'http';
 import { format as stringify, UrlWithStringQuery } from 'url';
 import contentType from 'content-type';
 import { is } from 'type-is';
 import accepts, { Accepts } from 'accepts';
-import { Context } from './context';
+import { Context, Request as RequestInterface } from '@ynn/common';
 import { parseurl } from './util/parseurl';
 
 export interface RequestOptions {
@@ -35,7 +34,7 @@ export interface RequestOptions {
     maxIpsCount?: number;
 }
 
-export class Request {
+export class Request implements RequestInterface {
 
     #ip?: string;
     #accept?: Accepts;
@@ -166,6 +165,10 @@ export class Request {
         let host = this.proxy && this.get( 'X-Forwarded-Host' );
 
         if( !host ) {
+            /**
+             * support ":authority" Psudo-Header defined in HTTP2
+             * https://tools.ietf.org/html/rfc7540#section-8.1.2.3
+             */
             if( this.httpVersionMajor >= 2 ) host = this.get( ':authority' );
             if( !host ) host = this.get( 'Host' );
         }
@@ -208,7 +211,7 @@ export class Request {
         return [ 'GET', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'TRACE' ].includes( this.method );
     }
 
-    get socket(): Socket | TLSSocket | null {
+    get socket(): Socket | null {
         return this.req?.socket ?? null;
     }
 

@@ -28,6 +28,9 @@ module.exports = {
             isolatedModules : true
         }
     },
+    transformIgnorePatterns : [
+        '\\.pnp\\.[^\\\/]+$'
+    ],
     moduleNameMapper : {
         '@ynn/(.*)' : `${__dirname}/packages/$1/src/index.ts`
     }

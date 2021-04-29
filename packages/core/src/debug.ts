@@ -9,7 +9,7 @@
 
 import util from 'util';
 import clistyle, { StyleOptions } from 'cli-style';
-import { Logger } from './interfaces';
+import { Logger } from '@ynn/common';
 
 type OptionsStyles = Record<keyof Logger, StyleOptions>;
 

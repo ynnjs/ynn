@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Logger, LogFunction } from './interfaces';
+import { Logger, LogFunction } from '@ynn/common';
 
 export type LoggerProxyOptions<T = Logger> = {
     debugging: boolean | string[];

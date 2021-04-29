@@ -16,11 +16,11 @@ import { Argv } from 'yargs';
 import is from '@lvchengbin/is';
 import { VariadicClass } from '@ynn/utility-types';
 import { HttpException } from '@ynn/http-exception';
+import { Logger } from '@ynn/common';
 import { Context, ContextOptions } from './context';
 import { createExecutors, Executor } from './action';
 import { Router, RouterRule, RouteMap } from './router';
 import cargs from './cargs';
-import { Logger } from './interfaces';
 import loggerProxy from './logger-proxy';
 import { respond } from './util/respond';
 import Debug, { DebugOptions } from './debug';
@@ -238,7 +238,7 @@ export class Ynn extends Events {
             } );
 
             this.router.any( '*', new RegExp( `^/${escapeStringRegexp( name )}(/.*)?` ), ( ctx: Context ) => {
-                ctx.path = ctx.path.slice( name.length + 1 );
+                ctx.request.path = ctx.request.path.slice( name.length + 1 );
                 return { module : name };
             } );
         } );
@@ -267,11 +267,12 @@ export class Ynn extends Events {
     async handle( context: ContextOptions | Context ): Promise<Context> {
 
         const ctx: Context = context instanceof Context ? context : new Context( context );
+        const { response } = ctx;
 
         const match = this.router.match( ctx );
 
         if( match === false ) {
-            ctx.status = 404;
+            response.status = 404;
             return ctx;
         }
 
@@ -298,34 +299,34 @@ export class Ynn extends Events {
         } else result = { ...dest };
 
         if( result.module ) {
-            if( !this.modules[ result.module ] ) { ctx.status = 304 } else {
+            if( !this.modules[ result.module ] ) { response.status = 304 } else {
                 return this.modules[ result.module ].handle( ctx );
             }
         } else {
             const executor = this.executors[ result.controller ?? DEFAULT_CONTROLLER ]?.[ result.action ?? DEFAULT_ACTION ];
 
-            if( !executor ) { ctx.status = 404 } else {
+            if( !executor ) { response.status = 404 } else {
                 try {
                     const body = await executor.call( this, ctx );
-                    if( body !== undefined ) ctx.body = body;
+                    if( body !== undefined ) response.body = body;
                 } catch( e: unknown ) {
                     if( typeof e === 'number' ) {
-                        ctx.status = e;
+                        response.status = e;
                     } else if( typeof e === 'string' ) {
-                        ctx.status = 500;
-                        ctx.message = e;
+                        response.status = 500;
+                        response.message = e;
                     } else if( e instanceof HttpException ) {
                         if( e.response ) {
-                            ctx.body = e.response;
-                            ctx.status = e.response.status;
-                            ctx.message = e.response.error;
+                            response.body = e.response;
+                            response.status = e.response.status;
+                            response.message = e.response.error;
                         } else {
-                            ctx.status = e.status;
-                            ctx.message = e.message;
+                            response.status = e.status;
+                            response.message = e.message;
                         }
                     } else {
                         this.logger.error( e );
-                        ctx.status = 500;
+                        response.status = 500;
                     }
                 }
             }
