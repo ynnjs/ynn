@@ -62,7 +62,7 @@ describe( 'Ynn application', () => {
             } );
 
             expect( res ).toBeInstanceOf( Context );
-            expect( res.body ).toEqual( { status : 0 } );
+            expect( res.response.body ).toEqual( { status : 0 } );
         } );
     } );
 
@@ -83,7 +83,7 @@ describe( 'Ynn application', () => {
             } );
 
             expect( res ).toBeInstanceOf( Context );
-            expect( res.body ).toEqual( { status : 0 } );
+            expect( res.response.body ).toEqual( { status : 0 } );
         } );
     } );
 } );

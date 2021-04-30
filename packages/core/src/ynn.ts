@@ -338,6 +338,7 @@ export class Ynn extends Events {
 
         const server = http.createServer( async ( req, res ) => {
             res.statusCode = 404;
+
             try {
                 const ctx = await this.handle( {
                     request : {

@@ -115,7 +115,7 @@ export class Router {
 
     match( context: Context ): Matches | false {
 
-        const { path, method } = context;
+        const { path, method } = context.request;
         const cacheKey = path + '\x0B' + method;
 
         if( this.#cache[ cacheKey ] !== undefined ) return this.#cache[ cacheKey ];

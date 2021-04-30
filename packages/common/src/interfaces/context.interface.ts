@@ -7,8 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Socket } from 'net';
-import { IncomingMessage, ServerResponse, IncomingHttpHeaders } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import { Request } from './request';
 import { Response } from './response';
 

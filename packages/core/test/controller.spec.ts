@@ -15,7 +15,7 @@ describe( 'Controller', () => {
     it( 'should have called the request interceptor by adding method decorators', async () => {
 
         const fn = jest.fn().mockImplementation( ( metadata, context: Context ) => {
-            context.status = 304;
+            context.response.status = 304;
         } );
         const Request = createDecoratorBefore( fn, {
             parameters : { name : 'ynn' }
@@ -38,8 +38,9 @@ describe( 'Controller', () => {
         } );
 
         expect( fn ).toHaveBeenCalledTimes( 1 );
-        expect( context.body ).toEqual( { x : 1 } );
-        expect( context.status ).toEqual( 304 );
+        const { response } = context;
+        expect( response.body ).toEqual( { x : 1 } );
+        expect( response.status ).toEqual( 304 );
     } );
 
     it( 'should have called the request interceptor by adding class decorators', async () => {
@@ -68,8 +69,8 @@ describe( 'Controller', () => {
         } );
 
         expect( fn ).toHaveBeenCalledTimes( 1 );
-        expect( context.body ).toEqual( { x : 1 } );
-        expect( context.status ).toEqual( 304 );
+        expect( context.response.body ).toEqual( { x : 1 } );
+        expect( context.response.status ).toEqual( 304 );
     } );
 
     it( 'should have called the response interceptor by adding method decorators', async () => {
@@ -97,7 +98,7 @@ describe( 'Controller', () => {
 
         expect( fn ).toHaveBeenCalledTimes( 1 );
 
-        expect( context.body ).toEqual( {
+        expect( context.response.body ).toEqual( {
             status : 0,
             data : { x : 1 }
         } );
@@ -127,7 +128,7 @@ describe( 'Controller', () => {
 
         expect( fn ).toHaveBeenCalledTimes( 1 );
 
-        expect( context.body ).toEqual( {
+        expect( context.response.body ).toEqual( {
             status : 0,
             data : { x : 1 }
         } );
@@ -154,7 +155,7 @@ describe( 'Controller', () => {
         } );
 
         expect( fn ).toHaveBeenCalledTimes( 1 );
-        expect( context.body ).toEqual( { status : 1 } );
+        expect( context.response.body ).toEqual( { status : 1 } );
     } );
 
     it( 'should have called the exception interceptor by adding class decorators', async () => {
@@ -178,6 +179,6 @@ describe( 'Controller', () => {
         } );
 
         expect( fn ).toHaveBeenCalledTimes( 1 );
-        expect( context.body ).toEqual( { status : 1 } );
+        expect( context.response.body ).toEqual( { status : 1 } );
     } );
 } );
