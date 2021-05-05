@@ -7,6 +7,7 @@
  * Description:
  ******************************************************************/
 
+export * from './interfaces';
 export * from './required.pipe';
 export * from './parse-url.pipe';
 export * from './default.pipe';

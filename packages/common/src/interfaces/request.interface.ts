@@ -48,11 +48,11 @@ export interface Request {
     ips: string[];
     ip: string;
     subdomains: string[];
-    accept: Accepts;
-    accepts: string[] | string | false;
-    acceptsEncoding: string | false;
-    acceptsCharsets: string | false;
-    acceptsLanguages: string | false;
+    // accept: Accepts;
+    // accepts: string[] | string | false;
+    // acceptsEncoding: string | false;
+    // acceptsCharsets: string | false;
+    // acceptsLanguages: string | false;
     is: ( ...args: [ ...string[] ] | string[] ) => string | false | null;
     type: string;
     get: ( field: string ) => string;

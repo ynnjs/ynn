@@ -9,7 +9,7 @@
 
 import { VariadicClass } from '@ynn/utility-types';
 import { createInterceptorParameter, getMetadataParameter, InterceptorAfter, InterceptorBefore, InterceptorException } from '@ynn/method-interceptor';
-import { ACTION_METADATA_KEY, ACTION_METHOD_SUFFIX } from './constants';
+import { ACTION_METADATA_KEY } from '@ynn/common';
 import { Ynn } from './ynn';
 import { Context } from './context';
 import { fillParams } from './util/fill-params';
@@ -32,23 +32,7 @@ export interface ActionInfo {
     proto: object; // eslint-disable-line
 }
 
-/**
- * generate the `@Action` decorator which is used to mark a instance method to be an `Action`.
- *
- * @param name - the `Action`'s name, using the method name by default.
- *
- * @return a method decorator
- */
-export function Action( name?: string ): MethodDecorator {
-    return ( target, key: string | symbol, descriptor: PropertyDescriptor ): void => {
-        const metadata = Reflect.getMetadata( ACTION_METADATA_KEY, descriptor.value ) || [];
-        metadata.push( name ?? key );
-        Reflect.defineMetadata( ACTION_METADATA_KEY, metadata, descriptor.value );
-    };
-}
-
 const hasOwnProperty = Object.prototype.hasOwnProperty;
-const ACTION_METHOD_SUFFIX_LENGTH = ACTION_METHOD_SUFFIX.length;
 
 export function scan(
     obj: object // eslint-disable-line
@@ -91,20 +75,6 @@ export function scan(
                     descriptor
                 };
             } );
-
-            /**
-             * scan all methods whose name end withs 'Action'
-             */
-            if( typeof key === 'string' && key.endsWith( ACTION_METHOD_SUFFIX ) ) {
-                const name = key.substr( 0, key.length - ACTION_METHOD_SUFFIX_LENGTH );
-                /**
-                 * the action method that exposed with @Action() decorator has high precedence.
-                 * indexAction should not override @Action( 'index' )
-                 */
-                if( hasOwn( name ) ) return;
-
-                actions[ name ] = { methodName : key, descriptor, proto };
-            }
         } );
         proto = Reflect.getPrototypeOf( proto );
     }

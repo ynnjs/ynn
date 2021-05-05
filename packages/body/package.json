@@ -8,7 +8,9 @@
         "clean": "rm -rf lib",
         "build": "yarn clean && tsc -b -v",
         "lint": "eslint {src,test}/**/*.ts --cache --fix",
-        "test": "jest"
+        "test": "jest",
+        "postpack": "run clean",
+        "prepack": "run build"
     },
     "engines": {
         "node": ">=14.15.0"
@@ -37,7 +39,7 @@
         "typescript": "^4.2.4"
     },
     "dependencies": {
-        "@ynn/core": "workspace:packages/core",
+        "@ynn/common": "workspace:packages/common",
         "bytes": "^3.1.0",
         "co-body": "^6.1.0",
         "formidable": "canary"

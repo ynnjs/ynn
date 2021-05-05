@@ -7,13 +7,16 @@
  * Description:
  ******************************************************************/
 
-import { CustomMatcherResult } from 'jest';
+// import { CustomMatcherResult } from 'jest';
 import { matcherHint, printExpected, printReceived } from 'jest-matcher-utils';
 import { VariadicFunction } from '@ynn/utility-types';
-import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
+import { HttpException, HttpExceptionResponse } from '@ynn/exceptions';
 import predicate from './predicate';
 
-const passMessage = ( received: unknown, expected: unknown ): ( () => string ) => (): string => {
+const passMessage = (
+    received: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    expected: any // eslint-disable-line @typescript-eslint/no-explicit-any
+): ( () => string ) => (): string => {
     return matcherHint( '.toThrowYnnHttpException', 'function', 'type' ) +
         '\n\n' +
         'Expected not to throw:\n' +
@@ -22,7 +25,10 @@ const passMessage = ( received: unknown, expected: unknown ): ( () => string ) =
         `  ${printReceived( received?.toJSON?.() ?? received )}\n`;
 };
 
-const failMessage = ( received: unknown, expected: unknown ): ( () => string ) => (): string => {
+const failMessage = (
+    received: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    expected: any // eslint-disable-line @typescript-eslint/no-explicit-any
+): ( () => string ) => (): string => {
     return matcherHint( '.not.toThrowYnnHttpException', 'function', 'type' ) +
         '\n\n' +
         'Expected to throw:\n' +
@@ -43,10 +49,11 @@ const failMessage = ( received: unknown, expected: unknown ): ( () => string ) =
  * @param message - error message of HttpException instance.
  */
 export default function toThrowYnnHttpException(
+    this: jest.MatcherContext,
     callback: VariadicFunction,
     response?: number | string | HttpExceptionResponse | HttpException,
     error?: string
-): CustomMatcherResult {
+): jest.CustomMatcherResult {
 
     let exception: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 

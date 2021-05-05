@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { Context, Metadata } from '@ynn/core';
+import { Context, Metadata } from '@ynn/common';
 
-export interface ExceptionCallback<R> {
-    ( value: null | undefined, ctx: Context, metadata: Metadata ): R;
+export interface ExceptionCallback<T, R> {
+    ( value: T, ctx: Context, metadata: Metadata ): R;
 }

@@ -8,7 +8,7 @@
     },
     "references" : [
         { "path" : "../method-interceptor" },
-        { "path" : "../http-exception" },
+        { "path" : "../exceptions" },
         { "path" : "../utility-types" }
     ],
     "include" : [ "src/**/*" ]

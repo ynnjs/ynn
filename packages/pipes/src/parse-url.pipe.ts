@@ -8,11 +8,13 @@
  ******************************************************************/
 
 import { URL } from 'url';
-import { Context, Metadata, PipeFunction } from '@ynn/core';
-import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
-import { ExceptionCallback } from './interfaces';
+import { Context, Metadata, PipeFunction } from '@ynn/common';
+import { HttpException } from '@ynn/exceptions';
+import { ExceptionCallback, ExceptionResponseObject } from './interfaces';
 
-export function ParseURL( exception?: HttpExceptionResponse | Error | ExceptionCallback<URL | Promise<URL>> ): PipeFunction {
+export function ParseURL(
+    exception?: ExceptionResponseObject | Error | ExceptionCallback<string, URL | Promise<URL>>
+): PipeFunction {
 
     return async ( url: string, ctx: Context, metadata: Metadata ): Promise<URL> => {
 
@@ -29,7 +31,7 @@ export function ParseURL( exception?: HttpExceptionResponse | Error | ExceptionC
                 message : [
                     property ? `Parameter ${property} must be a valid URL` : 'Invalid URL'
                 ],
-                ...( exception || {} )
+                ...( exception ?? {} )
             } );
         }
     };

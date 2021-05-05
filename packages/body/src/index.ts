@@ -11,7 +11,7 @@ import qs from 'qs';
 import bytes from 'bytes';
 import formidable, { Fields, Files } from 'formidable';
 import cobody, { Options as CobodyOptions } from 'co-body';
-import { Context } from '@ynn/core';
+import { Context } from '@ynn/common';
 
 /**
  * The type of the return value of `cobody` while `options.returnRawBody` is set to `true`.
@@ -75,7 +75,7 @@ async function parseMultipart( ctx: Context, options: MultipartOptions ): Promis
 /**
  * get body data by setting `options.returnRawBody` to `true`, it will return the {@link RawBody} only when `Content-Type` doesn't match `multipart`.
  *
- * @param ctx - the context object conforming the @ynn/core's context object.
+ * @param ctx - the context object conforming the Context interface declared in @ynn/common.
  * @param options - the options object. {@link BodyOptions}
  *
  * @returns the parsed body with `fields` and `files`.
@@ -90,7 +90,7 @@ export default async function parseBody(
     const encoding = options.encoding ?? 'utf-8';
     const limit = '20mb';
 
-    if( ctx.is( 'multipart' ) ) {
+    if( ctx.request.is( 'multipart' ) ) {
 
         const { multipartOptions = {} } = options;
         const maxSizeOptions: {

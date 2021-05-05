@@ -8,7 +8,9 @@
  ******************************************************************/
 
 import { createDecoratorAfter, createDecoratorBefore, createDecoratorException } from '@ynn/method-interceptor';
-import { Ynn, Action, Context } from '../src';
+import { Context } from '@ynn/common';
+import { Action } from '@ynn/decorators';
+import { Ynn } from '../src';
 
 describe( 'Controller', () => {
 
@@ -46,7 +48,7 @@ describe( 'Controller', () => {
     it( 'should have called the request interceptor by adding class decorators', async () => {
 
         const fn = jest.fn().mockImplementation( ( metadata, context: Context ) => {
-            context.status = 304;
+            context.response.status = 304;
         } );
         const Request = createDecoratorBefore( fn, {
             parameters : { name : 'ynn' }

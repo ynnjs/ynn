@@ -8,7 +8,7 @@
     },
     "references" : [
         { "path" : "../utility-types" },
-        { "path" : "../http-exception" }
+        { "path" : "../exceptions" }
     ],
     "include" : [ "src/**/*" ]
 }

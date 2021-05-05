@@ -9,7 +9,9 @@
         "clean": "rm -rf lib",
         "build": "yarn clean && tsc -b -v",
         "test": "jest",
-        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache"
+        "lint": "eslint src/**/*.ts test/**/*.ts --fix --cache",
+        "postpack": "run clean",
+        "prepack": "run build"
     },
     "engines": {
         "node": ">=12"

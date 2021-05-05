@@ -8,7 +8,8 @@
  ******************************************************************/
 
 import { createDecoratorAfter, createDecoratorBefore, createDecoratorException } from '@ynn/method-interceptor';
-import { Ynn, Action, Context, Module, Options } from '../src';
+import { Action, Module } from '@ynn/decorators';
+import { Ynn, Options, Context } from '../src';
 
 describe( 'Module', () => {
 
@@ -99,8 +100,7 @@ describe( 'Module', () => {
             info : InfoModule,
             error : ErrorModule
         },
-        logging : false,
-        debugging : false
+        logging : false
     };
 
     const app1 = new Ynn( options );
@@ -157,8 +157,8 @@ describe( 'Module', () => {
             }
         } );
         expect( res ).toBeInstanceOf( Context );
-        expect( res.status ).toEqual( 200 );
-        expect( res.body ).toEqual( responseData );
+        expect( res.response.status ).toEqual( 200 );
+        expect( res.response.body ).toEqual( responseData );
     } );
 
     it( 'should respond expect data from excutors in submodule of module', async () => {
@@ -169,21 +169,22 @@ describe( 'Module', () => {
             }
         } );
         expect( res ).toBeInstanceOf( Context );
-        expect( res.status ).toEqual( 200 );
-        expect( res.body ).toEqual( responseData );
+        expect( res.response.status ).toEqual( 200 );
+        expect( res.response.body ).toEqual( responseData );
     } );
 
     describe( 'Interceptor decorators for modules', () => {
         it( 'should support response decorator', async () => {
-            const res = await app1.handle( {
+            const context = await app1.handle( {
                 request : {
                     method : 'GET',
                     url : '/info/home'
                 }
             } );
-            expect( res ).toBeInstanceOf( Context );
-            expect( res.status ).toEqual( 200 );
-            expect( res.body ).toEqual( {
+            expect( context ).toBeInstanceOf( Context );
+            const { response } = context;
+            expect( response.status ).toEqual( 200 );
+            expect( response.body ).toEqual( {
                 status : 0,
                 data : responseData
             } );
@@ -197,31 +198,31 @@ describe( 'Module', () => {
                 }
             } );
             expect( res ).toBeInstanceOf( Context );
-            expect( res.status ).toEqual( 200 );
+            expect( res.response.status ).toEqual( 200 );
             expect( res.__name ).toEqual( 'test' );
             expect( res.__package ).toEqual( 'ynn' );
         } );
 
         it( 'should support exception decorator', async () => {
-            const res1 = await app1.handle( {
+            const context1 = await app1.handle( {
                 request : {
                     method : 'GET',
                     url : '/error/error/bang'
                 }
             } );
 
-            expect( res1 ).toBeInstanceOf( Context );
-            expect( res1.status ).toEqual( 500 );
+            expect( context1 ).toBeInstanceOf( Context );
+            expect( context1.response.status ).toEqual( 500 );
 
-            const res2 = await app1.handle( {
+            const context2 = await app1.handle( {
                 request : {
                     method : 'GET',
                     url : '/error/error/suppress'
                 }
             } );
-            expect( res2 ).toBeInstanceOf( Context );
-            expect( res2.status ).toEqual( 200 );
-            expect( res2.body ).toEqual( { error : 0 } );
+            expect( context2 ).toBeInstanceOf( Context );
+            expect( context2.response.status ).toEqual( 200 );
+            expect( context2.response.body ).toEqual( { error : 0 } );
         } );
     } );
 } );

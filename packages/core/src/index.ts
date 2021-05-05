@@ -12,5 +12,3 @@ export * from './context';
 export * from './request';
 export * from './response';
 export * from './util/create-injectable-instance';
-export { Action } from './action';
-export { Module } from './module';

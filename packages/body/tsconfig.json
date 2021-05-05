@@ -7,8 +7,9 @@
         "tsBuildInfoFile": "./lib/tsconfig.tsbuildinfo"
     },
     "references" : [
-        { "path" : "../core" },
-        { "path" : "../utility-types" }
+        { "path" : "../utility-types" },
+        { "path" : "../jest-extended" },
+        { "path" : "../common" }
     ],
     "include" : [ "src/**/*" ]
 }

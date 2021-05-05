@@ -5,6 +5,11 @@
         "rootDir": "./src/",
         "composite": true,
         "tsBuildInfoFile": "./lib/tsconfig.tsbuildinfo"
-    }
+    },
+    "references" : [
+        { "path" : "../utility-types" },
+        { "path" : "../jest-extended" },
+        { "path" : "../method-interceptor" }
+    ],
     "include" : [ "src/**/*" ]
 }

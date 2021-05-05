@@ -3,17 +3,18 @@
  *
  * File: interfaces/logger.interface.ts
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 04/29/2021
+ * Time: 05/03/2021
  * Description:
  ******************************************************************/
 
-export interface LogFunction {
-    ( msg: unknown, ...args: unknown[] ): unknown;
+export interface LogMethod {
+    ( msg: any, ...args: any[] ): any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface Logger {
-    log: LogFunction;
-    error: LogFunction;
-    warn: LogFunction;
-    debug: LogFunction;
+    error: LogMethod;
+    warn: LogMethod;
+    info: LogMethod;
+    debug?: LogMethod;
+    trace?: LogMethod;
 }

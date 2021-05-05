@@ -9,7 +9,7 @@
 
 import matchers from './matchers';
 
-const jestExpect = global.expect;
+const jestExpect = ( global as any ).expect; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 if( jestExpect !== undefined ) {
     jestExpect.extend( matchers );

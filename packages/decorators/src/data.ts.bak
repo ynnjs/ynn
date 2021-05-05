@@ -7,9 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { Context } from '@ynn/core';
-import { ParameterMetadata } from '../interfaces';
-import { createParameterDecorator } from './util';
+import { Context, ParameterMetadata, createParameterDecorator } from '@ynn/common';
 
 type Type = 'json' | 'json5' | 'yaml';
 

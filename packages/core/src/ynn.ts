@@ -15,16 +15,13 @@ import escapeStringRegexp from 'escape-string-regexp';
 import { Argv } from 'yargs';
 import is from '@lvchengbin/is';
 import { VariadicClass } from '@ynn/utility-types';
-import { HttpException } from '@ynn/http-exception';
-import { Logger } from '@ynn/common';
+import { Logger, LoggerService, MODULE_METADATA_KEY } from '@ynn/common';
+import { HttpException } from '@ynn/exceptions';
 import { Context, ContextOptions } from './context';
 import { createExecutors, Executor } from './action';
 import { Router, RouterRule, RouteMap } from './router';
 import cargs from './cargs';
-import loggerProxy from './logger-proxy';
 import { respond } from './util/respond';
-import Debug, { DebugOptions } from './debug';
-import { getModuleMetadata } from './module';
 
 const CWD = process.cwd();
 const DEFAULT_CONTROLLER = 'index';
@@ -49,12 +46,7 @@ export interface Options {
     modules?: Modules;
     routers?: RouterRule[] | ( ( this: Ynn, router: Router, app: Ynn ) => void );
     logger?: Logger;
-    debug?: Logger;
-    debugOptions?: DebugOptions;
-    debugging?: boolean | ( keyof Logger )[];
     logging?: boolean | ( keyof Logger )[];
-    proxy?: boolean;
-    maxIpsCount?: number;
     module?: VariadicClass;
     mountingPath?: Ynn[];
 }
@@ -74,7 +66,7 @@ export class Ynn extends Events {
             options = { ...moduleOrDescriptor.options, ...options };
         }
 
-        const metadata = getModuleMetadata( module );
+        const metadata = Reflect.getMetadata( MODULE_METADATA_KEY, module );
 
         if( typeof options.modules === 'function' ) {
             options.modules = options.modules( metadata.modules );
@@ -86,8 +78,6 @@ export class Ynn extends Events {
 
         // const overrideOptions = {};
 
-        // metadata.debugging ?? ( overrideOptions.debugging = options);
-
         return new Ynn( {
             ...metadata,
             ...( options as Options ),
@@ -96,15 +86,11 @@ export class Ynn extends Events {
     }
 
     options!: Readonly<Options>;
-    debug!: Logger;
     logger!: Logger;
     router!: Router;
-    proxy!: boolean;
     controllers!: Record<string, VariadicClass>;
     modules!: Record<string, Ynn>;
-    debugging: boolean | ( keyof Logger )[] = true;
     logging: boolean | ( keyof Logger )[] = false;
-    maxIpsCount = 0;
     mountingPath: Ynn[] = [];
 
     /**
@@ -132,10 +118,6 @@ export class Ynn extends Events {
             if( !is.integer( cargs.port ) ) throw new TypeError( '--port must be a integer' );
         }
 
-        // if( 'debugging' in cargs ) {
-        //     options.debuggings = is.generalizedTrue( cargs.debugging );
-        // }
-
         // if( 'logging' in cargs ) {
         //     options.logging = is.generalizedTrue( cargs.logging );
         // }
@@ -160,7 +142,6 @@ export class Ynn extends Events {
         this.#setupOptions( options );
         this.#setupModule();
         this.#setupMountingPath();
-        this.#setupDebug();
         this.#setupLogger();
         this.#setupRouter();
         this.#setupControllers();
@@ -170,7 +151,6 @@ export class Ynn extends Events {
 
     #setupOptions = ( options: Readonly<Options> ): void => {
         this.options = { ...options, ...this.parseCargs( cargs ) };
-        this.debugging = this.options.debugging ?? true;
         this.logging = this.options.logging ?? false;
     };
 
@@ -182,22 +162,12 @@ export class Ynn extends Events {
         this.mountingPath = [ ...( this.options.mountingPath ?? [] ), this ];
     };
 
-    #setupDebug = (): void => {
-        const { options } = this;
-
-        this.debug = options.debug ?? new Debug( {
-            levels : this.debugging,
-            ...options.debugOptions
-        } );
-    };
-
     #setupLogger = (): void => {
-        this.logger = loggerProxy( {
-            logger : this.options.logger,
-            debug : this.debug,
-            logging : this.logging,
-            debugging : this.debugging
-        } );
+        this.logger = this.options.logger || new LoggerService();
+        // this.logger = loggerProxy(
+        //     logger : this.options.logger,
+        //     logging : this.logging
+        // } );
     };
 
     #setupRouter = (): void => {
@@ -231,9 +201,6 @@ export class Ynn extends Events {
         modules && Object.keys( modules ).forEach( ( name: string ) => {
             this.modules[ name ] = Ynn.create( modules[ name ], {
                 mountingPath : this.mountingPath,
-                proxy : this.proxy,
-                maxIpsCount : this.maxIpsCount,
-                debugging : this.debugging,
                 logging : this.logging
             } );
 
@@ -341,19 +308,14 @@ export class Ynn extends Events {
 
             try {
                 const ctx = await this.handle( {
-                    request : {
-                        req,
-                        proxy : this.proxy,
-                        maxIpsCount : this.maxIpsCount
-                    },
+                    request : { req },
                     response : { res },
-                    logger : this.logger,
-                    debug : this.debug
+                    logger : this.logger
                 } );
                 respond( ctx, req, res );
-                // this.debug.debug( `[Ynn] ${ctx.ip} - - ${new Date} "${ctx.method}: ${ctx.url}" ${res.statusCode} ${( process.hrtime.bigint() - ctx.startTime ) / 1000000n}ms` );
+                // this.logger.log( `[Ynn] ${ctx.ip} - - ${new Date} "${ctx.method}: ${ctx.url}" ${res.statusCode} ${( process.hrtime.bigint() - ctx.startTime ) / 1000000n}ms` );
             } catch( e: unknown ) {
-                this.debug.log( `[Ynn] ${( e as any )?.message}` ); // eslint-disable-line @typescript-eslint/no-explicit-any
+                this.logger.log( `[Ynn] ${( e as any )?.message}` ); // eslint-disable-line @typescript-eslint/no-explicit-any
             }
         } );
 

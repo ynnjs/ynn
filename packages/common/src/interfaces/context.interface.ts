@@ -8,8 +8,9 @@
  ******************************************************************/
 
 import { IncomingMessage, ServerResponse } from 'http';
-import { Request } from './request';
-import { Response } from './response';
+import { Logger } from './logger.interface';
+import { Request } from './request.interface';
+import { Response } from './response.interface';
 
 export interface Context {
     req?: IncomingMessage;
@@ -22,10 +23,8 @@ export interface Context {
     matches: [ string | undefined ][];
 
     logger: Logger;
-    debug: Logger;
 
     startTime: number;
-    throw: ( ...args: Parameters<typeof httpErrors> ) => void;
     inspect: unknown;
     toJSON: Record<string, unknown>;
 }

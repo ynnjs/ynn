@@ -13,8 +13,8 @@ import path from 'path';
 import request from 'supertest';
 import formidable from 'formidable';
 import Koa from 'koa';
-import { Context } from '@ynn/core';
 import { VariadicFunction } from '@ynn/utility-types';
+import { Context } from '@ynn/common';
 import body, { BodyOptions } from '../src';
 
 interface CreateAppOptions {
@@ -73,7 +73,7 @@ function createApp( options: CreateAppOptions ) {
 describe( 'body', () => {
 
     it( 'should return null is ctx.req is nullish', async () => {
-        const parsed = await body( new Context( { request : {} } ) );
+        const parsed = await body( ( { request : {}, response : {} } ) as Context );
         expect( parsed ).toEqual( null );
     } );
 

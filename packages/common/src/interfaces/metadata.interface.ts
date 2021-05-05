@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import { RequiredKeys } from '@ynn/utility-types';
-import { MetadataBefore, MixedMatadataParameter, MetadataAfter, MetadataException } from '@ynn/method-interceptor';
+import { MetadataBefore, MixedMetadataParameter, MetadataAfter, MetadataException } from '@ynn/method-interceptor';
 import { Pipe } from './pipe.interface';
 
 export interface CommonMetadataParameters {
@@ -17,7 +17,7 @@ export interface CommonMetadataParameters {
 }
 
 export type RequestMetadata<T = unknown> = MetadataBefore<T>;
-export type ParameterMetadata<T = unknown> = MixedMatadataParameter<T>;
+export type ParameterMetadata<T = unknown> = MixedMetadataParameter<T>;
 export type ResponseMetadata<T = unknown> = MetadataAfter<T>;
 export type ExceptionMetadata<T = unknown> = MetadataException<T>;
 export type CommonRequestMetadata = RequiredKeys<RequestMetadata<CommonMetadataParameters>, 'parameters'>;

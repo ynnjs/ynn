@@ -7,7 +7,7 @@
  * Description:
  ******************************************************************/
 
-import { HttpException } from '@ynn/http-exception';
+import { HttpException } from '@ynn/exceptions';
 import matchers from '../../src/matchers';
 
 expect.extend( matchers );

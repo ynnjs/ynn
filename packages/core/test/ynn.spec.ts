@@ -7,7 +7,8 @@
  * Description:
  ******************************************************************/
 
-import { Ynn, Action, Context, Module, Options } from '../src';
+import { Action, Module } from '@ynn/decorators';
+import { Ynn, Context, Options } from '../src';
 
 describe( 'Ynn application', () => {
 
@@ -52,7 +53,7 @@ describe( 'Ynn application', () => {
             expect( app1.executors.home ).toHaveProperty( 'index' );
         } );
 
-        it( 'should respond expect data', async () => {
+        it( 'should respond expected data', async () => {
             const res = await app1.handle( {
                 request : {
                     method : 'GET',

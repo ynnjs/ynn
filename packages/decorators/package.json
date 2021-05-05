@@ -9,7 +9,9 @@
         "clean": "rm -rf lib",
         "build": "yarn clean && tsc -b -v",
         "test": "jest",
-        "lint": "eslint {src,test}/**/*.ts --fix --cache"
+        "lint": "eslint {src,test}/**/*.ts --fix --cache",
+        "postpack": "run clean",
+        "prepack": "run build"
     },
     "engines": {
         "node": ">=14.15.0"
@@ -35,9 +37,7 @@
     "dependencies": {
         "@lvchengbin/is": "^1.0.5",
         "@ynn/body": "workspace:packages/body",
-        "@ynn/core": "workspace:packages/core",
-        "@ynn/method-interceptor": "workspace:packages/method-interceptor",
-        "@ynn/pipes": "workspace:packages/pipes",
-        "@ynn/util": "workspace:packages/util"
+        "@ynn/common": "workspace:packages/common",
+        "@ynn/method-interceptor": "workspace:packages/method-interceptor"
     }
 }

@@ -8,3 +8,4 @@
  ******************************************************************/
 
 export * from './exception-callback.interface';
+export * from './exception-response-object.interface';

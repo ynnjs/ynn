@@ -7,15 +7,20 @@
  * Description:
  ******************************************************************/
 
-import { Context, Metadata, PipeFunction } from '@ynn/core';
-import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
+import { Context, Metadata, PipeFunction } from '@ynn/common';
+import { HttpException } from '@ynn/exceptions';
+import { ExceptionCallback, ExceptionResponseObject } from './interfaces';
+
+export type MatchPattern = string | RegExp | ( string | RegExp )[];
+
+type ExceptionOption<R> = ExceptionResponseObject | Error | ExceptionCallback<string | number, R>;
 
 function handleException<R>(
     value: string | number,
     ctx: Context,
     metadata: Metadata,
     pattern: string,
-    exception?: HttpExceptionResponse | Error | ExceptionCallback<R>
+    exception?: ExceptionOption<R>
 ): R {
 
     if( typeof exception === 'function' ) return exception( value, ctx, metadata );
@@ -29,7 +34,7 @@ function handleException<R>(
         message : [
             property ? `${property} should match ${pattern}` : `parameter does not match ${pattern}`
         ],
-        ...( exception || {} )
+        ...( exception ?? {} )
     } );
 }
 
@@ -59,8 +64,8 @@ function handleException<R>(
  * ```
  */
 export function Match<R>(
-    pattern: string | RegExp | ( string | RegExp )[],
-    exception?: HttpExceptionResponse | Error | ExceptionCallback<R>
+    pattern: MatchPattern,
+    exception?: ExceptionOption<R>
 ): PipeFunction {
 
     if( typeof pattern === 'string' ) {

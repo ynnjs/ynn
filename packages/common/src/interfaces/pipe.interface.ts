@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import { VariadicClass } from '@ynn/utility-types';
-import { Context } from '../context';
+import { Context } from './context.interface';
 import { Metadata } from './metadata.interface';
 
 export interface PipeFunction<T = any, R = any, M extends Metadata = Metadata> { // eslint-disable-line @typescript-eslint/no-explicit-any

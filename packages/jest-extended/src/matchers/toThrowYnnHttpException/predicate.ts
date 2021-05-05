@@ -8,7 +8,7 @@
  ******************************************************************/
 
 import deepEqual from 'deep-equal';
-import { HttpException } from '@ynn/http-exception';
+import { HttpException } from '@ynn/exceptions';
 
 export default function predicate( received: HttpException, expected: HttpException ): boolean {
     if( !( received instanceof HttpException ) || !( expected instanceof HttpException ) ) return false;

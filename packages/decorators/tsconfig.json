@@ -7,12 +7,9 @@
         "tsBuildInfoFile": "./lib/tsconfig.tsbuildinfo"
     },
     "references" : [
-        { "path" : "../core" },
+        { "path" : "../common" },
         { "path" : "../method-interceptor" },
         { "path" : "../body" },
-        { "path" : "../pipes" },
-        { "path" : "../testing" },
-        { "path" : "../util" },
         { "path" : "../utility-types" }
     ],
     "include" : [ "src/**/*" ]

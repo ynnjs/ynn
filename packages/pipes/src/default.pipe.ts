@@ -7,11 +7,13 @@
  * Description:
  ******************************************************************/
 
-import { PipeFunction } from '@ynn/core';
+import { PipeFunction, Metadata, Context } from '@ynn/common';
 
-export interface DefaultCallback<T> {
-    ( value: null | undefined, ctx: Context, metadata: Metadata ): T | Promise<T>;
+interface Callback<T> {
+    ( value: '' | null | undefined, ctx: Context, metadata: Metadata ): T | Promise<T>;
 }
+
+export type DefaultCallback<T> = T extends any ? ( T | Callback<T> ) : never;
 
 /**
  * @example
@@ -21,10 +23,13 @@ export interface DefaultCallback<T> {
  * fn( @Query( 'id', Default( 'defaultid' ) ) id: string ) {}
  * ```
  */
-export function Default<D>( defaultValue: DefaultCallback<D> | D ): PipeFunction {
-    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | D> => {
+export function Default<D extends any>( defaultValue: DefaultCallback<D> ): PipeFunction {
+    return async <T extends any>( value: T, ctx: Context, metadata: Metadata ): Promise<T | D> => {
         if( value === '' || value === undefined || value === null ) {
-            return typeof defaultValue === 'function' ? defaultValue( value, ctx, metadata ) : defaultValue;
+            if( typeof defaultValue === 'function' ) {
+                return defaultValue( value, ctx, metadata );
+            }
+            return defaultValue;
         }
         return value;
     };

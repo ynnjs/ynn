@@ -7,17 +7,19 @@
  * Description:
  ******************************************************************/
 
-import { Context, Metadata, PipeFunction } from '@ynn/core';
-import { HttpException, HttpExceptionResponse } from '@ynn/http-exception';
-import { ExceptionCallback } from './interfaces';
+import { Context, Metadata, PipeFunction } from '@ynn/common';
+import { HttpException } from '@ynn/exceptions';
+import { ExceptionCallback, ExceptionResponseObject } from './interfaces';
 
-export function Required<R>( exception?: HttpExceptionResponse | Error | ExceptionCallback<R> ): PipeFunction {
+export function Required<R>(
+    exception?: ExceptionResponseObject | Error | ExceptionCallback<'' | undefined | null, R>
+): PipeFunction {
 
-    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
+    return async <T extends unknown>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
 
         if( value === '' || value === undefined || value === null ) {
 
-            if( typeof exception === 'function' ) return exception( value, ctx, metadata );
+            if( typeof exception === 'function' ) return exception( value as unknown as undefined, ctx, metadata );
 
             if( exception instanceof Error ) throw exception;
 
@@ -28,7 +30,7 @@ export function Required<R>( exception?: HttpExceptionResponse | Error | Excepti
                 message : [
                     property ? `${property} is required` : 'missing parameter'
                 ],
-                ...( exception || {} )
+                ...( exception ?? {} )
             } );
         }
 
