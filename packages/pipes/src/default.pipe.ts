@@ -13,7 +13,7 @@ interface Callback<T> {
     ( value: '' | null | undefined, ctx: Context, metadata: Metadata ): T | Promise<T>;
 }
 
-export type DefaultCallback<T> = T extends any ? ( T | Callback<T> ) : never;
+export type DefaultCallback<T> = T extends Function ? Callback<T> : T; // eslint-disable-line
 
 /**
  * @example
@@ -23,13 +23,13 @@ export type DefaultCallback<T> = T extends any ? ( T | Callback<T> ) : never;
  * fn( @Query( 'id', Default( 'defaultid' ) ) id: string ) {}
  * ```
  */
-export function Default<D extends any>( defaultValue: DefaultCallback<D> ): PipeFunction {
-    return async <T extends any>( value: T, ctx: Context, metadata: Metadata ): Promise<T | D> => {
-        if( value === '' || value === undefined || value === null ) {
+export function Default<D>( defaultValue: DefaultCallback<D> ): PipeFunction {
+    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | D> => {
+        if( value as unknown === '' || value === undefined || value === null ) {
             if( typeof defaultValue === 'function' ) {
                 return defaultValue( value, ctx, metadata );
             }
-            return defaultValue;
+            return defaultValue as D;
         }
         return value;
     };

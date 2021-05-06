@@ -163,7 +163,7 @@ export class Ynn extends Events {
     };
 
     #setupLogger = (): void => {
-        this.logger = this.options.logger || new LoggerService();
+        this.logger = this.options.logger ?? new LoggerService();
         // this.logger = loggerProxy(
         //     logger : this.options.logger,
         //     logging : this.logging
@@ -313,9 +313,9 @@ export class Ynn extends Events {
                     logger : this.logger
                 } );
                 respond( ctx, req, res );
-                // this.logger.log( `[Ynn] ${ctx.ip} - - ${new Date} "${ctx.method}: ${ctx.url}" ${res.statusCode} ${( process.hrtime.bigint() - ctx.startTime ) / 1000000n}ms` );
+                // this.logger.info( `[Ynn] ${ctx.ip} - - ${new Date} "${ctx.method}: ${ctx.url}" ${res.statusCode} ${( process.hrtime.bigint() - ctx.startTime ) / 1000000n}ms` );
             } catch( e: unknown ) {
-                this.logger.log( `[Ynn] ${( e as any )?.message}` ); // eslint-disable-line @typescript-eslint/no-explicit-any
+                this.logger.info( `[Ynn] ${( e as any )?.message}` ); // eslint-disable-line @typescript-eslint/no-explicit-any
             }
         } );
 
@@ -324,9 +324,9 @@ export class Ynn extends Events {
         const address = server.address();
 
         if( address && typeof address !== 'string' ) {
-            this.logger.log( `Server is running on port ${ address.port }.` );
+            this.logger.info( `Server is running on port ${ address.port }.` );
         } else {
-            this.logger.log( `Server is running on ${address}.` );
+            this.logger.info( `Server is running on ${address}.` );
         }
 
         return ( this.server = server );
