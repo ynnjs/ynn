@@ -44,31 +44,37 @@ export function respond( ctx: Context, req: IncomingMessage, res: ServerResponse
         return;
     }
 
-    let { body } = ctx;
+    let { body } = response;
 
     if( body === null ) {
-        if( response.EXPLICIT_NULL_BODY ) {
-            response.remove( 'Content-Type' );
-            response.remove( 'Transfer-Encoding' );
-            setHeaders( response.headers, res );
-            res.end();
-            return;
-        }
-
-        if( req.httpVersionMajor >= 2 ) {
-            body = String( status );
-        } else {
-            body = message || String( status );
-        }
-
-        if( !res.headersSent ) {
-            request.type = 'text';
-            response.length = Buffer.byteLength( body as string );
-        }
         setHeaders( response.headers, res );
-        res.end( body );
+        res.end();
         return;
     }
+
+    // if( body === null ) {
+    //     if( response.EXPLICIT_NULL_BODY ) {
+    //         response.remove( 'Content-Type' );
+    //         response.remove( 'Transfer-Encoding' );
+    //         setHeaders( response.headers, res );
+    //         res.end();
+    //         return;
+    //     }
+
+    //     if( req.httpVersionMajor >= 2 ) {
+    //         body = String( status );
+    //     } else {
+    //         body = message || String( status );
+    //     }
+
+    //     if( !res.headersSent ) {
+    //         request.type = 'text';
+    //         response.length = Buffer.byteLength( body as string );
+    //     }
+    //     setHeaders( response.headers, res );
+    //     res.end( body );
+    //     return;
+    // }
 
     if( Buffer.isBuffer( body ) || typeof body === 'string' ) {
         res.end( body );

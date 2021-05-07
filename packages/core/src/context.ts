@@ -25,8 +25,6 @@ export interface ContextOptions {
 
 export class Context implements ContextInterface {
 
-    [ key: string ]: any; // eslint-disable-line
-
     req?: IncomingMessage;
     res?: ServerResponse;
 

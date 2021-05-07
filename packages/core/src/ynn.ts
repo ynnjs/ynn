@@ -285,8 +285,8 @@ export class Ynn extends Events {
                     } else if( e instanceof HttpException ) {
                         if( e.response ) {
                             response.body = e.response;
-                            response.status = e.response.status;
-                            response.message = e.response.error;
+                            response.status = e.status;
+                            response.message = e.error;
                         } else {
                             response.status = e.status;
                             response.message = e.message;

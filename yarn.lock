@@ -1452,6 +1452,7 @@ __metadata:
     "@types/yargs": ^16.0.1
     "@ynn/common": "workspace:packages/common"
     "@ynn/decorators": "workspace:packages/decorators"
+    "@ynn/exceptions": "workspace:packages/exceptions"
     "@ynn/jest-extended": "workspace:packages/jest-extended"
     "@ynn/method-interceptor": "workspace:packages/method-interceptor"
     "@ynn/utility-types": "workspace:packages/utility-types"

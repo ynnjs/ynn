@@ -24,7 +24,7 @@ export interface Context {
 
     logger: Logger;
 
-    startTime: number;
+    startTime: bigint;
     inspect: unknown;
-    toJSON: Record<string, unknown>;
+    toJSON: () => Record<string, unknown>;
 }

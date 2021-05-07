@@ -9,7 +9,7 @@
 
 import { Socket } from 'net';
 import { ServerResponse, OutgoingHttpHeaders } from 'http';
-import { Options as ContentDispositionOptions } from 'content-disposition';
+// import { Options as ContentDispositionOptions } from 'content-disposition';
 import { Valueof } from '@ynn/utility-types';
 import { Context } from './context.interface';
 
@@ -29,8 +29,8 @@ export interface Response {
     length: number | undefined;
     headerSent: boolean;
     vary: () => void;
-    redirect: ( url: string, alt?: string ) => void;
-    attachment: ( filename?: string, options?: ContentDispositionOptions ) => void;
+    // redirect: ( url: string, alt?: string ) => void;
+    // attachment: ( filename?: string, options?: ContentDispositionOptions ) => void;
     type: string;
     lastModified: Date | undefined;
     etag: string;
@@ -43,5 +43,5 @@ export interface Response {
     getHeaderNames: () => string[];
     writable: boolean;
     inspect: unknown;
-    toJSON: Record<string, unknown>;
+    toJSON: () => Record<string, unknown>;
 }

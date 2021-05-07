@@ -9,6 +9,7 @@
 
 import util from 'util';
 import qs, { ParsedUrlQuery } from 'querystring';
+import { TLSSocket } from 'tls';
 import { Socket, isIP } from 'net';
 import { IncomingMessage, IncomingHttpHeaders } from 'http';
 import { format as stringify, UrlWithStringQuery } from 'url';

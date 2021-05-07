@@ -15,8 +15,8 @@ import { extname } from 'path';
 import { ServerResponse, OutgoingHttpHeaders } from 'http';
 import { is } from 'type-is';
 import statuses from 'statuses';
-import encodeurl from 'encodeurl';
-import escapehtml from 'escape-html';
+// import encodeurl from 'encodeurl';
+// import escapehtml from 'escape-html';
 import getType from 'cache-content-type';
 import contentDisposition, { Options as ContentDispositionOptions } from 'content-disposition';
 import { Valueof } from '@ynn/utility-types';
@@ -35,14 +35,14 @@ export class Response implements ResponseInterface {
     #headers: Map<string, Valueof<OutgoingHttpHeaders>>= new Map();
     #body: unknown = null;
 
+    #explicit_status = false;
+
     ctx: Context;
     statusCode = 404;
     statusMessage!: string;
 
     res?: ServerResponse;
 
-    EXPLICIT_STATUS = false;
-    EXPLICIT_NULL_BODY = false;
 
     constructor( options: Readonly<ResponseOptions> ) {
         const { res } = options;
@@ -100,7 +100,7 @@ export class Response implements ResponseInterface {
         if( this.headerSent ) return;
         assert( Number.isInteger( code ), 'status code must be an integer' );
         assert( code >= 100 && code < 999, `incalid status code: ${code}` );
-        this.EXPLICIT_STATUS = true;
+        this.#explicit_status = true;
         this.statusCode = code;
         this.statusMessage = statuses.message[ code ] ?? '';
         if( this.body && statuses.empty[ code ] ) this.body = null;
@@ -136,14 +136,14 @@ export class Response implements ResponseInterface {
 
         if( val === null ) {
             if( !statuses.empty[ this.status ] ) this.status = 204;
-            this.EXPLICIT_NULL_BODY = true;
+            // this.explicit_null_body = true;
             this.remove( 'Content-Type' );
             this.remove( 'Content-Length' );
             this.remove( 'Transfer-Encoding' );
             return;
         }
 
-        if( !this.EXPLICIT_STATUS ) this.status = 200;
+        if( !this.#explicit_status ) this.status = 200;
 
         const setType = !this.has( 'Content-Type' );
 
@@ -210,22 +210,22 @@ export class Response implements ResponseInterface {
     /**
      * Perform a 302 redirect to `url`.
      */
-    redirect( url: string, alt?: string ): void {
-        if( url === 'back' ) url = this.ctx.request.get( 'Referrer' ) || ( alt ?? '/' );
-        this.set( 'Location', encodeurl( url ) );
+    // redirect( url: string, alt?: string ): void {
+    //     if( url === 'back' ) url = this.ctx.request.get( 'Referrer' ) || ( alt ?? '/' );
+    //     this.set( 'Location', encodeurl( url ) );
 
-        if( !statuses.redirect[ this.status ] ) this.status = 302;
+    //     if( !statuses.redirect[ this.status ] ) this.status = 302;
 
-        if( this.ctx.request.accepts( 'html' ) ) {
-            url = escapehtml( url );
-            this.type = 'text/html; charset=utf-8';
-            this.body = `Redirecting to <a href="${url}">${url}</a>`;
-            return;
-        }
+    //     if( this.ctx.request.accepts( 'html' ) ) {
+    //         url = escapehtml( url );
+    //         this.type = 'text/html; charset=utf-8';
+    //         this.body = `Redirecting to <a href="${url}">${url}</a>`;
+    //         return;
+    //     }
 
-        this.type = 'text/plain; charset=utf-8';
-        this.body = `Redirecting to ${url}.`;
-    }
+    //     this.type = 'text/plain; charset=utf-8';
+    //     this.body = `Redirecting to ${url}.`;
+    // }
 
     /**
      * Set Content-Disposition header to "attachment" with optional `filename`( ...args );
