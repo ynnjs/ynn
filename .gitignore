@@ -42,9 +42,9 @@ coverage
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-yarn-error.log
 
 dist
 
 # typescript output
 lib
+tsconfig.tsbuildinfo
