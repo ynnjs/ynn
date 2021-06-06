@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.1.5",
+    "version": "0.1.7",
     "keywords": [
         "koa",
         "mvc",
@@ -60,6 +60,10 @@
     },
     "homepage": "https://github.com/ynnjs/ynn#readme",
     "main": "index.js",
+    "files" : [
+        "index.js",
+        "lib"
+    ],
     "directories": {
         "example": "example",
         "lib": "lib",
