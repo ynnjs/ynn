@@ -8,7 +8,7 @@
  ******************************************************************/
 
 module.exports = {
-    ...require( '../../jest.config.js' ),
+    ...require( '../../jest.config.base.js' ),
     rootDir : __dirname,
     name : '@ynn/jest-extended',
     displayName : '@ynn/jest-extended'

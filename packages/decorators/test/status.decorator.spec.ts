@@ -15,7 +15,7 @@ import { Status } from '../src';
 describe( '@Status()', () => {
     describe( 'Response Decorator', () => {
         it( '', () => {
-            
+
         } );
         // it( 'only set status code', async () => {
         //     class IndexController {

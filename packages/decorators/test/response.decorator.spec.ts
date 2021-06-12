@@ -13,7 +13,7 @@ import { Response } from '../src';
 
 describe( '@Response()', () => {
     it( '', () => {
-        
+
     } );
 
     // it( 'overwrite the response data', async () => {

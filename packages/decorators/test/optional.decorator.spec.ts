@@ -15,7 +15,7 @@ import { Body, Optional } from '../src';
 describe( 'decorator/body', () => {
     describe( 'Parameter Decorator', () => {
         it( '', () => {
-            
+
         } );
         // it( '', async () => {
 

@@ -15,7 +15,7 @@ export function Required<R>(
     exception?: ExceptionResponseObject | Error | ExceptionCallback<'' | undefined | null, R>
 ): PipeFunction {
 
-    return async <T extends unknown>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
+    return async <T>( value: T, ctx: Context, metadata: Metadata ): Promise<T | R> => {
 
         if( value === '' || value === undefined || value === null ) {
 

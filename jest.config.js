@@ -3,35 +3,21 @@
  *
  * File: ynn/jest.config.js
  * Author: LvChengbin<lvchengbin59@gmail.com>
- * Time: 04/06/2021
+ * Time: 06/13/2021
  * Description:
  ******************************************************************/
 
 module.exports = {
-    preset : 'ts-jest',
-    setupFilesAfterEnv : [ 'jest-extended', '@ynn/jest-extended/src/index.ts' ],
-    testMatch : [
-        '**/test/**/*.spec.ts'
-    ],
-    coverageReporters : [
-        'text-summary',
-        'text',
-        'lcov'
-    ],
-    collectCoverageFrom : [
-        '**/src/**/*.ts',
-        '!**/*.d.ts'
-    ],
-    testEnvironment : 'node',
-    globals : {
-        'ts-jest' : {
-            isolatedModules : true
-        }
-    },
-    transformIgnorePatterns : [
-        '\\.pnp\\.[^\\\/]+$'
-    ],
-    moduleNameMapper : {
-        '@ynn/(.*)' : `${__dirname}/packages/$1/src/index.ts`
-    }
+    projects : [
+        '<rootDir>/packages/body',
+        '<rootDir>/packages/core',
+        '<rootDir>/packages/exceptions',
+        '<rootDir>/packages/method-interceptor',
+        '<rootDir>/packages/testing',
+        '<rootDir>/packages/utility-types',
+        '<rootDir>/packages/common',
+        '<rootDir>/packages/decorators',
+        '<rootDir>/packages/jest-extended',
+        '<rootDir>/packages/pipes',
+    ]
 };

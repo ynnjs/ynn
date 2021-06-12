@@ -7,8 +7,8 @@
  * Description:
  ******************************************************************/
 
-describe( 'createParameterMetadata', () => { 
+describe( 'createParameterMetadata', () => {
     it( '', () => {
-        
+
     } );
 } );
