@@ -21,6 +21,7 @@ describe( 'Ynn Plugins', () => {
         const test = new app.ExtendsPlugin( app );
         expect( test instanceof Plugin ).toBeTruthy();
         expect( is.class( app.OrdinaryClass ) ).toBeFalsy();
+        expect( app[ 'redis-again' ] ).toEqual( 'redis' );
     } ); 
     
 } );

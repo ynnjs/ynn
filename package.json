@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.1.7",
+    "version": "0.1.8",
     "keywords": [
         "koa",
         "mvc",
@@ -30,7 +30,7 @@
         "@lvchengbin/koa-router": "0.1.1",
         "@lvchengbin/sequence": "^2.0.1",
         "chalk": "^4.1.0",
-        "koa": "^2.13.0",
+        "koa": "^2.13.1",
         "koa-body": "^4.2.0",
         "koa-compose": "^4.1.0",
         "koa-preuse": "0.0.0",
