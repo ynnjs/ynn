@@ -100,6 +100,25 @@ describe( 'rsc', () => {
                 } )
                 .end( e => e ? done.fail( e ) : done() );
         } );
+
+    } );
+
+    describe( 'Variables in path', () => {
+
+        it( 'use variables in path', ( done ) => {
+            const id = '123';
+            request( app.listen() ).post( `/id?id=${id}` )
+                .expect( 200 )
+                .expect( id )
+                .end( e => e ? done.fail( e ) : done() );
+        } );
+
+        it( 'use params set in configuration', ( done ) => {
+            request( app.listen() ).post( '/id/default' )
+                .expect( 200 )
+                .expect( '999' )
+                .end( e => e ? done.fail( e ) : done() );
+        } );
     } );
 
     describe( 'events', () => {

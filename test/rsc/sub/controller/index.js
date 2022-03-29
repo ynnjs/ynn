@@ -37,5 +37,4 @@ module.exports = class index extends require( '../../../../lib/controller' ) {
             }
         }
     }
-    
 }

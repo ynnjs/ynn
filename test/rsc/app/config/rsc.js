@@ -26,6 +26,13 @@ module.exports = {
                     headers :  {
                         'x-rsc-service-api' : 'test-get'
                     }
+                },
+                'test/id' : {
+                    method : 'GET',
+                    path : 'test/id/{{id}}',
+                    params : {
+                        id : '999'
+                    }
                 }
             }
         },

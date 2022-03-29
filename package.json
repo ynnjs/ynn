@@ -5,7 +5,7 @@
         "type": "git",
         "url": "git+https://github.com/ynnjs/ynn.git"
     },
-    "version": "0.1.12",
+    "version": "0.1.14",
     "keywords": [
         "koa",
         "mvc",
